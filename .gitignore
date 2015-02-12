@@ -3,5 +3,7 @@
 .settings/
 target/
 .idea
-**/*.iml
+*.iml
 web-app/tamil-webapp.iml
+model/src/test/test.iml
+web-app/src/main/main.iml
