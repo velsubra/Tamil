@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>தொடர்மொழியின் பகுப்பு
+    </title>
+
+    <script type="text/javascript" src="jquery-1.9.1.js"></script>
+    <script type="text/javascript" src="service-consumer.js"></script>
+    <script type="text/javascript" src="service-search.js"></script>
+    <script type="text/javascript" src="jquery.cookie.js"></script>
+    <link rel="stylesheet" type="text/css" href="punarchi.css"/>
+</head>
+
+<script type='text/javascript'>//<![CDATA[
+
+$(document).ready(function () {
+    $('#header').click(function () {
+        $('.showhide').toggle("slide");
+    });
+
+    $(function () {
+
+        $("#joined").onEnter(function () {
+            _parse_handler();
+        });
+
+        $("#joinedenglish").onEnter(function () {
+            _parse_handler();
+        });
+
+
+    });
+});
+
+
+//]]>
+
+
+</script>
+
+<body onload="_parse_load();">
+<a href="index.html">&lt;-பின்னுக்குச்செல்க</a>
+
+
+<div id="header"><a href="#"><h3>தொடர்மொழியின் பகுப்பாய்வு</h3></a></div>
+<div id="details" class="showhide" style="display: none;">
+    இப்போது அனைத்து தொடர்மொழிகளையும் பகுக்கமுடியும். ஆனால், தொடர்மொழிகளின் அடையாளம் இன்னும் காணப்படவில்லை. பகுப்பில் காட்டப்படும் பல வழிகள் தேவையற்றவையாகவிருக்கலாம்.  தொடர்மொழிகள் அடையாளங்காணப்படும்போது அவை நீக்கப்படும்.
+
+
+    ஏதேனும் தொடர்மொழிகள் பகுக்கப்படவில்லையெனில், அதிலுள்ள பெயர்ச்சொல்லோ அல்லது வினைச்சொல்லோ இன்னும்
+    அறியப்படாமலிருக்கலாம். அச்சொற்களை கீழேவுள்ள சுட்டிகளின்மூலம் சேர்க்கலாம்
+    <br/>
+    <a href="list-nouns.html"> பெயர்ச்சொல் </a>
+    <br/>
+    <a href="list-verbs.html"> வினையடி </a>
+</div>
+
+<p>ஒரு தமிழ்ச்சொல்லை பகுக்க! </p>
+<table border="1">
+    <tr>
+        <th>தொடர்மொழி</th>
+
+        <th></th>
+    </tr>
+    <tr>
+        <td>த:<input size="50" placeholder="தொடர்மொழி" type="text" value="கடித்துச்சாப்பிட்டேன்" id="joined"
+                   name="joined"/>
+            <br/>
+
+            <div data-tip="குறிப்பு: aa=ஆ, ea=ஏ, f=ஃ, lh=ள், nt=ந், nh=ண், oa=ஓ, ou=ஔ, rr=ற், zh=ழ்">E:<input size="50"
+
+                                                                                                            onClick="this.select()"
+                                                                                                            type="text"
+                                                                                                            name="joinedenglish"
+                                                                                                            placeholder="Type in english here, to transliterate."
+                                                                                                            id="joinedenglish"
+                                                                                                            onkeypress="return _onkeypress(event,this);"
+                                                                                                            onkeyup="_translit(this,'#joined');"/>
+            </div>
+        </td>
+        <th><input type="button" name="clk" value="பகு" onclick="_parse_handler();"/></th>
+
+    </tr>
+
+</table>
+
+<br/>
+
+<div class="lookupresult" id="lookupresult">
+    <input type="text" size="30" style="outline: none;border: none; background: yellow; text-align: center"
+           id="searched" disabled="disabled" oninput="javascript:_onChange_Word_To_Look(false)"/></th>
+    <div id="wordcount"></div>
+
+    <table border="1" id="result_words">
+        <tr>
+            <th>#</th>
+            <th>சொல்</th>
+            <th>விளக்கம்</th>
+
+        </tr>
+    </table>
+
+</div>
+
+
+<div id="status"></div>
+<table border="1" class="ajaxloading" id="result_table">
+    <tr>
+        <th>#</th>
+        <th>முடிவுகள்</th>
+    </tr>
+</table>
+
+<a href="index.html">&lt;-பின்னுக்குச்செல்க</a>
+</body>
+</html>

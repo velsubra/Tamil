@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>இடைச்சொற்களின்  தொகுப்பு
+    </title>
+
+    <script type="text/javascript" src="jquery-1.9.1.js"></script>
+    <script type="text/javascript" src="service-consumer.js"></script>
+    <script type="text/javascript" src="jquery.cookie.js"></script>
+    <link rel="stylesheet" type="text/css" href="punarchi.css"/>
+
+    <script type='text/javascript'>//<![CDATA[
+    var PROP_BASE = "";
+
+    $(document).ready(function () {
+        $('#header').click(function () {
+            $('.showhide').toggle("slide");
+        });
+    });
+
+    function toggleSearch() {
+
+        if ($('#autosearch').prop('checked')) {
+            $('#autosearchbtn').attr("disabled", true);
+            $.cookie('autosearch', $('#autosearch').prop('checked'));
+            _list_all_prepositions(true);
+        } else {
+            $('#autosearchbtn').attr("disabled", false);
+            $.cookie('autosearch', null);
+        }
+    }
+
+    $(function () {
+
+        $("#prepositionenglish").onEnter(function () {
+            _list_all_prepositions(true);
+        });
+
+        $("#preposition").onEnter(function () {
+            _list_all_prepositions(true);
+        });
+    });
+
+
+    //]]>
+    </script>
+</head>
+<body onload="_loadlist_all_prepositions();">
+<a href="index.html">&lt;-பின்னுக்குச்செல்க</a>
+
+<div id="header"><a href="#"><h3>இடைச்சொல்தேடல்</h3></a></div>
+<div class="showhide" style="display: none;">
+<pre>
+இங்கே, நீங்கள் கீழ்க்கண்டவற்றை செய்யலாம்.
+1. இடைச்சொல்தேடல்.ஆல் (வந்ததால்), இன் (வடிவத்தின்), கு (நாளைக்கு)
+2. இல்லாத இடைச்சொல்லை  சேர்த்தல், தவறானவற்றை நீக்குதல்
+(நீங்கள் தேடும்போது ஒரு இடைச்சொல்  இல்லையென்றால், "புதிதாகச்சேர்க்க" என்ற சுட்டி தோன்றும். அதை சுட்டினால், அந்த இடைச்சொல்  உடனே சேர்ந்துவிடும்.)
+
+
+முதல் 20 இடைச்சொற்கள்  காட்டப்படுகின்றன.
+
+     </pre>
+</div>
+<div id="count_all"></div>
+<table width="100">
+    <tr>
+        <th colspan="3"> உடனடித்தேடல்:<input type="checkbox" value="" id="autosearch"
+                                             title="வேகமான இணையத்தொடர்பை கொண்டவர்கள்  தட்டத்தட்ட தமிழ்ச்சொற்களைத்தேட இது உதவும்.             "
+                                             name="autosearch" onclick="javascript:toggleSearch()"></th>
+    </tr>
+    <tr>
+        <td>தேடு</td>
+        <td><input size="15" placeholder="இடைச்சொல் " type="text" id="preposition" name="preposition"
+                   oninput="_list_all_prepositions(false);"/></td>
+        <td align="center" rowspan="2"><input type="button" id="autosearchbtn" value="தேடு"
+                                              onclick="_list_all_prepositions(true)"></td>
+    </tr>
+    <tr>
+        <td>Search</td>
+        <td>
+            <div data-tip="குறிப்பு: aa=ஆ, ea=ஏ, f=ஃ, lh=ள், nt=ந், nh=ண், oa=ஓ, ou=ஔ, rr=ற், zh=ழ்"><input
+                    size="15"
+
+                    onClick="this.select()"
+                    type="text"
+                    name="prepositionenglish"
+                    placeholder="Type in english here, to transliterate."
+                    id="prepositionenglish"
+                    onkeypress="return _onkeypress(event,this);"
+                    onkeyup="_translit(this,'#preposition');"
+                    /> <br/>
+            </div>
+        </td>
+
+    </tr>
+    <tr>
+        <th colspan="3"><a id="add_new_preposition_link" title="இவ்விடைச்சொல்  காணப்படவில்லை. இதனை நீங்கள் சேர்க்கலாம்."
+                           href="javascript:add_new_preposition()">இது காணப்படவில்லை. புதிதாகச்சேர்க்க</a></th>
+    </tr>
+</table>
+<hr/>
+<table class="ajaxloading" border="1" id="result_table">
+    <tr>
+        <th>எண்</th>
+        <th>
+            ஏற்கனவேயிருக்கும் </br> இடைச்சொற்கள்
+        </th>
+        <th>நீக்குக</th>
+
+    </tr>
+</table>
+
+
+<a href="index.html">&lt;-பின்னுக்குச்செல்க</a>
+</body>
+</html>

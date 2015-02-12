@@ -1,0 +1,34 @@
+<script type='text/javascript'>//<![CDATA[
+
+
+
+function _add_Notes() {
+    var idai = $("#preposition_edit").val();
+    _silent_add_property(BASE_URL, idai, "description", $("#english").val());
+    $('.showhide-notes').slideUp();
+
+}
+
+
+//]]>
+
+
+</script>
+<div id="header-notes" onclick="javascript:$('.showhide-notes').toggle();$('#english').trigger('click');$('#english').select()"><a href="#">பிழைகளின் விளக்கம் &gt;</a>
+
+
+</div>
+
+<div class="showhide-notes" style="display: none;" >
+    <textarea title="Sample text" placeholder="பிழைகள்பற்றிய குறிப்பை தெரிவிக்கலாம்.   " onclick="javascript:trans($('#english'), null, event);" onkeyup="javascript:trans($('#english'), null, event);" cols="80" rows="3"
+              id="english"></textarea>
+    <div   data-tip="குறிப்பு: aa=ஆ, ea=ஏ, f=ஃ, lh=ள், nt=ந், nh=ண், oa=ஓ, ou=ஔ, rr=ற், zh=ழ்"  style="font-size: 1.2em; height: 20px; color: blue;" id="temp_tamil"></div>
+
+    <div  id="tamil"  onclick="javascript:$('#tamil').selectText()"   style="background: #f5f5dc">
+    </div>
+    <input type="button" value="சேமி" onclick="javascript:_add_Notes()">
+
+</div>
+
+
+

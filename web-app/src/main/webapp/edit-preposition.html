@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title> இடைச்சொல்லின் வரையறையில் மாற்றம்.
+    </title>
+
+    <script type="text/javascript" src="jquery-1.9.1.js"></script>
+    <script type="text/javascript" src="service-consumer.js"></script>
+    <script type="text/javascript" src="jquery.cookie.js"></script>
+    <link rel="stylesheet" type="text/css" href="punarchi.css"/>
+
+    <script type='text/javascript'>//<![CDATA[
+
+    var PROP_BASE = "definition";
+
+    var BASE = "root-prepositions";
+
+    var BASE_URL = BASE + "/prepositions";
+
+    $(document).ready(function () {
+        $('#header').click(function () {
+            $('.showhide').toggle("slide");
+        });
+    });
+
+
+
+
+    function _mark_green(chk) {
+
+        var to = $("#preposition_edit").val();
+        if (!confirm("ஆம், நான் விவரக்குறிப்புகளை  சரிபார்த்துவிட்டேன். ")) {
+            return false;
+        }
+        _silent_add_property(BASE_URL,to, PROP_BASE + ".locked", "true");
+        $('#editable').hide();
+        $('#green_mark').attr("disabled", "disabled");
+        // populate after being locked.
+    }
+
+
+    function _mark_isssue(chk) {
+        var to = $("#preposition_edit").val();
+        if (chk.checked) {
+            _silent_add_property(BASE_URL,to, "issue."  + PROP_BASE, chk.checked);
+        } else {
+            _silent_delete_property(BASE_URL,to, "issue." + PROP_BASE);
+        }
+    }
+
+    //]]>
+
+    </script>
+</head>
+<body onload="_edit_Idai_init();">
+<a href="list-prepositions.html">&lt;-பின்னுக்குச்செல்க</a>
+
+<label id="_common_header">
+
+</label>
+<label>
+    இவ்விடைச்சொல் :<input size="10" type="text" id="preposition_edit" name="preposition_edit" disabled="true"/>
+    <input class="green_mark" type="checkbox" name="green_mark" id="green_mark"
+           onclick="javascript:return _mark_green(this)">
+    <span>விவரக்குறிப்புகளில் பிழையில்லை  </span>
+</label>
+<hr style="">
+<div id="_common_tabs" class="tabs">
+
+</div>
+
+<label id="_common_notes">
+
+</label>
+
+
+<label id="_add_question">
+
+</label>
+
+<div id="editable">
+    <div id="header"><a href="#"><h3>இடைச்சொல்லின் விவரக்குறிப்புகள்</h3></a>
+
+        <div class="showhide" style="display: none;">
+
+            மேலுமறிய
+            <a href="http://ta.wikipedia.org/wiki/%E0%AE%87%E0%AE%9F%E0%AF%88%E0%AE%9A%E0%AF%8D%E0%AE%9A%E0%AF%8A%E0%AE%B2%E0%AF%8D_%E0%AE%B5%E0%AE%BF%E0%AE%B3%E0%AE%95%E0%AF%8D%E0%AE%95%E0%AE%AE%E0%AF%8D">சுட்டுக </a>
+        </div>
+    </div>
+
+
+    <hr style="">
+
+
+
+</div>
+<label>
+    <input class="issue_mark" type="checkbox"  id="issue_mark"
+           onclick="javascript:_mark_isssue(this)">
+    <span>இந்த விவரக்குறிப்புகளில்  பிழையிருக்கிறது</span>
+</label>
+<br/>
+<table class="ajaxloading" border="1" id="result_table">
+    <tr>
+        <th>விவரக்குறிப்பு  </th>
+        <th>மதிப்பு </th>
+
+    </tr>
+
+</table>
+<hr style="">
+
+
+<a href="list-prepositions.html">&lt;-பின்னுக்குச்செல்க</a>
+</body>
+</html>

@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title> Edit App Resource
+    </title>
+
+    <style type="text/css" media="screen">
+        #_resource_content {
+            position: relative;
+            height: 400px;
+            width: 90%;
+
+        }
+
+        .container {
+            -webkit-overflow-scrolling: touch;
+            overflow-y: scroll;
+
+        }
+
+    </style>
+    <script type="text/javascript" src="ace.js"  charset="utf-8"></script>
+    <script type="text/javascript" src="ext-language_tools.js"  charset="utf-8"></script>
+    <script type="text/javascript" src="jquery-1.9.1.js"  charset="utf-8"></script>
+    <script type="text/javascript" src="service-consumer.js"  charset="utf-8"></script>
+    <script type="text/javascript" src="app-manager.js"  charset="utf-8"></script>
+    <script type="text/javascript" src="jquery.cookie.js"  charset="utf-8"></script>
+    <link rel="stylesheet" type="text/css" href="punarchi.css"/>
+
+    <script type='text/javascript'>//<![CDATA[
+
+    var TokenIterator = null;
+
+    function OnBeforeUnLoad() {
+        _saveContent();
+
+    }
+
+    var editor = null;
+    var justloaded = false;
+
+    $(document).ready(function () {
+        $('#header').click(function () {
+            $('.showhide').toggle("slide");
+        });
+    });
+
+
+    var MAP_RES_TYPE_ACE_MODE = new Object();
+    MAP_RES_TYPE_ACE_MODE['JAVASCRIPT'] = 'ace/mode/javascript';
+    MAP_RES_TYPE_ACE_MODE['GROOVY'] = 'ace/mode/groovy';
+    MAP_RES_TYPE_ACE_MODE['CSS'] = 'ace/mode/css';
+    MAP_RES_TYPE_ACE_MODE['XML'] = 'ace/mode/xml';
+    MAP_RES_TYPE_ACE_MODE['JSON'] = 'ace/mode/json';
+    MAP_RES_TYPE_ACE_MODE['HTML'] = 'ace/mode/html';
+
+
+    function getAceMode(type) {
+        var mode = MAP_RES_TYPE_ACE_MODE[type];
+        if (mode == "") {
+            mode = "ace/mode/text";
+        }
+        return mode;
+    }
+
+
+    function _fix_resource() {
+        var appname = $(location).attr('hash');
+        if (appname != "") {
+            appname = appname.slice(1)
+        }
+        if (appname == "") {
+            alert("resource not found on the url");
+            return;
+        }
+        var index = appname.indexOf(",");
+        if (index <= 0) {
+            alert("URL format error!");
+            return;
+        }
+
+
+        var res = appname.substring(0, index);
+        appname = appname.substring(index + 1, appname.length);
+
+        $('#appname').val(appname);
+        $('#resname').val(res);
+        _load_Resource();
+
+    }
+
+    function _completor(editor, session, pos, prefix, callback) {
+
+
+        callback(null, []);
+
+//
+//    if (prefix.length === 0) {
+//        callback(null, []);
+//        return;
+//    }
+//
+//     tamil = getTamilWord(prefix);
+        // $('#status').html(tamil.tamilWord);
+
+//
+//    wordList = [{"word":prefix + tamil.tamilWord,"freq":24,"score":300,"flags":"bc","syllables":"1"}];
+//
+//    callback(null, wordList.map(function (ea) {
+//        return {name:ea.word, value:ea.word, score:ea.score, meta:"rhyme"}
+//    }));
+//
+//    callback(null, [
+//        {name: tamil.tamilWord, value: tamil.tamilWord, "score":100, "meta":"tamil"}
+//    ]);
+
+        //  console.log("Inserting:" +tamil.tamilWord);
+        // editor.insert(editor.getCursorPosition(), tamil.tamilWord);
+//    console.log(tamil);
+//    var array = [tamil];
+//
+//
+//    callback(null, array.map(function (ea) {
+//        return {name:ea.tamilWord, value:ea.tamilWord, score:100, meta:"rhyme"};
+//    }));
+//    console.log(array[0]);
+
+
+//    $.getJSON(
+//            "http://rhymebrain.com/talk?function=getRhymes&word=" + prefix,
+//            function (wordList) {
+//                // wordList like [{"word":"flow","freq":24,"score":300,"flags":"bc","syllables":"1"}]
+//                callback(null, wordList.map(function (ea) {
+//                    return {name:ea.word, value:ea.word, score:ea.score, meta:"rhyme"}
+//                }));
+//            })
+    }
+
+    //
+    //function _reformatContent() {
+    //    editor = ace.edit("_resource_content");
+    //    var type = $("#restype").val();
+    //    editor.getSession().setMode(getAceMode(type));
+    //    _saveContent();
+    //}
+
+    function _saveContent() {
+
+
+        var data = editor.getValue();
+        //var data = $("#_resource_content").val();
+        var type = $("#restype").val();
+        var appname = $('#appname').val();
+        var resname = $('#resname').val();
+        $('.saving').val("Saving ...");
+        var seccode = $('#seccode').val();
+        var message = _updateAppResourceContent(appname, resname, prepare_encode_utf8(data), type, seccode).responseText;
+        $('.saving').val("Update resource content.");
+        if (message == "") {
+            message = "Saved! @" + new Date();
+            $("#_msg").html(" <div> " + message + "</div>");
+            $('.saving').attr("disabled", "disabled");
+
+        } else {
+            $('.showhide').toggle("slide");
+            $("#_msg").html(" <div class='note'> " + message + "</div>");
+        }
+
+
+    }
+
+    function handleForTamil(changed, translit) {
+        pos = editor.getCursorPosition();
+        //console.log("pos:" + pos.column);
+        range = editor.getSession().getAWordRange(pos.row, changed ? pos.column -1 : pos.column );
+        //console.log("range:" + range.start.column + "," + range.end.column);
+        iterator = new TokenIterator(editor.getSession(), pos.row, pos.column);
+        currentToken =  iterator.getCurrentToken();
+        if (!currentToken) {
+            $("#trans_text").html('');
+            return;
+        }
+        currentLine = currentToken.value;
+        if (currentLine.trim().indexOf("//") == 0) {
+            $("#trans_text").html('. . . .');
+            return;
+        }
+        currentWord = currentLine.substring(range.start.column, pos.column + (changed ? 1 : 0));
+
+
+        tamil = getTamilWord(currentWord).tamilWord;
+        $("#trans_text").html(tamil);
+        tamil_changed = currentWord !== tamil;
+
+        console.log(changed + ":" + tamil_changed + ":" + translit);
+        console.log( "currentWord=" + currentWord +":" + tamil);
+        if (changed && tamil_changed && translit) {
+            //  editor.gets
+
+
+            editor.getSession().replace(range, tamil);
+
+
+
+        }
+
+    }
+
+    function keyTyped(e) {
+        var unicode = e.keyCode ? e.keyCode : e.charCode
+        handleForTamil(true, unicode == 13 || unicode == 32);
+    }
+
+    function prepare_encode_utf8(s) {
+        return encodeURIComponent(s);
+    }
+
+    function unprepare_decode_utf8(s) {
+        return decodeURIComponent(s);
+    }
+
+    function _resource_Type_Changed() {
+        var type = $("#restype").val();
+        editor = ace.edit("_resource_content");
+        editor.getSession().setMode(getAceMode(type));
+
+        _saveContent();
+    }
+
+    function _load_Resource() {
+
+        var appname = $('#appname').val();
+        if (appname == "") {
+            alert("App not found on the url");
+            return;
+        }
+
+        var resname = $('#resname').val();
+        if (resname == "") {
+            alert("Resource not found on the url");
+            return;
+        }
+
+        var resource = _describeAppResource(appname, resname);
+        if (resource == null) {
+            alert("Resource data not found!");
+            return;
+        }
+
+        editor = ace.edit("_resource_content");
+        TokenIterator = ace.require("ace/token_iterator").TokenIterator;
+        var langTools = ace.require("ace/ext/language_tools");
+        //var TokenTooltip =   ace.require("ace/tooltip").Tooltip;
+        //var TIP = new TokenTooltip(document.getElementById("_resource_content"));
+        // var TIP = new TokenTooltip(document.getElementsByClassName("ace_cursor")[0].parentNode);
+
+        //ace_cursor
+
+        //ace_text-input
+
+
+        editor.setOptions({
+            enableBasicAutocompletion: true,
+            enableSnippets: true,
+            enableLiveAutocompletion: true,
+            autoScrollEditorIntoView: true
+
+        });
+
+
+        editor.setTheme("ace/theme/monokai");
+        editor.getSession().setMode(getAceMode(resource.type));
+        editor.commands.addCommand({
+            name: 'saveFile',
+            bindKey: {
+                win: 'Ctrl-S',
+                mac: 'Command-S',
+                sender: 'editor|cli'
+            },
+            exec: function (env, args, request) {
+                _saveContent();
+            }
+        });
+
+
+        var options = $("#restype");
+        options.val(resource.type);
+
+        if (resource.type == "TAMIL") {
+            langTools.addCompleter({getCompletions: _completor});
+            editor.on("change", function (obj) {
+                        if (editor.curOp && editor.curOp.command.name) {
+                            handleForTamil(true, obj.data.text == " " || obj.data.text == "\n");
+                        }
+                    }
+            );
+
+            editor.keyBinding.origOnCommandKey = editor.keyBinding.onCommandKey;
+            editor.keyBinding.onCommandKey = function (e, hashId, keyCode) {
+                this.origOnCommandKey(e, hashId, keyCode);
+
+                if (keyCode >= 37 && keyCode <= 40) {
+                    handleForTamil(false, false);
+                } else {
+                    console.log("keyCode:" + keyCode);
+                    console.log("hashId:" + hashId);
+                }
+//
+//            pos = editor.getCursorPosition();
+//
+//            console.log("pos:"+pos.column);
+//            range =  editor.getSession().getAWordRange(pos.row, pos.column);
+//            console.log("range:" + range.start.column +"," +range.end.column);
+//            var iterator = new TokenIterator(editor.getSession(), pos.row, pos.column);
+//            var currentWord = editor.getSession().getLines(pos.row,pos.row);
+//            console.log("line:"  + currentWord);
+//            if (currentWord && currentWord.value) {
+//                $("#edit_tip").text(iterator.getCurrentToken().value);//.substring(range.start.column, pos.column) );
+//            } else {
+//                $("#edit_tip").text('');
+//            }
+//
+//
+//
+//           // TIP.show();
+//              // TIP.setPosition(20,0);        _resource_content
+//
+//            left1 =   document.getElementsByClassName("ace_cursor")[0].style.left;// +  document.getElementById("_resource_content").style.left;
+//            top1 =  document.getElementsByClassName("ace_cursor")[0].style.top + 200;// document.getElementById("_resource_content").style.top;;
+//
+//            $("#edit_tip").css({zIndex:1000, position:"absolute", left:left1, top:top1});
+////            $("#edit_tip").css({zIndex:1000, position:"absolute", left:e.pageY + left1 + 20, top:e.pageX+ top1});
+//            $("#edit_tip").show();
+//           // TIP.$element.style ="position:absolute; left: "+left+"px; top: "+  top +"px; width: 50px; height: 116.0;"
+//            // TIP.setPosition(document.getElementsByClassName("ace_text-input")[0].style.left, 20 + document.getElementsByClassName("ace_text-input")[0].style.top );
+//            //  console.log("tool Tip:" + TIP + ":" +document.getElementsByClassName("ace_cursor")[0].style.left) ;
+
+                //console.log(iterator.getCurrentToken());
+
+                //  console.log(iterator.getCurrentToken().value.substring());
+
+                //new TokenIterator(editor.getSession(),)
+            }
+
+
+        }
+
+        $('._view').attr("href", server + "apps/resources/" + appname + "/" + resname);
+        $('._view_app').attr("href", server + "apps/resources/" + appname + "/");
+
+        if (resource.content.length > 0) {
+            var decodedString = unprepare_decode_utf8(atob(resource.content));
+            editor.setValue(decodedString);
+            justloaded = true;
+
+        }
+
+
+        $('._back').attr("href", "app-manager-edit-app.html#" + appname);
+
+
+        editor.on('input', function () {
+
+            if (editor.session.getUndoManager().isClean()) {
+
+                $('.saving').attr("disabled", "disabled");
+
+            }
+
+            else {
+
+                if (!justloaded) {
+                    $('.saving').removeAttr("disabled");
+
+                } else {
+                    editor.session.getUndoManager().markClean();
+                }
+                justloaded = false;
+
+            }
+
+        });
+
+
+    }
+
+
+    //]]>
+
+    </script>
+</head>
+<body onload="_fix_resource()" onbeforeunload="OnBeforeUnLoad()">
+<a class="_back" href="app-manager-list-apps.html">&lt;-பின்னுக்குச்செல்க</a>
+
+<!--<div style="display:visible; width: 50px;height: 20px" id="edit_tip" ></div>-->
+<div id="header"><h3>Edit Resource</h3> <a target="_blank" href="app-developer-guide.html">Application Developer
+    Guide</a></div>
+
+<div class="showhide" style="display: none;">
+    <p class="note">
+        Note: Update is immediate. If the app is live, Please
+        clone the app, make changes in the cloned app and then save as back!
+    </p>
+
+
+    <table class="ajaxloading" border="1" id="result_table">
+        <tr>
+            <th colspan="3">
+                Security Code: <input title="Security code with which application is protected." type="text"
+                                      name="seccode"
+                                      id="seccode" value=""> </input>
+                <br/>
+                App Name: <input disabled="true" type="text" name="appname" id="appname" value=""> </input>
+            </th>
+        </tr>
+        <tr>
+            <th colspan="3">Resource Name: <input disabled="true" type="text" name="resname" id="resname"
+                                                  value=""> </input>
+            </th>
+        </tr>
+
+        <tr>
+            <th colspan="3">
+
+                Resource Type: <select name="restype" id="restype" onchange="javascript:_resource_Type_Changed()">
+                <option value="UNKNOWN">--தேர்வுசெய்யுங்கள் --</option>
+                <option value="TAMIL">தமிழ்</option>
+                <option value="TEXT">TEXT</option>
+                <option value="HTML">HTML</option>
+                <option value="CSS">CSS</option>
+                <option value="XSL">XSL</option>
+                <option value="XML">XML</option>
+                <option value="JSON">JSON</option>
+                <option value="JAVASCRIPT">JAVASCRIPT</option>
+                <option value="GROOVY">GROOVY</option>
+
+
+            </select></th>
+
+        </tr>
+
+    </table>
+</div>
+
+
+<a target="_blank" class="_view" href="#">Access this resource.</a> | <a target="_blank" class="_view_app" href="#">Access
+    app.</a> |
+<input type="button" disabled class="saving" value="Update resource content." onclick="_saveContent()"/>
+
+<label style="display: visible" id="trans_text"></label>
+<!--<input type="button" class="saving" value="Reformat" onclick="_reformatContent()"/>-->
+<br/>
+
+
+<!--<div class="container" onclick="javascript:handleForTamil(false,false)">-->
+<div class="container">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <div id="_msg">---</div>
+
+        </div>
+        <div id="_resource_content"></div>
+    </div>
+    <div class="text-center">---</div>
+</div>
+
+
+<!--<textarea cols="120" rows="20" id="_resource_content">-->
+
+</textarea>
+<br/>
+<a target="_blank" class="_view" href="#">View this resource.</a> | <a target="_blank" class="_view_app" href="#">View
+    app.</a> |
+<input type="button" disabled class="saving" value="Update resource content." onclick="_saveContent()"/>
+<br/>
+<a class="_back" href="app-manager-list-apps.html">&lt;-பின்னுக்குச்செல்க</a>
+</body>
+</html>

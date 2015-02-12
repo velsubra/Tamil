@@ -1,0 +1,141 @@
+<div id="new_question_popup" style="display: none; background-color: #cccccc;" >
+    <label style="vertical-align: top; text-align: right" onclick="$('#new_question_popup').hide()">X</label>
+    <div onclick="javascript:$('#sample').toggle('slow')">
+        <a href="#"> மேலும் படிக்க   </a>
+    </div>
+    <div id="sample"  style="display: none; overflow: scroll; overflow-wrap: break-word">
+     <pre>
+       இங்கு நீங்கள் புதிய மேலும் குறிப்பான (specific) கேள்விகளை சேர்க்கலாம்.
+       புதிய கேள்வியையும், அதற்குரிய internal id ஐயும் சேர்ப்பீர்கள்.  கேள்விக்கான பதிலையும் உள்ளீடுசெய்வீர்கள்.
+
+        எடுத்துக்காட்டாக, ஒரிடத்தில் "என்ன மொழி?" என்னும் கேள்வியையும்
+        அதற்குரிய விடையாகவிருக்கவியலும் அனைத்து வாய்ப்புகளையும் கொடுக்கவேண்டுமானால், கீழ்க்கண்டவாறு கொடுக்கவேண்டும்.
+
+        கேள்வி
+       <b> என்ன மொழி?   </b>
+
+        internal id? (should be specified in english alphabet.
+        This should be unique across multiple new questions at the same level)  (lang or mozhi, or m or l etc)
+        <b>lang</b>
+
+        கேள்வி வகை  (4 வகைகளில் ஒருவகை. )
+        <b>புதிய பதில்கள் தேவைப்படும் கேள்வி </b>
+
+        பதில்கள்    (please leave space after comma.)
+        <b>t=தமிழ், e=ஆங்கிலம், m=மலையாளம்        </b> ...
+         </pre>
+    </div>
+
+    <table>
+        <tbody>
+        <tr>
+            <th>கேள்வி</th>
+            <td>
+                <table>
+                    <tr>
+
+                        <td><input size="80" placeholder="கேள்வி" type="text" id="question" name="question"
+                                /></td>
+
+                    </tr>
+                    <tr>
+
+                        <td>
+                            <div data-tip="குறிப்பு: aa=ஆ, ea=ஏ, f=ஃ, lh=ள், nt=ந், nh=ண், oa=ஓ, ou=ஔ, rr=ற், zh=ழ்">
+                                <input
+                                        size="80"
+
+                                        onClick="this.select()"
+                                        type="text"
+                                        name="questionenglish"
+                                        placeholder="Type in english here, to transliterate."
+                                        id="questionenglish"
+
+                                        onkeyup="_translit(this,'#question');"
+                                        />
+                            </div>
+                        </td>
+
+                    </tr>
+
+                </table>
+                <hr/>
+            </td>
+        </tr>
+        <tr>
+            <th>Internal ID for the question <br/>(4 to 10 English characters only)</th>
+            <td>
+                <input id="question_key" placeholder="internal id for the question" value="">  </input>
+                <hr/>
+            </td>
+        </tr>
+        <tr>
+            <th>கேள்வியின் வகை</th>
+            <td>
+                <select id="questiontype" onchange="javascript:_change_answer_type()">
+                    <option selected value="yes_or_no">ஆம்/இல்லை என்ற பதிலைக்கொண்ட கேள்வி</option>
+                    <option value="known_options">ஏற்கனவேயிருக்கும் பதில்களைக்கொண்ட புதிய கேள்வி</option>
+                    <option value="unknown_options">புதிய பதில்கள் தேவைப்படும் கேள்வி </option>
+                    <option value="descriptive"> விளக்கங்கொடுக்கவேண்டிய கேள்வி    </option>
+                </select>
+                <hr/>
+            </td>
+        </tr>
+        <tr id="tr_known" style="display: none;">
+            <th>பதில்கள்</th>
+            <td>
+                <select id="answers_known">
+
+                </select>
+                <hr/>
+            </td>
+        </tr>
+
+        <tr id="tr_new" style="display: none;">
+            <th>புதிய பதில்கள்</th>
+            <td>
+                <table>
+                    <tr>
+
+                        <td><input size="80" placeholder="புதிய பதில்கள்  " type="text" id="answers_new"
+                                   name="question"
+                                /></td>
+
+                    </tr>
+                    <tr>
+
+                        <td>
+                            e.g)<br/>
+                            t=தமிழ், e=ஆங்கிலம், m=மலையாளம் ...
+
+                            <div data-tip="குறிப்பு: aa=ஆ, ea=ஏ, f=ஃ, lh=ள், nt=ந், nh=ண், oa=ஓ, ou=ஔ, rr=ற், zh=ழ்">
+                                <input
+                                        size="80"
+
+                                        onClick="this.select()"
+                                        type="text"
+
+                                        placeholder="Type in english here, to transliterate."
+                                        id="answers_newenglish"
+
+                                        onkeyup="_translit(this,'#answers_new', true);"
+                                        />
+                            </div>
+                        </td>
+                        <hr/>
+                    </tr>
+
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td >
+            </td>
+            <td >
+                <input type="button" value="கேள்வியைச்சேர்" onclick="javascript:_add_new_question()"/>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <label style="vertical-align: top; text-align: right" onclick="$('#new_question_popup').hide()">X</label>
+</div>

@@ -1,0 +1,453 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified"
+           xmlns="http://my.interest.lang.tamil"
+           targetNamespace="http://my.interest.lang.tamil"
+           xmlns:jxb="http://java.sun.com/xml/ns/jaxb" jxb:version="2.1">
+    <xs:element name="tamil-root-words">
+        <xs:complexType>
+
+
+            <xs:sequence>
+                <xs:element name="apps" maxOccurs="1" minOccurs="1" type="Apps"/>
+                <xs:element name="peyar" maxOccurs="1" minOccurs="1" type="Peyar"/>
+                <xs:element name="idai" maxOccurs="1" minOccurs="1" type="Idai"/>
+                <xs:element name="vinai" maxOccurs="1" minOccurs="1" type="Vinai"/>
+            </xs:sequence>
+        </xs:complexType>
+
+    </xs:element>
+
+
+    <xs:complexType name="Apps">
+        <xs:sequence>
+            <xs:element name="apps" maxOccurs="1" minOccurs="1" type="AppsDescription"/>
+        </xs:sequence>
+    </xs:complexType>
+
+
+    <xs:complexType name="Peyar">
+        <xs:sequence>
+            <xs:element name="global-types" maxOccurs="1" minOccurs="1" type="GlobalTypes"/>
+            <xs:element name="words" maxOccurs="1" minOccurs="1" type="PeyarchchchorrkalhDescription"/>
+        </xs:sequence>
+    </xs:complexType>
+
+
+    <xs:complexType name="Idai">
+        <xs:sequence>
+            <xs:element name="global-types" maxOccurs="1" minOccurs="1" type="GlobalTypes"/>
+            <xs:element name="words" maxOccurs="1" minOccurs="1" type="IdaichchorrkalhDescription"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="Vinai">
+        <xs:sequence>
+            <xs:element name="global-types" maxOccurs="1" minOccurs="1" type="GlobalTypes"/>
+            <xs:element name="definitions" maxOccurs="1" minOccurs="1" type="Definitions"/>
+            <xs:element name="verbs" maxOccurs="1" minOccurs="1" type="RootVerbsDescription"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:element name="global-types" type="GlobalTypes"/>
+
+    <xs:element name="root-verb" type="RootVerbDescription"/>
+    <xs:element name="root-peyar" type="PeyarchcholDescription"/>
+    <xs:element name="root-idai" type="IdaichcholDescription"/>
+
+    <xs:element name="verbs" type="RootVerbsDescription"/>
+    <xs:element name="nouns" type="PeyarchchchorrkalhDescription"/>
+    <xs:element name="prepositions" type="IdaichchorrkalhDescription"/>
+
+
+    <xs:element name="known-words" type="KnownWords"/>
+
+    <xs:element name="idai" type="Idai"/>
+    <xs:element name="peyar" type="Peyar"/>
+    <xs:element name="app" type="AppDescription"/>
+    <xs:element name="apps" type="AppsDescription"/>
+    <xs:element name="appresource" type="AppResource"/>
+
+
+    <xs:element name="properties" type="Properties"/>
+    <xs:element name="generic-table" type="GenericTenseTable"/>
+
+
+    <xs:complexType name="IdaichchorrkalhDescription">
+        <xs:sequence>
+
+            <xs:element name="list" maxOccurs="1" minOccurs="1" type="IdaichchorrkalhList"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="PeyarchchchorrkalhDescription">
+        <xs:sequence>
+            <xs:element name="global-description" type="Properties"/>
+            <xs:element name="list" maxOccurs="1" minOccurs="1" type="PeyarchchchorrkalhList"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="AppsDescription">
+        <xs:sequence>
+            <xs:element name="list" maxOccurs="1" minOccurs="1" type="AppsDescriptionList"/>
+        </xs:sequence>
+    </xs:complexType>
+
+
+    <xs:complexType name="RootVerbsDescription">
+        <xs:sequence>
+            <xs:element name="global-description" type="Properties"/>
+            <xs:element name="named-description" type="Properties" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="list" maxOccurs="1" minOccurs="1" type="RootVerbsList"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="RootVerbsList">
+        <xs:sequence>
+            <xs:element name="verb" maxOccurs="unbounded" minOccurs="0" type="RootVerbDescription"/>
+        </xs:sequence>
+    </xs:complexType>
+
+
+    <xs:complexType name="PeyarchchchorrkalhList">
+        <xs:sequence>
+            <xs:element name="word" maxOccurs="unbounded" minOccurs="0" type="PeyarchcholDescription"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="AppsDescriptionList">
+        <xs:sequence>
+            <xs:element name="app" maxOccurs="unbounded" minOccurs="0" type="AppDescription"/>
+        </xs:sequence>
+    </xs:complexType>
+
+
+    <xs:complexType name="IdaichchorrkalhList">
+        <xs:sequence>
+            <xs:element name="word" maxOccurs="unbounded" minOccurs="0" type="IdaichcholDescription"/>
+        </xs:sequence>
+    </xs:complexType>
+
+
+    <xs:complexType name="PeyarchcholDescription">
+        <xs:sequence>
+            <xs:element name="root" type="xs:string"/>
+            <xs:element name="description" type="Properties"/>
+        </xs:sequence>
+    </xs:complexType>
+
+
+    <xs:complexType name="AppDescription">
+        <xs:sequence>
+            <xs:element name="platform" type="xs:string" default="1.1"/>
+            <xs:element name="code" type="xs:string"/>
+            <xs:element name="root" type="xs:string"/>
+            <xs:element name="name" type="xs:string"/>
+
+            <xs:element name="resources" type="AppResources"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="AppResources">
+        <xs:sequence>
+            <xs:element name="welcome" type="xs:string"/>
+            <xs:element name="resources" type="AppResource" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="AppResource">
+        <xs:sequence>
+            <xs:element name="name" type="xs:string"/>
+            <xs:element name="type" type="AppResourceType"/>
+            <xs:element name="content" type="xs:base64Binary"/>
+        </xs:sequence>
+    </xs:complexType>
+
+
+    <xs:complexType name="IdaichcholDescription">
+        <xs:sequence>
+            <xs:element name="root" type="xs:string"/>
+            <xs:element name="description" type="Properties"/>
+        </xs:sequence>
+    </xs:complexType>
+
+
+    <xs:complexType name="RootVerbDescription">
+        <xs:sequence>
+            <xs:element name="root" type="xs:string"/>
+            <xs:element name="description" type="Properties"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="DerivedValue">
+        <xs:sequence>
+            <xs:element name="value" type="xs:string"/>
+            <xs:element name="equation" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="KnownWord">
+        <xs:sequence>
+            <xs:element name="value" type="xs:string"/>
+            <xs:element name="type" type="xs:string"/>
+            <xs:element name="properties" type="Properties"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="KnownWords">
+        <xs:sequence>
+
+            <xs:element name="words" minOccurs="0" maxOccurs="unbounded" type="KnownWord"/>
+        </xs:sequence>
+    </xs:complexType>
+
+
+    <xs:complexType name="DerivedValues">
+        <xs:sequence>
+            <xs:element name="list" minOccurs="0" maxOccurs="unbounded" type="DerivedValue"/>
+
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="TableRow">
+        <xs:sequence>
+            <xs:element name="rowname" type="xs:string"/>
+            <xs:element name="present" type="DerivedValues"/>
+            <xs:element name="past" type="DerivedValues"/>
+            <xs:element name="future" type="DerivedValues"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="GenericTenseTable">
+        <xs:sequence>
+            <xs:element name="root" type="xs:string"/>
+            <xs:element name="rows" minOccurs="0" maxOccurs="unbounded" type="TableRow"/>
+        </xs:sequence>
+    </xs:complexType>
+
+
+    <xs:complexType name="GlobalTypes">
+        <xs:sequence>
+            <xs:element name="declare" nillable="false" minOccurs="0" maxOccurs="unbounded" type="Typed"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="Typed">
+        <xs:sequence>
+            <xs:element name="name" nillable="false" minOccurs="1" maxOccurs="1" type="xs:string"/>
+            <xs:element name="description" nillable="true" minOccurs="1" maxOccurs="1" type="xs:string"/>
+            <xs:element name="type" nillable="false" minOccurs="1" maxOccurs="1" type="xs:QName"/>
+
+        </xs:sequence>
+    </xs:complexType>
+
+
+    <xs:complexType name="Definitions">
+        <xs:sequence>
+            <xs:element name="definition" minOccurs="0" maxOccurs="unbounded" type="Definition"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="Definition">
+        <xs:sequence>
+            <xs:element name="special-handler" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="context" type="DefinitionContext"/>
+            <xs:element name="sum-of" type="SummedItems" minOccurs="1" maxOccurs="unbounded"/>
+
+        </xs:sequence>
+        <xs:attribute name="name"/>
+    </xs:complexType>
+
+    <xs:complexType name="SummedItems">
+        <xs:sequence>
+            <xs:element name="param" type="SummedItem" minOccurs="1" maxOccurs="unbounded"/>
+
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="DefinedValues">
+        <xs:sequence>
+            <xs:element name="with-context" type="DefinitionContext"/>
+            <xs:element name="filter-script" type="xs:string"/>
+        </xs:sequence>
+        <xs:attribute name="definition"/>
+        <xs:attribute name="of"/>
+        <xs:attribute name="to-script-var"/>
+    </xs:complexType>
+
+    <xs:complexType name="SummedItem">
+
+        <xs:choice>
+            <xs:element name="property-values" type="xs:string"/>
+            <xs:element name="derived-values" type="DefinedValues"/>
+            <xs:element name="literal-values" type="xs:string"/>
+            <xs:element name="script-values" type="xs:string"/>
+        </xs:choice>
+    </xs:complexType>
+
+
+    <xs:complexType name="DefinitionContext">
+        <xs:sequence>
+            <xs:element name="at" minOccurs="0" maxOccurs="unbounded" type="xs:string"/>
+        </xs:sequence>
+        <xs:attribute name="name"/>
+    </xs:complexType>
+
+    <xs:complexType name="Properties">
+        <xs:sequence>
+            <xs:element name="property" nillable="false" minOccurs="0" maxOccurs="unbounded" type="Property"/>
+        </xs:sequence>
+        <xs:attribute name="name"/>
+    </xs:complexType>
+    <xs:complexType name="Property">
+        <xs:sequence>
+            <!--<xs:element name="name" nillable="false" minOccurs="1" maxOccurs="1" type="xs:string"/>
+            <xs:element name="value" nillable="false" minOccurs="1" maxOccurs="1" type="xs:string"/>-->
+        </xs:sequence>
+        <xs:attribute name="name" type="xs:string"/>
+        <xs:attribute name="value" type="xs:string"/>
+
+    </xs:complexType>
+
+    <!--<xs:complexType name="SanthiDescription">-->
+    <!--<xs:sequence>-->
+    <!--<xs:element name="value" nillable="true" minOccurs="0" maxOccurs="1" type="xs:string"/>-->
+    <!--</xs:sequence>-->
+    <!--</xs:complexType>-->
+
+    <!--<xs:complexType name="SaariyaiDescription">-->
+    <!--<xs:sequence>-->
+    <!--<xs:element name="value" nillable="true" minOccurs="0" maxOccurs="1" type="xs:string"/>-->
+    <!--</xs:sequence>-->
+    <!--</xs:complexType>-->
+    <!--<xs:simpleType name="PastIdaiNilai">-->
+    <!--<xs:restriction base="xs:string">-->
+    <!--<xs:enumeration id="ITH" value="த்"/>-->
+    <!--<xs:enumeration id="ID" value="ட்"/>-->
+    <!--<xs:enumeration id="IRR" value="ற்"/>-->
+    <!--<xs:enumeration id="IN" value="இன்"/>-->
+    <!--</xs:restriction>-->
+    <!--</xs:simpleType>-->
+
+    <!--<xs:simpleType name="FutureIdaiNilai">-->
+    <!--<xs:restriction base="xs:string">-->
+    <!--<xs:enumeration id="IP" value="ப்"/>-->
+    <!--<xs:enumeration id="IV" value="வ்"/>-->
+    <!--</xs:restriction>-->
+    <!--</xs:simpleType>-->
+
+    <xs:simpleType name="PastIdaiNilai">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="th"/>
+            <xs:enumeration value="d"/>
+            <xs:enumeration value="rr"/>
+            <xs:enumeration value="in"/>
+            <xs:enumeration value="n"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="PresentIdaiNilai">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="kirru"/>
+            <xs:enumeration value="kinru"/>
+            <!--<xs:enumeration value="AANTINRRU"/>-->
+        </xs:restriction>
+    </xs:simpleType>
+
+
+    <xs:simpleType name="SimpleTense">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="PRESENT"/>
+            <xs:enumeration value="PAST"/>
+            <xs:enumeration value="FUTURE"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="PaalViguthi">
+        <xs:restriction base="xs:string">
+            <!--<xs:enumeration value="RRU"/>-->
+            <xs:enumeration value="oam"/>
+            <xs:enumeration value="ean"/>
+            <!--<xs:enumeration value="AM"/>-->
+            <xs:enumeration value="aay"/>
+            <xs:enumeration value="eer"/>
+            <!--<xs:enumeration value="AN"/>-->
+            <xs:enumeration value="aan"/>
+            <!--<xs:enumeration value="ALH"/>-->
+            <xs:enumeration value="aalh"/>
+            <xs:enumeration value="ar"/>
+            <xs:enumeration value="aar"/>
+
+
+            <xs:enumeration value="thu"/>
+            <xs:enumeration value="a"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="VinaiyaalanaiyumViguthi">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="aan"/>
+            <xs:enumeration value="aalh"/>
+            <xs:enumeration value="ar"/>
+            <xs:enumeration value="aar"/>
+            <!--<xs:enumeration value="OAR"/>-->
+            <xs:enumeration value="thu"/>
+            <xs:enumeration value="a"/>
+
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="FutureIdaiNilai">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="p"/>
+            <xs:enumeration value="v"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="VinaiyechchaViguthi">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="u"/>
+            <xs:enumeration value="a"/>
+            <xs:enumeration value="i"/>
+            <xs:enumeration value="y"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+
+    <xs:simpleType name="Vearrrrumaiviguthi">
+        <xs:restriction base="xs:string">
+            <!--<xs:enumeration value="MUTHAL"/>-->
+            <xs:enumeration value="irandaam"/>
+            <xs:enumeration value="moonraam"/>
+            <xs:enumeration value="ntaankaam"/>
+            <xs:enumeration value="ainthaam"/>
+            <xs:enumeration value="aarraam"/>
+            <xs:enumeration value="eazhaam"/>
+            <xs:enumeration value="eddaam"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+
+    <xs:simpleType name="PeyarechchaViguthi">
+        <xs:restriction base="xs:string">
+
+            <xs:enumeration value="a"/>
+
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="AppResourceType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="TAMIL"/>
+            <xs:enumeration value="TEXT"/>
+            <xs:enumeration value="HTML"/>
+            <xs:enumeration value="CSS"/>
+            <xs:enumeration value="XSL"/>
+            <xs:enumeration value="XML"/>
+            <xs:enumeration value="JSON"/>
+            <xs:enumeration value="JAVASCRIPT"/>
+            <xs:enumeration value="GROOVY"/>
+            <xs:enumeration value="UNKNOWN"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+
+</xs:schema>

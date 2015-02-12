@@ -1,0 +1,18 @@
+/**
+ Tamil platform CSS file
+ This can be included in a html resource as  follows.
+ <link rel="stylesheet" type="text/css" href="${R_PLATFORM_CSS_PATH}"/>
+ */
+.tamil-text:focus {
+    background-color: yellow;
+}
+
+/**
+This is the implicit div created to show the transliterated Tamil text.
+*/
+#tamil_text {
+    background: rgba(10, 10, 10, 0.5);
+    z-index: 0.2;
+    font-size: small;
+
+}

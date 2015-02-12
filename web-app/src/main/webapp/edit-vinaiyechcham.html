@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title> வினையெச்சவரையறையில் மாற்றம்.
+    </title>
+
+    <script type="text/javascript" src="jquery-1.9.1.js"></script>
+    <script type="text/javascript" src="service-consumer.js"></script>
+    <script type="text/javascript" src="jquery.cookie.js"></script>
+    <link rel="stylesheet" type="text/css" href="punarchi.css"/>
+
+    <script type='text/javascript'>//<![CDATA[
+
+    var PROP_BASE = "vinaiyechcham";
+
+    $(document).ready(function () {
+        $('#header').click(function () {
+            $('.showhide').toggle("slide");
+        });
+    });
+
+
+    function _mark_green(chk) {
+
+        var to = $("#vinaiyadi_edit").val();
+        if (!confirm("ஆம், நான் வினையெச்சங்களை சரிபார்த்துவிட்டேன். ")) {
+            return false;
+        }
+        _silent_add_Vinayadi_property(to, PROP_BASE + ".locked", "true");
+        $('#editable').hide();
+        $('#mark_vinai_green').attr("disabled", "disabled");
+        // _populate_edit_verb_property();
+    }
+
+
+    function _mark_isssue(type, chk) {
+        var to = $("#vinaiyadi_edit").val();
+        if (chk.checked) {
+            _silent_add_Vinayadi_property(to, "issue." + type + ".generation." + PROP_BASE, chk.checked);
+        } else {
+            _silent_delete_Vinayadi_property(to, "issue." + type + ".generation." + PROP_BASE);
+        }
+    }
+
+    //]]>
+
+    </script>
+</head>
+<body onload="_edit_Vinayadi_init();">
+<a href="list-verbs.html">&lt;-பின்னுக்குச்செல்க</a>
+<label id="_common_header">
+
+</label>
+<label>
+    இந்தவினையடி:<input size="10" type="text" id="vinaiyadi_edit" name="vinaiyadi_edit" disabled="true"/>
+    <input class="green_mark" type="checkbox" name="mark_vinai_green" id="mark_vinai_green"
+           onclick="javascript:return _mark_green(this)">
+    <span>வினையெச்சங்களில்     பிழையில்லை </span>
+</label>
+<hr style="">
+<div id="_common_tabs" class="tabs">
+
+</div>
+ <!--<h1 class="note"> வினையெச்சங்களுருவாக்கம் இன்னும் முழுமைபெறவில்லை.           </h1>-->
+
+<label id="_common_notes">
+
+</label>
+<div id="editable" style="display: none;">
+    <div id="header"><a href="#"><h3>வினையெச்சங்களில் தவறிருந்தால் அதைக்குறிப்பிடவும். </h3></a>
+
+        <div class="showhide" style="display: none;">
+<pre>
+வினையெச்சத்தைத்தொடர்ந்து வினைதான் வரும்.
+
+காண விரும்பினான்
+கண்டு சென்றான்
+
+காண , கண்டு ஆகியன வினையெச்சங்கள் .
+
+ </pre>
+            <!--<p class="note">இவற்றுள் சிலவை தானாக தேர்ந்தேடுக்கப்பட்டிருக்கலாம். அவை தவறெனில் மாற்றியமையுங்கள். </p>-->
+        </div>
+    </div>
+
+    <table class="ajaxloading" border="1" id="result_table">
+        <tr>
+            <th>வினைப்பகுதி</th>
+            <th>மதிப்பு</th>
+            <th>செய்யப்படவேண்டிய மாற்றம்</th>
+
+        </tr>
+        <tr>
+            <th>
+                தேர்ந்தெடு: <select name="select_verb_props" id="select_verb_props"
+                                    onchange="javascript:_populate_edit_verb_property()">
+
+            </select>
+
+            </th>
+            <th><select name="select_verb_props_values" id="select_verb_props_values"
+                        onchange="javascript:_select_verb_prop_value_changed()">
+
+            </select>
+                <input size="5" type="text" id="select_verb_props_value" name="select_verb_props_value"/>
+                <br/>
+
+                <div id="select_verb_props_value_div"
+                     data-tip="குறிப்பு: aa=ஆ, ea=ஏ, f=ஃ, lh=ள், nt=ந், nh=ண், oa=ஓ, ou=ஔ, rr=ற், zh=ழ்"><input size="5"
+
+                                                                                                                onClick="this.select()"
+                                                                                                                type="text"
+                                                                                                                name="select_verb_props_value_english"
+                                                                                                                placeholder="Type in english here, to transliterate."
+                                                                                                                id="select_verb_props_value_english"
+                                                                                                                onkeypress="return _onkeypress(event,this);"
+                                                                                                                onkeyup="_translit(this,'#select_verb_props_value');"
+                                                                                                                onblur="_translit(this,'#select_verb_props_value');"/>
+                </div>
+            </th>
+            <th><a id="_add_prop_link" href="javascript:_add_Vinayadi_property()">சேர்க்க</a></th>
+
+
+        </tr>
+    </table>
+</div>
+
+<hr style="">
+
+
+<h3>செயப்படுபொருளைக்கொண்ட வினையெச்சங்கள். </h3>
+<label>
+
+    <input class="issue_mark" type="checkbox" name="mark_transitive_issue" id="mark_transitive_issue"
+           onclick="javascript:_mark_isssue('transitive' ,this)">
+    <span>இந்த வினையெச்சங்களில் பிழையிருக்கிறது</span>
+</label>
+
+
+<table border="1" class="ajaxloading" id="_vinai_table">
+    <tr>
+        <th></th>
+        <th>நிகழ்காலம்</th>
+
+
+        <th>கடந்தகாலம்</th>
+        <th>வருங்காலம்</th>
+    </tr>
+</table>
+
+
+<h3>செயப்படுபொருளிலாத வினையெச்சங்கள். </h3>
+<label>
+    <input class="issue_mark" type="checkbox" name="mark_intransitive_issue" id="mark_intransitive_issue"
+           onclick="javascript:_mark_isssue('intransitive' ,this)">
+    <span>இந்த வினையெச்சங்களில் பிழையிருக்கிறது</span>
+</label>
+<table border="1" class="ajaxloading" id="_intransitive_vinai_table">
+    <tr>
+        <th></th>
+        <th>நிகழ்காலம்</th>
+
+
+        <th>கடந்தகாலம்</th>
+        <th>வருங்காலம்</th>
+    </tr>
+</table>
+
+
+<a href="list-verbs.html">&lt;-பின்னுக்குச்செல்க</a>
+</body>
+</html>

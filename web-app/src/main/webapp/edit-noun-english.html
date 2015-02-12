@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title> English meaning of a noun.
+    </title>
+
+    <script type="text/javascript" src="jquery-1.9.1.js"></script>
+    <script type="text/javascript" src="service-consumer.js"></script>
+    <script type="text/javascript" src="jquery.cookie.js"></script>
+    <link rel="stylesheet" type="text/css" href="punarchi.css"/>
+
+    <script type='text/javascript'>//<![CDATA[
+
+    var PROP_BASE = "meaning.english";
+
+    var BASE = "root-nouns";
+
+    var BASE_URL = BASE + "/nouns";
+
+
+
+    $(document).ready(function () {
+        $('#header').click(function () {
+            $('.showhide').toggle("slide");
+        });
+    });
+
+
+    function _mark_green(chk) {
+
+        var to = $("#noun_edit").val();
+        if (!confirm("Yes,I have checked the meaning.")) {
+            return false;
+        }
+        _silent_add_property(BASE_URL, to, PROP_BASE + ".locked", "true");
+        $('#editable').hide();
+        $('#green_mark').attr("disabled", "disabled");
+        // populate after being locked.
+    }
+
+
+    function _mark_isssue(chk) {
+        var to = $("#noun_edit").val();
+        if (chk.checked) {
+            _silent_add_property(BASE_URL, to, "issue." + PROP_BASE, chk.checked);
+        } else {
+            _silent_delete_property(BASE_URL, to, "issue." + PROP_BASE);
+        }
+    }
+
+
+    //]]>
+
+    </script>
+</head>
+<body onload="_edit_Peyar_init();">
+<a href="list-nouns.html">&lt;-பின்னுக்குச்செல்க</a>
+
+<label id="_common_header">
+
+</label>
+<label>
+    இப்பெயர்ச்சொல் :<input size="10" type="text" id="noun_edit" name="noun_edit" disabled="true"/>
+    <input class="green_mark" type="checkbox" name="green_mark" id="green_mark"
+           onclick="javascript:return _mark_green(this)">
+    <span>Meaning is correct.</span>
+</label>
+<hr style="">
+<div id="_common_tabs" class="tabs">
+
+</div>
+
+<label id="_common_notes">
+
+</label>
+
+<label id="_add_question">
+
+</label>
+
+
+
+<div id="editable">
+    <div id="header"><a href="#"><h3>Meaning of english text</h3></a>
+
+        <div class="showhide" style="display: none;">
+          You can specify meaning in english text for the noun, Multiple words can be separated by comma.
+
+        </div>
+    </div>
+
+
+    <hr style="">
+
+
+</div>
+<label>
+    <input class="issue_mark" type="checkbox" id="issue_mark"
+           onclick="javascript:_mark_isssue(this)">
+    <span>There is some mistake here.</span>
+</label>
+<br/>
+<table class="ajaxloading" border="1" id="result_table">
+    <tr>
+        <th>விவரக்குறிப்பு</th>
+        <th>மதிப்பு</th>
+
+    </tr>
+
+</table>
+<hr style="">
+
+
+<a href="list-nouns.html">&lt;-பின்னுக்குச்செல்க</a>
+</body>
+</html>

@@ -1,0 +1,24 @@
+<hr style="">
+<select id="NAVI_SELECT_IDAI" onchange="javascript:_NAVI_SELECT_IDAI_changed(this)">
+    <option value="TRAVERSE">பக்கத்திலிருக்கும்</option>
+    <option value="ISSUE">பிழையிருப்பதாகக்குறிக்கப்பட்ட</option>
+    <option value="NEW">புதிதாகச்சேர்க்கப்பட்ட</option>
+    <option value="DEFN_UNLOCKED">விவரக்குறிப்புகள்  சரிபார்க்கப்படாத</option>
+</select>
+<input type="button" onclick="javascript:_show_previous_idai()" value=" முந்தின இடைச்சொல் "/>
+
+<input type="button" onclick="javascript:_show_next_idai()" value="அடுத்த இடைச்சொல் "/>|
+
+
+<script type='text/javascript'>//<![CDATA[
+
+$(document).ready(function () {
+    $("#NAVI_SELECT_IDAI").val($.cookie('NAVI_SELECT_IDAI'));
+});
+
+
+
+
+//]]>
+
+</script>

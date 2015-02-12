@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title> List of Apps
+    </title>
+
+    <script type="text/javascript" src="jquery-1.9.1.js"></script>
+    <script type="text/javascript" src="service-consumer.js"></script>
+    <script type="text/javascript" src="app-manager.js"></script>
+    <script type="text/javascript" src="jquery.cookie.js"></script>
+    <link rel="stylesheet" type="text/css" href="punarchi.css"/>
+
+    <script type='text/javascript'>//<![CDATA[
+
+    function _load_All_Apps() {
+        $("#result_table tr:gt(1)").detach();
+        var table = $("#result_table tr:last");
+        var apps = _list_AppNames();
+        var resultrow = null;
+        if (apps == null || apps.length == 0) {
+            resultrow = '<tr> <td colspan="2"> No applications found </td></tr>';
+        } else {
+            resultrow = '<tr> <td colspan="2">' + apps.length + ' application(s) found </td></tr>';
+            for (var i = 0; i < apps.length; i++) {
+                resultrow += '<tr> <td> <a href="app-manager-edit-app.html#' + apps[i] + '">' + apps[i] + '</a></td><td>';
+                resultrow += '<a href="javascript:_deleteSelectedApp(\'' + apps[i] + '\')"> X </a>';
+                resultrow += '</td></tr>';
+            }
+        }
+
+
+        table.after(resultrow);
+
+    }
+
+    function _deleteSelectedApp(appname) {
+        if (appname == null || appname.trim() == '') {
+            alert("App Name not found");
+            return;
+        }
+        var seccode = $('#seccode').val();
+        _deleteApp(appname, seccode);
+        _load_All_Apps();
+    }
+
+
+    function _createNewApp() {
+        var appname = $('#appname').val();
+        if (appname == null || appname.trim() == '') {
+            alert("Please enter application name");
+            return;
+        }
+
+        var seccode = $('#seccode').val();
+        _createApp(appname, seccode);
+        _load_All_Apps();
+    }
+    //]]>
+
+    </script>
+</head>
+<body onload="_load_All_Apps()">
+<a href="index.html">&lt;-பின்னுக்குச்செல்க</a>
+
+<h3>All available applications to manage</h3>
+If you want to try an application, please read
+<a href="app-developer-guide.html">Application  Developer Guide</a>
+
+<table class="ajaxloading" border="1" id="result_table">
+
+    <tr>
+        <th colspan="2">
+            Security Code: <input title="Security code with which application is (or to be)  protected." type="text" name="seccode" id="seccode" value=""> </input>
+        </th>
+    </tr>
+    <tr>
+        <th colspan="2">App Name: <input type="text" name="appname" id="appname" value=""> </input>
+
+
+            <input
+                onclick="javascript:_createNewApp()" type="button" name="btncreate" value="Create New App"/></th>
+    </tr>
+</table>
+
+<a href="index.html">&lt;-பின்னுக்குச்செல்க</a>
+</body>
+</html>

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>இரண்டு தமிழ்ச்சொற்களின் புணர்ச்சி
+    </title>
+
+    <script type="text/javascript" src="jquery-1.9.1.js"></script>
+    <script type="text/javascript" src="service-consumer.js"></script>
+    <script type="text/javascript" src="jquery.cookie.js"></script>
+    <link rel="stylesheet" type="text/css" href="punarchi.css"/>
+
+</head>
+<script type='text/javascript'>//<![CDATA[
+
+$(document).ready(function () {
+
+
+          $(function () {
+
+            $("#first").onEnter(function () {
+                _join_handler();
+            });
+
+            $("#firstenglish").onEnter(function () {
+                _join_handler();
+            });
+
+
+
+              $("#second").onEnter(function () {
+                  _join_handler();
+              });
+
+              $("#secondenglish").onEnter(function () {
+                  _join_handler();
+              });
+
+
+        });
+});
+
+
+//]]>
+
+
+</script>
+<body onload="_join_load();">
+<a href="index.html">&lt;-பின்னுக்குச்செல்க</a>
+
+<h3>குறிப்பு:   புணர்த்தல்  பொருளையறிந்து செயற்படவில்லை. </h3>
+பொருளறிந்து <a href="parse.html">இங்கு பகுக்கலாம்.</a>
+
+<p>புணர்ச்சிவிதிகள் - புணர்த்தல்  </p>
+<table border="1">
+    <tr>
+        <th>நிலைமொழி</th>
+        <th>புணர்ச்சிவிதி</th>
+        <th>வருமொழி</th>
+        <th ></th>
+    </tr>
+    <tr>
+        <td><input size="30" type="text" name="first" value="நிலை" id="first"/>
+            <br/>
+
+            <div data-tip="குறிப்பு: aa=ஆ, ea=ஏ, f=ஃ, lh=ள், nt=ந், nh=ண், oa=ஓ, ou=ஔ, rr=ற், zh=ழ்"><input size="30"
+                                                                                                            onClick="this.select()"
+                                                                                                            type="text"
+                                                                                                            name="firstenglish"
+                                                                                                            placeholder="Type in english here, to transliterate."
+                                                                                                            id="firstenglish"
+                                                                                                            onkeypress="return _onkeypress(event,this);"
+                                                                                                            onkeyup="_translit(this, '#first');"/>
+            </div>
+        </td>
+        <td><select name="rule" id="rule">
+            <option value="All">---அனைத்துவிதிகளையும் பயன்படுத்துக ---</option>
+        </select></td>
+        <td><input size="30" type="text" name="second" value="ஆட்சி" id="second"/>
+            <br/>
+
+            <div data-tip="குறிப்பு: aa=ஆ, ea=ஏ, f=ஃ, lh=ள், nt=ந், nh=ண், oa=ஓ, ou=ஔ, rr=ற், zh=ழ்"><input size="30"
+                                                                                                            onClick="this.select()"
+                                                                                                            type="text"
+                                                                                                            name="secondenglish"
+                                                                                                            placeholder="Type in english here, to transliterate."
+                                                                                                            id="secondenglish"
+                                                                                                            onkeypress="return _onkeypress(event,this);"
+                                                                                                            onkeyup="_translit(this,'#second');"/>
+            </div>
+        </td>
+        <th rowspan="2"><input type="button" name="clk" value="புணர்த்துக" onclick="_join_handler();"/></th>
+    </tr>
+
+</table>
+<br/>
+<table border="1" class="ajaxloading" id="result_table">
+    <tr>
+        <th>புணர்ச்சிவிதி</th>
+        <th>முடிவு</th>
+    </tr>
+</table>
+<a href="index.html">&lt;-பின்னுக்குச்செல்க</a>
+</body>
+</html>

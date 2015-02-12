@@ -1,0 +1,212 @@
+.note {
+    color: red;
+}
+
+input[type="text"], textarea {
+    font-family: 'Times New Roman';  /* a proportional font makes it more difficult to calculate the position */
+    font-size: 14px;
+    line-height: 16px;
+
+
+
+
+
+
+}
+
+
+.noun_add {
+    font-size: 1.7em;
+    text-decoration: none;
+    color: green;
+    cursor: pointer;
+
+
+}
+
+.thodar_noun_add  {
+
+}
+
+
+
+
+
+.editor {
+    font: Courier;
+    background: #f5f5dc;
+    word-break:break-all;
+
+
+}
+
+h3 {
+    text-decoration: underline;
+}
+
+h4 {
+    text-decoration: underline;
+}
+
+.lookup {
+
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+.lookup_edit {
+
+
+}
+
+.temp_tamil_tip  {
+    position: relative;
+    display: none;
+    font-size: 14px;
+    line-height: 16px;
+    text-align: left;
+    border: 1px solid #b81900;
+
+    background: #f5f5dc;
+
+}
+
+.lookupresult {
+    position: absolute;
+    display: none;
+    background: #aaaaaa;
+    border: 2px solid #b81900;
+    font-size: 0.7em;
+    text-align: center;
+    font-size: 0.7em;
+}
+
+.parseresult {
+    position: absolute;
+    display: none;
+    background: #fdf5ce;
+    border: 2px solid #b81900;
+    font-size: 1.2em;
+    text-align: center;
+    width: 100%;
+
+}
+
+
+.tabs {
+    font-size: 0.7em;
+
+}
+
+.multi_label {
+    word-wrap: break-word
+
+}
+
+.selecteditem {
+    background-color: #cccccc;
+
+}
+
+.tiny_text {
+    font-size: 0.5em;
+    color: blue;
+}
+
+
+.small_text {
+    font-size: 0.7em;
+    color: blue;
+}
+
+input[type='text']:focus {
+    background-color: yellow;
+}
+
+input[type='button']:focus {
+    color: orange;
+}
+
+input:disabled {
+    background-color: #cccccc;
+}
+
+:checked + span {
+    font-weight: bold;
+    color: red;
+}
+
+.green_mark:checked + span {
+    font-weight: bold;
+    color: green;
+}
+a:disabled {
+    background-color:green;
+}
+
+th {
+    background-color: #cccccc;
+    text-align: center;
+}
+
+td {
+    text-align: left;
+    font-size: 0.8em;
+}
+
+[data-tip] {
+    position: relative;
+
+}
+
+[data-tip]:before {
+    content: '';
+    /* hides the tooltip when not hovered */
+    display: none;
+    content: '';
+    display: none;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-bottom: 5px solid #1a1a1a;
+    position: absolute;
+    top: 30px;
+    left: 35px;
+    z-index: 8;
+    font-size: 0;
+    line-height: 0;
+    width: 0;
+    height: 0;
+    position: absolute;
+    top: 30px;
+    left: 35px;
+    z-index: 8;
+    font-size: 0;
+    line-height: 0;
+    width: 0;
+    height: 0;
+}
+
+[data-tip]:after {
+    display: none;
+    content: attr(data-tip);
+    position: absolute;
+    top: 35px;
+    left: 0px;
+    padding: 5px 8px;
+    background: rgba(10, 10, 10, 0.5);
+    color: #f1f100;
+    z-index: 9;
+    font-size: 1.2em;
+    height: 18px;
+    line-height: 18px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    white-space: nowrap;
+
+}
+
+[data-tip]:hover:before,
+[data-tip]:hover:after {
+    display: block;
+}

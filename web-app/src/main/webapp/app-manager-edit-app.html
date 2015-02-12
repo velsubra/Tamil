@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title> Edit App
+    </title>
+
+    <script type="text/javascript" src="jquery-1.9.1.js"></script>
+    <script type="text/javascript" src="service-consumer.js"></script>
+    <script type="text/javascript" src="app-manager.js"></script>
+    <script type="text/javascript" src="jquery.cookie.js"></script>
+    <link rel="stylesheet" type="text/css" href="punarchi.css"/>
+
+    <script type='text/javascript'>//<![CDATA[
+
+
+    function _fix_app() {
+        var appname = $(location).attr('hash');
+        if (appname != "") {
+            appname = appname.slice(1)
+        }
+        if (appname == "") {
+            alert("App not found on the url");
+            return;
+        }
+        $('#appname').val(appname);
+        _load_All_Resources();
+    }
+
+    function _load_All_Resources() {
+
+        var appname = $('#appname').val();
+        if (appname == "") {
+            alert("App not found on the url");
+            return;
+        }
+
+        $("#result_table tr:gt(2)").detach();
+        var table = $("#result_table tr:last");
+        var apps = _describeApp(appname);
+        console.log(JSON.stringify(apps));
+        if (apps == null) {
+            alert('App not found');
+            return;
+        }
+        $('#cntxpath').val(apps.root);
+        var resultrow = null;
+        apps = apps.resources;
+        var welomeresource = null;
+        if (apps != null) {
+            welomeresource = apps.welcome;
+            apps = apps.resources;
+        }
+        var options = $("#welcome");
+        options.empty();
+        if (apps == null || apps.length == 0) {
+            resultrow = '<tr> <td colspan="3"> No resources found </td></tr>';
+        } else {
+            resultrow = '<tr> <td colspan="3">' + apps.length + ' resources(s) found </td></tr>';
+            for (var i = 0; i < apps.length; i++) {
+                resultrow += '<tr> <td> <a href="app-resource-edit.html#' + apps[i].name + ',' + appname + '">' + apps[i].name + '</a></td><td>';
+                resultrow += apps[i].type + '</td><td>';
+                resultrow += '<a href="javascript:_deleteSelectedResource(\'' + apps[i].name + '\')"> X </a>';
+                resultrow += '</td></tr>';
+
+                options.append($("<option />").val(apps[i].name).text(apps[i].name));
+            }
+        }
+
+        options.val(welomeresource);
+
+        table.after(resultrow);
+
+        $('._view_app').attr("href", server + "apps/resources/" + appname + "/");
+    }
+
+    function _deleteSelectedResource(resname) {
+        var appname = $('#appname').val();
+        if (appname == "") {
+            alert("App not found on the url");
+            return;
+        }
+
+        if (resname == null || resname.trim() == '') {
+            alert("App Name not found");
+            return;
+        }
+        var seccode = $('#seccode').val();
+        _deleteAppResource(appname, resname,seccode);
+        _load_All_Resources();
+    }
+
+    function _cloneApp() {
+
+        var appname = $('#appname').val();
+        if (appname == "") {
+            alert("App not found on the url");
+            return;
+        }
+
+        var saveas = $('#saveas').val();
+        if (saveas == "") {
+            alert("Please enter 'save as' app name. The application will be cloned as new app!");
+            return;
+        }
+
+        var apps = _describeApp(saveas);
+
+        if (apps != null) {
+            alert('The target application seems to be existing. Please delete the existing application and the clone this.');
+            return;
+        }
+        var seccode = $('#seccode').val();
+        _createAppAs(appname, saveas, seccode);
+        $('#appname').val(saveas);
+        _load_All_Resources();
+
+    }
+
+
+    function _createNewResource() {
+        var resname = $('#resname').val();
+        if (resname == null || resname.trim() == '') {
+            alert("Please enter application name");
+            return;
+        }
+
+        var appname = $('#appname').val();
+        if (appname == "") {
+            alert("App not found on the url");
+            return;
+        }
+
+        var seccode = $('#seccode').val();
+        _createAppResource(appname, resname,seccode);
+        _load_All_Resources();
+    }
+    //]]>
+
+    </script>
+</head>
+<body onload="_fix_app()">
+<a href="app-manager-list-apps.html">&lt;-பின்னுக்குச்செல்க</a>
+
+<h3>All available resources to manage</h3>
+<table class="ajaxloading" border="1" id="result_table">
+    <tr>
+        <th colspan="3">
+            Security Code: <input title="Security code with which application is protected." type="text" name="seccode" id="seccode" value=""> </input>
+            <br/>
+            App Name: <input disabled="true" type="text" name="appname" id="appname" value=""> </input>   <a target="_blank" class="_view_app" href="#">View
+            app.</a>
+
+        <br/>
+        Save  this as (clone app): <input  type="text" name="saveas" id="saveas" value=""> </input>
+        <input
+                onclick="javascript:_cloneApp()" type="button" name="btnclone"
+                title="Please delete the target app, before this operation. The target application should not exist already."
+                value="Clone This App"/>
+        </th>
+    </tr>
+    <tr>
+        <th colspan="3">Context path: <input type="text" name="cntxpath" id="cntxpath" value=""> </input> <br/>
+
+            Welcome page: <select name="welcome1" id="welcome"> </select></th>
+
+    </tr>
+    <tr>
+        <th colspan="3">Resource Name: <input size="40" type="text" name="resname" id="resname" value=""> </input> <input
+                onclick="javascript:_createNewResource()" type="button" name="btncreate" value="Create New Resource"/>
+        </th>
+    </tr>
+</table>
+
+<a href="app-manager-list-apps.html">&lt;-பின்னுக்குச்செல்க</a>
+</body>
+</html>
