@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title> Tamil Application Developer Guide
+    </title>
+
+    <link rel="stylesheet" type="text/css" href="punarchi.css"/>
+
+    <script type='text/javascript'>//<![CDATA[
+
+    //]]>
+
+    </script>
+</head>
+<body>
+<a href="app-manager-list-apps.html">&lt;-பின்னுக்குச்செல்க</a>
+
+<h3>Tamil Application Developer Guide</h3>
+
+<p>This guide details the specification of APIs provided by this platform.</p>
+
+<p>Today many IT engineers write Tamil related applications using variety of technologies. But, It is unlikely they are
+    re-used
+    by another developer to build more on top of what is already done.
+    If an application developer wants to do simple operations such as searching, replacing and sorting of Tamil texts,
+    it is
+    a nightmare.
+    It is to be noted that the Tamil character representation provided by Unicode consortium is so unnatural to Tamil
+    that it makes almost impossible to use standard APIs (say, java.lang.String from Java)
+    from any programming language to perform those operations. I sense that we need another layer that hides all these
+    complexities for the application developers.
+    That api layer should allow the application developers to focus on what they do rather than to deal with the
+    erroneous
+    representation of Tamil characters. </p>
+
+<p> This platform is intended to provide services from simple ones such as Tamil Dictionary, transliteration to most
+    complicated services such as speech to text and translation from and to English. Yes. There is a long way to go.
+    This platform is very young.</p>
+
+<p>Today, we have தமிழகராதி, கலைச்சொல்லகராதி, இலக்கியங்களிலிருந்து சொல்லைத்தேடும் பயன்மிகள் hosted in different
+    websites.
+    However, They are done in such a way that is mostly useful only for human but to another program. I believe we
+    are
+    in
+    an Era where a computer program is also one potential consumer of the internet and hence of all Tamil resources on
+    the internet. I want to create such awareness.
+    This platform should provide integration with those resources in the background without affecting the applications
+    hosted on this.
+    Tamil has to go beyond writing and reading a post in a Blog or Facebook.
+
+</p>
+
+<p> You may also want to read <a href="index.html">இந்த
+    செயலியின் நோக்கம் என்ன?</a></p>
+<hr/>
+<h4>
+    Who should read this guide?
+</h4>
+
+<p>This guide is intended for application developers who want to write simple Tamil related applications that can assist
+    Tamil
+    development on the internet. Someone with passion for Tamil should be able to try on this.
+    Application developers also bring requirements to the platform. Much of the system level complexities that are not
+    directly related to the goals of an application are to be
+    handled by the platform. The platform is just young and we should be able to support services one by one. An
+    application developer also can contribute to the platform.
+</p>
+
+<p>
+    Currently, the platform code is available at <a href="https://bitbucket.org/henavel/tamil">bitbucket</a>.
+</p>
+
+<h4>What technologies are required to develop an app?</h4>
+<ol>
+    <li>HTML5</li>
+    <li>CSS30</li>
+    <li>Javascript or JQuery for client side scripting</li>
+    <li><a target="_blank" href="http://groovy.codehaus.org/">Groovy for server side (Java) scripting</a></li>
+
+</ol>
+<p>One can expose a ReST API within the application by writing server side scripts. More scripting may be supported
+    depending on the feasibility. Application developers also can publish Javascript APIs for other applications to
+    consume.</p>
+
+<h4>What is an application on this platform?</h4>
+
+<p>An application in this platform is a bunch of resources (html5, javascript, groovy scripts) doing one or or more
+    Tamil related
+    tasks. An application is identified with a name. An application while being created (or cloned) can be secured
+    against a code. The security code is required to make changes in it. However, anyone can view the application code.
+
+    One should be able to create and publish new ReST APIs implemented using Groovy (ie Java). Those apis can be used by
+    another application.
+</p>
+
+<p>
+    A sophisticated editor for Tamil that does spell checking, gives suggestions and performs auto complete can be done
+    as an
+    application.
+    Another application can take வெண்பா as input and validate its correctness. We can write applications that shows
+    various
+    புணர்ச்சிவிதிகள் for students and Tamil scholars.
+    We will be able to write more complicated applications (say reading Tamil text) in the future.
+
+</p>
+<h4>Where are the available platform APIs?</h4>
+
+<p>
+    The Java API is published <a target="_blank" href="apidocs/index.html">here</a>. The starting point for using this
+    API will be
+    <a href="apidocs/tamil/lang/TamilFactory.html">TamilFactory</a>. These can be used in the groovy scripts to expose
+    ReST apis from an application.
+
+</p>
+
+<p>
+    The JavaScript API is published <a target="_blank" href="jsdocs/index.html">here</a>. The below snippet can be
+    copied into the HTML resource.
+    <pre>
+     &lt;script src="${R_JQUERY_JS_PATH}" type="text/javascript" charset="utf-8">&lt;/script>
+     &lt;script src="${R_PLATFORM_JS_PATH}" type="text/javascript" charset="utf-8">&lt;/script>
+
+     &lt;script type='text/javascript'>//&lt;![CDATA[
+
+            var trans = TamilFactory.createTransliterator(); // This can be cached for repeated usages.
+            var tamil_text = trans.transliterate('vaNakkam').tamil;  // This will return  வணக்கம்
+
+        //]]>
+     &lt;/script>
+    </pre>
+
+</p>
+<hr/>
+<h4>How to create my first application?</h4>
+
+<p>It will be very straight forward to create a simple application and get a taste of it.
+    If you already know (javascript and groovy)scripting and html5, it will be a little more fun to try new things with
+    the given set of APIs. After getting familiarised with the below terms and concepts, you can go <a
+            href="app-manager-list-apps.html">here</a> to add a new app.
+</p>
+
+<h5>Application Name</h5>
+
+<p>You need an application name. This should be a <b> simple name without any special character.</b> Every application
+    will get an unique application access URL.</p>
+<h5>Application Management Security Code</h5>
+
+<p>This security code can be given to the application, only when it is <b> created or cloned (.ie save as another
+    app) </b>. Secured
+    application needs the security code to be presented to be modified. All application code can be viewed by anyone.
+
+
+</p>
+
+<p>
+    Creation of an application typically has the following life-cycle.
+<ul>
+    <li>It is created with a temporary name and without security code. The default page index.html is created with some
+        default content that can be modified later.
+    </li>
+    <li>Various resources (html, css and script) files are created.</li>
+    <li>The application is tested by accessing it.</li>
+    <li>After the required testing, the application is <b>cloned</b> with the <b>required name </b> and with a <b>security
+        code</b>.
+    </li>
+    <li>Application url is shared.</li>
+</ul>
+
+</p>
+
+
+<p>
+    Modification of an application is typically done in the following steps.
+<ul>
+    <li>The application is cloned to a temporary name without a security code. This will copy all the application
+        resources, making it ready for editing.
+    </li>
+    <li>Various resources (html, css and script) files are modified, deleted or created.</li>
+    <li>The application is tested by accessing it.</li>
+    <li>After the required testing, The original application is deleted by providing the previously secured security
+        code.
+    </li>
+    <li>The temporary application is <b>cloned</b> with the <b>original name </b> and with a <b>security
+        code</b>.
+    </li>
+    <li>Delete the temporary application.</li>
+    <li>Application url is preserved.</li>
+</ul>
+
+</p>
+
+<hr/>
+<h4>How to create resources within an application?</h4>
+
+<p>Application resources can be created just after the application is created.</p>
+<h5>Resource Name</h5>
+
+<p>Every resource has a name. <b> This name can include / to create nested resources</b>. That is the mechanism to
+    create sub
+    directories. E.g) html/a.html , js/a.js, server/groovy/first.gv are some examples valid resource names. Every
+    resource has a <b>type</b> that must be selected after the resource is created. This can be selected by clicking the
+    resource name once it is created. That would take to the page that allows editing of the resource content. The
+    resource type can be selected there. The extension used in the resource name does not matter. The type chosen
+    matters
+    when the resource is being accessed.
+</p>
+
+<p>
+    E.g)When a groovy script is created and saved, it is parsed and the errors are reported if there is any parsing
+    error. When a groovy script url is accessed, the script is executed and the output (the value that the script
+    returns) of the script is returned via the
+    back channel of the http request. Please see "Guidelines for writing Groovy scripts" section to know the guidelines
+    for creating groovy
+    scripts.
+</p>
+<hr/>
+<h4>Guidelines for writing Groovy scripts</h4>
+
+<p>Groovy scripts typically will use the Java APIs provided by this platform to perform certain action and return a
+    value. Accessing the groovy resource via http(s) request will cause the script to execute. The script can read input
+    parameters from the
+    request accessing it.</p>
+
+<p>
+    Tamil platform Apis
+    <pre>
+    E.g)
+    import tamil.lang.*;
+    import tamil.util.*;
+    import tamil.lang.api.trans.*;
+    </pre>
+and other standard Java APIs
+<pre>
+    such as
+
+    import java.util.*;
+    import javax.ws.rs.core.*;
+    import javax.servlet.http.*;
+    import org.json.*;
+
+</pre>
+can be imported and used in the script.
+</p>
+<b>Calling things like System.exit(int) or any other insecure APIs will cause security exception.</b>
+
+<p>The following are the implicit variables that the script have access to.
+<ol>
+    <li>R_ - <a
+            href="http://docs.oracle.com/javaee/5/api/javax/servlet/http/HttpServletRequest.html">HttpServletRequest</a>
+        that is incoming. Any parameter that comes through the request can be read via this. However, There are other
+        quick
+        direct variables to certain part of the request.
+    </li>
+    <li>
+        R_PATH - <a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a> with the value of
+        the resource name.
+    </li>
+    <li>R_BODY - <a href="http://docs.oracle.com/javase/7/docs/api/java/io/InputStream.html"> InputStream </a> to the
+        body of the http request. Note: Multi-part request has to be handled via R_ only.
+    </li>
+    <li>R_QP_<b>param</b> -<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a> with the
+        value of the query parameter with name <b>param</b>.
+        E.g) if you access https://... ../myapp/myscript.gv?word=தமிழ் , the variable R_QP_word will be available to te
+        script with the value "தமிழ்" (quotes are not in the value).
+
+    </li>
+    <li>R_APP_NAME - <a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a> with the name
+        of the application.
+    </li>
+    <li>R_LOG - <a href="http://docs.oracle.com/javase/7/docs/api/java/io/PrintWriter.html">PrintWriter</a> that can be
+        used to write log messages for the request. Note: This is not to write the response. However, if the script
+        returns R_LOG, the text written to the stream is returned via the back channel of the response. Please see the
+        return types for more information.
+    </li>
+    <li>More directly bound variables will be added ....</li>
+</ol>
+</p>
+<p>
+    The following return types are recognized by the platform.
+<ol>
+    <li>
+        <a href="http://www.json.org/java/">org.json.JSONObject</a> - This will be converted to a <b> application/json;
+        charset=utf-8 </b>
+        response to the caller that made the http request. Likewise, JSONArray and JSONString can be returned. Status
+        code will be <b>200</b>.
+    </li>
+
+    <li>
+        <a href="http://docs.oracle.com/javaee/6/api/javax/ws/rs/core/Response.html">javax.ws.rs.core.Response</a> -
+        this is used to return the custom response. In this case, the groovy script completely <b> decides the http
+        response
+        status code , content-type and contents. </b>
+    </li>
+    <li>
+        R_LOG - The text written to R_LOG which is a <a
+            href="http://docs.oracle.com/javase/7/docs/api/java/io/PrintWriter.html">PrintWriter</a> is returned with
+        the status code of <b> 200</b>. The content type will be <b> text/plain; charset=utf-8 </b>. Returning other
+        instance of <a
+            href="http://docs.oracle.com/javase/7/docs/api/java/io/PrintWriter.html">PrintWriter</a> is not applicable
+        to this.
+    </li>
+    <li>
+        <a
+                href="http://docs.oracle.com/javase/7/docs/api/java/io/InputStream.html">InputStream or byte[]</a> - The
+        content is returned with status code of <b> 200</b> and with the content type <b>application/octet-stream</b>.
+    </li>
+    <li>
+        null - This will cause the status of <b> 202</b> being returned with no body to the client.
+    </li>
+    <li>All other objects including <a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a>
+        - object.toString()
+        will be returned as a
+        <b> text/plain; charset=utf-8 </b> response to the client. Status code will be <b>200</b>.
+    </li>
+</ol>
+</p>
+<p>
+    Any un-handled exception from script execution will be translated to a status of <b>500</b> with the content-type
+    <b>
+        text/plain; charset=utf-8 </b>. The body of the response will be message contained in the exception along with
+    line number of the script that ran into exception.
+</p>
+<hr/>
+<h4>Pre-processing of a resource</h4>
+
+<p>Resources are pre-processed while being accessed or pre-hand. The following patterns are recognized by this platform
+    for all the
+    resources during pre-processing.
+    <br/> <b>Note:</b> Groovy
+    script is pre-processed before it is compiled (ie parsed). So the dynamic patterns will not be resolved as a
+    property. Instead, those are exposed as implicit variables. Patterns with small letters such as R_QP_name indicates
+    that they are
+    dynamic patterns where "name" is a dynamic portion of that pattern.
+<ol>
+    <li> T{...} - used to inline the transliterated English text to Tamil. T{thamizh} would be replaced with தமிழ் when
+        the resource is accessed.
+    </li>
+    <li> ${...} - used to inline the request specific properties.
+        <ul>
+            <li>Static&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; : ${R_PATH} - The resource name.</li>
+            <li>Static&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; : ${R_APP_NAME} - The application name.</li>
+            <li>Static&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; : ${R_PLATFORM_CONTEXT} - The context root of the platform
+                application.(/tamil typically).
+            </li>
+            <li><b>Dynamic:</b> ${R_QP_name} - The value of the query parameter "name" - Since it is a dynamic pattern,
+                this wont
+                resolve
+                in groovy script as a property. However, R_QP_name will be an implicit variable in groovy
+                scripts.
+            </li>
+
+            <li>Static&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; : ${R_JQUERY_JS_PATH} - The path to jquery javascript file.
+             <pre>
+           E.g)
+           &lt;script src="${R_JQUERY_JS_PATH}" type="text/javascript" charset="utf-8">&lt;/script>
+
+                </pre>
+            </li>
+            <li>Static&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; : ${R_PLATFORM_JS_PATH} - The path to the <a
+                    href="js/api/tamil-platform-api-1.1.js">platform javascript file</a>. The value could be the
+                relative
+                path
+                based on the the resource using it.
+                This is typically used in the application HTML files. Please also include JQuery javascript file.
+                <pre>
+           E.g)
+           &lt;script src="${R_JQUERY_JS_PATH}" type="text/javascript" charset="utf-8">&lt;/script>
+           &lt;script src="${R_PLATFORM_JS_PATH}" type="text/javascript" charset="utf-8">&lt;/script>
+
+                </pre>
+
+            </li>
+            <li>Static&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; : ${R_PLATFORM_CSS_PATH} - The path to the <a
+                    href="css/tamil-platform-1.1.css">platform css file</a>. The value could be the
+                relative
+                path
+                based on the the resource using it.
+                This is typically used in the application HTML files.
+                <pre>
+           E.g)
+            &lt;link rel="stylesheet" type="text/css" href="${R_PLATFORM_CSS_PATH}"/>
+
+
+                </pre>
+
+            </li>
+        </ul>
+    </li>
+</ol>
+
+</p>
+<hr/>
+<a href="app-manager-list-apps.html">&lt;-பின்னுக்குச்செல்க</a>
+</body>
+</html>

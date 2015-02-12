@@ -1,0 +1,37 @@
+<hr style="">
+<select id="NAVI_SELECT_PEYAR" onchange="javascript:_NAVI_SELECT_PEYAR_changed(this)">
+    <option value="TRAVERSE">பக்கத்திலிருக்கும்</option>
+    <option value="ISSUE">பிழையிருப்பதாகக்குறிக்கப்பட்ட</option>
+    <option value="NEW">புதிதாகச்சேர்க்கப்பட்ட</option>
+    <option value="DEFN_UNLOCKED">விவரக்குறிப்புகள்  சரிபார்க்கப்படாத</option>
+    <option disabled >--------------------------------</option>
+    <option value="definition.type:p">வகை பெயரென குறிக்கப்பட்ட </option>
+    <option value="definition.type:i">வகை இடமென குறிக்கப்பட்ட </option>
+    <option value="definition.type:k">வகை காலமென குறிக்கப்பட்ட </option>
+    <option value="definition.type:s">வகை சினையென குறிக்கப்பட்ட </option>
+    <option value="definition.type:pa">வகை பண்பென குறிக்கப்பட்ட </option>
+    <option value="definition.type:t">வகை தொழிலென குறிக்கப்பட்ட </option>
+    <option disabled >--------------------------------</option>
+    <option value="definition.type:o">அறுவகைகளில் அடங்காதென்று குறிக்கப்பட்ட </option>
+    <option value="definition.type:">வகை குறிக்கப்படாத </option>
+    <option disabled >--------------------------------</option>
+    <option value="meaning.english.words:">ஆங்கிலப்பொருள் கொடுக்கப்படாத </option>
+
+</select>
+<input type="button" onclick="javascript:_show_previous_peyar()" value=" முந்தின பெயர்ச்சொல் "/>
+
+<input type="button" onclick="javascript:_show_next_peyar()" value="அடுத்த பெயர்ச்சொல் "/>|
+
+
+<script type='text/javascript'>//<![CDATA[
+
+$(document).ready(function () {
+    $("#NAVI_SELECT_PEYAR").val($.cookie('NAVI_SELECT_PEYAR'));
+});
+
+
+
+
+//]]>
+
+</script>

@@ -1,0 +1,29 @@
+<hr style="">
+<select id="NAVI_SELECT" onchange="javascript:_NAVI_SELECT_changed(this)">
+    <option value="TRAVERSE">பக்கத்திலிருக்கும்</option>
+    <option value="ISSUE">பிழையிருப்பதாகக்குறிக்கப்பட்ட</option>
+    <option value="NEW">புதிதாகச்சேர்க்கப்பட்ட</option>
+    <option disabled >--------------------------------</option>
+    <option value="VINAIMUTTU_UNLOCKED">வினைமுற்றுகள் சரிபார்க்கப்படாத</option>
+    <option disabled >--------------------------------</option>
+    <option value="UNCHANGED_THOZHIRR">தொழிற்பெயர் கொடுக்கப்படாத </option>
+    <option disabled >--------------------------------</option>
+    <option value="UNCHANGED_ENGLISH">ஆங்கிலப்பொருள் கொடுக்கப்படாத </option>
+</select>
+<input type="button" onclick="javascript:_show_previous_verb()" value=" முந்தின வினையடி"/>
+
+<input type="button" onclick="javascript:_show_next_verb()" value="அடுத்த வினையடி"/>|
+
+
+<script type='text/javascript'>//<![CDATA[
+
+$(document).ready(function () {
+    $("#NAVI_SELECT").val($.cookie('NAVI_SELECT'));
+});
+
+
+
+
+//]]>
+
+</script>

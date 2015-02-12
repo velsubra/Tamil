@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title> வினையடியின் வரையறையில் மாற்றம்.
+    </title>
+
+    <script type="text/javascript" src="jquery-1.9.1.js"></script>
+    <script type="text/javascript" src="service-consumer.js"></script>
+    <script type="text/javascript" src="jquery.cookie.js"></script>
+    <link rel="stylesheet" type="text/css" href="punarchi.css"/>
+
+    <script type='text/javascript'>//<![CDATA[
+
+    var PROP_BASE = "vinaimuttu";
+
+    $(document).ready(function () {
+        $('#header').click(function () {
+            $('.showhide').toggle("slide");
+        });
+    });
+
+    $(document).ready(function () {
+        $('#quickfix').click(function () {
+            $('.ondemand').toggle();
+        });
+    });
+
+
+    function _mark_green(chk) {
+
+        var to = $("#vinaiyadi_edit").val();
+        if (!confirm("ஆம், நான் வினைமுற்றுகளை சரிபார்த்துவிட்டேன். ")) {
+            return false;
+        }
+        _silent_add_Vinayadi_property(to, PROP_BASE + ".locked", "true");
+        $('#editable').hide();
+        $('#mark_vinai_green').attr("disabled", "disabled");
+        // _populate_edit_verb_property();
+    }
+
+
+    function _mark_isssue(type, chk) {
+        var to = $("#vinaiyadi_edit").val();
+        if (chk.checked) {
+            _silent_add_Vinayadi_property(to, "issue." + type + ".generation." + PROP_BASE, chk.checked);
+        } else {
+            _silent_delete_Vinayadi_property(to, "issue." + type + ".generation." + PROP_BASE);
+        }
+    }
+
+    //]]>
+
+    </script>
+</head>
+<body onload="_edit_Vinayadi_init();">
+<a href="list-verbs.html">&lt;-பின்னுக்குச்செல்க</a>
+
+    <label id="_common_header">
+
+    </label>
+<label>
+    இந்தவினையடி:<input size="10" type="text" id="vinaiyadi_edit" name="vinaiyadi_edit" disabled="true"/>
+    <input class="green_mark" type="checkbox" name="mark_vinai_green" id="mark_vinai_green"
+           onclick="javascript:return _mark_green(this)">
+    <span>வினைமுற்றுகளில் பிழையில்லை </span>
+</label>
+<hr style="">
+<div id ="_common_tabs" class="tabs">
+    <!--<label class="selecteditem"> வினைமுற்றுகள்</label>-->
+    <!--| <a href="javascript:_edit_Peyarechcham()">பெயரெச்சங்கள்</a>-->
+    <!--| <a href="javascript:_edit_Vinaiyechcham()">வினையெச்சங்கள்</a>-->
+    <!--| <a href="javascript:_edit_VinaiyaalanaiyumPeyar()">வினையாலணையும்பெயர்கள்</a>-->
+    <!--| <a href="javascript:_edit_ThoarVinaimuttu()">தொடர்வினைமுற்றுகள்</a>-->
+    <!--| <a href="javascript:_edit_MuttuVinaimuttu()">முற்றுவினைமுற்றுகள்</a>-->
+    <!--| <a href="javascript:_edit_ThoarMuttuVinaimuttu()">தொடர்முற்றுவினைமுற்றுகள்</a>-->
+
+</div>
+
+<label id="_common_notes">
+
+</label>
+
+<div id="editable" style="display: none;">
+    <div id="header"><a href="#"><h3>இவ்வினையடியில் மாற்றஞ்செய்க.</h3></a>
+
+        <div class="showhide" style="display: none;">
+<pre>
+வினையடிகளிலிருந்து பொதுவாக வினைமுற்று கீழ்க்கண்ட வாய்ப்பாட்டை பயன்படுத்தி உருவாகும்.
+வினையடி + [சந்தி] + காலவிடைநிலை + [சாரியை] + பால்விகுதி = வினைமுற்று.
+
+உருவாக்கப்பட்டுள்ள வினைமுற்றுகள் சரியாவென்று பார்க்கவும். அவற்றில் பிழையிருந்தால்,
+    அதைத்தெரியப்படுத்த,<p class="note"> "இந்த வினைமுற்றுகளில் பிழையிருக்கிறது"</p> என்னும் கீழேயுள்ள கட்டத்தில் உங்களின் தேர்வையிடுங்கள்.
+ அல்லது அதை சரிசெய்ய, உங்களின்முயற்சியை கீழ்க்கண்டவரிசையிலமைக்கலாம். </pre><pre>
+
+1.முதலில் வேகமானத்தேர்ந்தெடுப்பை முயற்சிக்கவும். நிற்க: ஏற்கனவேயிருக்கும் வினைப்பகுதிகளின் தேர்வை நீக்கிவிட்டு இதை முயற்சிப்பது நல்லது.
+
+2. குறிப்பு:வினையடிகள்   செயப்படுபொருளைகொண்டிருக்கும் (எ.கா கொல் -"பாம்பை" கொன்றேன்).
+   சிலவை கொண்டிருக்காது (எ.கா வா - வந்தேன்) .  சிலவை இரண்டுபயன்பாடுகளிலும் வரும் (எ.கா நனை - நனைந்தேன்/நனைத்தேன்).
+   அதை சரியாகக்தீர்மானித்து
+
+     செயப்படுபொருளைக்கொண்ட வினையா -  ஆம்/இல்லை
+     செயப்படுபொருளிலாத  வினையா     -  ஆம்/இல்லை
+
+ஆகிய இருகேள்விகளுக்கும்  சரியாக முதலில் பதிலளியுங்கள். பின்னர், மற்றமாற்றங்களை ஒவ்வொன்றாகச்செய்யவும்.
+ </pre>
+            <!--<p class="note">இவற்றுள் சிலவை தானாக தேர்ந்தேடுக்கப்பட்டிருக்கலாம். அவை தவறெனில் மாற்றியமையுங்கள். </p>-->
+        </div>
+    </div>
+
+
+    <div id="quickfix"><a href="#"><h4>வேகமான தேர்ந்தெடுப்பு</h4></a>
+        <table style="display: none;" class="ondemand" border="1">
+            <!--<tr>-->
+            <!--<th colspan="2">வேகமான தேர்ந்தெடுப்பு</th>-->
+
+
+            <!--</tr>-->
+            <tr>
+                <th>செயப்படுபொருளைக்கொண்டது</th>
+                <td><input type="button" name="_sei" value="இது 'செய்' போன்றது  "
+                           onclick="javascript:_copyPropertiesFrom('செய்');"></td>
+                <td>
+                    <input type="button" name="_kara" value="'கற' போன்றது  "
+                           onclick="javascript:_copyPropertiesFrom('கற');"></td>
+                <td>
+                    <input type="button" name="_varai" value="'வரை' போன்றது  "
+                           onclick="javascript:_copyPropertiesFrom('வரை');">
+                </td>
+                <td>
+                    <input type="button" name="_koru" value="'கோரு' போன்றது  "
+                           onclick="javascript:_copyPropertiesFrom('கோரு');"></td>
+                <td>
+                    <input type="button" name="_unh" value="'உண்' போன்றது  "
+                           onclick="javascript:_copyPropertiesFrom('உண்');"></td>
+                <td>
+                    <input type="button" name="_nadu" value="'நடு' போன்றது  "
+                           onclick="javascript:_copyPropertiesFrom('நடு');">
+                </td>
+
+
+            </tr>
+
+            <tr>
+                <th>செயப்படுபொருளிலாதது</th>
+                <td><input type="button" name="_pazhu" value="'பழு' போன்றது  "
+                           onclick="javascript:_copyPropertiesFrom('பழு');"></td>
+                <td>
+                    <input type="button" name="_iru" value="'இரு' போன்றது  "
+                           onclick="javascript:_copyPropertiesFrom('இரு');"></td>
+                <td>
+                    <input type="button" name="_iru" value="'காத்திரு' போன்றது  "
+                           onclick="javascript:_copyPropertiesFrom('காத்திரு');"></td>
+                <td>
+                    <input type="button" name="_sei" value="'வெறி' போன்றது  "
+                           onclick="javascript:_copyPropertiesFrom('வெறி');"></td>
+                <td>
+
+                    <input type="button" name="_meel" value="'மீள்' போன்றது  "
+                           onclick="javascript:_copyPropertiesFrom('மீள்');"></td>
+                <td>
+                    <input type="button" name="_salai" value="'சளை' போன்றது  "
+                           onclick="javascript:_copyPropertiesFrom('சளை');"></td>
+                <td>
+                    <input type="button" name="_thozhu" value="'தொழு' போன்றது  "
+                           onclick="javascript:_copyPropertiesFrom('தொழு');"></td>
+            </tr>
+            <tr>
+                <th>இருபயன்பாடுகளையுங்கொண்டது</th>
+                <td><input type="button" name="_nanai" value="'நனை' போன்றது  "
+                           onclick="javascript:_copyPropertiesFrom('நனை');">
+                </td>
+            </tr>
+        </table>
+
+    </div>
+    <hr style="">
+
+
+    <table class="ajaxloading" border="1" id="result_table">
+        <tr>
+            <th>வினைப்பகுதி</th>
+            <th>மதிப்பு</th>
+            <th>செய்யப்படவேண்டிய மாற்றம்</th>
+
+        </tr>
+        <tr>
+            <th>
+                தேர்ந்தெடு: <select name="select_verb_props" id="select_verb_props"
+                                    onchange="javascript:_populate_edit_verb_property()">
+
+            </select>
+
+            </th>
+            <th><select name="select_verb_props_values" id="select_verb_props_values"
+                        onchange="javascript:_select_verb_prop_value_changed()">
+
+            </select>
+                <input size="5" type="text" id="select_verb_props_value" name="select_verb_props_value"/>
+                <br/>
+
+                <div id="select_verb_props_value_div"
+                     data-tip="குறிப்பு: aa=ஆ, ea=ஏ, f=ஃ, lh=ள், nt=ந், nh=ண், oa=ஓ, ou=ஔ, rr=ற், zh=ழ்"><input size="5"
+
+                                                                                                                onClick="this.select()"
+                                                                                                                type="text"
+                                                                                                                name="select_verb_props_value_english"
+                                                                                                                placeholder="Type in english here, to transliterate."
+                                                                                                                id="select_verb_props_value_english"
+                                                                                                                onkeypress="return _onkeypress(event,this);"
+                                                                                                                onkeyup="_translit(this,'#select_verb_props_value');"
+                                                                                                                onblur="_translit(this,'#select_verb_props_value');"/>
+                </div>
+            </th>
+            <th><a id="_add_prop_link" href="javascript:_add_Vinayadi_property()">சேர்க்க</a></th>
+
+
+        </tr>
+    </table>
+</div>
+
+
+<h3>செயப்படுபொருளைக்கொண்ட வினைமுற்றுகள். </h3>
+<label>
+
+    <input class="issue_mark" type="checkbox" name="mark_transitive_issue" id="mark_transitive_issue"
+           onclick="javascript:_mark_isssue('transitive' ,this)">
+    <span>இந்த வினைமுற்றுகளில் பிழையிருக்கிறது</span>
+</label>
+
+
+<table border="1" class="ajaxloading" id="_vinai_table">
+    <tr>
+        <th>பால்விகுதி</th>
+        <th>நிகழ்காலம்</th>
+
+
+        <th>கடந்தகாலம்</th>
+        <th>வருங்காலம்</th>
+    </tr>
+</table>
+
+
+<h3>செயப்படுபொருளிலாத வினைமுற்றுகள். </h3>
+<label>
+    <input class="issue_mark" type="checkbox" name="mark_intransitive_issue" id="mark_intransitive_issue"
+           onclick="javascript:_mark_isssue('intransitive' ,this)">
+    <span>இந்த வினைமுற்றுகளில் பிழையிருக்கிறது</span>
+</label>
+<table border="1" class="ajaxloading" id="_intransitive_vinai_table">
+    <tr>
+        <th>பால்விகுதி</th>
+        <th>நிகழ்காலம்</th>
+
+
+        <th>கடந்தகாலம்</th>
+        <th>வருங்காலம்</th>
+    </tr>
+</table>
+
+
+<a href="list-verbs.html">&lt;-பின்னுக்குச்செல்க</a>
+</body>
+</html>

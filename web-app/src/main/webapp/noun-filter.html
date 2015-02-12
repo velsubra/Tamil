@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>பெயர்ச்சொல்வடிப்பான்
+    </title>
+
+    <script type="text/javascript" src="jquery-1.9.1.js"></script>
+    <script type="text/javascript" src="service-consumer.js"></script>
+    <script type="text/javascript" src="service-search.js"></script>
+    <script type="text/javascript" src="jquery.cookie.js"></script>
+    <script type="text/javascript" src="jquery.caret.js"></script>
+    <link rel="stylesheet" type="text/css" href="punarchi.css"/>
+
+    <script type='text/javascript'>//<![CDATA[
+    function add_noun(linkid, word) {
+        add_new_noun_sync(word);
+
+        document.getElementById(linkid).style.display = "none";
+
+    }
+
+    function _onMouseOver(link) {
+        $('#' + link.id).click(function (e) {
+
+            if (!$('#popup_result_div').is(":visible")) {
+                $("#popup_result_div").css({position:"absolute", left:e.pageX, top:e.pageY });
+                $('#popup_result_div').show('slow');
+
+            }
+
+
+        });
+
+    }
+
+
+    function _filterSingle(linkid, word) {
+
+
+        _filter_ajax_update(word, 'popup_result', linkid, '_pop_msg');
+    }
+
+
+    function _load() {
+
+        var old = localStorage.getItem("english-text___");
+        if (old) {
+            $("#doc").val(old);
+        }
+        $("#doc").select();
+    }
+
+    function _parseFile() {
+        var file = $("#doc").val();
+        if (file.trim() == "") {
+            alert("கட்டுரையை இதிலிடுங்கள். ");
+            $("#doc").focus();
+            return;
+        }
+        $('#div_doc').hide('slow');
+        _filterBulk(file);
+    }
+
+    function _createGrid(data, tableid, idsbase, messagedivid) {
+        $("#" + tableid + " tr:gt(0)").detach();
+        if (data.length == 0) {
+            $('#' + messagedivid).html("புதிதாக எந்தப்பெயர்ச்சொல்லும் இருப்பதாகத்தெரியவில்லை. ");
+            return;
+        } else {
+            if (data.length == 1) {
+                $('#' + messagedivid).html("வாய்ப்புகளைக்கொண்ட தொடர்மொழி   #" + data.length);
+            } else {
+                $('#' + messagedivid).html("வாய்ப்புகளைக்கொண்ட தொடர்மொழிகள்  #" + data.length);
+            }
+
+        }
+        var chancescount = 0;
+        $.each(data, function (item) {
+            var id = idsbase + "_" + item;
+            var word = data[item];
+            var thodar = word.word;
+            var chances = "";
+
+            if (word.split != null && word.split.splitList != null) {
+
+                $.each(word.split.splitList, function (sub) {
+                    var subid = id + "_" + sub;
+                    var choice = word.split.splitList[sub];
+                    chances += "<br/>" + "<a onmouseover='javascript:_onMouseOver(this);' class='thodar_noun_add'  id=\"_thodar_" + subid + "\" href=\"javascript:_filterSingle('" + subid + "' ,'" + choice + "')\">" + choice + "</a>";
+
+                    chances += "<a  class='noun_add'  id=\"" + subid + "\" href=\"javascript:add_noun('" + subid + "' ,'" + choice + "')\">  + </a>";
+                    chancescount++;
+
+                });
+            }
+
+            var table = $("#" + tableid + " tr:last");
+            table.after("<tr><td>" + (item + 1) + "</td><td> <a  onmouseover='javascript:_onMouseOver(this);' class='thodar_noun_add'  id=\"_thodar_" + id + "\" href=\"javascript:_filterSingle('" + id + "','" + thodar + "')\">" + thodar + "</a> <a class='noun_add'  id=\"" + id + "\" href=\"javascript:add_noun('" + id + "','" + thodar + "')\">  + </a> </td><td>" + chances + '</td> </tr>');
+
+
+        });
+
+        if (chancescount == 1) {
+            $('#' + messagedivid).append("  <label style='color: green;'> வாய்ப்பு   #" + chancescount + '</label>');
+        } else {
+            $('#' + messagedivid).append(" <label style='color: green;'> வாய்ப்புகள்    #" + chancescount + '</label>');
+        }
+    }
+
+
+    function _filterBulk(english) {
+
+        _filter_ajax_update(english, 'result_table', 'id', '_count');
+
+    }
+
+
+    function _filter_ajax_update(english, tableid, idbase, msg_divid) {
+        $('#' + msg_divid).html("காத்திருங்கள்  ...");
+        jQuery.ajax({
+            type:"PUT",
+            data:english + "",
+            url:server + "punarchi/filter/nouns/",
+            contentType:"text/plain; charset=utf-8",
+            success:function (data, status, jqXHR) {
+                _createGrid(data, tableid, idbase, msg_divid);
+
+            },
+            error:function (jqXHR, status) {
+                alert(jqXHR.responseText);
+            }
+        });
+
+
+    }
+
+
+    //]]>
+
+
+    </script>
+
+
+</head>
+<body onload="javascript:_load()">
+
+
+<a href="index.html">&lt;-பின்னுக்குச்செல்க</a>
+
+</br>
+<p>
+    இந்தச்செயலிக்கு <a href="list-nouns.html">ஒவ்வொரு பெயர்ச்சொல்லாக </a>சேர்ப்பது கடினம்.
+    எனவே, ஒரு கட்டுரையிலிருந்து பெயர்ச்சொற்களை வடிக்கும் முயற்சியாக இந்தப்பக்கம் உருவாக்கப்பட்டுள்ளது.
+    பெயர்ச்சொற்களின் வடிப்பு 4 முதல் 5 படிகளில் நடக்கின்றது.
+<div id="header"><a onclick="$('.showhide').toggle('slide')" href="#">மேலும் படிக்க! </a>
+    <div class="showhide" style="display: none;">
+        <ol>
+            <li>நீங்கள் எந்தக்கட்டுரையிலிருந்து பெயர்ச்சொல்லை வடிக்கவிரும்புகிறீர்களோ அதை நகலெடுத்து <a
+                    href="javascript:$('#doc').select()">இங்கு </a> ஒட்டுவீர்கள்.
+            </li>
+            <li>"வடி" என்ற பொத்தானை அழுத்துவீர்கள்.</li>
+            <li>இந்தச்செயலி அந்தக்கட்டுரையிலுள்ள ஒவ்வொரு தொடர்மொழியையும் பகுத்து அதிலுள்ள முதற்பகுதியை காணமுயலும்
+                (கட்டுரை நீளமானதென்றால் பொறுமைகாக்கவும்).
+                எந்தச்சொல்லை அது பகுக்கமுடியவில்லையோ , அந்தச்சொல்லில் எந்தப்பகுதி பெயர்ச்சொல்லாக இருந்திருந்தால் தன்னால்
+                பகுத்திருக்கமுடியுமென்று பார்த்து அந்தப்பகுதியை ஒரு வாய்ப்பாக உங்களுக்கு அளிக்கும்.
+                ஒரு தொடர்மொழிக்கு பலவாய்புகளையளிக்கலாம்.
+            </li>
+            <li>வாய்ப்புகளில் நீங்கள் சரியான பெயர்ச்சொல்லை சேர்க்க , <label class="noun_add"> "+"</label> இல்
+                சொடுக்குங்கள் . (தொடர்மொழியில் பெயர்ச்சொல்
+                இல்லையென்றால் அதை உடனே ஒதுக்கிவிட்டு அடுத்தச்சொலில்
+                கொடுக்கப்பட்ட வாய்ப்புகளில் பெயர்ச்சொல்லை தேடுங்கள் )
+            </li>
+            <li>பன்மை அல்லது வேற்றுமைத்தொடர்கள் இருப்பின் , <label class="noun_add">அந்தச்சொல்லைச்சுட்டி </label>மீண்டும்பகுத்து
+                சரியான பகாச்சொல்லை
+                சேர்க்கவேண்டும். [தொடர்மொழிகளை (அவை பகுக்கபடக்கூடியவையென்பதால்) கண்டிப்பாக பெயர்ச்சொல்லாக
+                சேர்க்காதீர்கள்]
+            </li>
+
+        </ol>
+    </div>
+</div>
+</p>
+<div id="popup_result_div" style="display: none; background-color: #cccccc;">
+    <label style="vertical-align: top; text-align: right" onclick="$('#popup_result_div').hide()">X</label>
+
+    <div style="color: blue;" id="_pop_msg"></div>
+    <table class="ajaxloading" id="popup_result" border="1">
+        <tr>
+            <th>#</th>
+            <th>தொடர்மொழி</th>
+            <th>தொடர்மொழியின் பகுதி .</th>
+        </tr>
+
+    </table>
+    <label style="vertical-align: top; text-align: right" onclick="$('#popup_result_div').hide()">X</label>
+</div>
+<a href="#" onclick="javascript:$('#div_doc').toggle('slow');"><h3> கட்டுரை</h3></a>
+<div id="div_doc">
+
+    <textarea cols="120" onclick="javascript:$('doc').select()" rows="5" id="doc" title="கட்டுரையை இங்கு இடுங்கள் "
+              placeholder="கட்டுரையை இங்கு இடுங்கள் "
+            ></textarea>
+    <br/>
+    <input type="button" value="வடி" onclick="javascript:_parseFile()"/>
+    <hr/>
+</div>
+<h4>வாய்ப்புகள் </h4>
+<div style="color: blue;" id="_count"></div>
+<table  class="ajaxloading" id="result_table"
+       border="1">
+    <tr>
+        <th>#</th>
+        <th>தொடர்மொழி</th>
+        <th>பெயர்ச்சொல்லாகவிருக்கும் <br/>வாய்ப்பைக்கொண்ட <br/>தொடர்மொழியின் பகுதி .</th>
+    </tr>
+</table>
+</body>
+</html>

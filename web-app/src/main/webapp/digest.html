@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>தமிழ்ச்சொற்களின் ஒலியமைப்பு </title>
+    <script type="text/javascript" src="jquery-1.9.1.js"></script>
+    <script type="text/javascript" src="service-consumer.js"></script>
+    <script type="text/javascript" src="chart.js"></script>
+    <script type="text/javascript" src="jquery.cookie.js"></script>
+    <link rel="stylesheet" type="text/css" href="punarchi.css"/>
+    <link rel="stylesheet" type="text/css" href="jquery-ui.css"/>
+
+    <script type='text/javascript'>//<![CDATA[
+
+
+    function _digest_load() {
+
+        var joined = $(location).attr('hash');
+
+        if (joined == "") {
+
+            joined = $.cookie('names');
+        } else {
+            joined = joined.slice(1);
+            joined = decodeURI(joined)
+            $.cookie('names', joined);
+        }
+        if (joined != null) {
+            $("#names").val(joined);
+            $("#namesenglish").val(joined);
+        }
+
+
+    }
+
+
+    $(document).ready(function () {
+        $('#header').click(function () {
+            $('.showhide').toggle("slide");
+        });
+
+        $(function () {
+
+            $("#names").onEnter(function () {
+                _draw();
+            });
+
+            $("#namesenglish").onEnter(function () {
+                _draw();
+            });
+
+
+        });
+    });
+
+
+    function _draw() {
+
+        var val = $("#names").val();
+        if (val.trim() =="") {
+            val = "தமிழ்,செம்மொழி";
+            $("#names").val(val);
+        }
+        $.cookie('names', val);
+        var list = $.parseJSON(jQuery.ajax({
+            type:"GET",
+           // data:english + "",
+            url:server + "digest/?names=" +  encodeURI(val) ,
+            contentType:"text/plain; charset=utf-8",
+            async:false
+        }).responseText);
+
+
+
+       var chart =  new Chart(document.getElementById("uyir").getContext("2d")).Line(list.data[0]);
+
+        new Chart(document.getElementById("mey").getContext("2d")).Line(list.data[1]);
+        new Chart(document.getElementById("maaththirai").getContext("2d")).Line(list.data[2]);
+        new Chart(document.getElementById("vali").getContext("2d")).Line(list.data[3]);
+        new Chart(document.getElementById("vagai").getContext("2d")).Line(list.data[4]);
+
+
+
+    }
+
+    //]]>
+    </script>
+
+</head>
+<body onload="_digest_load();">
+<a href="index.html">&lt;-பின்னுக்குச்செல்க</a>
+
+<div id="header"><a href="#"><h3>என்ன வேடிக்கை? </h3></a></div>
+<div class="showhide" style="display: none;">
+ <pre>
+    யூனிகோடின்(UNICODE)  தமிழுக்கொவ்வாவமைப்பால்  எளிமையான இயல்புபுணர்ச்சியைச்செய்வதுங்கூட கடினமாக அமைந்துள்ளது.
+    இந்நிலையில், ஒரு சொல் குற்றியலுகரமாவென்று காண தலையைச்சுற்றிதான் காதைத்தொடவேண்டும்.
+    தமிழின் புணர்ச்சிவிதிகளை நிரலாக்கஞ்செய்கையில் சில சவால்களை நான் சந்திக்கநேர்ந்தது.
+    ஒரு தமிழ்ச்சொல்லை அப்படியேயெடுத்து அதன் தன்மையை  ஆராய்வது கடினமானது.
+    எனவே,  அச்சொல்லை வெவ்வேறுவடிவங்களுக்கு  மாற்றி பின்னர் அவ்வடிவங்களை ஆராய்வது கணினிக்கு எளிதாக அமைந்தது.
+
+    ஒரு சொல்லை கீழ்க்கண்ட 5 வடிவங்களுக்கு மாற்றலாம்.
+
+    எடுத்துக்காடாக "தமிழ்" என்ற சொல்லை எடுத்துக்கொள்வோம்.
+    அதன்
+
+    1) உயிர்வடிவம் = [1, 3, 0]   ஆகும்.
+    அதாவது "த" வில் முதலுயிரான அகரமும் "மி" யில் மூன்றாமுயிரான இகரமும் உள்ளது. "ழ்" இல் உயிர் இல்லாததால்  அது பூச்சியத்தைப்பெற்றது.
+
+    இதேபோல்
+    2) மெய்வடிவம் = [7, 10, 15]
+
+    3) மாத்திரைவடிவம் = [1.0, 1.0, 0.5]
+
+    4) வலிவடிவம் = [3, 1, 2]   இங்கு  3 = வல்லினம் , 2 = இடையினம்,  1 = மெல்லினம்  ..
+
+    5) வகைவடிவம் =[4, 4, 3]  இங்கு 4= உயிர்மெய், 3 = மெய் ...
+
+
+    இந்த செயலி ஒவ்வொரு சொல்லையும் இப்படி எண்வடிவத்திற்குமாற்றி பின்னர் எண்களைக்கொண்டே பல முடிவுகளையும் செயல்முறைகளையும் செய்கின்றது.
+
+     இப்போது நீங்கள் உங்களுக்குப்பிடித்த பெயர்களின் வெவ்வேறு வடிவங்களை  விளக்கப்படங்களாக (chart) பார்க்கலாம்.
+     பல பெயர்களை (comma separated)  ஒன்றாகவும் பார்க்கலாம்.
+     </pre>
+    <hr style="color: red"/>
+
+</div>
+
+<p>தமிழ்ச்சொல்லின் வடிவங்கள் </p>
+<table border="1">
+    <tr>
+        <th>சொற்கள்</th>
+
+        <th></th>
+    </tr>
+    <tr>
+        <td>த:<input size="100" placeholder="சொல்,சொல், ..." type="text"  id="names"
+                     name="names"/>
+            <br/>
+
+            <div data-tip="குறிப்பு: aa=ஆ, ea=ஏ, f=ஃ, lh=ள், nt=ந், nh=ண், oa=ஓ, ou=ஔ, rr=ற், zh=ழ்">E:<input size="100"
+
+                                                                                                              onClick="this.select()"
+                                                                                                              type="text"
+                                                                                                              name="namesenglish"
+                                                                                                              placeholder="Type in english here, to transliterate."
+                                                                                                              id="namesenglish"
+                                                                                                              onkeypress="return _onkeypress(event,this);"
+                                                                                                              onkeyup="_translit(this,'#names');"/>
+            </div>
+        </td>
+        <th><input type="button" name="clk" value="வரை ++" onclick="_draw();"/></th>
+
+    </tr>
+
+</table>
+
+<br/>
+
+<h2>உயிர்வடிவம்</h2>
+<canvas id="uyir" width="300" height="250"></canvas>
+<hr style="color: red"/>
+<h2>மெய்வடிவம்</h2>
+<canvas id="mey" width="300" height="200"></canvas>
+<hr style="color: red"/>
+<h2>மாத்திரைவடிவம்</h2>
+<canvas id="maaththirai" width="300" height="200"></canvas>
+<hr style="color: red"/>
+<h2>வலிவடிவம்</h2>
+<canvas id="vali" width="300" height="200"></canvas>
+<hr style="color: red"/>
+<h2>வகைவடிவம்</h2>
+<canvas id="vagai" width="300" height="200"></canvas>
+</body>
+</html>

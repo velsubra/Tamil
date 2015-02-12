@@ -1,0 +1,28 @@
+package tamil.lang.known.thodar;
+
+import tamil.lang.TamilWord;
+import tamil.lang.known.IKnownWord;
+import tamil.lang.known.non.derived.AbstractKnownWord;
+
+import java.util.List;
+
+/**
+ * <p>
+ * </p>
+ *
+ * @author velsubra
+ */
+public abstract  class AbstractThodarMozhi extends AbstractKnownWord implements IThodarMozhi {
+    List<? extends IKnownWord> words = null;
+
+    public AbstractThodarMozhi(TamilWord word) {
+        super(word);
+    }
+
+    @Override
+    public List<? extends IKnownWord> getWords() {
+       return  words;
+    }
+
+
+}

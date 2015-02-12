@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>
+    </title>
+
+    <script type="text/javascript" src="jquery-1.9.1.js"></script>
+    <script type="text/javascript" src="service-consumer.js"></script>
+    <script type="text/javascript" src="jquery.cookie.js"></script>
+    <link rel="stylesheet" type="text/css" href="punarchi.css"/>
+
+    <script type='text/javascript'>//<![CDATA[
+
+    function update_admin_change_prop() {
+        var vinaiydadi =  $("#select_verb_props_value").val();
+        var prop =  $("#vinai_part").val();
+        var value =  $("#vinai_part_value").val();
+        _silent_add_Vinayadi_property(vinaiydadi,prop, value);
+    }
+
+    //]]>
+
+
+    </script>
+
+</head>
+<body>
+<a href="index.html">&lt;-பின்னுக்குச்செல்க</a>
+
+<h1>அனுமதியில்லாமல் பயன்படுத்தாதீர்கள்</h1>
+<table class=".ajaxloading" border="1">
+    <tr>
+        <th>வினையடி</th>
+        <td>
+            <input size="5" type="text" id="select_verb_props_value" name="select_verb_props_value"/>
+            <br/>
+
+            <div id="select_verb_props_value_div"
+                 data-tip="குறிப்பு: aa=ஆ, ea=ஏ, f=ஃ, lh=ள், nt=ந், nh=ண், oa=ஓ, ou=ஔ, rr=ற், zh=ழ்"><input size="5"
+
+                                                                                                            onClick="this.select()"
+                                                                                                            type="text"
+                                                                                                            name="select_verb_props_value_english"
+                                                                                                            placeholder="Type in english here, to transliterate."
+                                                                                                            id="select_verb_props_value_english"
+                                                                                                            onkeypress="return _onkeypress(event,this);"
+                                                                                                            onkeyup="_translit(this,'#select_verb_props_value');"
+                                                                                                            onblur="_translit(this,'#select_verb_props_value');"/>
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <th>வினையடிப்பகுதி</th>
+        <td><input size="40" type="text" name="vinai_part" id="vinai_part"/></td>
+    </tr>
+    <tr>
+        <th>மதிப்பு</th>
+        <td><input size="10" type="text" id="vinai_part_value" name="vinai_part_value"/></td>
+    </tr>
+    <tr>
+        <th colspan="2"><input type="button"     value="மதிப்பை மாற்றுங்கள்"
+                               onclick="javascript:update_admin_change_prop()">
+        </th>
+
+    </tr>
+</table>
+
+</body>
+</html>

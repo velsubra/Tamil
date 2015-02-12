@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>தமிழ்ச்சொல்தேடல் </title>
+
+    <script type="text/javascript" src="jquery-1.9.1.js"></script>
+    <script type="text/javascript" src="service-search.js"></script>
+    <script type="text/javascript" src="service-consumer.js"></script>
+    <script type="text/javascript" src="jquery.cookie.js"></script>
+    <script type="text/javascript" src="jquery-ui.js"></script>
+    <link rel="stylesheet" type="text/css" href="punarchi.css"/>
+    <link rel="stylesheet" type="text/css" href="jquery-ui.css"/>
+
+
+    <script type='text/javascript'>//<![CDATA[
+    var PROP_BASE = "";
+
+
+
+    $(document).ready(function () {
+        $('#header').click(function () {
+            $('.showhide').toggle("slide");
+        });
+    });
+
+    function _load() {
+
+
+        $("#lblwordclount").html("(மொத்தச்சொற்கள்# " + _getTotalWords() + ")");
+
+        $("#words").val($.cookie('searched'));
+        $("#searched").val($.cookie('searched'));
+        $("#searched").trigger("input");
+
+
+        $('#words').keyup(function () {
+            clearTimeout(threadautocomplete);
+
+        //   _updateSearchResults();
+            threadautocomplete = setTimeout(function () {
+                _updateSearchResults();
+            }, 150);
+
+
+        });
+
+
+        $("#words").focus();
+
+
+        $("#words").autocomplete({
+            source:search_word
+        });
+
+
+    }
+
+
+
+    //]]>
+    </script>
+</head>
+<body onload="javascript:_load()">
+<a href="index.html">&lt;-பின்னுக்குச்செல்க</a>
+
+<div id="header"><a href="#"><h3>தமிழ்ச்சொல்தேடல்</h3></a></div>
+<div class="showhide" style="display: none;">
+    ஒரு சொல்லை காணமுடியவில்லையெனில் அதை <a href="parse.html"> பகுத்துப்பார்க்கலாம்.</a>    தேடப்பட்ட/காணப்பட்ட சொல்பற்றிய இலக்கணவிளக்கத்தையும் அறியலாம்
+</div>
+
+<table border="1" class="ajaxloading" id="result_table">
+    <tr>
+        <th>
+            <div class="ui-widget">
+                <label id="lblwordclount"> </label>
+                <br/>
+                <label for="words">தேடு: </label>
+                <input size="40" placeholder="இங்கே தட்டுங்கள்(தமிழ் அல்லது ஆங்கிலம்)" id="words"
+                       onkeypress="return _onkeypress(event,this);"
+                       onkeyup="_translit(this,'#searched');"
+
+                        />
+            </div>
+        </th>
+        <th>தேடப்படும் சொல்</br>
+            <input type="text" size="30" style="outline: none;border: none; background: yellow; text-align: center"
+                   id="searched" disabled="disabled" oninput="javascript:_onChange_Word_To_Look(false)"/></th>
+    </tr>
+    <tr>
+        <th align="right">சொல்விளக்கம்</th>
+        <td>
+            <div id="wordcount"></div>
+            <br/>
+            <table border="1" id="result_words">
+                <tr>
+                    <th>#</th>
+                    <th>சொல்</th>
+                    <th>விளக்கம்</th>
+
+                </tr>
+            </table>
+
+        </td>
+    </tr>
+</table>
+
+
+</br>
+<a href="index.html">&lt;-பின்னுக்குச்செல்க</a>
+</body>
+</html>

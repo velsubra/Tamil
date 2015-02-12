@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>வினையடிகளின்  தொகுப்பு
+    </title>
+
+    <script type="text/javascript" src="jquery-1.9.1.js"></script>
+    <script type="text/javascript" src="service-consumer.js"></script>
+    <script type="text/javascript" src="jquery.cookie.js"></script>
+    <link rel="stylesheet" type="text/css" href="punarchi.css"/>
+
+    <script type='text/javascript'>//<![CDATA[
+    var PROP_BASE = "";
+
+    $(document).ready(function () {
+        $('#header').click(function () {
+            $('.showhide').toggle("slide");
+        });
+    });
+
+    function toggleSearch() {
+
+        if ($('#autosearch').prop('checked')) {
+            $('#autosearchbtn').attr("disabled", true);
+            $.cookie('autosearch', $('#autosearch').prop('checked'));
+            _list_all_verbs(true);
+        } else {
+            $('#autosearchbtn').attr("disabled", false);
+            $.cookie('autosearch', null);
+        }
+    }
+
+    $(function () {
+
+        $("#vinaiyadienglish").onEnter(function () {
+            _list_all_verbs(true);
+        });
+
+        $("#vinaiyadi").onEnter(function () {
+            _list_all_verbs(true);
+        });
+    });
+
+
+    //]]>
+    </script>
+</head>
+<body onload="_loadlist_all_verbs();">
+<a href="index.html">&lt;-பின்னுக்குச்செல்க</a>
+
+<div id="header"><a href="#"><h3>வினையடிதேடல்</h3></a></div>
+<div class="showhide" style="display: none;">
+<pre>
+இங்கே, நீங்கள் கீழ்க்கண்டவற்றை செய்யலாம்.
+1. வினையடிதேடல். (root verb) (எ.கா ஆடு , நட, படு ..)
+2. இல்லாத வினையடியை சேர்த்தல், தவறானவற்றை நீக்குதல்
+  (நீங்கள் தேடும்போது ஒரு வினையடி இல்லையென்றால், "புதிதாகச்சேர்க்க" என்ற சுட்டி தோன்றும். அதை சுட்டினால், அந்த வினையடி உடனே சேர்ந்துவிடும்.)
+3. வினையடியிலிருந்து வினைமுற்றுகளை தானாகவேயுருவாக்கும் வரையறையை உருவாக்குதல். (இதற்கு வினையடியை  சொடுக்குங்கள்)
+
+முதல் 20  வினையடிகள் காட்டப்படுகின்றன.
+ஒரு புதியவினையடியை நீங்கள் சேர்த்தீர்களானால் இப்போதைக்கு கிட்டத்தட்ட 100 தமிழ்ச்சொற்களை இந்தச்செயலிக்கு ஊட்டுகிறீர்களென்று பொருட்படும்.
+
+
+     </pre>
+</div>
+<div id="count_all"></div>
+<table width="100">
+    <tr>
+        <th colspan="3">உடனடித்தேடல்:<input type="checkbox" value="" id="autosearch"
+                                                             title="வேகமான இணையத்தொடர்பை கொண்டவர்கள்  தட்டத்தட்ட தமிழ்ச்சொற்களைத்தேட இது உதவும்.             "
+                                                             name="autosearch" onclick="javascript:toggleSearch()"></th>
+    </tr>
+    <tr>
+        <td>தேடு</td>
+        <td><input size="15" placeholder="தமிழ்வினையடி" type="text" id="vinaiyadi" name="vinaiyadi"
+                   oninput="_list_all_verbs(false);"/></td>
+        <td align="center" rowspan="2"><input type="button" id="autosearchbtn" value="தேடு"
+                                              onclick="_list_all_verbs(true)"></td>
+    </tr>
+    <tr>
+        <td>Search</td>
+        <td>
+            <div data-tip="குறிப்பு: aa=ஆ, ea=ஏ, f=ஃ, lh=ள், nt=ந், nh=ண், oa=ஓ, ou=ஔ, rr=ற், zh=ழ்"><input
+                    size="15"
+
+                    onClick="this.select()"
+                    type="text"
+                    name="vinaiyadienglish"
+                    placeholder="Type in english here, to transliterate."
+                    id="vinaiyadienglish"
+                    onkeypress="return _onkeypress(event,this);"
+                    onkeyup="_translit(this,'#vinaiyadi');"
+                    /> <br/>
+            </div>
+        </td>
+
+    </tr>
+    <tr>
+        <th colspan="3"><a id="add_new_verb_link" title="இந்தவினையடி காணப்படவில்லை. இதனை நீங்கள் சேர்க்கலாம்."
+                           href="javascript:add_new_verb()">இது காணப்படவில்லை. புதிதாகச்சேர்க்க</a></th>
+    </tr>
+</table>
+<hr/>
+<table class="ajaxloading" border="1" id="result_table">
+    <tr>
+        <th>எண்</th>
+        <th>
+            ஏற்கனவேயிருக்கும் </br> வினையடிகள்
+        </th>
+        <th>நீக்குக</th>
+        <!--<th>வரையறை-->
+        <!--<br/>(இதை மாற்றியமைக்க வினையடியை சொடுக்குங்கள்)-->
+
+        <!--</th>-->
+    </tr>
+</table>
+
+
+<a href="index.html">&lt;-பின்னுக்குச்செல்க</a>
+</body>
+</html>
