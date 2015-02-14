@@ -2,10 +2,11 @@ package my.interest.lang.tamil;
 
 import common.lang.impl.AbstractCharacter;
 import my.interest.lang.tamil.generated.types.PaalViguthi;
-import my.interest.lang.tamil.internal.api.PersistenceInterface;
-import tamil.lang.*;
+import my.interest.lang.tamil.generated.types.SimpleTense;
 import my.interest.lang.tamil.internal.api.TamilCharacterParserListener;
+import tamil.lang.*;
 import tamil.lang.known.IKnownWord;
+import tamil.lang.known.derived.VinaiMuttu;
 import tamil.lang.known.non.derived.IPeyarchchol;
 
 import java.io.*;
@@ -29,9 +30,37 @@ public class TamilUtils {
     }
 
 
-    public static boolean  isUyarThinhai(PaalViguthi viguthi) {
-        return  (viguthi !=  PaalViguthi.A) && (viguthi != PaalViguthi.THU);
+    public static boolean isUyarThinhai(PaalViguthi viguthi) {
+        return (viguthi != PaalViguthi.A) && (viguthi != PaalViguthi.THU);
     }
+
+
+    public static boolean isPadarkkai(PaalViguthi viguthi) {
+        return viguthi == PaalViguthi.A
+                || viguthi == PaalViguthi.THU ||
+                viguthi == PaalViguthi.AALH ||
+                viguthi == PaalViguthi.AAN ||
+                viguthi == PaalViguthi.AAR || viguthi ==
+                PaalViguthi.AR;
+    }
+
+    public static boolean isVinaiMuttuAsNoun(SimpleTense tense, PaalViguthi viguthi) {
+        if (!isPadarkkai(viguthi)) return false;
+        if (viguthi == PaalViguthi.A) {
+            return false;
+
+        }
+        if (viguthi == PaalViguthi.THU) {
+            if (tense == SimpleTense.FUTURE) {
+                return false;
+            } else {
+                return true;
+            }
+        }
+        if (tense == SimpleTense.PRESENT) return false;
+        return true;
+    }
+
 
 //    public static boolean isUyarThinhaipPeyar(TamilWord w) {
 //        //E.gகலாம் -உயர்திணை
@@ -173,6 +202,7 @@ public class TamilUtils {
 
     /**
      * 31 is the driving prime number for hash.
+     *
      * @param w
      * @return
      */
@@ -342,7 +372,6 @@ public class TamilUtils {
         }
 
     }
-
 
 
     public static Map<String, String> getEnumValuesAsList(Enum[] en, String toBeRemoved) {

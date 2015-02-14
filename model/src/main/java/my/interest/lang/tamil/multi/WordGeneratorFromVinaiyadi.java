@@ -95,6 +95,25 @@ public class WordGeneratorFromVinaiyadi extends WordsGenerator {
             PersistenceInterface.addDerivative(container, false, table, Kaddalhai.class);
 
 
+            table = DefinitionFactory.generateKaddalhai(root.getRoot(), true, "kaddalhai_um");
+            PersistenceInterface.addDerivative(container, true, table, Kaddalhai.class);
+
+
+            table = DefinitionFactory.generateKaddalhai(root.getRoot(), false, "kaddalhai_um");
+            PersistenceInterface.addDerivative(container, false, table, Kaddalhai.class);
+
+
+            table = DefinitionFactory.generateKaddalhai(root.getRoot(), true, "kaddalhai_ungalh");
+            PersistenceInterface.addDerivative(container, true, table, Kaddalhai.class);
+
+
+            table = DefinitionFactory.generateKaddalhai(root.getRoot(), false, "kaddalhai_ungalh");
+            PersistenceInterface.addDerivative(container, false, table, Kaddalhai.class);
+
+
+
+
+
             table = DefinitionFactory.generatePeyarechcham(root.getRoot(), true);
             PersistenceInterface.addDerivativeWithTense(container, true, table, Peyarechcham.class);
 

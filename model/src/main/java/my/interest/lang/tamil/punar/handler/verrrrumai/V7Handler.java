@@ -33,6 +33,15 @@ import tamil.lang.TamilWord;
     public static final TamilWord INKANH = TamilWord.from("ங்கண்");
 
 
+    @Override
+    public TamilWord getUrubu() {
+        return KANH;
+    }
+
+    @Override
+    public int getNumber() {
+        return 7;
+    }
 
     public boolean isOnRightViguthi(TamilWordPartContainer varum) {
         return varum.getWord().equals(KANH);

@@ -18,6 +18,11 @@ import tamil.lang.TamilWord;
     }
 
     @Override
+    public int getNumber() {
+        return 2;
+    }
+
+    @Override
     public String getName() {
         return "இரண்டாம்வேற்றுமை";
     }

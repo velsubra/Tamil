@@ -42,6 +42,16 @@ import tamil.lang.TamilWord;
         return IyalbuPunarchiHandler.HANDLER.join(nilai, new TamilWordPartContainer(new TamilWord(TamilSimpleCharacter.a)));
     }
 
+    @Override
+    public TamilWord getUrubu() {
+        return KU;
+    }
+
+    @Override
+    public int getNumber() {
+        return 4;
+    }
+
     public boolean isOnRightViguthi(TamilWordPartContainer varum) {
         return varum.getWord().equals(KU);
     }

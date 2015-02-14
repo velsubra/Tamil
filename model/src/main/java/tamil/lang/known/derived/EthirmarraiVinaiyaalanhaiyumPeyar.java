@@ -17,4 +17,9 @@ public final class EthirmarraiVinaiyaalanhaiyumPeyar extends DerivativeWithPaal 
     public EthirmarraiVinaiyaalanhaiyumPeyar(TamilWord word, Vinaiyadi vinaiyadi, PaalViguthi viguthi) {
         super(word, vinaiyadi, viguthi);
     }
+
+    @Override
+    public boolean isProNoun() {
+        return false;
+    }
 }

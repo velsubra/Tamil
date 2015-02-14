@@ -21,7 +21,7 @@ abstract class CommonHandler extends AbstractVearrrrumaiHandler {
 
     public static final TamilWord ITHTHU = TamilWord.from("த்து");
 
-    public abstract TamilWord getUrubu();
+
 
     @Override
     public boolean isOnRightViguthi(TamilWordPartContainer varum) {

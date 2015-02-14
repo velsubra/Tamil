@@ -24,6 +24,10 @@ public abstract class AbstractVearrrrumaiHandler extends AbstractPunarchiHandler
 
     private static Set<TamilWord> thiribus = new java.util.HashSet<TamilWord>();
 
+
+    public abstract TamilWord getUrubu();
+    public abstract  int getNumber();
+
 //    private static TamilWord nteengalh = TamilWord.from("நீங்கள்");
 //    private static TamilWord ungalh = TamilWord.from("உங்கள்");
 //    private static TamilWord ntaangalh = TamilWord.from("நாங்கள்");

@@ -13,9 +13,15 @@ import tamil.lang.TamilWord;
 public class V33Handler extends CommonHandler {
 
     public static final TamilWord odu = new TamilWord(TamilSimpleCharacter.O, TamilCompoundCharacter.IDD_U);
+
     @Override
     public TamilWord getUrubu() {
         return odu;
+    }
+
+    @Override
+    public int getNumber() {
+        return 3;
     }
 
     @Override

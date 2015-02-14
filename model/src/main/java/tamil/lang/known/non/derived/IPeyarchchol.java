@@ -17,4 +17,6 @@ public interface IPeyarchchol extends IKnownWord {
      */
     public boolean isUyarThinhai();
 
+    public boolean isProNoun();
+
 }

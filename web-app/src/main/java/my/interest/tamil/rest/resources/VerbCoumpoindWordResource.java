@@ -77,9 +77,13 @@ public class VerbCoumpoindWordResource {
         if (!table.getRows().isEmpty()) {
             GenericTenseTable kad1 = DefinitionFactory.generateKaddalhai(name, transitive,"kaddalhai_ddum");
             GenericTenseTable kad2 = DefinitionFactory.generateKaddalhai(name, transitive,"kaddalhai_laam");
+            GenericTenseTable kad3 = DefinitionFactory.generateKaddalhai(name, transitive,"kaddalhai_um");
+            GenericTenseTable kad4 = DefinitionFactory.generateKaddalhai(name, transitive,"kaddalhai_ungalh");
 
             table.getRows().add(kad1.getRows().get(0));
             table.getRows().add(kad2.getRows().get(0));
+            table.getRows().add(kad3.getRows().get(0));
+            table.getRows().add(kad4.getRows().get(0));
 
 
         }

@@ -1,6 +1,6 @@
 package my.interest.lang.tamil.internal.api;
 
-import my.interest.lang.tamil.punar.handler.verrrrumai.AllVHandler;
+import my.interest.lang.tamil.punar.handler.verrrrumai.VAllHandler;
 import tamil.lang.TamilWord;
 import my.interest.lang.tamil.bean.*;
 import my.interest.lang.tamil.punar.AllTamilWordSplitResult;
@@ -62,7 +62,7 @@ public final class HandlerFactory {
         list.add(KalhViguthiHandler.HANDLER);
         list.add(NannolHandler227.HANDLER);
         list.add(NannoolHandler183.HANDLER);
-        list.add(AllVHandler.HANDLER);
+        list.add(VAllHandler.HANDLER);
 
 
         return list;

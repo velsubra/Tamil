@@ -19,6 +19,11 @@ import tamil.lang.TamilWord;
     }
 
     @Override
+    public int getNumber() {
+        return 3;
+    }
+
+    @Override
     public String getName() {
         return "மூன்றாம்வேற்றுமை";
     }

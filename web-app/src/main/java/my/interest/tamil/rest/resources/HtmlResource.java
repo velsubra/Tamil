@@ -33,9 +33,9 @@ public class HtmlResource {
         else if (file.endsWith(".css")) {
             type = "text/css";
         }
-        File f = new File("git/tamil/web-app/src/main/webapp/" + file);
+        File f = new File("src/main/webapp/" + file);
         if (!f.exists()) {
-            f = new File("git/tamil/web-app/src/main/webapp/js/" + file);
+            f = new File("src/main/webapp/js/" + file);
         }
         System.out.println(f.getAbsolutePath());
         return Response.status(200).type(type).entity(TamilUtils.readAllFrom( new FileInputStream(f), false)).build();

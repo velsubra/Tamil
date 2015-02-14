@@ -13,9 +13,16 @@ import tamil.lang.known.non.derived.Vinaiyadi;
  */
 abstract class VinaiMuttuBase extends DerivativeWithTenseAndPaal {
     public VinaiMuttuBase(TamilWord word, Vinaiyadi vinaiyadi, SimpleTense tense, PaalViguthi viguthi) {
+        this(word,vinaiyadi,tense,viguthi,false);
+    }
+    public VinaiMuttuBase(TamilWord word, Vinaiyadi vinaiyadi, SimpleTense tense, PaalViguthi viguthi, boolean implicit) {
         super(word, vinaiyadi, tense, viguthi);
+        this.implicit = implicit;
 
     }
+
+
+    private boolean implicit = false;
 
 
     /**

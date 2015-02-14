@@ -12,6 +12,7 @@ import my.interest.lang.tamil.multi.WordGeneratorFromPeyar;
 import my.interest.lang.tamil.multi.WordGeneratorFromVinaiyadi;
 import my.interest.lang.tamil.punar.PropertyDescriptionContainer;
 import my.interest.lang.tamil.punar.TamilWordPartContainer;
+import my.interest.lang.tamil.punar.handler.verrrrumai.VAllHandler;
 import my.interest.lang.tamil.translit.EnglishToTamilCharacterLookUpContext;
 import org.codehaus.groovy.jsr223.GroovyScriptEngineImpl;
 import tamil.lang.TamilCompoundCharacter;
@@ -20,10 +21,7 @@ import tamil.lang.known.IKnownWord;
 import tamil.lang.known.derived.DerivativeWithPaal;
 import tamil.lang.known.derived.DerivativeWithTenseAndPaal;
 import tamil.lang.known.derived.VinaiyadiDerivative;
-import tamil.lang.known.non.derived.AbstractKnownWord;
-import tamil.lang.known.non.derived.NonStartingIdaichchol;
-import tamil.lang.known.non.derived.Peyarchchol;
-import tamil.lang.known.non.derived.Vinaiyadi;
+import tamil.lang.known.non.derived.*;
 
 import javax.script.CompiledScript;
 import javax.script.ScriptException;
@@ -136,12 +134,12 @@ public abstract class PersistenceInterface {
         }
     }
 
-    public static  TamilWord lookupEnglish(String eng) {
+    public static TamilWord lookupEnglish(String eng) {
         List<IKnownWord> list = english_mapping.get(eng);
         if (list == null || list.isEmpty()) {
             return null;
         } else {
-            return  list.get(0).getWord();
+            return list.get(0).getWord();
         }
     }
 
@@ -273,7 +271,7 @@ public abstract class PersistenceInterface {
                         add = comparator.compare(re, base) >= 0;
                     }
                     if (add) {
-                        if (includeTypes == null || includeTypes.isEmpty() || isInIncludeTypes( includeTypes,re.getClass())) {
+                        if (includeTypes == null || includeTypes.isEmpty() || isInIncludeTypes(includeTypes, re.getClass())) {
                             max--;
                             ret.add(re);
                         }
@@ -291,11 +289,11 @@ public abstract class PersistenceInterface {
         return ret;
     }
 
-    private static boolean isInIncludeTypes (List<Class<? extends IKnownWord>> list, Class<? extends  IKnownWord> cls) {
+    private static boolean isInIncludeTypes(List<Class<? extends IKnownWord>> list, Class<? extends IKnownWord> cls) {
         for (Class kn : list) {
-           if (kn.isAssignableFrom(cls)) {
-               return true;
-           }
+            if (kn.isAssignableFrom(cls)) {
+                return true;
+            }
         }
         return false;
 
@@ -320,6 +318,9 @@ public abstract class PersistenceInterface {
                 linked.add(w);
             }
         }
+
+
+
 
         // vowelset.appendNodesToAllPaths(w);
     }
@@ -859,7 +860,7 @@ public abstract class PersistenceInterface {
                 peyars.add(desc);
                 TamilWord n = TamilWord.from(verb);
                 TamilWord n_rm_ak = TamilUtils.trimFinalAKOrReturn(n);
-                addOrUpdateKnown(new Peyarchchol(n_rm_ak, n.size() - n_rm_ak.size()));
+                addOrUpdateKnown(new Peyarchchol(n_rm_ak, n.size() - n_rm_ak.size(), false));
                 ExecuteManager.fire(new WordGeneratorFromPeyar(desc, this));
                 persist(words);
 
@@ -954,7 +955,7 @@ public abstract class PersistenceInterface {
                 peyars.remove(desc);
                 TamilWord n = TamilWord.from(verb);
                 TamilWord n_rm_ak = TamilUtils.trimFinalAKOrReturn(n);
-                removeKnown(new Peyarchchol(n_rm_ak, n.size() - n_rm_ak.size()));
+                removeKnown(new Peyarchchol(n_rm_ak, n.size() - n_rm_ak.size(),false));
                 persist(verbs);
             }
 
@@ -1242,7 +1243,7 @@ public abstract class PersistenceInterface {
                     }
                 }
                 if (deleted) {
-                    ExecuteManager.fire(new WordGeneratorFromPeyar(desc,this));
+                    ExecuteManager.fire(new WordGeneratorFromPeyar(desc, this));
                     persist(verbs);
                 }
 

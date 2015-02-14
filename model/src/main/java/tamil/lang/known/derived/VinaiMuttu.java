@@ -1,5 +1,6 @@
 package tamil.lang.known.derived;
 
+import my.interest.lang.tamil.TamilUtils;
 import my.interest.lang.tamil.generated.types.PaalViguthi;
 import my.interest.lang.tamil.generated.types.SimpleTense;
 import my.interest.lang.tamil.internal.api.PersistenceInterface;
@@ -20,8 +21,22 @@ import tamil.lang.known.non.derived.Vinaiyadi;
  * @author velsubra
  */
 public final class VinaiMuttu extends VinaiMuttuBase {
+
     public VinaiMuttu(TamilWord word, Vinaiyadi vinaiyadi, SimpleTense tense, PaalViguthi viguthi) {
-        super(word, vinaiyadi, tense, viguthi);
+        this(word,vinaiyadi,tense,viguthi,false);
+    }
+    public VinaiMuttu(TamilWord word, Vinaiyadi vinaiyadi, SimpleTense tense, PaalViguthi viguthi,  boolean implicit) {
+        super(word, vinaiyadi, tense, viguthi, implicit);
+
+         if (implicit) return;
+        //vinaiyaalanhayumpeyar
+
+        if (TamilUtils.isVinaiMuttuAsNoun(tense, viguthi)) {
+            VinaiyaalanhaiyumPeyar vp = new VinaiyaalanhaiyumPeyar(word,vinaiyadi,tense, viguthi);
+            PersistenceInterface.addKnown(vp);
+        }
+
+
         //Add EthirMarrai
         if (tense == SimpleTense.FUTURE && isSimple()) {
 
@@ -66,10 +81,10 @@ public final class VinaiMuttu extends VinaiMuttuBase {
                 if (remove_fist) {
                     vm = vm.subWord(1, vm.size());
                 }
-                PersistenceInterface.addKnown(new EthirMarraiVinaiMuttu(vm, vinaiyadi, SimpleTense.FUTURE, viguthi));
+                PersistenceInterface.addKnown(new EthirMarraiVinaiMuttu(vm, vinaiyadi, SimpleTense.FUTURE, viguthi, true));
                 if (viguthi == PaalViguthi.A || viguthi == PaalViguthi.THU) {
                     //Remove thu.
-                    PersistenceInterface.addKnown(new EthirMarraiVinaiMuttu(vm.subWord(0, vm.size() - 1), vinaiyadi, SimpleTense.FUTURE, viguthi));
+                    PersistenceInterface.addKnown(new EthirMarraiVinaiMuttu(vm.subWord(0, vm.size() - 1), vinaiyadi, SimpleTense.FUTURE, viguthi,true));
                 }
 
                 if (vm.equals(word)) {

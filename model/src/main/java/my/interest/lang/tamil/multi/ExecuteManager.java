@@ -13,9 +13,10 @@ import java.util.concurrent.TimeUnit;
  */
 public class ExecuteManager extends ThreadPoolExecutor {
 
-    private static final int TOTAL_JOBS_ALLOWED = 10;
+    private static final int TOTAL_JOBS_ALLOWED = 5;
+    private static final int QCAPACITY = TOTAL_JOBS_ALLOWED * 1000;
 
-    private static final ExecuteManager manager = new ExecuteManager(10, TOTAL_JOBS_ALLOWED, 0, TimeUnit.MINUTES, new ArrayBlockingQueue<Runnable>(TOTAL_JOBS_ALLOWED * 100));
+    private static final ExecuteManager manager = new ExecuteManager(TOTAL_JOBS_ALLOWED /2 , TOTAL_JOBS_ALLOWED, 0, TimeUnit.MINUTES, new ArrayBlockingQueue<Runnable>(QCAPACITY));
 
     public ExecuteManager(int corePoolSize, int maximumPoolSize, long keepAliveTime, TimeUnit unit, BlockingQueue<Runnable> workQueue) {
         super(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue);
@@ -27,7 +28,7 @@ public class ExecuteManager extends ThreadPoolExecutor {
     }
 
     public synchronized static void fire(Runnable run) {
-        while (manager.getQueue().size() == TOTAL_JOBS_ALLOWED) {
+        while (manager.getQueue().size() == QCAPACITY -1 ) {
             try {
                 Thread.currentThread().sleep(5);
                 //System.out.println(PersistenceInterface.totalWordsSize());

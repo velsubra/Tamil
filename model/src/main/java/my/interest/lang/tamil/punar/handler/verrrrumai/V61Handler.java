@@ -22,6 +22,11 @@ class V61Handler  extends CommonHandler {
     }
 
     @Override
+    public int getNumber() {
+        return 6;
+    }
+
+    @Override
     public String getName() {
         return "ஆறாம்வேற்றுமை ";
     }
