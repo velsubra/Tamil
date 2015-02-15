@@ -1,10 +1,12 @@
 package tamil.lang;
 
+import my.interest.lang.tamil.impl.DefaultNumberReader;
 import my.interest.lang.tamil.impl.DefaultPlatformDictionary;
 import my.interest.lang.tamil.punar.handler.WordsJoinHandler;
 import my.interest.lang.tamil.translit.EnglishToTamilCharacterLookUpContext;
 import tamil.lang.api.dictionary.TamilDictionary;
 import tamil.lang.api.join.WordsJoiner;
+import tamil.lang.api.number.NumberReader;
 import tamil.lang.api.trans.Transliterator;
 
 /**
@@ -53,5 +55,13 @@ public final class TamilFactory {
         return handler;
     }
 
+
+    /**
+     * Gets the number reader interface.
+     * @return  the instance of a number reader.
+     */
+    public static NumberReader getNumberReader() {
+          return DefaultNumberReader.reader;
+    }
 
 }

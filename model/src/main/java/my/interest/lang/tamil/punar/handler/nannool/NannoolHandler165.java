@@ -78,6 +78,7 @@ public class NannoolHandler165 extends AbstractPunarchiHandler {
             if (!lastbutone.asTamilCharacter().isVallinam()) return null;
 
         }
+
         TamilWord word = nilai.getWord().duplicate();
         word.add(varum.getWord().get(0).asTamilCharacter().getMeiPart());
         word.addAll(varum.getWord());

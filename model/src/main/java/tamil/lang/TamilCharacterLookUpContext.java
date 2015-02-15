@@ -453,16 +453,18 @@ import java.util.*;
 
 
     static {
+        for (TamilSimpleCharacter t : TamilSimpleCharacter.simplecharacters) {
+            t.init();
+        }
+        TamilSimpleCharacter.simplecharacters.clear();
+        TamilSimpleCharacter.simplecharacters = null;
+
         for (TamilCompoundCharacter t : TamilCompoundCharacter.characters) {
             t.init();
         }
         TamilCompoundCharacter.characters.clear();
         TamilCompoundCharacter.characters = null;
 
-        for (TamilSimpleCharacter t : TamilSimpleCharacter.simplecharacters) {
-            t.init();
-        }
-        TamilSimpleCharacter.simplecharacters.clear();
-        TamilSimpleCharacter.simplecharacters = null;
+
     }
 }

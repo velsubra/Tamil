@@ -46,7 +46,7 @@ var TamilFactory = new function () {
      * @const
      */
     this.context = window.location.pathname.substring(0, window.location.pathname.indexOf("/apps/resources/"));
-    console.log("context:" + this.context);
+    // console.log("context:" + this.context);
 
 
     /**
@@ -105,6 +105,51 @@ var TamilFactory = new function () {
                 type: method,
                 url: url,
                 data: content,
+                contentType: "text/plain; charset=utf-8",
+                async: false
+            }).responseText);
+            cached[word] = result;
+            return result;
+        }
+        return this;
+    }
+
+
+    /**
+     * Creates a new number reader object.
+     * This is convert a number string into Tamil text.
+     * <pre>12011 - பன்னிரண்டாயிரத்து பதினொன்று         </pre>
+     *
+     *  @constructor
+     */
+    this.createNumberReader = function () {
+        //private properties
+        var cachedNumbers = new Object();
+        this.geturl = this.context + "/api/number/reader/one/?number=";
+
+        /**
+         * Method to read the number as tamil text
+         * @param word  the number as a string
+         * {json} - the Tamil text as the number is read.
+         *        <b> json.tamil </b> gives the actual string. No digits  will be present in it.
+         */
+        this.readNumber = function (word) {
+            if (word == "") {
+                return word;
+            }
+            cached = cachedNumbers;
+            existing = cached[word];
+            if (existing) {
+                return existing;
+            }
+
+            method = "GET";
+            url = this.geturl + encodeURI(word) ;
+
+
+            result = $.parseJSON(jQuery.ajax({
+                type: method,
+                url: url,
                 contentType: "text/plain; charset=utf-8",
                 async: false
             }).responseText);
@@ -182,7 +227,6 @@ var TamilFactory = new function () {
 };
 
 
-
 var SYS_TRANSLIT = TamilFactory.createTransliterator();
 
 
@@ -245,7 +289,7 @@ $(document).ready(function () {
 jQuery.fn.$popupDiv = function (divToPop) {
     var pos = $(this).offset();
     var h = $(this).height();
-   // var w = $(this).width();
+    // var w = $(this).width();
 
     $(divToPop).css({left: pos.left, top: pos.top + h + 10});
     $(divToPop).show();

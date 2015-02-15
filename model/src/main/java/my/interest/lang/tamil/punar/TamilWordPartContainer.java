@@ -308,6 +308,19 @@ public class TamilWordPartContainer {
 
     }
 
+
+    //க ச த ப
+    public boolean isEndingWithTwoConsonantsOfKASATHABA() {
+        digest();
+
+        return isEndingWithTwoConsonantsOfType(TamilCompoundCharacter.IK) ||
+                isEndingWithTwoConsonantsOfType(TamilCompoundCharacter.ICH) ||
+                isEndingWithTwoConsonantsOfType(TamilCompoundCharacter.ITH) ||
+                isEndingWithTwoConsonantsOfType(TamilCompoundCharacter.IP);
+
+
+    }
+
     //க ச த ப
     public boolean isStartingWithOneConsonantsOfKASATHABA() {
         digest();
@@ -315,6 +328,16 @@ public class TamilWordPartContainer {
                 isStartingWithOneConsonantOfType(TamilCompoundCharacter.ICH) ||
                 isStartingWithOneConsonantOfType(TamilCompoundCharacter.ITH) ||
                 isStartingWithOneConsonantOfType(TamilCompoundCharacter.IP);
+
+
+    }
+
+
+    public boolean isEndingWithTwoConsonantsOfTHARRA() {
+        digest();
+
+        return isEndingWithTwoConsonantsOfType(TamilCompoundCharacter.ITH) ||
+                isEndingWithTwoConsonantsOfType(TamilCompoundCharacter.IRR) ;
 
 
     }
@@ -474,6 +497,8 @@ public class TamilWordPartContainer {
         return false;
 
     }
+
+
 
 
 }

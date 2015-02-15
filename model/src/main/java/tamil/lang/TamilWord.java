@@ -7,12 +7,16 @@ import my.interest.lang.tamil.parser.impl.TamilWordListener;
 
 /**
  * <p>
- * Represents a word. In fact, it just represents a character sequence. It may not be a recognized word (ie with a meaning).
+ * Represents a word/String. In fact, it just represents a character sequence. It may not be a recognized word (ie with a meaning).
  * Also, all the characters in the word may not be recognized to a Tamil character.  Please use {@link #isPure()} to know if the word is formed with Tamil characters(#247) only.
  * <p/>
  * So, the word represented by this object may not be a tamil word (சொல் ) at all. See {@link tamil.lang.api.dictionary.TamilDictionary#lookup(TamilWord)}
  * <p/>
  * <p/>
+ * </p>
+ * <p/>
+ * <p>
+ * This should be treated as Tamil Sting equivalent of  java.lang.String. ie) it can potentially container spaces and non tamil characters
  * </p>
  *
  * @author velsubra
@@ -233,10 +237,10 @@ public final class TamilWord extends AbstractWord<AbstractCharacter> implements 
 
 
     /**
-     * Creates a {@link TamilWord} from an UTF-8 String.
+     * Creates a {@link TamilWord} from a String.
      * Please note the reading stops with a space. Consider using {@link TamilSentence} if you need to read multiple words separated with spaces.
      *
-     * @param word the UTF-8 string
+     * @param word the string
      * @return the word read.
      */
     public static TamilWord from(String word) {
@@ -246,6 +250,22 @@ public final class TamilWord extends AbstractWord<AbstractCharacter> implements 
             return TamilWordListener.readUTF8(word);
         }
     }
+
+
+    /**
+     * Can be used to read along with space. So, it will read the whole java String     if  dontStopAtSpace is ture
+     * @param word  the string
+     * @param dontStopAtSpace  flag to indicate if the reading should stop at space.
+     * @return   the word read.
+     */
+    public static TamilWord from(String word, boolean dontStopAtSpace) {
+        if (word == null) {
+            return new TamilWord();
+        } else {
+            return TamilWordListener.readUTF8(word, dontStopAtSpace);
+        }
+    }
+
 
 
     public CharacterDigest getConsonantDigest() {
@@ -260,7 +280,7 @@ public final class TamilWord extends AbstractWord<AbstractCharacter> implements 
     /**
      * Returns all the consonants (மெய்யெழுத்துகள் )
      *
-     * @return  word of consonants.
+     * @return word of consonants.
      */
     public TamilWord getConsonants() {
         TamilWord buffer = new TamilWord();

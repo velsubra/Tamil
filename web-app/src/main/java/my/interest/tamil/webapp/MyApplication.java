@@ -1,6 +1,7 @@
 package my.interest.tamil.webapp;
 
 import my.interest.tamil.rest.resources.*;
+import my.interest.tamil.rest.resources.api.NumberReaderResource;
 import my.interest.tamil.rest.resources.api.TranslitResource;
 import my.interest.tamil.rest.resources.apps.AppAccessResource;
 import my.interest.tamil.rest.resources.apps.AppManagementResource;
@@ -42,7 +43,7 @@ public class MyApplication extends Application {
         set.add(AppManagementResource.class);
 
         set.add(TranslitResource.class);
-
+        set.add(NumberReaderResource.class);
 
 
 
