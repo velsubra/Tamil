@@ -1,7 +1,7 @@
 package my.interest.lang.tamil.impl.number;
 
+import my.interest.lang.tamil.impl.FeatureSet;
 import my.interest.lang.tamil.punar.TamilWordPartContainer;
-import tamil.lang.TamilSimpleCharacter;
 import tamil.lang.TamilWord;
 
 /**
@@ -16,7 +16,7 @@ public class Tens extends AbstractPlace {
     }
 
     @Override
-    public TamilWordPartContainer read(AbstractPlace hs, AbstractPlace ones, TamilWordPartContainer next, AbstractPlace valueExistingPlace) {
+    public TamilWordPartContainer read(AbstractPlace hs, AbstractPlace ones, TamilWordPartContainer next, AbstractPlace valueExistingPlace, FeatureSet set) {
 
         TamilWordPartContainer word = null;
         switch (size) {
@@ -28,7 +28,11 @@ public class Tens extends AbstractPlace {
                 switch (ones.size) {
                     case 9:
                     case 0:
-                        word = new TamilWordPartContainer(TamilWord.from("பத்து"));
+//                        if (next.size() > 0) {
+//                            word = new TamilWordPartContainer(TamilWord.from("பத்து ",!set.isNumberPurchchiFeaturePosition()));
+//                        } else {
+                            word = new TamilWordPartContainer(TamilWord.from("பத்து"));
+                       // }
                         break;
 
                     case 1:
@@ -54,7 +58,7 @@ public class Tens extends AbstractPlace {
                 if (ones.size == 0) {
                     word = new TamilWordPartContainer(TamilWord.from("இருபது"));
                 } else {
-                    word = new TamilWordPartContainer(TamilWord.from("இருபத்து"));
+                    word = new TamilWordPartContainer(TamilWord.from("இருபத்து ", !set.isNumberPurchchiFeaturePosition()));
                 }
                 break;
 
@@ -62,7 +66,7 @@ public class Tens extends AbstractPlace {
                 if (ones.size == 0) {
                     word = new TamilWordPartContainer(TamilWord.from("முப்பது"));
                 } else {
-                    word = new TamilWordPartContainer(TamilWord.from("முப்பத்து"));
+                    word = new TamilWordPartContainer(TamilWord.from("முப்பத்து ", !set.isNumberPurchchiFeaturePosition()));
                 }
                 break;
 
@@ -71,27 +75,25 @@ public class Tens extends AbstractPlace {
                 if (ones.size == 0) {
                     word = new TamilWordPartContainer(TamilWord.from("நாற்பது"));
                 } else {
-                    word = new TamilWordPartContainer(TamilWord.from("நாற்பத்து"));
+                    word = new TamilWordPartContainer(TamilWord.from("நாற்பத்து ", !set.isNumberPurchchiFeaturePosition()));
                 }
                 break;
-
 
 
             case 5:
                 if (ones.size == 0) {
                     word = new TamilWordPartContainer(TamilWord.from("ஐம்பது"));
                 } else {
-                    word = new TamilWordPartContainer(TamilWord.from("ஐம்பத்து"));
+                    word = new TamilWordPartContainer(TamilWord.from("ஐம்பத்து ", !set.isNumberPurchchiFeaturePosition()));
                 }
                 break;
-
 
 
             case 6:
                 if (ones.size == 0) {
                     word = new TamilWordPartContainer(TamilWord.from("அறுபது"));
                 } else {
-                    word = new TamilWordPartContainer(TamilWord.from("அறுபத்து"));
+                    word = new TamilWordPartContainer(TamilWord.from("அறுபத்து ", !set.isNumberPurchchiFeaturePosition()));
                 }
                 break;
 
@@ -99,7 +101,7 @@ public class Tens extends AbstractPlace {
                 if (ones.size == 0) {
                     word = new TamilWordPartContainer(TamilWord.from("எழுபது"));
                 } else {
-                    word = new TamilWordPartContainer(TamilWord.from("எழுபத்து"));
+                    word = new TamilWordPartContainer(TamilWord.from("எழுபத்து ", !set.isNumberPurchchiFeaturePosition()));
                 }
                 break;
 
@@ -108,7 +110,7 @@ public class Tens extends AbstractPlace {
                 if (ones.size == 0) {
                     word = new TamilWordPartContainer(TamilWord.from("எண்பது"));
                 } else {
-                    word = new TamilWordPartContainer(TamilWord.from("எண்பத்து"));
+                    word = new TamilWordPartContainer(TamilWord.from("எண்பத்து ", !set.isNumberPurchchiFeaturePosition()));
                 }
                 break;
 
@@ -117,11 +119,9 @@ public class Tens extends AbstractPlace {
                 if (ones.size == 0) {
                     word = new TamilWordPartContainer(TamilWord.from("தொண்ணூறு"));
                 } else {
-                    word = new TamilWordPartContainer(TamilWord.from("தொண்ணூற்று"));
+                    word = new TamilWordPartContainer(TamilWord.from("தொண்ணூற்று ", !set.isNumberPurchchiFeaturePosition()));
                 }
                 break;
-
-
 
 
             default:

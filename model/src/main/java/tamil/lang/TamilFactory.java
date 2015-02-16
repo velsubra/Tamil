@@ -20,7 +20,15 @@ import tamil.lang.api.trans.Transliterator;
  */
 public final class TamilFactory {
 
+    /**
+     * This has to be init.
+     */
+    public static void init() {
+        TamilCharacterLookUpContext.lookup(0);
+    }
+
     private TamilFactory() {
+
     }
 
 

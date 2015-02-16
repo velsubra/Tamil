@@ -123,7 +123,7 @@ public class NannolHandler219 extends AbstractPunarchiHandler {
                 }
             } else if (varum.isStartingWithUyirMei()) {
                 if (varum.getWord().get(0).asTamilCharacter().isVallinam()) {
-                    mgone.add(varum.getWord().get(0).asTamilCharacter().getMeiPart());
+                    mgone.add(varum.getWord().get(0).asTamilCharacter().getInaMellinam());
                     mgone.addAll(varum.getWord());
                     return new TamilWordPartContainer(mgone);
                 } else {

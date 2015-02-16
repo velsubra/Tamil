@@ -1,12 +1,15 @@
 package my.interest.lang.tamil.impl;
 
 import common.lang.impl.UnknownCharacter;
+import my.interest.lang.tamil.generated.types.NameValue;
 import my.interest.lang.tamil.impl.number.*;
 import my.interest.lang.tamil.punar.TamilWordPartContainer;
 import tamil.lang.TamilFactory;
 import tamil.lang.TamilWord;
 import tamil.lang.api.join.WordsJoiner;
+import tamil.lang.api.number.NotANumberException;
 import tamil.lang.api.number.NumberReader;
+import tamil.lang.api.number.ReaderFeature;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -26,24 +29,33 @@ public final class DefaultNumberReader implements NumberReader {
 
     public static final DefaultNumberReader reader = new DefaultNumberReader();
 
-
-    private TamilWord readNumberWithFiltering(String number) {
+    private static NameValue filter(String number, FeatureSet set) {
         if (number == null) {
-            return new TamilWord();
+            return null;
         }
-        number = number.trim();
+        if (set.isToIgnoreNonDigit() && !set.isToTreatNonDigitAsNumber()) {
+            number = number.trim();
+        }
 
         StringBuffer base = new StringBuffer();
         StringBuffer fraction = new StringBuffer();
 
         boolean fractionReached = false;
         boolean noZeroReached = false;
+        int fractionLength = 0;
         for (int i = 0; i < number.length(); i++) {
             char ch = number.charAt(i);
-            if (ch >= '0' && ch <= '9' || ch == '.' || ch == '+'   || ch == '-' ) {
-                  // Just fine
+            if (ch >= '0' && ch <= '9' || ch == '.' || ch == '+' || ch == '-') {
+                // Just fine
             } else {
-                ch = '0';
+                if (set.isToTreatNonDigitAsNumber()) {
+                    ch = '0';
+                } else {
+                    if (set.isToIgnoreNonDigit()) {
+                        continue;
+                    }
+                    throw new NotANumberException("Index:" + i + " Invalid character:" + ch);
+                }
             }
 
             if (!fractionReached && ch == '0' && !noZeroReached) continue;
@@ -51,6 +63,9 @@ public final class DefaultNumberReader implements NumberReader {
 
                 if (fractionReached) {
                     fraction.append(ch);
+                    if (ch != '0') {
+                        fractionLength = fraction.length();
+                    }
                 } else {
                     if (ch == '0') {
                         if (!noZeroReached) {
@@ -74,19 +89,52 @@ public final class DefaultNumberReader implements NumberReader {
                 continue;
             }
         }
-        TamilWord full = new TamilWord();
+
+
+
+
         if (base.length() == 0) {
             base.append('0');
         }
 
-        full.addAll(readCleanNumber(base.toString(), null));
-        if (fraction.length() > 0) {
-            full.add(new UnknownCharacter(' '));
-            full.addAll(readCleanFractionWithoutDot(fraction.toString()));
+        NameValue ret = new NameValue();
+        ret.setValue(fraction.toString().substring(0, fractionLength));
+        ret.setName(base.toString());
+        return ret;
+
+
+    }
+
+
+    public TamilWord readNumberWithFiltering(String number, ReaderFeature... features) {
+        if (number == null) {
+            return new TamilWord();
+        }
+        FeatureSet set = features == null ? FeatureSet.EMPTY : new FeatureSet(features);
+        NameValue val = filter(number, set);
+
+
+        TamilWord full = new TamilWord();
+        if (val.getName().length() == 0) {
+            val.setName("0");
+        }
+
+        full.addAll(readCleanNumber(val.getName(), null, set));
+        if (val.getValue().length() > 0) {
+            if (full.size() > 0) {
+                full.addSpace();
+            }
+            full.addAll(readCleanFractionWithoutDot(val.getValue(), set));
         }
         return full;
 
 
+    }
+
+
+    @Override
+    public TamilWord readNumber(String number, ReaderFeature... features) throws NotANumberException {
+        return readNumberWithFiltering(number, features);
     }
 
     /**
@@ -108,7 +156,7 @@ public final class DefaultNumberReader implements NumberReader {
      */
     @Override
     public TamilWord readNumber(long number) {
-        return readCleanNumber(String.valueOf(number), null);
+        return readCleanNumber(String.valueOf(number), null, FeatureSet.EMPTY);
     }
 
     /**
@@ -140,10 +188,10 @@ public final class DefaultNumberReader implements NumberReader {
         TamilWord bword = null;
         TamilWord fword = null;
         if (base != null) {
-            bword = readCleanNumber(base, null);
+            bword = readCleanNumber(base, null, FeatureSet.EMPTY);
         }
         if (fraction != null && fraction.length() > 0) {
-            fword = readCleanFractionWithoutDot(fraction);
+            fword = readCleanFractionWithoutDot(fraction, FeatureSet.EMPTY);
         }
 
         TamilWord full = new TamilWord();
@@ -151,7 +199,9 @@ public final class DefaultNumberReader implements NumberReader {
             full.addAll(bword);
         }
         if (fword != null) {
-            full.add(new UnknownCharacter(' '));
+            if (full.size() > 0) {
+                full.add(UnknownCharacter.SPACE);
+            }
             full.addAll(fword);
         }
         return full;
@@ -159,31 +209,35 @@ public final class DefaultNumberReader implements NumberReader {
     }
 
 
-    public TamilWord readNumber(long number, TamilWord denomi) {
+    public TamilWord readNumber(long number, TamilWord denomi, FeatureSet set) {
         if (number < 0) {
             number = -number;
         }
-        return readCleanNumber(String.valueOf(number), denomi);
+        return readCleanNumber(String.valueOf(number), denomi, set);
 
     }
 
-    public TamilWord readCleanFractionWithoutDot(String fraction) {
+    public TamilWord readCleanFractionWithoutDot(String fraction, FeatureSet set) {
         TamilWord fword = TamilWord.from("புள்ளி");
         TamilWordPartContainer empty = new TamilWordPartContainer(new TamilWord());
         for (int i = 0; i < fraction.length(); i++) {
-            fword.add(new UnknownCharacter(' '));
-            fword.addAll(new Ones((int) (fraction.charAt(i)) - 48).read(null, null, empty, null).getWord());
+            fword.add(UnknownCharacter.SPACE);
+            fword.addAll(new Ones((int) (fraction.charAt(i)) - 48).read(null, null, empty, null, set).getWord());
 
 
         }
         return fword;
     }
 
-    public TamilWord readCleanNumber(String number, TamilWord denomi) {
+    private TamilWord readCleanNumber(String number, TamilWord denomi, FeatureSet set) {
         int rem = 0;
         if (number.length() > 7) {
             String remString = number.substring(number.length() - 7, number.length());
-            rem = Integer.parseInt(remString);
+            try {
+                rem = Integer.parseInt(remString);
+            } catch (NumberFormatException ne) {
+                throw new NotANumberException(ne.getMessage());
+            }
             number = number.substring(0, number.length() - 7);
 
 
@@ -194,7 +248,9 @@ public final class DefaultNumberReader implements NumberReader {
             if (rem == 0) {
                 if (denomi != null && denomi.size() != 0) {
                     kodi = TamilWord.from("கோடியே");
-                    kodi.add(new UnknownCharacter(' '));
+                    if (!set.isNumberPurchchiFeatureFull()) {
+                        kodi.add(UnknownCharacter.SPACE);
+                    }
 
                 } else {
                     kodi = TamilWord.from("கோடி");
@@ -202,19 +258,25 @@ public final class DefaultNumberReader implements NumberReader {
                 }
             } else {
                 kodi = TamilWord.from("கோடியே");
-                kodi.add(new UnknownCharacter(' '));
+                if (!set.isNumberPurchchiFeatureFull()) {
+                    kodi.add(UnknownCharacter.SPACE);
+                }
 
             }
-            TamilWord basesum = readCleanNumber(number, kodi);
+            TamilWord basesum = readCleanNumber(number, kodi, set);
             if (more) {
                 WordsJoiner h = TamilFactory.createWordJoiner(basesum);
-                h.addVaruMozhi(readCleanNumber(remString, denomi));
+                h.addVaruMozhi(readCleanNumber(remString, denomi, set));
                 basesum = h.getSum();
             }
             return basesum;
 
         } else {
-            rem = Integer.parseInt(number);
+            try {
+                rem = Integer.parseInt(number);
+            } catch (NumberFormatException ne) {
+                throw new NotANumberException(ne.getMessage());
+            }
             List<AbstractPlace> list = new ArrayList<AbstractPlace>();
             list.add(new Lakhs(rem / 100000));
             rem = rem % 100000;
@@ -230,7 +292,7 @@ public final class DefaultNumberReader implements NumberReader {
             rem = rem % 10;
             list.add(new Ones(rem));
 
-            return AbstractPlace.sumUp(list, denomi == null ? null : new TamilWordPartContainer(denomi)).getWord();
+            return AbstractPlace.sumUp(list, denomi == null ? null : new TamilWordPartContainer(denomi), set).getWord();
         }
 
 

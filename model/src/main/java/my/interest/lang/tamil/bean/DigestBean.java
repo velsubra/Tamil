@@ -47,7 +47,7 @@ public class DigestBean {
         for (TamilWordPartContainer c : temp) {
             TamilWord w = c.getWord();
             while (w.size() < max) {
-                w.add(new UnknownCharacter('X'));
+                w.add( UnknownCharacter.getFor('X'));
             }
             TamilWordPartContainer cont = new TamilWordPartContainer(w);
             containers.add(cont);
@@ -60,7 +60,7 @@ public class DigestBean {
             TamilWord label = new TamilWord();
             for (TamilWordPartContainer c : temp) {
                 label.add(c.getWord().get(i));
-                label.add(new UnknownCharacter(','));
+                label.add(UnknownCharacter.getFor(','));
             }
             commonlabels.add(label.toString());
         }

@@ -1,6 +1,8 @@
 package my.interest.lang.tamil.impl.number;
 
+import common.lang.impl.AbstractCharacter;
 import common.lang.impl.UnknownCharacter;
+import my.interest.lang.tamil.impl.FeatureSet;
 import my.interest.lang.tamil.punar.TamilWordPartContainer;
 import tamil.lang.TamilCharacter;
 import tamil.lang.TamilWord;
@@ -17,7 +19,7 @@ public class Hundreds extends AbstractPlace {
     }
 
     @Override
-    public TamilWordPartContainer read(AbstractPlace thousands, AbstractPlace tens, TamilWordPartContainer next, AbstractPlace valueExistingPlace) {
+    public TamilWordPartContainer read(AbstractPlace thousands, AbstractPlace tens, TamilWordPartContainer next, AbstractPlace valueExistingPlace, FeatureSet set) {
 
         TamilWordPartContainer word = null;
         switch (size) {
@@ -32,7 +34,12 @@ public class Hundreds extends AbstractPlace {
                     word = new TamilWordPartContainer(TamilWord.from("நூற்று"));
 
                 } else {
-                    word = new TamilWordPartContainer(TamilWord.from("நூறு"));
+//                    if (next.size() > 0) {
+//                        word = new TamilWordPartContainer(TamilWord.from("நூறு ",  !set.isNumberPurchchiFeaturePosition()));
+//                    }  else {
+                        word = new TamilWordPartContainer(TamilWord.from("நூறு"));
+                   // }
+
                 }
                 break;
 
@@ -121,26 +128,28 @@ public class Hundreds extends AbstractPlace {
             default:
                 throw new RuntimeException("Invalid number model built");
         }
-
+        AbstractCharacter chToAdd = null;
+        //If there is more to continue
         if (word.isEndingWithTwoConsonantsOfTHARRA()) {
-            if (valueExistingPlace != null) {
-                TamilCharacter ch = null;
-                if (next != null && next.size() > 0) {
+
+            if (!set.isNumberPurchchiFeatureFull()) {
+                chToAdd = UnknownCharacter.SPACE;
+            } else {
+               // if (next != null && next.size() > 0) {     should have something! at this point
                     if (next.isStartingWithOneConsonantsOfKASATHABA()) {
-                        ch = next.getWord().get(0).asTamilCharacter().getMeiPart();
+                        chToAdd = next.getWord().get(0).asTamilCharacter().getMeiPart();
                     }
-                }
-                TamilWord val = word.getWord();
-                if (ch != null) {
-
-                    val.add(ch);
-                } else {
-                    val.add(new UnknownCharacter(' '));
-                }
-                word = new TamilWordPartContainer(val);
-
+               // }
             }
         }
+
+        if (chToAdd != null) {
+            TamilWord val = word.getWord();
+            val.add(chToAdd);
+            word = new TamilWordPartContainer(val);
+        }
+
+
 
         if (word == null) {
             throw new RuntimeException("Certain case is not handled!");

@@ -9,16 +9,27 @@ import common.lang.SimpleCharacter;
  * @author velsubra
  */
 public class UnknownCharacter extends AbstractCharacter implements SimpleCharacter{
-    public UnknownCharacter(int value) {
+
+    public static final UnknownCharacter   SPACE = new UnknownCharacter(' ');
+    private UnknownCharacter(int value) {
         this.value = value;
+    }
+
+
+    public static UnknownCharacter getFor(int ch) {
+        if (ch == ' ') {
+            return SPACE;
+        } else {
+            return new UnknownCharacter(ch);
+        }
     }
     public int getValue() {
         return value;
     }
 
-    public void setValue(int value) {
-        this.value = value;
-    }
+//    public void setValue(int value) {
+//        this.value = value;
+//    }
 
     int value;
 

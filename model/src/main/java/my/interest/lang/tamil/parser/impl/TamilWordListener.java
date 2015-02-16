@@ -54,11 +54,13 @@ public class TamilWordListener implements TamilCharacterParserListener<TamilWord
             if (word == null) {
                 word = new TamilWord();
             }
-            //word.setPure(false);
-            word.add(new UnknownCharacter(nonTamil));
+
+            word.add( UnknownCharacter.getFor(nonTamil));
             return false;
         }
     }
+
+
 
     @Override
     public TamilWord get() {

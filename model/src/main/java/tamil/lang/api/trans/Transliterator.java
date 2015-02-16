@@ -38,7 +38,7 @@ public interface Transliterator {
     /**
      * Performs transliteration of text with the specified set of features.
      * <p>
-     * Please see {@link tamil.lang.api.feature.Feature#TRANSLIT_JOIN_FEATURE}  and {@link tamil.lang.api.feature.Feature#TRANSLIT_NOUN_LOKKUP_FEATURE}
+     * Please see {@link tamil.lang.api.feature.Feature#TRANSLIT_JOIN_FEATURE_VAR_10}  and {@link tamil.lang.api.feature.Feature#TRANSLIT_NOUN_LOKKUP_FEATURE_VAR_11}
      * </p>
      *
      * @param text     the text to be   transliterated

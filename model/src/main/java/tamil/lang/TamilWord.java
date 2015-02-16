@@ -2,6 +2,7 @@ package tamil.lang;
 
 import common.lang.impl.AbstractCharacter;
 import common.lang.impl.AbstractWord;
+import common.lang.impl.UnknownCharacter;
 import my.interest.lang.tamil.TamilUtils;
 import my.interest.lang.tamil.parser.impl.TamilWordListener;
 
@@ -16,7 +17,7 @@ import my.interest.lang.tamil.parser.impl.TamilWordListener;
  * </p>
  * <p/>
  * <p>
- * This should be treated as Tamil Sting equivalent of  java.lang.String. ie) it can potentially container spaces and non tamil characters
+ * This should be treated as Tamil Sting equivalent of  java.lang.String. ie) it can potentially contain spaces and non tamil characters
  * </p>
  *
  * @author velsubra
@@ -254,9 +255,10 @@ public final class TamilWord extends AbstractWord<AbstractCharacter> implements 
 
     /**
      * Can be used to read along with space. So, it will read the whole java String     if  dontStopAtSpace is ture
-     * @param word  the string
-     * @param dontStopAtSpace  flag to indicate if the reading should stop at space.
-     * @return   the word read.
+     *
+     * @param word            the string
+     * @param dontStopAtSpace flag to indicate if the reading should stop at space.
+     * @return the word read.
      */
     public static TamilWord from(String word, boolean dontStopAtSpace) {
         if (word == null) {
@@ -265,7 +267,6 @@ public final class TamilWord extends AbstractWord<AbstractCharacter> implements 
             return TamilWordListener.readUTF8(word, dontStopAtSpace);
         }
     }
-
 
 
     public CharacterDigest getConsonantDigest() {
@@ -401,6 +402,14 @@ public final class TamilWord extends AbstractWord<AbstractCharacter> implements 
         } else {
             return 0;
         }
+    }
+
+
+    /**
+     * Adds space character at the end.
+     */
+    public void addSpace() {
+        add(UnknownCharacter.SPACE);
     }
 
 

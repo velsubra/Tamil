@@ -239,7 +239,7 @@ public final class EnglishToTamilCharacterLookUpContext implements Transliterato
     @Override
     public TamilWord transliterate(String word, boolean join) {
 
-        return transliterate(word, join ? new TranslitFeature[]{TranslitFeature.TRANSLIT_JOIN_FEATURE} : null);
+        return transliterate(word, join ? new TranslitFeature[]{TranslitFeature.TRANSLIT_JOIN_FEATURE_VAL_110} : null);
     }
 
 
@@ -296,9 +296,9 @@ public final class EnglishToTamilCharacterLookUpContext implements Transliterato
                     TamilWord looked = PersistenceInterface.lookupEnglish(english.toString());
                     if (looked == null) {
                         looked = new TamilWord();
-                        looked.add (new UnknownCharacter('\\'));
+                        looked.add ( UnknownCharacter.getFor('\\'));
                         for (int j = 0; j < english.length(); j++) {
-                            looked.add(new UnknownCharacter(english.charAt(j)));
+                            looked.add( UnknownCharacter.getFor(english.charAt(j)));
                         }
                     }
 
@@ -486,13 +486,13 @@ public final class EnglishToTamilCharacterLookUpContext implements Transliterato
             if (list.size() > 0) {
                 for (int i = 0; i < list.size() - 1; i++) {
                     ret.addAll(getBestMatch(list.get(i)));
-                    ret.add(new UnknownCharacter(' '));
+                    ret.add( UnknownCharacter.SPACE);
                 }
                 for (int ch : list.get(list.size() - 1).toCharArray()) {
-                    ret.add(new UnknownCharacter(ch));
+                    ret.add( UnknownCharacter.getFor(ch));
                 }
             }
-            ret.add(new UnknownCharacter('='));
+            ret.add( UnknownCharacter.getFor('='));
             ret.addAll(getArrayValue(english.substring(eq + 1, english.length())));
             return ret;
 

@@ -1,22 +1,20 @@
 package tamil.lang;
 
 import common.lang.impl.AbstractCharacter;
-import tamil.lang.exception.NoMeiPartException;
-import tamil.lang.exception.NoUyirPartException;
+import tamil.lang.exception.*;
 
 /**
  * <p>
  * Represents a single abstract Tamil character (தமிழெழுத்து).
  * The erroneous representation  of  தமிழெழுத்து in Unicode is resolved at this level.
- *
+ * <p/>
  * You can use {@link TamilWord#from(String)} to read a tamil word.
- *
+ * <p/>
  * Note: All  TamilCharacters are immutable. The platform make sure there is exactly one instance of TamilCharacter for each recognized Tamil character(247 + extended)
- *
+ * <p/>
  * </p>
  *
  * @author velsubra
- *
  * @see TamilCharacterLookUpContext#lookup(int)
  * @see TamilWord#from(String)
  */
@@ -25,9 +23,6 @@ public abstract class TamilCharacter extends AbstractCharacter {
     protected TamilCharacter() {
 
     }
-
-
-
 
 
     protected static final int UYIR = 1;
@@ -365,6 +360,74 @@ public abstract class TamilCharacter extends AbstractCharacter {
         } else {
             return false;
         }
+    }
+
+
+    private TamilCompoundCharacter mellinam = null;
+
+    /**
+     * Gets its inam which is a Mellinam
+     *
+     * @return the mellinam
+     * @throws NotAVallinamException when the character is not really vallinam
+     */
+    public TamilCompoundCharacter getInaMellinam() throws NotAVallinamException {
+        if (!isVallinam()) {
+            throw new NotAVallinamException(this);
+        }
+        if (mellinam == null) {
+            TamilCompoundCharacter cmp = getMeiPart();
+            if (cmp == TamilCompoundCharacter.IK) {
+                mellinam = TamilCompoundCharacter.ING;
+            } else if (cmp == TamilCompoundCharacter.ICH) {
+                mellinam = TamilCompoundCharacter.INJ;
+            } else if (cmp == TamilCompoundCharacter.IDD) {
+                mellinam = TamilCompoundCharacter.INNN;
+            } else if (cmp == TamilCompoundCharacter.ITH) {
+                mellinam = TamilCompoundCharacter.INTH;
+            } else if (cmp == TamilCompoundCharacter.IP) {
+                mellinam = TamilCompoundCharacter.IM;
+            } else if (cmp == TamilCompoundCharacter.IRR) {
+                mellinam = TamilCompoundCharacter.IN;
+            } else {
+                throw new TamilPlatformException("Supposed to be not vallinam:" + this);
+            }
+        }
+        return mellinam;
+    }
+
+
+    private TamilCompoundCharacter vallinam = null;
+
+    /**
+     * Gets its inam which is a Valinam
+     *
+     * @return the vallinam
+     * @throws NotAMellinamException when the character is not really mellinam
+     */
+    public TamilCompoundCharacter getInaVallinam() throws NotAMellinamException {
+        if (!isMellinam()) {
+            throw new NotAMellinamException(this);
+        }
+        if (vallinam == null) {
+            TamilCompoundCharacter cmp = getMeiPart();
+            if (cmp == TamilCompoundCharacter.ING) {
+                vallinam = TamilCompoundCharacter.IK;
+            } else if (cmp == TamilCompoundCharacter.INJ) {
+                vallinam = TamilCompoundCharacter.ICH;
+            } else if (cmp == TamilCompoundCharacter.INNN) {
+                vallinam = TamilCompoundCharacter.IDD;
+            } else if (cmp == TamilCompoundCharacter.INTH) {
+                vallinam = TamilCompoundCharacter.ITH;
+            } else if (cmp == TamilCompoundCharacter.IM) {
+                vallinam = TamilCompoundCharacter.IP;
+            } else if (cmp == TamilCompoundCharacter.IN) {
+                vallinam = TamilCompoundCharacter.IRR;
+            } else {
+                throw new TamilPlatformException("Supposed to be not mellinam:" + this);
+            }
+        }
+        return vallinam;
     }
 
 

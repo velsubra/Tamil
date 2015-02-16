@@ -130,14 +130,21 @@ var TamilFactory = new function () {
         /**
          * Method to read the number as tamil text
          * @param word  the number as a string
+         * @param features  the comma separated list of features to be used.
          * {json} - the Tamil text as the number is read.
          *        <b> json.tamil </b> gives the actual string. No digits  will be present in it.
+         *        <b> json.error-occurred </b> will be true if there is an error.
+         *        {"error-occurred":"true","error-message":"Index:9 Invalid character:w"}
          */
-        this.readNumber = function (word) {
+        this.readNumber = function (word, features) {
             if (word == "") {
                 return word;
             }
-            cached = cachedNumbers;
+            features = typeof features !== 'undefined' ? features.trim() : "";
+            cached = cachedNumbers[features];
+            if (cached == null) {
+                cached = new Object();
+            }
             existing = cached[word];
             if (existing) {
                 return existing;
@@ -145,6 +152,9 @@ var TamilFactory = new function () {
 
             method = "GET";
             url = this.geturl + encodeURI(word) ;
+            if (features) {
+                url += "&features=" + features;
+            }
 
 
             result = $.parseJSON(jQuery.ajax({
