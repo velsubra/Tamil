@@ -18,26 +18,26 @@ import java.util.List;
  */
 public final class ThodarMozhiBuilder extends PathBuilder<IKnownWord> {
 
-    //[class tamil.lang.known.derived.PanhpupPeyarthThiribu,
-    // class tamil.lang.known.derived.KurrippupPeyarechcham,
-    // class tamil.lang.known.non.derived.Peyarchchol,
-    // class tamil.lang.known.derived.Kaddalhai,
-    // class tamil.lang.known.derived.VinaiMuttu,
-    // class tamil.lang.known.derived.Peyarechcham,
-    // class tamil.lang.known.non.derived.NonStartingIdaichchol,
-    // class tamil.lang.known.non.derived.AtomicIsolatedIdai,
-    // class tamil.lang.known.derived.Vinaiyechcham,
-    // class tamil.lang.known.non.derived.Kalh,
-    // class tamil.lang.known.non.derived.Ottu,
-    // class tamil.lang.known.derived.ThozhirrPeyar,
-    // class tamil.lang.known.derived.EthirmarraipPeyarechcham,
-    // class tamil.lang.known.non.derived.NonEndingIdaichChol,
-    // class tamil.lang.known.derived.EthirmarraiVinaiyaalanhaiyumPeyar,
-    // class tamil.lang.known.non.derived.Vinaiyadi,
-    // class tamil.lang.known.derived.PeyarchCholThiribu,
-    // class tamil.lang.known.derived.EthirmarraithozhirPeyar,
-    // class tamil.lang.known.derived.KurrippupVinaiyarechcham,
-    // class tamil.lang.known.derived.VinaiyaalanhaiyumPeyar]
+    //[class tamil.common.lang.lang.known.derived.PanhpupPeyarthThiribu,
+    // class tamil.common.lang.lang.known.derived.KurrippupPeyarechcham,
+    // class tamil.common.lang.lang.known.non.derived.Peyarchchol,
+    // class tamil.common.lang.lang.known.derived.Kaddalhai,
+    // class tamil.common.lang.lang.known.derived.VinaiMuttu,
+    // class tamil.common.lang.lang.known.derived.Peyarechcham,
+    // class tamil.common.lang.lang.known.non.derived.NonStartingIdaichchol,
+    // class tamil.common.lang.lang.known.non.derived.AtomicIsolatedIdai,
+    // class tamil.common.lang.lang.known.derived.Vinaiyechcham,
+    // class tamil.common.lang.lang.known.non.derived.Kalh,
+    // class tamil.common.lang.lang.known.non.derived.Ottu,
+    // class tamil.common.lang.lang.known.derived.ThozhirrPeyar,
+    // class tamil.common.lang.lang.known.derived.EthirmarraipPeyarechcham,
+    // class tamil.common.lang.lang.known.non.derived.NonEndingIdaichChol,
+    // class tamil.common.lang.lang.known.derived.EthirmarraiVinaiyaalanhaiyumPeyar,
+    // class tamil.common.lang.lang.known.non.derived.Vinaiyadi,
+    // class tamil.common.lang.lang.known.derived.PeyarchCholThiribu,
+    // class tamil.common.lang.lang.known.derived.EthirmarraithozhirPeyar,
+    // class tamil.common.lang.lang.known.derived.KurrippupVinaiyarechcham,
+    // class tamil.common.lang.lang.known.derived.VinaiyaalanhaiyumPeyar]
 
 
     public static List<IThodarMozhi.TYPE_SIG> listTypes(IKnownWord known) {

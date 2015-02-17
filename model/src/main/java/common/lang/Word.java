@@ -1,7 +1,5 @@
 package common.lang;
 
-import common.lang.Sentence;
-
 import java.util.List;
 
 /**

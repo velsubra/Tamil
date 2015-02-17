@@ -40,7 +40,7 @@ public class AutoGenTest {
         System.out.println("startsWithCHA=" + startsWithCHA);
         System.out.println("length=" + length);
 
-        System.out.println("\n--Now Using tamil.lang.TamilWord---");
+        System.out.println("\n--Now Using tamil.common.lang.lang.TamilWord---");
 
         TamilWord word = TamilWord.from(tamil);
         endSWithE = word.getLast().asTamilCharacter().getUyirPart().toString().equals("இ");  // This returns true

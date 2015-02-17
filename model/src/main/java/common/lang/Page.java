@@ -1,7 +1,5 @@
 package common.lang;
 
-import common.lang.Para;
-
 import java.util.List;
 
 /**

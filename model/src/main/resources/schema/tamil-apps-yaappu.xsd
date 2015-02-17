@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified"
-           xmlns="http://my.interest.lang.tamil.apps.yaappu"
-           targetNamespace="http://my.interest.lang.tamil.apps.yaappu"
+           xmlns="http://my.interest.common.lang.lang.tamil.apps.yaappu"
+           targetNamespace="http://my.interest.common.lang.lang.tamil.apps.yaappu"
            xmlns:jxb="http://java.sun.com/xml/ns/jaxb" jxb:version="2.1">
 
     <xs:element name="poem" type="poem">

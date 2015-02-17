@@ -26,7 +26,7 @@ import java.util.logging.Logger;
 public class DefinitionFactory {
     static final Logger logger = Logger.getLogger(DefinitionFactory.class.getName());
 
-    public static final String NS_TAMIL = "http://my.interest.lang.tamil";
+    public static final String NS_TAMIL = "http://my.interest.common.lang.lang.tamil";
     public static final String NS_XML = "http://www.w3.org/2001/XMLSchema";
     public static final String VINAIMUTRU_BASE = "vinaimuttu.transitive";
     public static final String VINAIMUTRU_BASE_INTRANSITIVE = "vinaimuttu.intransitive";

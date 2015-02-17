@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>TamilParsing</groupId>
+        <groupId>TamilPlatform</groupId>
         <artifactId>parsing-parent</artifactId>
         <version>1.0</version>
         <relativePath>..</relativePath>
@@ -15,12 +15,12 @@
     <version>1.0</version>
 
     <dependencies>
-        <!--<dependency>-->
-            <!--<groupId>com.oracle.opc.services</groupId>-->
-            <!--<artifactId>java-service-cli-base</artifactId>-->
-            <!--<version>13.2.0.0</version>-->
-            <!--<scope>test</scope>-->
-        <!--</dependency>-->
+        <dependency>
+            <groupId>TamilPlatform</groupId>
+            <artifactId>ezhuththu</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
 
         <dependency>
             <groupId>org.codehaus.groovy</groupId>
@@ -87,7 +87,7 @@
                 <configuration>
                     <extension>true</extension>
                     <schemaDirectory>src/main/resources/schema</schemaDirectory>
-                    <generatePackage>my.interest.lang.tamil.generated.types</generatePackage>
+                    <generatePackage>my.interest.common.lang.lang.tamil.generated.types</generatePackage>
                     <generateDirectory>${project.build.directory}/generated-sources/jaxb</generateDirectory>
                 </configuration>
             </plugin>

@@ -17,7 +17,7 @@ import my.interest.lang.tamil.parser.impl.TamilWordListener;
  * </p>
  * <p/>
  * <p>
- * This should be treated as Tamil Sting equivalent of  java.lang.String. ie) it can potentially contain spaces and non tamil characters
+ * This should be treated as Tamil Sting equivalent of  java.common.lang.lang.String. ie) it can potentially contain spaces and non tamil characters
  * </p>
  *
  * @author velsubra

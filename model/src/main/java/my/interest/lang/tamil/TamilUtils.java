@@ -6,7 +6,6 @@ import my.interest.lang.tamil.generated.types.SimpleTense;
 import my.interest.lang.tamil.internal.api.TamilCharacterParserListener;
 import tamil.lang.*;
 import tamil.lang.known.IKnownWord;
-import tamil.lang.known.derived.VinaiMuttu;
 import tamil.lang.known.non.derived.IPeyarchchol;
 
 import java.io.*;

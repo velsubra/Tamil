@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified"
-           xmlns="http://my.interest.lang.tamil"
-           targetNamespace="http://my.interest.lang.tamil"
+           xmlns="http://my.interest.common.lang.lang.tamil"
+           targetNamespace="http://my.interest.common.lang.lang.tamil"
            xmlns:jxb="http://java.sun.com/xml/ns/jaxb" jxb:version="2.1">
     <xs:element name="tamil-root-words">
         <xs:complexType>

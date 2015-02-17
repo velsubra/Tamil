@@ -5,7 +5,6 @@ import common.lang.impl.UnknownCharacter;
 import my.interest.lang.tamil.impl.DefaultNumberReader;
 import my.interest.lang.tamil.impl.FeatureSet;
 import my.interest.lang.tamil.punar.TamilWordPartContainer;
-import tamil.lang.TamilCharacter;
 import tamil.lang.TamilWord;
 
 /**
