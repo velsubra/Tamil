@@ -239,7 +239,7 @@ public class PunarchiResource {
             }
         }
         TranslitResult result = new TranslitResult();
-        TamilWord word = array ?  EnglishToTamilCharacterLookUpContext.getArrayValue(english)  : EnglishToTamilCharacterLookUpContext.TRANSLIST.transliterate(english, join ? new TranslitFeature[]{TranslitFeature.TRANSLIT_JOIN_FEATURE, Feature.TRANSLIT_NOUN_LOKKUP_FEATURE} : null);
+        TamilWord word = array ?  EnglishToTamilCharacterLookUpContext.getArrayValue(english)  : EnglishToTamilCharacterLookUpContext.TRANSLIST.transliterate(english, join ? new TranslitFeature[]{TranslitFeature.TRANSLIT_JOIN_FEATURE_VAL_110, Feature.TRANSLIT_NOUN_LOOKUP_FEATURE_VAL_115} : null);
         result.setTamilWord(word.toString());
 
         if (!array && parse) {

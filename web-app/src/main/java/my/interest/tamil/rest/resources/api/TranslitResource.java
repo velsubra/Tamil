@@ -14,20 +14,25 @@ import javax.ws.rs.*;
  * @author velsubra
  */
 @Path("api/translit")
-public class TranslitResource {
-
+public class TranslitResource extends BaseResource {
 
 
     @GET
     @Path("/one/")
     @Produces("application/json; charset=UTF-8")
-    public String translitGet(@QueryParam("word")String english, @QueryParam("join") boolean join) throws Exception {
-        Transliterator transliterator = TamilFactory.getTransliterator(null);
-        TamilWord w = transliterator.transliterate(english, join);
-
+    public String translitGet(@QueryParam("word") String english, @QueryParam("join") boolean join) throws Exception {
         JSONObject obj = new JSONObject();
-        obj.put("tamil", w.toString());
+        try {
+            Transliterator transliterator = TamilFactory.getTransliterator(null);
+            TamilWord w = transliterator.transliterate(english, join);
+
+
+            obj.put("tamil", w.toString());
+        } catch (Exception e) {
+            handle(obj, e);
+        }
         return obj.toString();
+
     }
 
 
@@ -35,11 +40,17 @@ public class TranslitResource {
     @Path("/one/")
     @Produces("application/json; charset=UTF-8")
     public String translit(String english, @QueryParam("join") boolean join) throws Exception {
-        Transliterator transliterator = TamilFactory.getTransliterator(null);
-        TamilWord w = transliterator.transliterate(english, join);
-
         JSONObject obj = new JSONObject();
-        obj.put("tamil", w.toString());
+        try {
+            Transliterator transliterator = TamilFactory.getTransliterator(null);
+            TamilWord w = transliterator.transliterate(english, join);
+
+
+            obj.put("tamil", w.toString());
+        } catch (Exception e) {
+            handle(obj, e);
+        }
         return obj.toString();
+
     }
 }
