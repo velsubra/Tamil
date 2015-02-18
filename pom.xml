@@ -5,14 +5,14 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>TamilPlatform</groupId>
-    <artifactId>parsing-parent</artifactId>
+    <artifactId>platform-parent</artifactId>
     <version>1.0</version>
  <packaging>pom</packaging>
 
  <modules>
 
        <module>ezhuththu</module>
-        <module>model</module>
+        <module>chol</module>
         <module>web-app</module>
 
     </modules>

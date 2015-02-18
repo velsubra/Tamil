@@ -6,7 +6,7 @@
 
     <parent>
         <groupId>TamilPlatform</groupId>
-        <artifactId>parsing-parent</artifactId>
+        <artifactId>platform-parent</artifactId>
         <version>1.0</version>
         <relativePath>..</relativePath>
     </parent>
@@ -78,8 +78,15 @@
         </dependency>
 
         <dependency>
-            <groupId>TamilParsing</groupId>
-            <artifactId>tamil-model</artifactId>
+            <groupId>TamilPlatform</groupId>
+            <artifactId>tamil-letter</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+
+        <dependency>
+            <groupId>TamilPlatform</groupId>
+            <artifactId>tamil-word</artifactId>
             <version>${project.version}</version>
         </dependency>
 
@@ -149,7 +156,7 @@
                     <webResources>
                         <resource>
                             <!-- this is relative to the pom.xml directory -->
-                            <directory>../model/target/site</directory>
+                            <directory>../chol/target/site</directory>
                         </resource>
                         <resource>
                             <directory>target/site/</directory>
