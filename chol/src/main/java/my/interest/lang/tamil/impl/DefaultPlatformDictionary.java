@@ -4,6 +4,7 @@ import my.interest.lang.tamil.internal.api.PersistenceInterface;
 import tamil.lang.api.dictionary.TamilDictionary;
 import tamil.lang.TamilWord;
 import tamil.lang.known.IKnownWord;
+import tamil.lang.spi.TamilDictionaryProvider;
 
 import java.util.List;
 
@@ -13,7 +14,7 @@ import java.util.List;
  *
  * @author velsubra
  */
-public final class DefaultPlatformDictionary implements TamilDictionary {
+public final class DefaultPlatformDictionary implements TamilDictionary, TamilDictionaryProvider {
 
     private DefaultPlatformDictionary() {
 
@@ -48,5 +49,10 @@ public final class DefaultPlatformDictionary implements TamilDictionary {
         TamilWord word = PersistenceInterface.lookupEnglish(english);
         if (word == null) return null;
         return peek(word);
+    }
+
+    @Override
+    public TamilDictionary create() {
+        return this;
     }
 }

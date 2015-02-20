@@ -6,13 +6,13 @@
     <parent>
         <groupId>TamilPlatform</groupId>
         <artifactId>platform-parent</artifactId>
-        <version>1.0</version>
+        <version>1.1</version>
         <relativePath>..</relativePath>
     </parent>
 
 
     <artifactId>tamil-letter</artifactId>
-    <version>1.0</version>
+    <version>1.1</version>
 
     <dependencies>
 
@@ -20,7 +20,7 @@
             <groupId>org.json</groupId>
             <artifactId>json</artifactId>
             <version>20090211</version>
-            <scope>test</scope>
+            <scope>provided</scope>
         </dependency>
 
         <dependency>
@@ -29,8 +29,6 @@
             <version>4.8.2</version>
             <scope>test</scope>
         </dependency>
-
-
 
     </dependencies>
 
@@ -42,6 +40,55 @@
     </reporting>
     <build>
         <plugins>
+            <plugin>
+                <groupId>org.sonatype.plugins</groupId>
+                <artifactId>jarjar-maven-plugin</artifactId>
+                <version>1.3</version>
+                <executions>
+                    <execution>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>jarjar</goal>
+                        </goals>
+                        <configuration>
+                            <includes>
+                                <include>org.json:json</include>
+                            </includes>
+                            <rules>
+                                <rule>
+                                    <pattern>nomatch.org.objectweb.asm.**</pattern>
+                                    <result>oracle.cloud.jcs.org.objectweb.asm.@1</result>
+                                </rule>
+                            </rules>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>2.4</version>
+                <configuration>
+                    <archive>
+                        <index>true</index>
+                        <manifest>
+                            <!--<addClasspath>true</addClasspath>-->
+                            <mainClass>tamil.lang.api.applet.AppletTamilFactory</mainClass>
+                        </manifest>
+                        <manifestEntries>
+                            <mode>development</mode>
+                            <url>${project.url}</url>
+                             <Entry-Point>tamil.lang.api.applet.AppletTamilFactory</Entry-Point>
+                            <Caller-Allowable-Codebase>*.*</Caller-Allowable-Codebase>
+                            <Permissions>sandbox</Permissions>
+                            <Application-Name>Tamil Platform Applet</Application-Name>
+                            <Codebase>*.*</Codebase>
+                        </manifestEntries>
+                    </archive>
+                </configuration>
+
+            </plugin>
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

@@ -4,6 +4,7 @@ import my.interest.lang.tamil.generated.types.AppDescription;
 import my.interest.lang.tamil.generated.types.AppResource;
 import my.interest.lang.tamil.internal.api.IPropertyFinder;
 import my.interest.lang.tamil.internal.api.PersistenceInterface;
+import tamil.lang.api.applet.AppletTamilFactory;
 
 import java.util.Map;
 
@@ -19,7 +20,12 @@ public class PropertyFinderForResource implements IPropertyFinder {
     private Map<String, Object> map;
     private String relativeParent = null;
 
-    static String local = null;
+    static String local = PersistenceInterface.isOnCloud() ? "../" :"";
+
+    /**
+     * This is now hard coded here assuming what goes on web.xml. But this can be discovered as well.
+     */
+    static String REST_CONTEXT = PersistenceInterface.isOnCloud() ? "rest/" :"";
 
 
     public PropertyFinderForResource(AppDescription app, AppResource resource, Map<String, Object> map) {
@@ -28,9 +34,9 @@ public class PropertyFinderForResource implements IPropertyFinder {
         this.map = map;
 
 
-        //"" for local setup
-        local = PersistenceInterface.isOnCloud() ? "../" :"";
+
         this.relativeParent = getRelativeParent();
+
     }
 
     @Override
@@ -71,6 +77,18 @@ public class PropertyFinderForResource implements IPropertyFinder {
             //rest/apps/resources/<app_name> -- needs four level parent.
             return relativeParent + local + "../../../js/jquery/jquery-1.9.1.js";
         }
+
+        if ("R_INJECT_PLATFORM_APPLET".equals(p1)) {
+            return "\n" +
+                    "<object type=\"application/x-java-applet\"\n" +
+                    "        id=\"TAMIL_APPLET_INJECTED\" name=\"TamilPlatform Applet\"\n" +
+                    "        archive=\"" + relativeParent + local  +"../../../"+ REST_CONTEXT + "api/browse/tamil-letter-" +  app.getPlatform() +".jar\"\n" +
+                    "        width=\"0\" height=\"0\">\n" +
+                   "    <param name=\"code\"      value=\""+ AppletTamilFactory.class.getName() + "\" />\n" +
+                    "\n" +
+                    "</object>";
+        }
+
 
         if (map == null) {
             return null;

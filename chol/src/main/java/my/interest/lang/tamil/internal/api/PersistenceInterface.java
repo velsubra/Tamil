@@ -12,7 +12,6 @@ import my.interest.lang.tamil.multi.WordGeneratorFromPeyar;
 import my.interest.lang.tamil.multi.WordGeneratorFromVinaiyadi;
 import my.interest.lang.tamil.punar.PropertyDescriptionContainer;
 import my.interest.lang.tamil.punar.TamilWordPartContainer;
-import my.interest.lang.tamil.punar.handler.verrrrumai.VAllHandler;
 import my.interest.lang.tamil.translit.EnglishToTamilCharacterLookUpContext;
 import org.codehaus.groovy.jsr223.GroovyScriptEngineImpl;
 import tamil.lang.TamilCompoundCharacter;
@@ -21,7 +20,10 @@ import tamil.lang.known.IKnownWord;
 import tamil.lang.known.derived.DerivativeWithPaal;
 import tamil.lang.known.derived.DerivativeWithTenseAndPaal;
 import tamil.lang.known.derived.VinaiyadiDerivative;
-import tamil.lang.known.non.derived.*;
+import tamil.lang.known.non.derived.AbstractKnownWord;
+import tamil.lang.known.non.derived.NonStartingIdaichchol;
+import tamil.lang.known.non.derived.Peyarchchol;
+import tamil.lang.known.non.derived.Vinaiyadi;
 
 import javax.script.CompiledScript;
 import javax.script.ScriptException;
@@ -87,18 +89,38 @@ public abstract class PersistenceInterface {
 
     }
 
+    /**
+     * Do not create this on your local env. /customer/scratch is used when the app is deployed in the oracle cloud.
+     * @return
+     */
     public static boolean isOnCloud() {
         return new File("/customer/scratch").exists();
     }
 
+    static File WORK_DIR = null;
+
+    public static File getWorkDir() {
+        if (WORK_DIR == null) {
+            if (isOnCloud()) {
+                WORK_DIR = new File("/customer/scratch/i18n");
+            } else {
+
+                WORK_DIR = new File(System.getProperty("user.home"), "tamil-platform");
+                if (!WORK_DIR.exists()) {
+                    WORK_DIR.mkdirs();
+                }
+                System.out.println("Work Dir:" + WORK_DIR.getAbsolutePath());
+
+            }
+        }
+        return  WORK_DIR;
+    }
+
 
     public static PersistenceInterface get() {
-        if (isOnCloud()) {
-            return new FileBasedPersistence("/customer/scratch/i18n/i18n.xml");
-        } else {
 
-            return new FileBasedPersistence("/Users/velsubra/Downloads/i18n/i18n.xml");
-        }
+        return new FileBasedPersistence(new File(getWorkDir(), "i18n.xml").getAbsolutePath());
+
     }
 
     private static final SortedSet<IKnownWord> set = Collections.synchronizedSortedSet(new TreeSet<IKnownWord>());
@@ -318,8 +340,6 @@ public abstract class PersistenceInterface {
                 linked.add(w);
             }
         }
-
-
 
 
         // vowelset.appendNodesToAllPaths(w);
@@ -955,7 +975,7 @@ public abstract class PersistenceInterface {
                 peyars.remove(desc);
                 TamilWord n = TamilWord.from(verb);
                 TamilWord n_rm_ak = TamilUtils.trimFinalAKOrReturn(n);
-                removeKnown(new Peyarchchol(n_rm_ak, n.size() - n_rm_ak.size(),false));
+                removeKnown(new Peyarchchol(n_rm_ak, n.size() - n_rm_ak.size(), false));
                 persist(verbs);
             }
 

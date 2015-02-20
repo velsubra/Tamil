@@ -10,6 +10,7 @@ import tamil.lang.api.join.WordsJoiner;
 import tamil.lang.api.number.NumberReader;
 import tamil.lang.api.trans.Transliterator;
 import tamil.lang.exception.service.ServiceException;
+import tamil.lang.spi.TamilDictionaryProvider;
 
 import java.util.Iterator;
 import java.util.ServiceLoader;
@@ -38,7 +39,7 @@ public final class TamilFactory {
 
     }
     static {
-        ServiceLoader loader =  ServiceLoader.load(TamilDictionary.class);
+        ServiceLoader loader =  ServiceLoader.load(TamilDictionaryProvider.class);
 
         loader.reload();
         systemDictionary = new DictionaryCollection(loader.iterator());

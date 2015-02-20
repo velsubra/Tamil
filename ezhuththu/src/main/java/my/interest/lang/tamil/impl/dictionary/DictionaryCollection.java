@@ -3,6 +3,7 @@ package my.interest.lang.tamil.impl.dictionary;
 import tamil.lang.TamilWord;
 import tamil.lang.api.dictionary.TamilDictionary;
 import tamil.lang.known.IKnownWord;
+import tamil.lang.spi.TamilDictionaryProvider;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -18,10 +19,10 @@ public class DictionaryCollection implements TamilDictionary {
 
     private List<TamilDictionary> list = null;
 
-    public DictionaryCollection(Iterator<TamilDictionary> iterator) {
+    public DictionaryCollection(Iterator<TamilDictionaryProvider> iterator) {
         list = new ArrayList<TamilDictionary>();
         while (iterator.hasNext()) {
-            list.add(iterator.next());
+            list.add(iterator.next().create());
         }
 
     }

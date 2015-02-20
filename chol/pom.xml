@@ -6,13 +6,13 @@
     <parent>
         <groupId>TamilPlatform</groupId>
         <artifactId>platform-parent</artifactId>
-        <version>1.0</version>
+        <version>1.1</version>
         <relativePath>..</relativePath>
     </parent>
 
 
     <artifactId>tamil-word</artifactId>
-    <version>1.0</version>
+    <version>1.1</version>
 
     <dependencies>
         <dependency>
@@ -28,12 +28,7 @@
             <version>2.1.6</version>
         </dependency>
 
-        <dependency>
-            <groupId>org.json</groupId>
-            <artifactId>json</artifactId>
-            <version>20090211</version>
-            <scope>test</scope>
-        </dependency>
+
         <dependency>
             <groupId>org.mobicents.external.freetts</groupId>
             <artifactId>freetts</artifactId>

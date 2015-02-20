@@ -4,6 +4,30 @@
     <meta charset="UTF-8">
     <title>ஆங்கிலவரிவடிவம் -> தமிழ்வரிவடிவம்.
     </title>
+    <script src="deployJava.js"></script>
+    <script>
+//        <!-- applet id can be used to get a reference to the applet object -->
+//        var attributes = {
+//            id: 'tamilfactoryapplet',
+//            code: 'tamil.lang.api.applet.AppletTamilFactory',
+//            width: 100,
+//            height: 100
+//        };
+//        var parameters = {jnlp_href: 'tamilplatform.jnlp'};
+//        try {
+//            deployJava.runApplet(attributes, parameters, '1.7');
+//
+//            if (document.tamilfactoryapplet) {
+//                console.log(document.tamilfactoryapplet);
+//                var val = document.tamilfactoryapplet.init();
+//
+//                alert(val);
+//            }
+//        } catch (e) {
+//            console.log(e);
+//
+//        }
+    </script>
 
     <script type="text/javascript" src="jquery-1.9.1.js"></script>
     <script type="text/javascript" src="jquery-ui.js"></script>
@@ -61,8 +85,6 @@
     }
 
 
-
-
     function toggleSplit() {
 
 
@@ -76,8 +98,6 @@
             $.cookie('splitword', null);
         }
     }
-
-
 
 
     function _load() {
@@ -95,7 +115,6 @@
         }
 
 
-
         if ($.cookie('punharchchikkooddu') == 'true') {
             $('#punharchchikkooddu').attr("checked", true);
         }
@@ -110,8 +129,7 @@
         }
         $("#english").select();
         trans($("#english"), $('#spellcheck'));
-        $("#english").blur (function()
-        {
+        $("#english").blur(function () {
             $("#temp_tamil").hide();
         });
 
@@ -128,7 +146,7 @@
         clearTimeout(thread);
         thread = setTimeout(function () {
 
-            trans($('#english'), $('#spellcheck'),null, false, $('#splitword'),  $('#suggestchk'),$('#punharchchikkooddu'));
+            trans($('#english'), $('#spellcheck'), null, false, $('#splitword'), $('#suggestchk'), $('#punharchchikkooddu'));
 
         }, 10);
     }
@@ -139,67 +157,67 @@
         var jarea = $('#english');
         var len = jarea.getCursorPosition();
         var area = jarea.get(0).value;
-        while(len > 0) {
+        while (len > 0) {
             var ch = area.charAt(len);
-            if (ch == ' ' ) {
-                len ++;
+            if (ch == ' ') {
+                len++;
                 break;
             }
             if (ch == '\n') {
                 if (len < area.length) {
-                    len ++;
+                    len++;
                 }
                 break;
             }
-            len --;
+            len--;
         }
         var pos = getCaretCoordinates(elem, len);
-       // console.log(pos);
+        // console.log(pos);
 
-        $("#temp_tamil").css({position:"absolute", left:pos.left, top:pos.top + 75});
+        $("#temp_tamil").css({position: "absolute", left: pos.left, top: pos.top + 75});
     }
 
     function _shedule_trans_typed(evt, txt) {
         _setCursorPosition();
         var code = (evt.keyCode ? evt.keyCode : evt.which);
-        if (code == 13 || code == 32 ||  code == 190 ) {//|| code == 191) {
-             //console.log("code:" + code);
+        if (code == 13 || code == 32 || code == 190) {//|| code == 191) {
+            //console.log("code:" + code);
             var jarea = $('#english');
             var len = jarea.getCursorPosition();
-           // console.log("Reading cursor at:" + len);
+            // console.log("Reading cursor at:" + len);
             var area = jarea.get(0).value;
             var spacecount = 0;
             for (var i = 0; i < len; i++) {
                 var ch = area.charCodeAt(i);
-               // console.log(ch + ":" + code);
+                // console.log(ch + ":" + code);
                 if (ch == code) {
                     spacecount++;
                 }
             }
-           // console.log("Starting:" +spacecount);
-            trans($('#english'),$('#spellcheck'),evt, true, $('#splitword'),  $('#suggestchk'),$('#punharchchikkooddu')) ;
+            // console.log("Starting:" +spacecount);
+            trans($('#english'), $('#spellcheck'), evt, true, $('#splitword'), $('#suggestchk'), $('#punharchchikkooddu'));
 
 
             area = $('#english').get(0).value;
-           // console.log("text:" +area);
-            $('#english').selectRange(len,len);
+            // console.log("text:" +area);
+            $('#english').selectRange(len, len);
             for (var j = 0; j < area.length; j++) {
                 var ch = area.charCodeAt(j);
                 if (ch == code) {
-                    spacecount --;
+                    spacecount--;
                     if (spacecount == 0) {
 
-                        $('#english').selectRange(j +1,j +1);
-                     //   console.log("Setting currser at :" + j);
+                        $('#english').selectRange(j + 1, j + 1);
+                        //   console.log("Setting currser at :" + j);
                         break;
                     }
                 }
             }
 
-        //    console.log("Finished:" +spacecount);
+            //    console.log("Finished:" +spacecount);
 
         } else {
-          //  console.log(code);
+            //  console.log(code);
             _shedule_trans();
         }
 
@@ -253,21 +271,24 @@
                type="checkbox" id="spellcheck" value=""/> <label>சொற்களை சரிபார்க்க</label>
 
 
-        <input onclick="javascript:toggleSplit();"     title="Warning:It will slow down the typing process. Use this for testing simple words and do not enable it otherwise."
+        <input onclick="javascript:toggleSplit();"
+               title="Warning:It will slow down the typing process. Use this for testing simple words and do not enable it otherwise."
                onchange="javascript:trans($('#english'), $('#spellcheck'),event, false, $('#splitword'),$('#punharchchikkooddu'));"
                type="checkbox" id="splitword" value=""/> <label>தொடர்மொழிகளை பிரிக்க. </label>
         <!--<input type="button" onclick="javascript:trans($('#english'),$('#spellcheck'),event, true);"-->
-               <!--value="ஆங்கிலவரிவடிவத்தை கைவிடுங்கள்"-->
-               <!--title="மாற்றஞ்செய்ய வசதியாக ஆங்கிலவெழுத்துகள் கைவிடப்பட்டு, தமிழெழுத்துகள் மாற்றஞ்செய்யப்படும்மிடத்திற்கு கொண்டுவரப்படும்."/>-->
+        <!--value="ஆங்கிலவரிவடிவத்தை கைவிடுங்கள்"-->
+        <!--title="மாற்றஞ்செய்ய வசதியாக ஆங்கிலவெழுத்துகள் கைவிடப்பட்டு, தமிழெழுத்துகள் மாற்றஞ்செய்யப்படும்மிடத்திற்கு கொண்டுவரப்படும்."/>-->
         <br/>
         <input onclick="javascript:toggleSuggestCheck();"
                onchange="javascript:trans($('#english'), $('#spellcheck'),event, false,$('#splitword'),$('#punharchchikkooddu'));"
-               type="checkbox" id="suggestchk" value=""/> <label>ஆலோசனையை வழங்குக  </label>
+               type="checkbox" id="suggestchk" value=""/> <label>ஆலோசனையை வழங்குக </label>
 
         <input onclick="javascript:toggleJoin();"
 
-               type="checkbox" title="When an English noun is looked up with /, it is assumed that the noun is already added. " id="punharchchikkooddu" value=""/> <label>சில்லுதவிகள் (அவன்in=அவனின், Dog/ = நாய், i/aal=என்னால், fruit/ai=பழத்தை)</label>
-
+               type="checkbox"
+               title="When an English noun is looked up with /, it is assumed that the noun is already added. "
+               id="punharchchikkooddu" value=""/> <label>சில்லுதவிகள் (அவன்in=அவனின், Dog/ = நாய், i/aal=என்னால்,
+        fruit/ai=பழத்தை)</label>
 
 
     </div>
@@ -278,8 +299,8 @@
               id="english">ingea thaddungalh!.</textarea>
 
 
-    <div  class="temp_tamil_tip" data-tip="குறிப்பு: aa=ஆ, ea=ஏ, f=ஃ, lh=ள், nt=ந், nh=ண், oa=ஓ, ou=ஔ, rr=ற், zh=ழ்"
-          id="temp_tamil"></div>
+    <div class="temp_tamil_tip" data-tip="குறிப்பு: aa=ஆ, ea=ஏ, f=ஃ, lh=ள், nt=ந், nh=ண், oa=ஓ, ou=ஔ, rr=ற், zh=ழ்"
+         id="temp_tamil"></div>
 </div>
 <div class="note">
     கூகுள்குரோம்-உலாவியில் மட்டுமே சோதனைசெய்யப்பட்டுள்ளது.
@@ -291,5 +312,7 @@ Note:    \Dog = Dog
 <div id="tamil" onclick="javascript:$('#tamil').selectText()" class="editor">
 
 </div>
+
+
 </body>
 </html>
