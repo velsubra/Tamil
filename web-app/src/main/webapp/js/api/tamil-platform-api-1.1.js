@@ -153,7 +153,7 @@ var TamilFactory = new function () {
              * @param features  the comma separated list of features to be used.
              * {json} - the Tamil text as the number is read.
              *        <b> json.tamil </b> gives the actual string. No digits  will be present in it.
-             *        <b> json.error-occurred </b> will be true if there is an error.
+             *        <b> json.error </b> will be true if there is an error.
              *        {"error":"true","emessage":"Index:9 Invalid character:w"}
              */
             this.readNumber = function (word, features) {
@@ -283,7 +283,7 @@ $(document).ready(function () {
     // Binds events for   tamil-text
 
     $(".tamil-text").on('focus', function () {
-        tamil = SYS_TRANSLIT.transliterate($(this).val(), true).tamil;
+        tamil = SYS_TRANSLIT.transliterate($(this).val(),  "110").tamil;
         $(this).val(tamil);
         $(this).$popupDiv("#tamil_text");
         if (tamil) {

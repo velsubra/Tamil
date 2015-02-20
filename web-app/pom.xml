@@ -152,6 +152,7 @@
                     <webResources>
                         <resource>
                             <!-- this is relative to the pom.xml directory -->
+
                             <directory>../chol/target/site</directory>
                         </resource>
                         <resource>

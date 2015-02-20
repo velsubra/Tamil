@@ -13,8 +13,9 @@
 
         <module>ezhuththu</module>
         <module>chol</module>
-        <module>web-app</module>
         <module>tools/gui</module>
+        <module>web-app</module>
+
 
     </modules>
 
