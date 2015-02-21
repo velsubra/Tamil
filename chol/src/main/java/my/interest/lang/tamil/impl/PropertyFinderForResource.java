@@ -85,6 +85,7 @@ public class PropertyFinderForResource implements IPropertyFinder {
                     "        archive=\"" + relativeParent + local  +"../../../"+ REST_CONTEXT + "api/browse/tamil-letter-" +  app.getPlatform() +".jar\"\n" +
                     "        width=\"0\" height=\"0\">\n" +
                    "    <param name=\"code\"      value=\""+ AppletTamilFactory.class.getName() + "\" />\n" +
+                    "   <param name=\"java_arguments\"      value=\"-Dfile.encoding=utf-8\" />\n" +
                     "\n" +
                     "</object>";
         }

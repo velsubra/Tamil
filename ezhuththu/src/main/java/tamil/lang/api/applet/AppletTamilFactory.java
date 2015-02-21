@@ -1,5 +1,6 @@
 package tamil.lang.api.applet;
 
+import my.interest.lang.tamil.EzhuththuUtils;
 import my.interest.lang.tamil.impl.FeatureSet;
 import org.json.JSONObject;
 import tamil.lang.TamilFactory;
@@ -80,6 +81,7 @@ public class AppletTamilFactory extends JApplet {
     public String readNumber(String number, String features) throws org.json.JSONException {
 
         try {
+
             NumberReader reader = TamilFactory.getNumberReader();
             TamilWord w = reader.readNumber(number, FeatureSet.findFeatures(ReaderFeature.class, features).toArray(new ReaderFeature[]{}));
             JSONObject obj = new JSONObject();
@@ -95,17 +97,24 @@ public class AppletTamilFactory extends JApplet {
      * Transliterate and returns json response.
      * Javascript is supposed to call these methods.
      *
-     * @param text     the text to transliterate
+     * @param data     the byte[]  of the text to transliterate
      * @param features the comma separated set of features expressed in comma separated set of integers.
      * @return {json} - the Tamil transliterated object as JSON string or any error.
      * <b> json.tamil </b> gives the transliterated string. No English letters will be present in it.
      * <b> json.error </b> gives true if there is an error.
      * <b> json.emessage </b> gives the error message.
      */
-    public String transliterate(String text, String features) throws org.json.JSONException {
+    public String transliterate(char[] data, String features) throws org.json.JSONException {
 
         try {
+            StringBuffer buffer = new StringBuffer();
+            if (data != null) {
+                for (int i =0 ;i < data.length; i++) {
+                    buffer.append((char)data[i]);
+                }
+            }
 
+            String text = buffer.toString();
             TranslitFeature[] fs = FeatureSet.findFeatures(TranslitFeature.class, features).toArray(new TranslitFeature[]{});
             JSONObject obj = new JSONObject();
             obj.put("tamil", trans.transliterate(text, fs).toString());

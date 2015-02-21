@@ -108,7 +108,7 @@ var TamilFactory = new function () {
 
                 if (typeof TAMIL_APPLET_INJECTED !== 'undefined') {
                     //If applet is initialized.
-                    result = $.parseJSON(TAMIL_APPLET_INJECTED.transliterate(word, features));
+                    result = $.parseJSON(TAMIL_APPLET_INJECTED.transliterate(word.getBytes(), features));
                 } else {
 
                     if (word.length > 20) {
@@ -176,7 +176,7 @@ var TamilFactory = new function () {
                 var result = "";
 
                 if (typeof TAMIL_APPLET_INJECTED !== 'undefined') {
-                    result = $.parseJSON(TAMIL_APPLET_INJECTED.readNumber(word, features));
+                    result = $.parseJSON(TAMIL_APPLET_INJECTED.readNumber(word.getBytes(), features));
                 } else {
 
 
@@ -338,3 +338,19 @@ jQuery.fn.$popupDiv = function (divToPop) {
 
 };
 
+/**
+Javascript string to byte[]
+*/
+String.prototype.getBytes = function() {
+   return toUTF8Array(this);
+}
+
+function toUTF8Array(str) {
+   var arr=[];
+   for(var i=0; i<str.length; i++) {
+       arr.push(str.charCodeAt(i))
+
+       
+   }
+ return arr;
+}
