@@ -94,27 +94,20 @@ public class AppletTamilFactory extends JApplet {
     }
 
     /**
-     * Transliterate and returns json response.
+     * Transliterate and returns json response.   Note: This only takes ascii text as input.
      * Javascript is supposed to call these methods.
      *
-     * @param data     the byte[]  of the text to transliterate
+     * @param text     the text to transliterate
      * @param features the comma separated set of features expressed in comma separated set of integers.
      * @return {json} - the Tamil transliterated object as JSON string or any error.
      * <b> json.tamil </b> gives the transliterated string. No English letters will be present in it.
      * <b> json.error </b> gives true if there is an error.
      * <b> json.emessage </b> gives the error message.
      */
-    public String transliterate(char[] data, String features) throws org.json.JSONException {
+    public String transliterateASCII(String text, String features) throws org.json.JSONException {
+
 
         try {
-            StringBuffer buffer = new StringBuffer();
-            if (data != null) {
-                for (int i =0 ;i < data.length; i++) {
-                    buffer.append((char)data[i]);
-                }
-            }
-
-            String text = buffer.toString();
             TranslitFeature[] fs = FeatureSet.findFeatures(TranslitFeature.class, features).toArray(new TranslitFeature[]{});
             JSONObject obj = new JSONObject();
             obj.put("tamil", trans.transliterate(text, fs).toString());

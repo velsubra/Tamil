@@ -90,6 +90,48 @@ var TamilFactory = new function () {
                 if (word == "") {
                     return word;
                 }
+                var ret = "";
+                var w = "";
+                var json;
+                for (var i = 0; i < word.length; i++) {
+                    var ch = word.charAt(i);
+                    if (ch == "\n" || ch == " " || ch > 127 || i == word.length - 1) {
+                        if (ch == "\n" || ch == " " || ch > 127) {
+                            if (w) {
+                                json = this.transliterateASCII(w, features);
+                                if (json.error) {
+                                    return json;
+                                }
+                                ret +=  json.tamil;
+                            }
+                            ret += ch;
+
+                        } else {
+                            w += ch;
+                            json = this.transliterateASCII(w, features);
+                            if (json.error) {
+                                return json;
+                            }
+                            ret +=  json.tamil;
+                        }
+
+                        w = "";
+                    } else {
+                        w += ch;
+                    }
+                }
+                //console.log("input:" + word + " output:" + ret);
+                var retjson = {
+                    "tamil": ret
+
+                }
+                return retjson;
+            }
+
+            this.transliterateASCII = function (word, features) {
+                if (word == "") {
+                    return word;
+                }
                 features = typeof features !== 'undefined' ? features.trim() : "0";
                 if (!features) {
                     features = "0";
@@ -108,7 +150,7 @@ var TamilFactory = new function () {
 
                 if (typeof TAMIL_APPLET_INJECTED !== 'undefined') {
                     //If applet is initialized.
-                    result = $.parseJSON(TAMIL_APPLET_INJECTED.transliterate(word.getBytes(), features));
+                    result = $.parseJSON(TAMIL_APPLET_INJECTED.transliterateASCII(word, features));
                 } else {
 
                     if (word.length > 20) {
@@ -129,6 +171,7 @@ var TamilFactory = new function () {
                     }).responseText);
                 }
                 thiscache[word] = result;
+               // console.log("returning:" + result.tamil + " for " + word);
                 return result;
             }
             return this;
@@ -176,7 +219,7 @@ var TamilFactory = new function () {
                 var result = "";
 
                 if (typeof TAMIL_APPLET_INJECTED !== 'undefined') {
-                    result = $.parseJSON(TAMIL_APPLET_INJECTED.readNumber(word.getBytes(), features));
+                    result = $.parseJSON(TAMIL_APPLET_INJECTED.readNumber(word, features));
                 } else {
 
 
@@ -283,7 +326,7 @@ $(document).ready(function () {
     // Binds events for   tamil-text
 
     $(".tamil-text").on('focus', function () {
-        tamil = SYS_TRANSLIT.transliterate($(this).val(),  "110").tamil;
+        tamil = SYS_TRANSLIT.transliterate($(this).val(), "110").tamil;
         $(this).val(tamil);
         $(this).$popupDiv("#tamil_text");
         if (tamil) {
@@ -339,18 +382,18 @@ jQuery.fn.$popupDiv = function (divToPop) {
 };
 
 /**
-Javascript string to byte[]
-*/
-String.prototype.getBytes = function() {
-   return toUTF8Array(this);
+ Javascript string to byte[]
+ */
+String.prototype.getBytes = function () {
+    return toUTF8Array(this);
 }
 
 function toUTF8Array(str) {
-   var arr=[];
-   for(var i=0; i<str.length; i++) {
-       arr.push(str.charCodeAt(i))
+    var arr = [];
+    for (var i = 0; i < str.length; i++) {
+        arr.push(str.charCodeAt(i))
 
-       
-   }
- return arr;
+
+    }
+    return arr;
 }
