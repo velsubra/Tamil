@@ -1,11 +1,10 @@
 package my.interest.lang.tamil.parser.impl;
 
 import my.interest.lang.tamil.EzhuththuUtils;
+import my.interest.lang.tamil.internal.api.TamilCharacterParserListener;
+import tamil.lang.TamilCharacter;
 import tamil.lang.TamilSentence;
 import tamil.lang.TamilWord;
-import tamil.lang.TamilCharacter;
-
-import my.interest.lang.tamil.internal.api.TamilCharacterParserListener;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -76,7 +75,11 @@ public class TamilSentenceListener implements TamilCharacterParserListener<Tamil
     }
 
     public static TamilSentence readUTF8(String sentence) {
-        return readUTF8(new ByteArrayInputStream(sentence.getBytes()));
+        try {
+            return readUTF8(new ByteArrayInputStream(sentence.getBytes(EzhuththuUtils.ENCODING)));
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public static TamilSentence readUTF8(InputStream inputStream) {

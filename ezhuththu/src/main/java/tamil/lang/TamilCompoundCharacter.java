@@ -65,7 +65,7 @@ public final class TamilCompoundCharacter extends TamilCharacter implements Comp
 
     @Override
     public int[] getConsonants() {
-        return consonants;
+        return consonants.clone();
     }
 
 

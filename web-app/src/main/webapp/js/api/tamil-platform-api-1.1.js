@@ -93,30 +93,46 @@ var TamilFactory = new function () {
                 var ret = "";
                 var w = "";
                 var json;
+                var needsTranslit = false;
                 for (var i = 0; i < word.length; i++) {
                     var ch = word.charAt(i);
-                    if (ch == "\n" || ch == " " || ch > 127 || i == word.length - 1) {
-                        if (ch == "\n" || ch == " " || ch > 127) {
+                    var chval = word.charCodeAt(i);
+                    if (ch == "\n" || ch == " " || i == word.length - 1) {
+                        if (ch == "\n" || ch == " " ) {
                             if (w) {
-                                json = this.transliterateASCII(w, features);
+                                if (needsTranslit) {
+                                    json = this.transliterate(w, features);
+                                    if (json.error) {
+                                        return json;
+                                    }
+                                    ret +=  json.tamil;
+                                } else {
+                                    ret += w;
+                                }
+                            }
+                            ret += ch;
+
+                        } else { //last char
+                            w += ch;
+                            if (chval < 128) {
+                                 needsTranslit = true;
+                             }
+                             if (needsTranslit) {
+                                json = this.transliterate(w, features);
                                 if (json.error) {
                                     return json;
                                 }
                                 ret +=  json.tamil;
                             }
-                            ret += ch;
-
-                        } else {
-                            w += ch;
-                            json = this.transliterateASCII(w, features);
-                            if (json.error) {
-                                return json;
-                            }
-                            ret +=  json.tamil;
                         }
 
                         w = "";
+                        needsTranslit = false;
                     } else {
+                        if (chval < 128) {
+                            needsTranslit = true;
+                        }
+
                         w += ch;
                     }
                 }
@@ -128,7 +144,7 @@ var TamilFactory = new function () {
                 return retjson;
             }
 
-            this.transliterateASCII = function (word, features) {
+            this.transliterate = function (word, features) {
                 if (word == "") {
                     return word;
                 }
@@ -150,7 +166,9 @@ var TamilFactory = new function () {
 
                 if (typeof TAMIL_APPLET_INJECTED !== 'undefined') {
                     //If applet is initialized.
-                    result = $.parseJSON(TAMIL_APPLET_INJECTED.transliterateASCII(word, features));
+                   // console.log(word);
+                    result = $.parseJSON(TAMIL_APPLET_INJECTED.transliterate(word, features));
+                   // console.log(result);
                 } else {
 
                     if (word.length > 20) {
@@ -219,7 +237,11 @@ var TamilFactory = new function () {
                 var result = "";
 
                 if (typeof TAMIL_APPLET_INJECTED !== 'undefined') {
-                    result = $.parseJSON(TAMIL_APPLET_INJECTED.readNumber(word, features));
+                   // console.log(word);
+                    var js = TAMIL_APPLET_INJECTED.readNumber(word, features);
+                    //console.log(js);
+                    result = $.parseJSON(js);
+                   //    console.log(result);
                 } else {
 
 

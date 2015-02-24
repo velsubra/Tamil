@@ -1,6 +1,5 @@
 package tamil.lang.api.applet;
 
-import my.interest.lang.tamil.EzhuththuUtils;
 import my.interest.lang.tamil.impl.FeatureSet;
 import org.json.JSONObject;
 import tamil.lang.TamilFactory;
@@ -43,12 +42,14 @@ public class AppletTamilFactory extends JApplet {
 
 
     Transliterator trans = null;
+    NumberReader reader = null;
 
     @Override
     public void init() {
         System.out.println("TAMIL Platform Applet init......------------");
         TamilFactory.init();
         trans = TamilFactory.getTransliterator(null);
+        reader = TamilFactory.getNumberReader();
     }
 
     @Override
@@ -82,8 +83,9 @@ public class AppletTamilFactory extends JApplet {
 
         try {
 
-            NumberReader reader = TamilFactory.getNumberReader();
             TamilWord w = reader.readNumber(number, FeatureSet.findFeatures(ReaderFeature.class, features).toArray(new ReaderFeature[]{}));
+            System.out.println("Number:" + w.toString());
+           // System.out.println("file.encoding:" +System.getProperty("file.encoding"));
             JSONObject obj = new JSONObject();
             obj.put("tamil", w.toString());
             return obj.toString();
@@ -104,13 +106,15 @@ public class AppletTamilFactory extends JApplet {
      * <b> json.error </b> gives true if there is an error.
      * <b> json.emessage </b> gives the error message.
      */
-    public String transliterateASCII(String text, String features) throws org.json.JSONException {
+    public String transliterate(String text, String features) throws org.json.JSONException {
 
 
         try {
             TranslitFeature[] fs = FeatureSet.findFeatures(TranslitFeature.class, features).toArray(new TranslitFeature[]{});
             JSONObject obj = new JSONObject();
-            obj.put("tamil", trans.transliterate(text, fs).toString());
+            TamilWord w = trans.transliterate(text, fs);
+            System.out.println("Tamil:" + w.toString());
+            obj.put("tamil", w.toString());
             return obj.toString();
         } catch (Exception e) {
             return handle(e).toString();

@@ -1,11 +1,10 @@
 package my.interest.lang.tamil.parser.impl;
 
 import my.interest.lang.tamil.EzhuththuUtils;
-import tamil.lang.TamilPara;
-import tamil.lang.TamilCharacter;
-import tamil.lang.TamilSentence;
-
 import my.interest.lang.tamil.internal.api.TamilCharacterParserListener;
+import tamil.lang.TamilCharacter;
+import tamil.lang.TamilPara;
+import tamil.lang.TamilSentence;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -65,7 +64,11 @@ public class TamilParaListener implements TamilCharacterParserListener<TamilPara
     }
 
     public static TamilPara readUTF8(String para) {
-        return readUTF8(new ByteArrayInputStream(para.getBytes()));
+        try {
+            return readUTF8(new ByteArrayInputStream(para.getBytes(EzhuththuUtils.ENCODING)));
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
 
