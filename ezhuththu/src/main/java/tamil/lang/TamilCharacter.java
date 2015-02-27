@@ -304,7 +304,7 @@ public abstract class TamilCharacter extends AbstractCharacter {
         if (!TamilCharacter.class.isAssignableFrom(o.getClass())) {
             return -1;
         }
-        return new Integer(getNumericStrength()).compareTo(((TamilCharacter) o).getNumericStrength());
+        return Integer.valueOf(getNumericStrength()).compareTo(((TamilCharacter) o).getNumericStrength());
     }
 
 

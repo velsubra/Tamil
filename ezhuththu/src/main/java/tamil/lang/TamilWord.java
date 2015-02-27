@@ -4,7 +4,6 @@ import common.lang.impl.AbstractCharacter;
 import common.lang.impl.AbstractWord;
 import common.lang.impl.UnknownCharacter;
 import my.interest.lang.tamil.EzhuththuUtils;
-
 import my.interest.lang.tamil.parser.impl.TamilWordListener;
 
 /**
@@ -96,11 +95,13 @@ public final class TamilWord extends AbstractWord<AbstractCharacter> implements 
      *
      * @param ch tamil characters.
      */
-    public TamilWord(TamilCharacter... ch) {
-        for (TamilCharacter c : ch) {
+    public TamilWord(AbstractCharacter... ch) {
+        for (AbstractCharacter c : ch) {
             add(c);
         }
     }
+
+
 
     /**
      * Checks if the  word starts with  the given word.
@@ -206,17 +207,23 @@ public final class TamilWord extends AbstractWord<AbstractCharacter> implements 
     }
 
 
-    private static TamilWord reverse(TamilWord t) {
-        if (t.size() == 1 || t.size() == 0) {
-            return t;
-        } else {
-            TamilWord sub = new TamilWord();
-            sub.addAll(t.subList(1, t.size()));
-            sub = reverse(sub);
-            sub.add(t.get(0));
-            return sub;
-
+    /**
+     * Reverses a given word.
+     *
+     * @param t the word to be reversed.
+     * @return the reversed word.
+     */
+    public static TamilWord reverse(TamilWord t) {
+        if (t == null) {
+            return null;
         }
+        TamilWord sub = new TamilWord();
+        for (int i = 0; i < t.size() - 1; i++) {
+            sub.add(0, t.get(i));
+        }
+        return sub;
+
+
     }
 
     /**

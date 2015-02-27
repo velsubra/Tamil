@@ -18,6 +18,7 @@ import tamil.lang.api.trans.TranslitFeature;
 import tamil.lang.api.trans.Transliterator;
 import tamil.lang.known.IKnownWord;
 
+import java.io.Serializable;
 import java.lang.ref.SoftReference;
 import java.util.*;
 
@@ -188,6 +189,7 @@ public final class EnglishToTamilCharacterLookUpContext implements Transliterato
         map.put("rrr", new TamilWord(TamilCompoundCharacter.IRR, TamilCompoundCharacter.IRR));
         map.put("rrrr", new TamilWord(TamilCompoundCharacter.IRR, TamilCompoundCharacter.IRR));
         map.put("s", new TamilWord(TamilCompoundCharacter.ICH));
+        map.put("ss", new TamilWord(TamilCompoundCharacter.ISS_));
         map.put("sy ", new TamilWord(TamilCompoundCharacter.ICH_I));
         map.put("sh", new TamilWord(TamilCompoundCharacter.ISH_));
         map.put("t", new TamilWord(TamilCompoundCharacter.IRR));
@@ -399,7 +401,7 @@ public final class EnglishToTamilCharacterLookUpContext implements Transliterato
         return word;
     }
 
-    static class TamilWordComparator implements Comparator<TamilWord> {
+    static class TamilWordComparator implements Comparator<TamilWord>, Serializable {
 
 
         @Override
@@ -415,9 +417,9 @@ public final class EnglishToTamilCharacterLookUpContext implements Transliterato
     }
 
 
-    private static TamilWord getBestMatchNoNonChar(String english) {
-        return getBestMatchNoNonChar(english, true, true);
-    }
+//    private static TamilWord getBestMatchNoNonChar(String english) {
+//        return getBestMatchNoNonChar(english, true, true);
+//    }
 
     //Eats max of four five characters
     private static TamilWord getBestMatchNoNonChar(String english, boolean starting, boolean ending) {

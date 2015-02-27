@@ -44,6 +44,8 @@ public class UnknownCharacter extends AbstractCharacter implements SimpleCharact
         if (!UnknownCharacter.class.isAssignableFrom(o.getClass())) {
             return -1;
         }
-        return new Integer( getValue()).compareTo(((UnknownCharacter)o).getValue());
+        return Integer.valueOf(getValue()).compareTo(((UnknownCharacter) o).getValue());
     }
+
+
 }

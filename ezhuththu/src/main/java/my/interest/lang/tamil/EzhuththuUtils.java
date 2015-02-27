@@ -2,10 +2,14 @@ package my.interest.lang.tamil;
 
 import common.lang.impl.AbstractCharacter;
 import my.interest.lang.tamil.internal.api.TamilCharacterParserListener;
+import my.interest.lang.tamil.internal.api.TamilSoundParserListener;
 import tamil.lang.*;
-import tamil.lang.known.IKnownWord;
+import tamil.lang.sound.AtomicSound;
+import tamil.lang.sound.TamilSoundLookUpContext;
 
 import java.io.*;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.*;
 
 /**
@@ -16,8 +20,6 @@ import java.util.*;
  */
 public class EzhuththuUtils {
     public static final String ENCODING = "UTF-8";
-
-
 
 
     public static byte[] readAllFromFile(String file) {
@@ -373,6 +375,104 @@ public class EzhuththuUtils {
             }
         }
         return listener.get();
+    }
+
+    private static AtomicSound findRelevantSound(TamilSoundLookUpContext context, boolean previousConsonant, boolean previousVowel) {
+        if (previousVowel && context.nextToUyirSound != null) {
+            return context.nextToUyirSound;
+        }
+
+        if (previousConsonant && context.nextToConsonantSound != null) {
+            return context.nextToConsonantSound;
+        }
+
+        return context.directSound;
+
+    }
+
+    public static List<Field> getPublicStaticFinalFieldsOfType(Class from, Class type) {
+        Field[] fields = from.getFields();
+        List<Field> list = new ArrayList<Field>();
+        for (Field f : fields) {
+            if (Modifier.isStatic(f.getModifiers())) {
+                if (Modifier.isFinal(f.getModifiers())) {
+                    if (Modifier.isPublic(f.getModifiers())) {
+                        if (type == null || type.isAssignableFrom(f.getType())) {
+                            list.add(f);
+                        }
+                    }
+                }
+            }
+        }
+        return list;
+    }
+
+
+    public static void readSound(TamilWord word, TamilSoundParserListener listener) throws Exception {
+        if (word == null || word.isEmpty()) return;
+
+        TamilSoundLookUpContext context = null;
+        AbstractCharacter read = null;
+        AbstractCharacter lastconsumed = null;
+        AbstractCharacter lastLooked = null;
+        boolean previousConsonant = false;
+        boolean previousVowel = false;
+
+        for (int i = 0; i < word.size(); i++) {
+            previousConsonant = false;
+            previousVowel = false;
+            if (lastconsumed != null) {
+                if (lastconsumed.isTamilLetter()) {
+                    TamilCharacter last = (TamilCharacter) lastconsumed;
+                    previousConsonant = last.isMeyyezhuththu();
+                    previousVowel = last.isUyirezhuththu() || last.isUyirMeyyezhuththu();
+                }
+            }
+
+            read = word.get(i);
+            if (context != null) {
+                TamilSoundLookUpContext followContext = context.next(read);
+                if (followContext == null) {
+                    AtomicSound current = findRelevantSound(context, previousConsonant, previousVowel);
+
+                    if (current == null) {
+                        //TODO: Need to handle incomplete characters later
+                    } else {
+                        lastconsumed = lastLooked;
+                        if (listener.tamilSound(current)) {
+
+                            return;
+                        }
+                        context = null;
+                    }
+                } else {
+                    context = followContext;
+                    lastLooked = read;
+                }
+            }
+            if (context == null) {
+                context = TamilSoundLookUpContext.lookup(read);
+                lastLooked = read;
+            }
+
+
+            if (context == null) {
+
+                if (listener.nonTamilSound(read)) {
+                    return;
+                }
+            }
+        }
+
+        if (context != null) {
+            AtomicSound current = findRelevantSound(context, previousConsonant, previousVowel);
+            if (current != null) {
+                listener.tamilSound(current);
+              //  consumed = read;
+            }
+
+        }
+
     }
 
 
