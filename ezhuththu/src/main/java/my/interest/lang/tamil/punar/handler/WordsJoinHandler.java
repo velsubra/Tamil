@@ -37,6 +37,16 @@ public final class WordsJoinHandler extends VinaiMutruCreationHandler implements
     }
 
     /**
+     * adds the current sum into the given word by doing புணர்ச்சி
+     *
+     * @param word the word to be inserted
+     */
+    @Override
+    public void addNilaiMozhi(TamilWord word) {
+        insertFirst(new TamilWordPartContainer(word));
+    }
+
+    /**
      * The effective word that is returned.
      *
      * @return the sum out of one or more additions using {@link #add(tamil.lang.TamilWord)}

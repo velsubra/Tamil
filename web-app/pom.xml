@@ -19,7 +19,7 @@
 
 
     <properties>
-        <jersey.version>1.17</jersey.version>
+        <jersey.version>1.9</jersey.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
@@ -33,13 +33,13 @@
         <dependency>
             <groupId>com.sun.jersey</groupId>
             <artifactId>jersey-grizzly</artifactId>
-            <version>${jersey.version}</version>
+            <version>1.17</version>
         </dependency>
 
         <dependency>
             <groupId>com.sun.jersey</groupId>
             <artifactId>jersey-grizzly</artifactId>
-            <version>${jersey.version}</version>
+            <version>1.17</version>
 
             <scope>test</scope>
         </dependency>
@@ -59,7 +59,7 @@
         <dependency>
             <groupId>com.sun.jersey</groupId>
             <artifactId>jersey-grizzly2-servlet</artifactId>
-            <version>${jersey.version}</version>
+            <version>1.17</version>
             <scope>test</scope>
         </dependency>
 

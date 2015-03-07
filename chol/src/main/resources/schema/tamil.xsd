@@ -3,6 +3,26 @@
            xmlns="http://my.interest.lang.tamil"
            targetNamespace="http://my.interest.lang.tamil"
            xmlns:jxb="http://java.sun.com/xml/ns/jaxb" jxb:version="2.1">
+
+
+    <xs:annotation>
+        <xs:appinfo>
+            <jxb:globalBindings localScoping="nested"
+
+                                generateValueClass="true">
+                <jxb:javaType name="my.interest.lang.tamil.xml.AppCache" xmlType="AppCache"
+                              parseMethod="my.interest.lang.tamil.xml.AppCache.serialize"
+                              printMethod="my.interest.lang.tamil.xml.AppCache.deserialize"/>
+            </jxb:globalBindings>
+        </xs:appinfo>
+    </xs:annotation>
+
+
+    <xs:simpleType name="AppCache">
+        <xs:restriction base="xs:string">
+        </xs:restriction>
+    </xs:simpleType>
+
     <xs:element name="tamil-root-words">
         <xs:complexType>
 
@@ -65,6 +85,8 @@
     <xs:element name="idai" type="Idai"/>
     <xs:element name="peyar" type="Peyar"/>
     <xs:element name="app" type="AppDescription"/>
+    <xs:element name="appbase" type="AppDescriptionBase"/>
+
     <xs:element name="apps" type="AppsDescription"/>
     <xs:element name="appresource" type="AppResource"/>
 
@@ -138,15 +160,42 @@
 
 
     <xs:complexType name="AppDescription">
+        <xs:complexContent>
+            <xs:extension base="AppDescriptionBase">
+                <xs:sequence>
+                    <xs:element name="cache" type="AppCache"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+
+    <xs:complexType name="AppDescriptionBase">
         <xs:sequence>
             <xs:element name="platform" type="xs:string" default="1.1"/>
             <xs:element name="code" type="xs:string"/>
             <xs:element name="root" type="xs:string"/>
             <xs:element name="name" type="xs:string"/>
-
+            <xs:element name="description" type="xs:string"/>
             <xs:element name="resources" type="AppResources"/>
+            <xs:element name="resourceInheritance" type="ResourceInheritance"/>
         </xs:sequence>
     </xs:complexType>
+
+
+    <xs:complexType name="ResourceInheritance">
+        <xs:sequence>
+            <xs:element name="parentApps" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="inheritanceOrder" type="ResourceInheritanceOrder"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:simpleType name="ResourceInheritanceOrder">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="DEPTH_FIRST_PRE_ORDER"/>
+            <xs:enumeration value="BREADTH_FIRST"/>
+        </xs:restriction>
+    </xs:simpleType>
 
     <xs:complexType name="AppResources">
         <xs:sequence>

@@ -253,6 +253,7 @@ public final class EnglishToTamilCharacterLookUpContext implements Transliterato
 
         boolean cacheable = true;
         boolean join = false;
+        boolean atleastOneTranslit = false;
         NounLookupFeature nounlookup = null;
 
         if (features != null) {
@@ -275,7 +276,7 @@ public final class EnglishToTamilCharacterLookUpContext implements Transliterato
             if (ref != null) {
                 word = ref.get();
                 if (word != null) {
-                    return word;
+                    return word.duplicate();
                 }
             }
         }
@@ -348,6 +349,7 @@ public final class EnglishToTamilCharacterLookUpContext implements Transliterato
                 if (buffer.length() > 0) {
                     //All English
                     TamilWord allEnglish = getBestMatchNoNonChar(buffer.toString(), starting, true);
+                    atleastOneTranslit = true;
                     if (join) {
                         handler.addVaruMozhi(allEnglish);
                     } else {
@@ -375,6 +377,7 @@ public final class EnglishToTamilCharacterLookUpContext implements Transliterato
 
         if (buffer.length() > 0) {
             TamilWord allEnglish = getBestMatchNoNonChar(buffer.toString(), starting, true);
+            atleastOneTranslit = true;
             if (join) {
                 handler.addVaruMozhi(allEnglish);
             } else {
@@ -395,8 +398,8 @@ public final class EnglishToTamilCharacterLookUpContext implements Transliterato
         if (join) {
             word = handler.getSum();
         }
-        if (cacheable) {
-            cache.put(englishoriginal, new SoftReference<TamilWord>(word));
+        if (cacheable && atleastOneTranslit) {
+           cache.put(englishoriginal, new SoftReference<TamilWord>(word.duplicate()));
         }
         return word;
     }
@@ -515,106 +518,6 @@ public final class EnglishToTamilCharacterLookUpContext implements Transliterato
 
     }
 
-
-//    public static TamilWord getBestMatch(String englishoriginal, boolean join) {
-//        TamilWord word = null;
-//        Map<String, SoftReference<TamilWord>> cache = join ? TRANSLIT_CACHE_JOIN : TRANSLIT_CACHE;
-//        SoftReference<TamilWord> ref = cache.get(englishoriginal);
-//        if (ref != null) {
-//            word = ref.get();
-//            if (word != null) {
-//                return word;
-//            }
-//        }
-//
-//        StringBuffer buffer = new StringBuffer();
-//        StringBuffer nonresolved = new StringBuffer();
-//
-//        WordsJoinHandler handler = null;
-//        if (join) {
-//            handler = new WordsJoinHandler();
-//        } else {
-//            word = new TamilWord();
-//        }
-//        if (englishoriginal == null) return word;
-//        StringBuffer english = new StringBuffer();
-//        for (int i = 0; i < englishoriginal.length(); i++) {
-//            char ch = englishoriginal.charAt(i);
-//            if (ch >= 'A' && ch <= 'Z') {
-//                String pref = preprocess.get(ch);
-//                if (pref != null) {
-//                    english.append(pref);
-//                } else {
-//                    //To lower case.
-//                    english.append((char) (ch + 32));
-//                }
-//
-//            } else {
-//                english.append(ch);
-//            }
-//
-//        }
-//
-//
-//        boolean starting = true;
-//        for (int i = 0; i < english.length(); i++) {
-//            TamilWord single = map.get(String.valueOf(english.charAt(i)));
-//            if (single == null) {
-//                if (buffer.length() > 0) {
-//                    //All English
-//                    TamilWord allEnglish = getBestMatchNoNonChar(buffer.toString(), starting, true);
-//                    if (join) {
-//                        handler.addVaruMozhi(allEnglish);
-//                    } else {
-//                        word.addAll(allEnglish);
-//                    }
-//                    buffer.setLength(0);
-//
-//                }
-//                starting = false;
-//                nonresolved.append(english.charAt(i));
-//            } else {
-//                if (nonresolved.length() > 0) {
-//                    TamilWord non = TamilWordListener.readUTF8(nonresolved.toString(), true);
-//                    if (join) {
-//                        handler.addVaruMozhi(non);
-//                    } else {
-//                        word.addAll(non);
-//                    }
-//                    nonresolved.setLength(0);
-//                }
-//
-//                buffer.append(english.charAt(i));
-//            }
-//        }
-//
-//        if (buffer.length() > 0) {
-//            TamilWord allEnglish = getBestMatchNoNonChar(buffer.toString(), starting, true);
-//            if (join) {
-//                handler.addVaruMozhi(allEnglish);
-//            } else {
-//                word.addAll(allEnglish);
-//            }
-//            buffer.setLength(0);
-//        }
-//        if (nonresolved.length() > 0) {
-//            TamilWord non = TamilWordListener.readUTF8(nonresolved.toString(), true);
-//            if (join) {
-//                handler.addVaruMozhi(non);
-//            } else {
-//                word.addAll(non);
-//            }
-//
-//            nonresolved.setLength(0);
-//        }
-//        if (join) {
-//            word = handler.getVinaiMutru();
-//        }
-//        cache.put(englishoriginal, new SoftReference<TamilWord>(word));
-//        return word;
-//
-//
-//    }
 
     private static TamilWord iyalbuadd(TamilWord w, TamilWord ch, IyalbuPunarchiHandler handler) {
         TamilWord one = new TamilWord();

@@ -21,7 +21,7 @@ import tamil.lang.known.non.derived.Vinaiyadi;
 public final class EthirmarraipPeyarechcham extends AbstractVinaiyadiPeyarechcham implements IEthirmarrai {
     public EthirmarraipPeyarechcham(TamilWord word, Vinaiyadi vinaiyadi) {
         super(word, vinaiyadi);
-       if (word.endsWith(TamilSimpleCharacter.THA) && word.size() > 1) {
+       if (word.endsWith(TamilSimpleCharacter.THA) && word.size() > 2) {
            TamilWord withoutLast = word.subWord(0, word.size() -1);
            EthirmarraipPeyarechcham kedda = new EthirmarraipPeyarechcham(withoutLast, vinaiyadi);
            kedda.addProperty("EERRUKEDDATHU", "true");

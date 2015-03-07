@@ -8,11 +8,9 @@ import my.interest.lang.tamil.multi.ExecuteManager;
 import my.interest.lang.tamil.multi.WordGeneratorFromIdai;
 import my.interest.lang.tamil.multi.WordGeneratorFromPeyar;
 import my.interest.lang.tamil.multi.WordGeneratorFromVinaiyadi;
+import my.interest.lang.tamil.punar.handler.verrrrumai.VAllHandler;
 import tamil.lang.TamilWord;
-import tamil.lang.known.non.derived.Aththu;
-import tamil.lang.known.non.derived.AtomicIsolatedIdai;
-import tamil.lang.known.non.derived.Kalh;
-import tamil.lang.known.non.derived.Ottu;
+import tamil.lang.known.non.derived.*;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
@@ -212,6 +210,11 @@ public class FileBasedPersistence extends PersistenceInterface {
 
             if (isEmptyKnown() && autoLoad) {
 
+                trim(cached.getPeyar().getGlobalTypes());
+                trim(cached.getIdai().getGlobalTypes());
+                trim(cached.getVinai().getGlobalTypes());
+
+
 
                 ExecuteManager.fire(new Runnable() {
 
@@ -226,6 +229,10 @@ public class FileBasedPersistence extends PersistenceInterface {
                         }
                     }
                 });
+
+                for (VUrubu u: VAllHandler.all.keySet()) {
+                    addKnown(u);
+                }
 
 
                 addKnown(new Kalh());
@@ -258,9 +265,6 @@ public class FileBasedPersistence extends PersistenceInterface {
                     }
                 });
 
-                trim(cached.getPeyar().getGlobalTypes());
-                trim(cached.getIdai().getGlobalTypes());
-                trim(cached.getVinai().getGlobalTypes());
 
 
                 ExecuteManager.fire(new Runnable() {

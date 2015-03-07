@@ -2,6 +2,7 @@ package my.interest.lang.tamil.parser.impl;
 
 import common.lang.impl.AbstractCharacter;
 import my.interest.lang.tamil.internal.api.TamilSoundParserListener;
+import tamil.lang.TamilWord;
 import tamil.lang.sound.AtomicSound;
 
 import java.util.ArrayList;
@@ -32,5 +33,13 @@ public class TamilSoundListener implements TamilSoundParserListener {
     @Override
     public List<AtomicSound> get() {
         return list;
+    }
+
+    public TamilWord getSynthesizedWord() {
+        TamilWord w = new TamilWord();
+        for (AtomicSound s : list) {
+            w.addAll(s.getWord());
+        }
+        return w;
     }
 }

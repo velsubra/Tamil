@@ -47,15 +47,15 @@ function _getSuggestionFor(word, correct) {
     }
 
     suggestion = JSON.parse(jQuery.ajax({
-        type:"PUT",
-        data:word + "",
-        url:server + "lookup/words/?maxcount=10&suggest=" + correct,
-        contentType:"text/plain; charset=utf-8",
+        type: "PUT",
+        data: word + "",
+        url: server + "lookup/words/?maxcount=10&suggest=" + correct,
+        contentType: "text/plain; charset=utf-8",
 
-        async:false
+        async: false
     }).responseText).results;
     map_suggestion_word[word] = suggestion;
-    return  suggestion;
+    return suggestion;
 
 }
 
@@ -114,6 +114,8 @@ var listVerbsMap = new Object();
 function TEMP_WORD(word) {
     this.tamilWord = word;
     this.known = true;
+    this.actual = word;
+    this.parsed = true;
 }
 
 function getTamilWord(eng, parse, arrayvalue, join) {
@@ -146,14 +148,47 @@ function getTamilWord(eng, parse, arrayvalue, join) {
 }
 
 
+function getTamilWordAsync(callback, eng, parse, arrayvalue, join) {
+
+    if (eng == "") {
+        return new TEMP_WORD(eng);
+    }
+    if (eng.indexOf("\\") == 0) {
+        callback(TEMP_WORD(eng.substring(1)));
+    }
+
+    var t = transMAP[eng];
+    if (t != null) {
+        if (parse && !t.parsed) {
+            t = null;
+        }
+    }
+    if (t == null) {
+
+        _translitAsync(function (result) {
+            console.log(result);
+            console.log(eng);
+            transMAP[eng] = result;
+            transMAP[result.tamilWord] = result;
+            callback(result);
+        }, eng, parse, arrayvalue, join);
+
+
+    } else {
+        callback(t);
+    }
+
+}
+
+
 jQuery.ajaxSetup({
-    beforeSend:function () {
+    beforeSend: function () {
         // show gif here, eg:
         $(".ajaxloading").css("border", "2px red");
         $(".ajaxloading").css("background", "url('progress.gif') 50% 50% no-repeat");
 
     },
-    complete:function () {
+    complete: function () {
         // hide gif here, eg:
         $(".ajaxloading").css("border", "1px green");
         $(".ajaxloading").css('background', 'none');
@@ -171,16 +206,16 @@ jQuery.ajaxSetup({
 
 function _get_handler_list() {
     jQuery.ajax({
-        type:"GET",
-        dataType:"json",
-        url:server + "handlers/list/",
-        success:function (data, status, jqXHR) {
+        type: "GET",
+        dataType: "json",
+        url: server + "handlers/list/",
+        success: function (data, status, jqXHR) {
             var options = $("#rule");
             $.each(data.handlers, function (item) {
                 options.append($("<option />").val(data.handlers[item]).text(data.handlers[item]));
             });
         },
-        error:function (jqXHR, status) {
+        error: function (jqXHR, status) {
             alert(status);
         }
     });
@@ -248,12 +283,33 @@ function _translitSync(english, parse, arrayvalue, join) {
     }
 
     return $.parseJSON(jQuery.ajax({
-        type:"PUT",
-        data:english + "",
-        url:server + "punarchi/translit/" + (parse ? "?parse=true" : "?array=" + arrayvalue) + "&join="+join,
-        contentType:"text/plain; charset=utf-8",
-        async:false
+        type: "PUT",
+        data: english + "",
+        url: server + "punarchi/translit/" + (parse ? "?parse=true" : "?array=" + arrayvalue) + "&join=" + join,
+        contentType: "text/plain; charset=utf-8",
+        async: false
     }).responseText);
+
+}
+
+
+function _translitAsync(callback, english, parse, arrayvalue, join) {
+    if (arrayvalue == null) {
+        arrayvalue = false;
+    }
+    if (!join) {
+        join = false;
+    }
+
+    jQuery.ajax({
+        type: "PUT",
+        data: english + "",
+        url: server + "punarchi/translit/" + (parse ? "?parse=true" : "?array=" + arrayvalue) + "&join=" + join,
+        contentType: "text/plain; charset=utf-8",
+        success: function (data, status, jqXHR) {
+            callback(data);
+        }
+    });
 
 }
 
@@ -264,23 +320,23 @@ function _translitSyncBulk(english, join) {
         join = false;
     }
     var data = $.parseJSON(jQuery.ajax({
-        type:"PUT",
-        data:english + "",
-        url:server + "punarchi/translitbulk/?join=" + join,
-        contentType:"text/plain; charset=utf-8",
-        async:false
+        type: "PUT",
+        data: english + "",
+        url: server + "punarchi/translitbulk/?join=" + join,
+        contentType: "text/plain; charset=utf-8",
+        async: false
     }).responseText);
 
 
     $.each(data, function (item) {
         var r = data[item];
-        transMAP[ r.actual] = r;
+        transMAP[r.actual] = r;
     });
 
 }
 
 
-function _translit(typed, txt, arrayvalue,tojoin) {
+function _translit(typed, txt, arrayvalue, tojoin) {
     if (typed.value == "") {
         $(txt).val("");
         $(txt).trigger("input");
@@ -297,7 +353,7 @@ function _translit(typed, txt, arrayvalue,tojoin) {
 
 function _silent_add_Vinayadi_property(vinaiyadi, propname, propvalue) {
 
-    return  _silent_add_property('root-verbs/verbs', vinaiyadi, propname, propvalue);
+    return _silent_add_property('root-verbs/verbs', vinaiyadi, propname, propvalue);
 
 
 }
@@ -313,15 +369,15 @@ function _silent_add_property(base, word, propname, propvalue) {
 
     var failed = false;
     jQuery.ajax({
-        type:"PUT",
-        data:propvalue + "",
-        url:server + base + "/name/" + encodeURI(word) + "/property/" + propname + "/",
-        contentType:"text/plain; charset=utf-8",
+        type: "PUT",
+        data: propvalue + "",
+        url: server + base + "/name/" + encodeURI(word) + "/property/" + propname + "/",
+        contentType: "text/plain; charset=utf-8",
 
-        async:false,
+        async: false,
 
-        statusCode:{
-            500:function (data, status, XHR) {
+        statusCode: {
+            500: function (data, status, XHR) {
                 alert(jQuery.parseJSON(data.responseText).message);
                 failed = true;
             }
@@ -336,14 +392,14 @@ function _silent_add_property(base, word, propname, propvalue) {
 function _silent_get_property(base, word, propname) {
 
     return jQuery.ajax({
-        type:"GET",
-        url:server + base + "/name/" + encodeURI(word) + "/property/" + propname + "/",
-        contentType:"text/plain; charset=utf-8",
+        type: "GET",
+        url: server + base + "/name/" + encodeURI(word) + "/property/" + propname + "/",
+        contentType: "text/plain; charset=utf-8",
 
-        async:false,
+        async: false,
 
-        statusCode:{
-            404:function (data, status, XHR) {
+        statusCode: {
+            404: function (data, status, XHR) {
                 return null;
             }
         }
@@ -366,14 +422,14 @@ function _getWordsCount_Nouns() {
 function _getWordsCount(base) {
 
     return jQuery.ajax({
-        type:"GET",
-        url:server + base + "/words/count/",
-        contentType:"text/plain; charset=utf-8",
+        type: "GET",
+        url: server + base + "/words/count/",
+        contentType: "text/plain; charset=utf-8",
 
-        async:false,
+        async: false,
 
-        statusCode:{
-            404:function (data, status, XHR) {
+        statusCode: {
+            404: function (data, status, XHR) {
                 return "-1";
             }
         }
@@ -385,14 +441,14 @@ function _getWordsCount(base) {
 function _silent_get_properties_With_Start(base, word, propname) {
 
     var props = jQuery.ajax({
-        type:"GET",
-        url:server + base + "/name/" + encodeURI(word) + "/properties/?select=" + propname,
-        contentType:"text/plain; charset=utf-8",
+        type: "GET",
+        url: server + base + "/name/" + encodeURI(word) + "/properties/?select=" + propname,
+        contentType: "text/plain; charset=utf-8",
 
-        async:false,
+        async: false,
 
-        statusCode:{
-            404:function (data, status, XHR) {
+        statusCode: {
+            404: function (data, status, XHR) {
                 return null;
             }
         }
@@ -427,11 +483,11 @@ function _join_handler() {
 
     var handler = $("#rule").val();
     jQuery.ajax({
-        type:"PUT",
-        data:handler,
-        url:server + "punarchi/join/" + encodeURI(nilai) + "/" + encodeURI(varum) + "/",
-        contentType:"text/plain; charset=utf-8",
-        success:function (data, status, jqXHR) {
+        type: "PUT",
+        data: handler,
+        url: server + "punarchi/join/" + encodeURI(nilai) + "/" + encodeURI(varum) + "/",
+        contentType: "text/plain; charset=utf-8",
+        success: function (data, status, jqXHR) {
 
             $("#result_table tr:gt(0)").detach();
             var table = $("#result_table tr:last");
@@ -441,7 +497,7 @@ function _join_handler() {
                 // alert(data[item].handlerName);
             });
         },
-        error:function (jqXHR, status) {
+        error: function (jqXHR, status) {
             //  alert(status);
         }
     });
@@ -511,10 +567,10 @@ function _list_all_verbs_fromDerived(go) {
         if (list == null) {
 
             list = $.parseJSON(jQuery.ajax({
-                type:"GET",
-                url:server + "lookup/verbs/?noprops=true" + (vinaiyadi.trim() == "" ? "" : "&pattern=" + encodeURI(vinaiyadi)),
-                contentType:"text/plain; charset=utf-8",
-                async:false
+                type: "GET",
+                url: server + "lookup/verbs/?noprops=true" + (vinaiyadi.trim() == "" ? "" : "&pattern=" + encodeURI(vinaiyadi)),
+                contentType: "text/plain; charset=utf-8",
+                async: false
 
             }).responseText);
         }
@@ -527,13 +583,13 @@ var listNounsMap = new Object();
 
 function add_new_noun_sync(noun) {
     jQuery.ajax({
-        type:"POST",
-        dataType:"json",
-        url:server + "root-nouns/nouns/name/" + encodeURI(noun) + "/",
-        contentType:"text/plain; charset=utf-8",
-        async:false,
-        statusCode:{
-            500:function (data) {
+        type: "POST",
+        dataType: "json",
+        url: server + "root-nouns/nouns/name/" + encodeURI(noun) + "/",
+        contentType: "text/plain; charset=utf-8",
+        async: false,
+        statusCode: {
+            500: function (data) {
                 $("#noun").focus();
                 // alert(JSON.stringify( data) );
                 alert(jQuery.parseJSON(data.responseText).message);
@@ -572,13 +628,13 @@ function _delete_Noun(noun) {
 
 
     jQuery.ajax({
-        type:"DELETE",
-        dataType:"json",
-        url:server + "root-nouns/nouns/name/" + encodeURI(noun) + "/",
-        contentType:"text/plain; charset=utf-8",
-        async:false,
-        statusCode:{
-            500:function (data) {
+        type: "DELETE",
+        dataType: "json",
+        url: server + "root-nouns/nouns/name/" + encodeURI(noun) + "/",
+        contentType: "text/plain; charset=utf-8",
+        async: false,
+        statusCode: {
+            500: function (data) {
 
 
                 alert(jQuery.parseJSON(data.responseText).message);
@@ -604,10 +660,10 @@ function _list_all_nouns(go) {
     if (list == null) {
 
         list = $.parseJSON(jQuery.ajax({
-            type:"GET",
-            url:server + "root-nouns/nouns/?noprops=true" + (noun.trim() == "" ? "" : "&pattern=" + encodeURI(noun)),
-            contentType:"text/plain; charset=utf-8",
-            async:false
+            type: "GET",
+            url: server + "root-nouns/nouns/?noprops=true" + (noun.trim() == "" ? "" : "&pattern=" + encodeURI(noun)),
+            contentType: "text/plain; charset=utf-8",
+            async: false
 
         }).responseText);
     }
@@ -651,13 +707,13 @@ var listPrepositionsMap = new Object();
 
 function add_new_preposition_sync(preposition) {
     jQuery.ajax({
-        type:"POST",
-        dataType:"json",
-        url:server + "root-prepositions/prepositions/name/" + encodeURI(preposition) + "/",
-        contentType:"text/plain; charset=utf-8",
-        async:false,
-        statusCode:{
-            500:function (data) {
+        type: "POST",
+        dataType: "json",
+        url: server + "root-prepositions/prepositions/name/" + encodeURI(preposition) + "/",
+        contentType: "text/plain; charset=utf-8",
+        async: false,
+        statusCode: {
+            500: function (data) {
                 $("#preposition").focus();
                 // alert(JSON.stringify( data) );
                 alert(jQuery.parseJSON(data.responseText).message);
@@ -696,13 +752,13 @@ function _delete_Preposition(preposition) {
 
 
     jQuery.ajax({
-        type:"DELETE",
-        dataType:"json",
-        url:server + "root-prepositions/prepositions/name/" + encodeURI(preposition) + "/",
-        contentType:"text/plain; charset=utf-8",
-        async:false,
-        statusCode:{
-            500:function (data) {
+        type: "DELETE",
+        dataType: "json",
+        url: server + "root-prepositions/prepositions/name/" + encodeURI(preposition) + "/",
+        contentType: "text/plain; charset=utf-8",
+        async: false,
+        statusCode: {
+            500: function (data) {
 
 
                 alert(jQuery.parseJSON(data.responseText).message);
@@ -728,10 +784,10 @@ function _list_all_prepositions(go) {
     if (list == null) {
 
         list = $.parseJSON(jQuery.ajax({
-            type:"GET",
-            url:server + "root-prepositions/prepositions/?noprops=true" + (preposition.trim() == "" ? "" : "&pattern=" + encodeURI(preposition)),
-            contentType:"text/plain; charset=utf-8",
-            async:false
+            type: "GET",
+            url: server + "root-prepositions/prepositions/?noprops=true" + (preposition.trim() == "" ? "" : "&pattern=" + encodeURI(preposition)),
+            contentType: "text/plain; charset=utf-8",
+            async: false
 
         }).responseText);
     }
@@ -784,10 +840,10 @@ function _list_all_verbs(go) {
     if (list == null) {
 
         list = $.parseJSON(jQuery.ajax({
-            type:"GET",
-            url:server + "root-verbs/verbs/?noprops=true" + (vinaiyadi.trim() == "" ? "" : "&pattern=" + encodeURI(vinaiyadi)),
-            contentType:"text/plain; charset=utf-8",
-            async:false
+            type: "GET",
+            url: server + "root-verbs/verbs/?noprops=true" + (vinaiyadi.trim() == "" ? "" : "&pattern=" + encodeURI(vinaiyadi)),
+            contentType: "text/plain; charset=utf-8",
+            async: false
 
         }).responseText);
     }
@@ -926,7 +982,7 @@ function _edit_Vinaiyechcham(val) {
 
 
 function _silent_delete_Vinayadi_property(vinaiyadi, propname) {
-    return  _silent_delete_property('root-verbs/verbs', vinaiyadi, propname);
+    return _silent_delete_property('root-verbs/verbs', vinaiyadi, propname);
 
 }
 
@@ -940,12 +996,12 @@ function _silent_delete_property(base, word, propname) {
     }
     var failed = false;
     jQuery.ajax({
-        type:"DELETE",
-        url:server + base + "/name/" + encodeURI(word) + "/property/" + propname + "/",
-        contentType:"text/plain; charset=utf-8",
-        async:false,
-        statusCode:{
-            500:function (data, status, XHR) {
+        type: "DELETE",
+        url: server + base + "/name/" + encodeURI(word) + "/property/" + propname + "/",
+        contentType: "text/plain; charset=utf-8",
+        async: false,
+        statusCode: {
+            500: function (data, status, XHR) {
                 alert(jQuery.parseJSON(data.responseText).message);
                 failed = true;
             }
@@ -971,13 +1027,13 @@ function add_new_verb() {
     }
 
     jQuery.ajax({
-        type:"POST",
-        dataType:"json",
-        url:server + "root-verbs/verbs/name/" + encodeURI(vinaiyadi) + "/",
-        contentType:"text/plain; charset=utf-8",
-        async:false,
-        statusCode:{
-            500:function (data) {
+        type: "POST",
+        dataType: "json",
+        url: server + "root-verbs/verbs/name/" + encodeURI(vinaiyadi) + "/",
+        contentType: "text/plain; charset=utf-8",
+        async: false,
+        statusCode: {
+            500: function (data) {
                 $("#vinaiyadi").focus();
                 // alert(JSON.stringify( data) );
                 alert(jQuery.parseJSON(data.responseText).message);
@@ -1005,13 +1061,13 @@ function _delete_Vinayadi(vinaiyadi) {
 
 
     jQuery.ajax({
-        type:"DELETE",
-        dataType:"json",
-        url:server + "root-verbs/verbs/name/" + encodeURI(vinaiyadi) + "/",
-        contentType:"text/plain; charset=utf-8",
-        async:false,
-        statusCode:{
-            500:function (data) {
+        type: "DELETE",
+        dataType: "json",
+        url: server + "root-verbs/verbs/name/" + encodeURI(vinaiyadi) + "/",
+        contentType: "text/plain; charset=utf-8",
+        async: false,
+        statusCode: {
+            500: function (data) {
 
                 // alert(JSON.stringify( data) );
                 alert(jQuery.parseJSON(data.responseText).message);
@@ -1058,10 +1114,10 @@ function _populate_edit_verb_property() {
     var val = $("#select_verb_props").val();
 
     jQuery.ajax({
-            type:"GET",
-            dataType:"json",
-            url:server + "root-verbs/types/name/" + val + "/values/",
-            success:function (data, status, jqXHR) {
+            type: "GET",
+            dataType: "json",
+            url: server + "root-verbs/types/name/" + val + "/values/",
+            success: function (data, status, jqXHR) {
                 var options = $("#select_verb_props_values");
                 if (data.value.property == null || data.value.property.length == 0) {
                     options.hide();
@@ -1081,7 +1137,7 @@ function _populate_edit_verb_property() {
                 }
 
             },
-            error:function (jqXHR, status) {
+            error: function (jqXHR, status) {
                 //alert(status);
             }
         }
@@ -1107,10 +1163,10 @@ function _populate_Vinaiyadigal(vinaiyadi, transitve) {
 
 
     jQuery.ajax({
-        type:"GET",
-        url:server + "compound-word/" + PROP_BASE + "/name/" + encodeURI(vinaiyadi) + "/?transitive=" + transitve,
-        contentType:"text/plain; charset=utf-8",
-        success:function (data, status, jqXHR) {
+        type: "GET",
+        url: server + "compound-word/" + PROP_BASE + "/name/" + encodeURI(vinaiyadi) + "/?transitive=" + transitve,
+        contentType: "text/plain; charset=utf-8",
+        success: function (data, status, jqXHR) {
 
 
             if (data.value.rows != null) {
@@ -1173,7 +1229,7 @@ function _populate_Vinaiyadigal(vinaiyadi, transitve) {
 
 
         },
-        error:function (jqXHR, status) {
+        error: function (jqXHR, status) {
             if (jqXHR.status == 404) {
                 alert(vinaiyadi + " காணப்படவில்லை.வினைமுற்றுகளைப்பெறமுடியவில்லை.");
             } else {
@@ -1197,10 +1253,10 @@ function _copyPropertiesFrom(from) {
     }
 
     from = $.parseJSON(jQuery.ajax({
-        type:"GET",
-        url:server + "root-verbs/verbs/name/" + encodeURI(from) + "/",
-        contentType:"text/plain; charset=utf-8",
-        async:false
+        type: "GET",
+        url: server + "root-verbs/verbs/name/" + encodeURI(from) + "/",
+        contentType: "text/plain; charset=utf-8",
+        async: false
     }).responseText);
 
     if (from.value.description != null && from.value.description.property != null) {
@@ -1252,7 +1308,7 @@ function _isTransitive_GenerationHavingissue(prop, value) {
 
 function _isInTransitive_GenerationHavingissue(prop, value) {
     if ("issue.intransitive.generation." + PROP_BASE == prop) {
-        return  (value == 'true') ? 1 : 0;
+        return (value == 'true') ? 1 : 0;
     } else {
         return -1;
     }
@@ -1527,7 +1583,7 @@ function _silent_delete_property_for_word(base, word, propname) {
 function _show_New_Question(e, property, val) {
     console.log(property + ":" + val);
 
-    $("#new_question_popup").css({position:"absolute", left:e.pageX, top:e.pageY });
+    $("#new_question_popup").css({position: "absolute", left: e.pageX, top: e.pageY});
     $('#new_question_popup').show('slow');
 
     current_questions_id = property;
@@ -1557,10 +1613,10 @@ function _change_answer_type() {
 
 function _load_existing_answers() {
     jQuery.ajax({
-        type:"GET",
-        dataType:"json",
-        url:server + BASE + "/types-values/",
-        success:function (data, status, jqXHR) {
+        type: "GET",
+        dataType: "json",
+        url: server + BASE + "/types-values/",
+        success: function (data, status, jqXHR) {
             var options = $("#answers_known");
             options
                 .find('option')
@@ -1569,7 +1625,7 @@ function _load_existing_answers() {
                 options.append($("<option />").val(data.values[item]).text(data.values[item]));
             });
         },
-        error:function (jqXHR, status) {
+        error: function (jqXHR, status) {
             alert(status);
         }
     });
@@ -1629,15 +1685,15 @@ function _silent_add_new_question(base, q, newid, value, tamil) {
     }
     var failed = false;
     jQuery.ajax({
-        type:"PUT",
-        data:value + "",
-        url:server + base + "/types/name/" + encodeURI(newid) + "?desc=" + encodeURI(q) + "&tamil=" + tamil,
-        contentType:"text/plain; charset=utf-8",
+        type: "PUT",
+        data: value + "",
+        url: server + base + "/types/name/" + encodeURI(newid) + "?desc=" + encodeURI(q) + "&tamil=" + tamil,
+        contentType: "text/plain; charset=utf-8",
 
-        async:false,
+        async: false,
 
-        statusCode:{
-            500:function (data, status, XHR) {
+        statusCode: {
+            500: function (data, status, XHR) {
                 alert(jQuery.parseJSON(data.responseText).message);
                 failed = true;
             }
@@ -1659,12 +1715,12 @@ function _type_To_component(base, baseupdateurl, word, propname, currentvalue, j
     if (data == null) {
 
         data = jQuery.ajax({
-            type:"GET",
-            dataType:"json",
-            url:server + base + "/types/name/" + propname + "/values/",
-            async:false,
-            statusCode:{
-                404:function (data, status, XHR) {
+            type: "GET",
+            dataType: "json",
+            url: server + base + "/types/name/" + propname + "/values/",
+            async: false,
+            statusCode: {
+                404: function (data, status, XHR) {
                     return null;
                 }
             }
@@ -1867,10 +1923,10 @@ function _edit_Idai_init_for_parts_only(idai, gp) {
     $("#english").trigger("click");
 
     jQuery.ajax({
-        type:"GET",
-        url:server + "root-prepositions/prepositions/name/" + encodeURI(idai) + "/",
-        contentType:"text/plain; charset=utf-8",
-        success:function (data, status, jqXHR) {
+        type: "GET",
+        url: server + "root-prepositions/prepositions/name/" + encodeURI(idai) + "/",
+        contentType: "text/plain; charset=utf-8",
+        success: function (data, status, jqXHR) {
 
             $("#result_table tr:gt(0)").detach();
             var table = $("#result_table tr:last");
@@ -1920,7 +1976,7 @@ function _edit_Idai_init_for_parts_only(idai, gp) {
 
         },
 
-        error:function (jqXHR, status) {
+        error: function (jqXHR, status) {
             if (jqXHR.status == 404) {
                 alert(idai + " காணப்படவில்லை");
             } else {
@@ -1941,10 +1997,10 @@ function _edit_Peyar_init_for_parts_only(noun, gp) {
     $("#english").trigger("click");
 
     jQuery.ajax({
-        type:"GET",
-        url:server + "root-nouns/nouns/name/" + encodeURI(noun) + "/",
-        contentType:"text/plain; charset=utf-8",
-        success:function (data, status, jqXHR) {
+        type: "GET",
+        url: server + "root-nouns/nouns/name/" + encodeURI(noun) + "/",
+        contentType: "text/plain; charset=utf-8",
+        success: function (data, status, jqXHR) {
 
             $("#result_table tr:gt(0)").detach();
             var table = $("#result_table tr:last");
@@ -1994,7 +2050,7 @@ function _edit_Peyar_init_for_parts_only(noun, gp) {
 
         },
 
-        error:function (jqXHR, status) {
+        error: function (jqXHR, status) {
             if (jqXHR.status == 404) {
                 alert(noun + " காணப்படவில்லை");
             } else {
@@ -2015,10 +2071,10 @@ function _edit_Vinayadi_init_for_parts_only(vinaiyadi, global_properties) {
     $("#english").trigger("click");
     //  global_properties = jQuery.extend({}, global_properties);
     jQuery.ajax({
-        type:"GET",
-        url:server + "root-verbs/verbs/name/" + encodeURI(vinaiyadi) + "/",
-        contentType:"text/plain; charset=utf-8",
-        success:function (data, status, jqXHR) {
+        type: "GET",
+        url: server + "root-verbs/verbs/name/" + encodeURI(vinaiyadi) + "/",
+        contentType: "text/plain; charset=utf-8",
+        success: function (data, status, jqXHR) {
 
             $("#result_table tr:gt(1)").detach();
             var table = $("#result_table tr:last");
@@ -2104,7 +2160,7 @@ function _edit_Vinayadi_init_for_parts_only(vinaiyadi, global_properties) {
             }
         },
 
-        error:function (jqXHR, status) {
+        error: function (jqXHR, status) {
             if (jqXHR.status == 404) {
                 alert(vinaiyadi + " காணப்படவில்லை");
             } else {
@@ -2121,15 +2177,15 @@ function _edit_Vinayadi_init_for_parts_only(vinaiyadi, global_properties) {
 function _get_global_properties() {
     if (global_properties == null) {
         global_properties = jQuery.ajax({
-            type:"GET",
-            url:server + "root-verbs/types/?select" + "=" + PROP_BASE + ",property.,description",
-            contentType:"text/plain; charset=utf-8",
+            type: "GET",
+            url: server + "root-verbs/types/?select" + "=" + PROP_BASE + ",property.,description",
+            contentType: "text/plain; charset=utf-8",
 
-            async:false
+            async: false
         }).responseText;
     }
 
-    return  "" + global_properties;
+    return "" + global_properties;
 
 
 }
@@ -2138,15 +2194,15 @@ function _get_global_properties() {
 function _get_global_idai_properties() {
     if (global_idai_properties == null) {
         global_idai_properties = jQuery.ajax({
-            type:"GET",
-            url:server + "root-prepositions/types/?select" + "=" + PROP_BASE + ",property.,description",
-            contentType:"text/plain; charset=utf-8",
+            type: "GET",
+            url: server + "root-prepositions/types/?select" + "=" + PROP_BASE + ",property.,description",
+            contentType: "text/plain; charset=utf-8",
 
-            async:false
+            async: false
         }).responseText;
     }
 
-    return  "" + global_idai_properties;
+    return "" + global_idai_properties;
 
 
 }
@@ -2155,21 +2211,21 @@ function _get_global_idai_properties() {
 function _get_global_common_properties(base, search) {
 
     var typeslist = jQuery.ajax({
-        type:"GET",
-        url:server + base + "/types/?select" + "=" + search,
-        contentType:"text/plain; charset=utf-8",
+        type: "GET",
+        url: server + base + "/types/?select" + "=" + search,
+        contentType: "text/plain; charset=utf-8",
 
-        async:false,
+        async: false,
 
-        statusCode:{
-            404:function (data, status, XHR) {
+        statusCode: {
+            404: function (data, status, XHR) {
                 return null;
             }
         }
     }).responseText;
 
     if (typeslist == null) return null;
-    return  JSON.parse(typeslist);
+    return JSON.parse(typeslist);
 
 
 }
@@ -2178,15 +2234,15 @@ function _get_global_common_properties(base, search) {
 function _get_global_peyar_properties() {
     if (global_idai_properties == null) {
         global_idai_properties = jQuery.ajax({
-            type:"GET",
-            url:server + "root-nouns/types/?select" + "=" + PROP_BASE + ",property.,description",
-            contentType:"text/plain; charset=utf-8",
+            type: "GET",
+            url: server + "root-nouns/types/?select" + "=" + PROP_BASE + ",property.,description",
+            contentType: "text/plain; charset=utf-8",
 
-            async:false
+            async: false
         }).responseText;
     }
 
-    return  "" + global_idai_properties;
+    return "" + global_idai_properties;
 
 
 }
@@ -2199,11 +2255,11 @@ function _getPreviousVerb(curr) {
 function _getPrevious(current, base, curr) {
 
     var res = jQuery.ajax({
-        type:"GET",
-        url:server + base + "/name/" + encodeURI(curr) + "/adjacent/previous/?search=" + current,
-        contentType:"text/plain; charset=utf-8",
+        type: "GET",
+        url: server + base + "/name/" + encodeURI(curr) + "/adjacent/previous/?search=" + current,
+        contentType: "text/plain; charset=utf-8",
 
-        async:false
+        async: false
     });
 
     if (res.status == 200) {
@@ -2224,11 +2280,11 @@ function _getNextVerb(curr) {
 function _getNext(current, base, curr) {
 
     var res = jQuery.ajax({
-        type:"GET",
-        url:server + base + "/name/" + encodeURI(curr) + "/adjacent/next/?search=" + current,
-        contentType:"text/plain; charset=utf-8",
+        type: "GET",
+        url: server + base + "/name/" + encodeURI(curr) + "/adjacent/next/?search=" + current,
+        contentType: "text/plain; charset=utf-8",
 
-        async:false
+        async: false
     });
     if (res.status == 200) {
         return res.responseText;
@@ -2248,11 +2304,11 @@ function _get_property_description_with_base(base, propname) {
     }
 
     val = jQuery.ajax({
-        type:"GET",
-        url:server + base + "/types/name/" + propname + "/description/",
-        contentType:"text/plain; charset=utf-8",
+        type: "GET",
+        url: server + base + "/types/name/" + propname + "/description/",
+        contentType: "text/plain; charset=utf-8",
 
-        async:false
+        async: false
     }).responseText;
 
     property_name_map[propname] = val;
@@ -2263,7 +2319,7 @@ function _get_property_description_with_base(base, propname) {
 
 function _get_property_description(propname) {
 
-    return   _get_property_description_with_base('root-verbs', propname);
+    return _get_property_description_with_base('root-verbs', propname);
 
 }
 
@@ -2279,11 +2335,11 @@ function _split_handler() {
     $.cookie('joined', joined);
     var handler = $("#rule").val();
     jQuery.ajax({
-        type:"PUT",
-        data:handler,
-        url:server + "punarchi/split/" + encodeURI(joined) + "/",
-        contentType:"text/plain; charset=utf-8",
-        success:function (data, status, jqXHR) {
+        type: "PUT",
+        data: handler,
+        url: server + "punarchi/split/" + encodeURI(joined) + "/",
+        contentType: "text/plain; charset=utf-8",
+        success: function (data, status, jqXHR) {
 
             $("#result_table tr:gt(0)").detach();
             var table = $("#result_table tr:last");
@@ -2307,7 +2363,7 @@ function _split_handler() {
                 // alert(data[item].handlerName);
             });
         },
-        error:function (jqXHR, status) {
+        error: function (jqXHR, status) {
             alert(jqXHR.responseText);
         }
     });
@@ -2440,7 +2496,7 @@ function trans(jarea, spelcheck, e, toggle, splitcompondwords, suggestwords, joi
 //            $("#temp_tamil").html("காத்திருங்கள். திடீர்மாற்றம் காணப்பட்டுள்ளது.");
 //        }, 1);
 
-        _translitSyncBulk(area,tojoin);
+        _translitSyncBulk(area, tojoin);
 
 
     }
@@ -2554,7 +2610,7 @@ function trans(jarea, spelcheck, e, toggle, splitcompondwords, suggestwords, joi
     $("#tamil").html(final_text);
     $('.lookup_edit').mouseenter(function (e) {
 
-        $("#lookupresult").css({position:"absolute", left:e.pageX + 20, top:e.pageY + 20});
+        $("#lookupresult").css({position: "absolute", left: e.pageX + 20, top: e.pageY + 20});
         $('#lookupresult').show();
 
         $("#searched").val($(this).text().trim());

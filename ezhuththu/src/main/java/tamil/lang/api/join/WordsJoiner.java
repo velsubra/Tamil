@@ -14,10 +14,19 @@ public interface WordsJoiner {
 
 
     /**
-     * adds word to the current joiner by means of doing புணர்ச்சி
+     * adds word to the current sum of the joiner by means of doing புணர்ச்சி
      * @param word the word to be added
      */
     public void addVaruMozhi(TamilWord word);
+
+
+    /**
+     * adds the current sum of the joiner into the given word by doing புணர்ச்சி
+     * @param word the word to be inserted
+     */
+    public void addNilaiMozhi(TamilWord word);
+
+
 
     /**
      * The effective word that is generated.

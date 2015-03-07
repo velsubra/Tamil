@@ -152,6 +152,44 @@
 
 
 </p>
+<h5>Application Resource Inheritance</h5>
+
+<p>
+    Applications can inherit resources from one or more of its parent applications. Multiple parents should be separated
+    by comma.
+    Inherited resources can be
+    overridden by creating a resource by the same name. ie) if a resource is defined by an application, then that takes
+    precedence
+    over the resources from its parent applications. Parent applications themselves can inherit resources from other
+    applications.
+
+</p>
+
+<p>
+    One of the following resource search orders can be specified for a child application. Circular inheritance is just
+    ignored. This order does not matter if the application just has a single or no parent.
+<ol>
+    <li><b>Breadth First</b> - In this case, the resources from the immediate parent(s) are given precedence over the
+        the
+        resources that the
+        parent applications themselves might have inherited.
+    </li>
+    <li><b>Depth First(Pre Order)</b> - In this case the resources from the first parent along with whatever that parent
+        has
+        inherited through its search order
+        are given precedence over the resources from the second parent listed.
+    </li>
+</ol>
+
+This feature can be used to create a base (parent) application against a javascript framework or library. Other
+applications that depend on
+that javascript framework can extend the base application.
+Inherited resources can be accessed through all the applications that had inherited. All the static macros, if any, are
+resolved against the application(base) that had defined that resource than the one(child) that inherited. However, all
+the dynamic
+variables (e.g query params) are passed to the base resource.
+</p>
+<hr/>
 
 <p>
     Creation of an application typically has the following life-cycle.
@@ -384,7 +422,9 @@ can be imported and used in the script.
 
             </li>
 
-            <li>Static&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; : ${R_INJECT_PLATFORM_APPLET} - The <a href="apidocs/tamil/lang/api/applet/AppletTamilFactory.html">Platform Applet</a> code that is injected.It is to be used in HTML resources.
+            <li>Static&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; : ${R_INJECT_PLATFORM_APPLET} - The <a
+                    href="apidocs/tamil/lang/api/applet/AppletTamilFactory.html">Platform Applet</a> code that is
+                injected.It is to be used in HTML resources.
                 <pre>
            E.g)
             ${R_INJECT_PLATFORM_APPLET} can be  dropped anywhere in the HTML.

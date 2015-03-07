@@ -98,7 +98,9 @@ public class AppAccessResource {
                 map.put("R_QP_" + qp, val);
 
             }
-
+             if (resource.getContent() == null) {
+                 resource.setContent(new byte[0]);
+             }
             byte[] content = URLDecoder.decode(new String(resource.getContent()), "UTF-8").getBytes();
             if (AppResourceType.GROOVY.equals(resource.getType())) {
                 CompiledScript script = null;

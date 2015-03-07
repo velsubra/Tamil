@@ -218,7 +218,7 @@ public final class TamilWord extends AbstractWord<AbstractCharacter> implements 
             return null;
         }
         TamilWord sub = new TamilWord();
-        for (int i = 0; i < t.size() - 1; i++) {
+        for (int i = 0; i < t.size(); i++) {
             sub.add(0, t.get(i));
         }
         return sub;

@@ -19,29 +19,32 @@ import java.util.Map;
  * @author velsubra
  */
 public class VAllHandler extends AbstractPunarchiHandler {
-    static final Map<VUrubu, AbstractVearrrrumaiHandler> all = new HashMap<VUrubu, AbstractVearrrrumaiHandler>();
+    public static final Map<VUrubu, AbstractVearrrrumaiHandler> all = new HashMap<VUrubu, AbstractVearrrrumaiHandler>();
 
     public static final VAllHandler HANDLER = new VAllHandler();
 
     static {
+
+
+
         AbstractVearrrrumaiHandler handler = new V2Handler();
         VUrubu urubu = new VUrubu(handler.getUrubu(), true, handler.getNumber());
-        PersistenceInterface.addKnown(urubu);
+
         all.put(urubu, handler);
 
         handler = new V3Handler();
         urubu = new VUrubu(handler.getUrubu(), true, handler.getNumber());
-        PersistenceInterface.addKnown(urubu);
+
         all.put(urubu, handler);
 
         handler = new V31Handler();
         urubu = new VUrubu(handler.getUrubu(), true, handler.getNumber());
-        PersistenceInterface.addKnown(urubu);
+
         all.put(urubu, handler);
 
         handler = new V32Handler();
         urubu = new VUrubu(handler.getUrubu(), true, handler.getNumber());
-        PersistenceInterface.addKnown(urubu);
+
         all.put(urubu, handler);
 
         handler = new V33Handler();
@@ -51,29 +54,29 @@ public class VAllHandler extends AbstractPunarchiHandler {
 
         handler = new V4Handler();
         urubu = new VUrubu(handler.getUrubu(), true, handler.getNumber());
-        PersistenceInterface.addKnown(urubu);
+
         all.put(urubu, handler);
 
 
         handler = new V5Handler();
         urubu = new VUrubu(handler.getUrubu(), true, handler.getNumber());
-        PersistenceInterface.addKnown(urubu);
+
         all.put(urubu, handler);
 
         handler = new V6Handler();
         urubu = new VUrubu(handler.getUrubu(), true, handler.getNumber());
-        PersistenceInterface.addKnown(urubu);
+
         all.put(urubu, handler);
 
 
         handler = new V61Handler();
         urubu = new VUrubu(handler.getUrubu(), true, handler.getNumber());
-        PersistenceInterface.addKnown(urubu);
+
         all.put(urubu, handler);
 
         handler = new V7Handler();
         urubu = new VUrubu(handler.getUrubu(), true, handler.getNumber());
-        PersistenceInterface.addKnown(urubu);
+
         all.put(urubu, handler);
 
 

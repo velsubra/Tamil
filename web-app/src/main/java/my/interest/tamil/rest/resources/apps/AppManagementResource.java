@@ -1,10 +1,8 @@
 package my.interest.tamil.rest.resources.apps;
 
-import my.interest.lang.tamil.generated.types.AppDescription;
-import my.interest.lang.tamil.generated.types.AppResource;
-import my.interest.lang.tamil.generated.types.AppResources;
-import my.interest.lang.tamil.generated.types.ObjectFactory;
+import my.interest.lang.tamil.generated.types.*;
 import my.interest.lang.tamil.internal.api.PersistenceInterface;
+import my.interest.lang.tamil.xml.AppCache;
 import my.interest.tamil.rest.resources.exception.ResourceException;
 import org.json.JSONObject;
 
@@ -38,14 +36,17 @@ public class AppManagementResource {
     @GET
     @Path("/apps/name/{name}/resources")
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    public JAXBElement<AppDescription> listResources(@PathParam("name") String name) throws Exception {
+    public JAXBElement<AppDescriptionBase> listResources(@PathParam("name") String name) throws Exception {
         AppDescription app = PersistenceInterface.get().findApp(name);
         if (app == null) {
-            return new ObjectFactory().createApp(null);
+            return new ObjectFactory().createAppbase(null);
         }
 
-        AppDescription ret = new AppDescription();
+        AppDescriptionBase ret = new AppDescriptionBase();
         ret.setRoot(app.getRoot());
+        ret.setDescription(app.getDescription());
+        ret.setResourceInheritance(app.getResourceInheritance());
+
         ret.setName(app.getName());
         ret.setCode("****");
         ret.setResources(new AppResources());
@@ -59,7 +60,7 @@ public class AppManagementResource {
             }
         }
 
-        return new ObjectFactory().createApp(ret);
+        return new ObjectFactory().createAppbase(ret);
     }
 
     @POST
@@ -150,9 +151,10 @@ public class AppManagementResource {
 
     @PUT
     @Path("/apps/name/{name}/")
-    public Response updateApp(@PathParam("name") String name, @QueryParam("welcome") String welcome, @QueryParam("context") String context, @HeaderParam("X-TAMIL-APP-ACCESS-CODE") String code) {
+    @Consumes("text/plain; charset=UTF-8")
+    public Response updateApp(@PathParam("name") String name, @QueryParam("welcome") String welcome,  @HeaderParam("X-TAMIL-APP-ACCESS-CODE") String code, @QueryParam("parents") String parents, @QueryParam("inheritanceorder") String inheritanceorder, String desc) {
         try {
-            PersistenceInterface.get().updateApp(code, name, context, welcome, code);
+            PersistenceInterface.get().updateApp(code, name, welcome, parents,inheritanceorder, desc);
             return Response.status(202).build();
         } catch (WebApplicationException wa) {
             throw wa;

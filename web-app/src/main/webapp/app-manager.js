@@ -147,6 +147,44 @@ function _createAppResource(app, resource, code) {
 }
 
 
+
+function _saveAppDetails(code, app,  welcome, parentapps, searchscheme, desc) {
+    var q = "/?";
+
+    if (welcome) {
+        q += "welcome=" + welcome +"&";
+    }
+
+    if (parentapps) {
+        q += "parents=" + parentapps +"&";
+    }
+    if (searchscheme) {
+        q += "inheritanceorder=" + searchscheme ;
+    }
+
+    jQuery.ajax({
+
+        type:"PUT",
+        headers:{
+            "X-TAMIL-APP-ACCESS-CODE":"" + code
+        },
+        url:server + "app-management/apps/name/" + encodeURI(app) + q,
+        contentType:"text/plain; charset=utf-8",
+        data : ""+desc,
+        async:false,
+        statusCode:{
+            500:function (data, status, XHR) {
+                console.log(data);
+                alert("Could not update app!:" + JSON.parse(data.responseText).message);
+            }
+        }
+
+    });
+
+
+}
+
+
 function _updateAppResourceContent(app, resource, content, type, code) {
 
     return jQuery.ajax({

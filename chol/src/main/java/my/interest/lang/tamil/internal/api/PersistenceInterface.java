@@ -1,5 +1,6 @@
 package my.interest.lang.tamil.internal.api;
 
+import my.interest.lang.tamil.EzhuththuUtils;
 import my.interest.lang.tamil.StringUtils;
 import my.interest.lang.tamil.TamilUtils;
 import my.interest.lang.tamil.generated.types.*;
@@ -13,8 +14,10 @@ import my.interest.lang.tamil.multi.WordGeneratorFromVinaiyadi;
 import my.interest.lang.tamil.punar.PropertyDescriptionContainer;
 import my.interest.lang.tamil.punar.TamilWordPartContainer;
 import my.interest.lang.tamil.translit.EnglishToTamilCharacterLookUpContext;
+import my.interest.lang.tamil.xml.AppCache;
 import org.codehaus.groovy.jsr223.GroovyScriptEngineImpl;
 import tamil.lang.TamilCompoundCharacter;
+import tamil.lang.TamilFactory;
 import tamil.lang.TamilWord;
 import tamil.lang.known.IKnownWord;
 import tamil.lang.known.derived.DerivativeWithPaal;
@@ -86,11 +89,12 @@ public abstract class PersistenceInterface {
         idaimatchermap.put("NEW", IdaichcholDescriptionMatcher.NEW);
         idaimatchermap.put("DEFN_UNLOCKED", IdaichcholDescriptionMatcher.DEFN_UNLOCKED);
 
-
+        TamilFactory.init();
     }
 
     /**
      * Do not create this on your local env. /customer/scratch is used when the app is deployed in the oracle cloud.
+     *
      * @return
      */
     public static boolean isOnCloud() {
@@ -113,7 +117,7 @@ public abstract class PersistenceInterface {
 
             }
         }
-        return  WORK_DIR;
+        return WORK_DIR;
     }
 
 
@@ -1276,14 +1280,22 @@ public abstract class PersistenceInterface {
         }
     }
 
-    private static AppResource findAppResourceFromApp(AppDescription app, String resource) {
+    private static AppResource findAppResourceFromApp(TamilRootWords all, AppDescription app, String resource) {
         if (app == null || resource == null || resource.trim().equals("")) return null;
         if (app.getResources() == null) {
             app.setResources(new AppResources());
         }
-        for (AppResource r : app.getResources().getResources()) {
-            if (resource.equals(r.getName())) {
-                return r;
+        if (app.getCache() == null) {
+            app.setCache(new AppCache());
+        }
+        if (app.getCache().getInheritanceList().isEmpty()) {
+            app.getCache().buildInheritanceOrder(all, app);
+        }
+        for (AppDescription inherit : app.getCache().getInheritanceList()) {
+            for (AppResource r : inherit.getResources().getResources()) {
+                if (resource.equals(r.getName())) {
+                    return r;
+                }
             }
         }
         return null;
@@ -1326,7 +1338,7 @@ public abstract class PersistenceInterface {
         return ret;
     }
 
-    private static AppDescription findApp(String name, TamilRootWords file, boolean context) {
+    public static AppDescription findApp(String name, TamilRootWords file, boolean context) {
         if (name == null || name.trim().equals("") || file == null) return null;
 
         if (file.getApps() == null) {
@@ -1370,6 +1382,8 @@ public abstract class PersistenceInterface {
             target.setPlatform("1.1");
             target.setName(as);
             target.setRoot(as);
+            target.setResourceInheritance(app.getResourceInheritance());
+            target.setDescription(app.getDescription());
             target.setCode(code == null ? target.getCode() : code);
             target.setResources(new AppResources());
             target.getResources().setWelcome(app.getResources().getWelcome());
@@ -1413,7 +1427,7 @@ public abstract class PersistenceInterface {
                 app.setResources(new AppResources());
                 file.getApps().getApps().getList().getApp().add(app);
                 createResourceToApp(code, name, "index.html");
-                updateApp(code, code, name, name, "index.html");
+                updateApp(code, name, "index.html", null, null, "New app (No description yet)");
                 addOrUpdateResourceToApp(code, name, "index.html", AppResourceType.HTML.toString(), ("<!DOCTYPE html>\n" +
                         "<html xmlns=\"http://www.w3.org/1999/html\">\n" +
                         "<head>\n" +
@@ -1505,10 +1519,12 @@ public abstract class PersistenceInterface {
             }
 
 
-            AppResource res = findAppResourceFromApp(app, resource);
+            AppResource res = findAppResourceFromApp(file, app, resource);
             if (res == null) {
                 res = new AppResource();
                 res.setName(resource);
+                res.setType(AppResourceType.UNKNOWN);
+                res.setContent(new byte[0]);
                 app.getResources().getResources().add(res);
                 persist(file);
 
@@ -1547,7 +1563,7 @@ public abstract class PersistenceInterface {
                 }
             }
 
-            AppResource res = findAppResourceFromApp(app, resource);
+            AppResource res = findAppResourceFromApp(file, app, resource);
             if (res == null) {
                 throw new RuntimeException("Resource not found!");
             }
@@ -1605,7 +1621,7 @@ public abstract class PersistenceInterface {
     }
 
 
-    public void updateApp(String code, String newCode, String name, String context, String welcome) {
+    public void updateApp(String code, String name, String welcome, String parents, String inheritanceSearchOrder, String desc) {
         lock();
 
         try {
@@ -1624,13 +1640,40 @@ public abstract class PersistenceInterface {
                     throw new RuntimeException("Security Code does not match: Access Denied.");
                 }
             }
-            app.setCode(newCode);
-            app.setRoot(context);
-            if (findAppResource(context, welcome) == null) {
-                throw new RuntimeException("Resource not found to be set as welcome page!");
+
+            app.setRoot(name);
+
+
+            if (parents != null) {
+                List<String> ps = EzhuththuUtils.parseString(parents);
+                for (String p : ps) {
+                    if (p.equals(name)) {
+                        throw new RuntimeException("Same application  can not be parent for itself.");
+                    }
+                    if (findApp(p) == null) {
+                        throw new RuntimeException("Application '" + p + "' does not exist to inherit anything from!");
+                    }
+                }
+                if (app.getResourceInheritance() == null) {
+                    app.setResourceInheritance(new ResourceInheritance());
+                }
+                app.getResourceInheritance().getParentApps().clear();
+                app.getResourceInheritance().getParentApps().addAll(ps);
+                app.setCache(new AppCache());
+            } else {
+                app.setResourceInheritance(null);
+                app.setCache(new AppCache());
+            }
+
+            if (inheritanceSearchOrder != null) {
+                if (app.getResourceInheritance() == null) {
+                    app.setResourceInheritance(new ResourceInheritance());
+                }
+                app.getResourceInheritance().setInheritanceOrder(ResourceInheritanceOrder.fromValue(inheritanceSearchOrder));
             }
 
             app.getResources().setWelcome(welcome);
+            app.setDescription(desc);
             persist(file);
 
 
@@ -1662,7 +1705,7 @@ public abstract class PersistenceInterface {
                 }
             }
 
-            AppResource res = findAppResourceFromApp(app, resource);
+            AppResource res = findAppResourceFromApp(file, app, resource);
             if (res == null) {
                 throw new RuntimeException("Resource not found!");
             }
@@ -1682,10 +1725,7 @@ public abstract class PersistenceInterface {
 
     }
 
-    public AppResource findAppResource(String name, String resource) {
-
-
-        TamilRootWords file = getAllRootWords();
+    public static AppResource findAppResource(TamilRootWords file, String name, String resource) {
         if (name == null || name.trim().equals("")) {
             throw new RuntimeException("App name is mandatory!");
         }
@@ -1697,8 +1737,14 @@ public abstract class PersistenceInterface {
         if (app == null) {
             throw new RuntimeException("App not found");
         }
-        AppResource res = findAppResourceFromApp(app, resource);
+        AppResource res = findAppResourceFromApp(file, app, resource);
         return res;
+    }
+
+    public AppResource findAppResource(String name, String resource) {
+
+        TamilRootWords file = getAllRootWords();
+        return findAppResource(file, name, resource);
 
 
     }

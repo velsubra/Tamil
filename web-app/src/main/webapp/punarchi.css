@@ -62,12 +62,13 @@ h4 {
 .temp_tamil_tip  {
     position: relative;
     display: none;
-    font-size: 14px;
+    color: #0000ff;
+
     line-height: 16px;
     text-align: left;
-    border: 1px solid #b81900;
 
-    background: #f5f5dc;
+    z-index: 9999;
+    background: rgba(200, 200, 150, 0.85);
 
 }
 

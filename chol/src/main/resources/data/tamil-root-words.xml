@@ -158,7 +158,7 @@
                         <resources>
                             <name>index.html</name>
                             <type>HTML</type>
-                            <content>PCFET0NUWVBFIGh0bWw+CjxodG1sIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L2h0bWwiPgo8aGVhZD4KICAgIDxtZXRhIGNoYXJzZXQ9IlVURi04Ij4KICAgIDx0aXRsZT4gTmV3IEFwcGxpY2F0aW9uOnRhbWlsLWVkaXRpbmctdW5kZXItZGV2ICAgIDwvdGl0bGU+IDwvaGVhZD4gPGJvZHk+PGgxPiBJdCBpcyBhIG5ldyBUYW1pbCBhcHBsaWNhdGlvbiAoIlR7dGhhbWl6aHBwYXlhbm1pfSIpIG5hbWVkIGFzICR7Ul9BUFBfTkFNRX0gY3JlYXRlZCBhdDpXZWQgRmViIDE4IDE1OjU2OjM4IEdNVCAyMDE1ICA8L2gxPiA8L2JvZHk+CjwvaHRtbD4=</content>
+                            <content>JTNDIURPQ1RZUEUlMjBodG1sJTNFJTBBJTNDaHRtbCUyMHhtbG5zJTNEJTIyaHR0cCUzQSUyRiUyRnd3dy53My5vcmclMkYxOTk5JTJGaHRtbCUyMiUzRSUwQSUzQ2hlYWQlM0UlMEElMjAlMjAlMjAlMjAlM0NtZXRhJTIwY2hhcnNldCUzRCUyMlVURi04JTIyJTNFJTBBJTIwJTIwJTIwJTIwJTNDdGl0bGUlM0UlMjBOZXclMjBBcHBsaWNhdGlvbiUzQXRhbWlsLWVkaXRpbmctdW5kZXItZGV2JTIwJTIwJTIwJTIwJTNDJTJGdGl0bGUlM0UlMjAlM0MlMkZoZWFkJTNFJTIwJTNDYm9keSUzRSUzQ2gxJTNFJTIwSXQlMjBpcyUyMGElMjBuZXclMjBUYW1pbCUyMGFwcGxpY2F0aW9uJTIwKCUyMlQlN0J0aGFtaXpocHBheWFubWklN0QlMjIpJTIwbmFtZWQlMjBhcyUyMCUyNCU3QlJfQVBQX05BTUUlN0QlMjBjcmVhdGVkJTIwYXQlM0FXZWQlMjBGZWIlMjAxOCUyMDE1JTNBNTYlM0EzOCUyMEdNVCUyMDIwMTUlMjAlMjAlM0MlMkZoMSUzRSUyMCUzQyUyRmJvZHklM0UlMEElM0MlMkZodG1sJTNF</content>
                         </resources>
                         <resources>
                             <name>tamil.txt</name>
@@ -336,6 +336,48 @@
                 <property name="i.definition.type.pa.true.vigaaram" value="${root}"/>
             </global-description>
             <list>
+                <word>
+                    <root>தாமதம்</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>அளபெடை</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>கெடுதல்</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>திரிதல்</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>தோன்றல்</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>தளை</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>செய்யுள்</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
                 <word>
                     <root>இடது</root>
                     <description>
@@ -15169,6 +15211,15 @@
             </named-description>
             <list>
                 <verb>
+                    <root>இயை</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                        <property name="property.intransitive" value="true"/>
+                        <property name="property.transitive" value="false"/>
+                        <property name="thozhirrpeyar.intransitive.nouns" value="இயைதல்,இயைவு"/>
+                    </description>
+                </verb>
+                <verb>
                     <root>மரி</root>
                     <description>
                         <property name=".deletable" value="true"/>
@@ -21801,7 +21852,9 @@
                 </verb>
                 <verb>
                     <root>பற்று</root>
-                    <description name="kutriyalugaram"/>
+                    <description name="kutriyalugaram">
+                        <property name="thozhirrpeyar.transitive.verbasnoun" value="true"/>
+                    </description>
                 </verb>
                 <verb>
                     <root>நோக்கு</root>

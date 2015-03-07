@@ -464,11 +464,21 @@ public class EzhuththuUtils {
             }
         }
 
+
+        //Handle last character.
+
         if (context != null) {
+            if (lastconsumed != null) {
+                if (lastconsumed.isTamilLetter()) {
+                    TamilCharacter last = (TamilCharacter) lastconsumed;
+                    previousConsonant = last.isMeyyezhuththu();
+                    previousVowel = last.isUyirezhuththu() || last.isUyirMeyyezhuththu();
+                }
+            }
             AtomicSound current = findRelevantSound(context, previousConsonant, previousVowel);
             if (current != null) {
                 listener.tamilSound(current);
-              //  consumed = read;
+                //  consumed = read;
             }
 
         }

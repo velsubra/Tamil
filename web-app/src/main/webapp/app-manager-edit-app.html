@@ -35,7 +35,7 @@
             return;
         }
 
-        $("#result_table tr:gt(2)").detach();
+        $("#result_table tr:gt(10)").detach();
         var table = $("#result_table tr:last");
         var apps = _describeApp(appname);
         console.log(JSON.stringify(apps));
@@ -44,6 +44,23 @@
             return;
         }
         $('#cntxpath').val(apps.root);
+        if (apps.resourceInheritance) {
+
+            $('#inheritscheme').val(apps.resourceInheritance.inheritanceOrder);
+            if (apps.resourceInheritance.parentApps) {
+                var list = "";
+                for (var i = 0; i < apps.resourceInheritance.parentApps.length; i++) {
+                    if (i > 0) {
+                        list += ",";
+                    }
+                    list += apps.resourceInheritance.parentApps[i];
+                }
+                $('#parentapps').val(list);
+            }
+        }
+
+        $('#description').val(apps.description);
+
         var resultrow = null;
         apps = apps.resources;
         var welomeresource = null;
@@ -86,8 +103,25 @@
             return;
         }
         var seccode = $('#seccode').val();
-        _deleteAppResource(appname, resname,seccode);
+        _deleteAppResource(appname, resname, seccode);
         _load_All_Resources();
+    }
+
+    function _saveApp() {
+
+        var appname = $('#appname').val();
+        if (appname == "") {
+            alert("App not found on the url");
+            return;
+        }
+        var welcome = $('#welcome').val();
+        var seccode = $('#seccode').val();
+        var parentapps = $('#parentapps').val();
+        var searchscheme = $('#inheritscheme').val();
+        var desc = $('#description').val();
+        _saveAppDetails(seccode, appname, welcome, parentapps, searchscheme, desc);
+
+
     }
 
     function _cloneApp() {
@@ -132,7 +166,7 @@
         }
 
         var seccode = $('#seccode').val();
-        _createAppResource(appname, resname,seccode);
+        _createAppResource(appname, resname, seccode);
         _load_All_Resources();
     }
     //]]>
@@ -145,30 +179,96 @@
 <h3>All available resources to manage</h3>
 <table class="ajaxloading" border="1" id="result_table">
     <tr>
-        <th colspan="3">
-            Security Code: <input title="Security code with which application is protected." type="text" name="seccode" id="seccode" value=""> </input>
-            <br/>
-            App Name: <input disabled="true" type="text" name="appname" id="appname" value=""> </input>   <a target="_blank" class="_view_app" href="#">View
-            app.</a>
+        <td colspan="2">
+            <table>
+                <tr>
+                    <th>
+                        App Name
+                    </th>
+                    <td>
+                        <input size="30" disabled="true" type="text" name="appname" id="appname" value=""> </input>   <a
+                            target="_blank" class="_view_app" href="#">View
+                        app.</a>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        Security Code
+                    </th>
+                    <td>
+                        <input size="30" title="Security code with which application is protected." type="text"
+                               name="seccode"
+                               id="seccode" value=""> </input>
+                    </td>
+                </tr>
 
-        <br/>
-        Save  this as (clone app): <input  type="text" name="saveas" id="saveas" value=""> </input>
-        <input
-                onclick="javascript:_cloneApp()" type="button" name="btnclone"
-                title="Please delete the target app, before this operation. The target application should not exist already."
-                value="Clone This App"/>
-        </th>
+                <tr>
+                    <th>
+                        Save this as (clone app)
+                    </th>
+                    <td>
+                        <input size="30" type="text" name="saveas" id="saveas" value=""> </input>
+                    </td>
+                </tr>
+            </table>
+
+
+        </td>
+        <td>
+            <input
+                    onclick="javascript:_cloneApp()" type="button" name="btnclone"
+                    title="Please delete the target app, before this operation. The target application should not exist already."
+                    value="Clone This App"/>
+        </td>
     </tr>
     <tr>
-        <th colspan="3">Context path: <input type="text" name="cntxpath" id="cntxpath" value=""> </input> <br/>
+        <td colspan="2">
+            <table>
+                <tr>
+                    <th>Context path</th>
+                    <td><input disabled="true" type="text" name="cntxpath" id="cntxpath" value=""> </input></td>
+                </tr>
+                <tr>
+                    <th>Welcome page</th>
+                    <td><select name="welcome1" id="welcome"> </select></td>
+                </tr>
+                <tr>
+                    <th>Parent Applications(Resource Inheritance)</th>
+                    <td><input size="40" type="text" name="parentapps" id="parentapps" value=""></td>
+                </tr>
+                <tr>
+                    <th>Resource Search Scheme (Resource Inheritance)</th>
+                    <td><select name="inherit" id="inheritscheme">
+                        <option value="DEPTH_FIRST_PRE_ORDER">Pre order depth first
+                        </option>
+                        <option value="BREADTH_FIRST">Breadth first
+                        </option>
+                    </select>
+                    </td>
+                </tr>
 
-            Welcome page: <select name="welcome1" id="welcome"> </select></th>
+                <tr>
+                    <th>Application Description</th>
+                    <td><textarea id="description" cols="40" rows="2"></textarea></td>
+                </tr>
+            </table>
+        </td>
+        <td>
+            <input
+                    onclick="javascript:_saveApp()" type="button" name="btnsave"
+                    title="Save application details"
+                    value="Save Application"/>
+        </td>
+
 
     </tr>
     <tr>
-        <th colspan="3">Resource Name: <input size="40" type="text" name="resname" id="resname" value=""> </input> <input
-                onclick="javascript:_createNewResource()" type="button" name="btncreate" value="Create New Resource"/>
+        <th colspan="2">New Resource name: <input size="40" type="text" name="resname" id="resname" value=""> </input>
+
         </th>
+        <td> <input
+                onclick="javascript:_createNewResource()" type="button" name="btncreate"
+                value="Create New Resource"/></td>
     </tr>
 </table>
 
