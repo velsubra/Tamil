@@ -11,6 +11,7 @@ import tamil.lang.TamilCompoundCharacter;
 import tamil.lang.TamilFactory;
 import tamil.lang.TamilSimpleCharacter;
 import tamil.lang.TamilWord;
+import tamil.lang.api.feature.FeatureConstants;
 import tamil.lang.api.join.WordsJoiner;
 import tamil.lang.api.trans.JoinFeature;
 import tamil.lang.api.trans.NounLookupFeature;
@@ -244,7 +245,7 @@ public final class EnglishToTamilCharacterLookUpContext implements Transliterato
     @Override
     public TamilWord transliterate(String word, boolean join) {
 
-        return transliterate(word, join ? new TranslitFeature[]{TranslitFeature.TRANSLIT_JOIN_FEATURE_VAL_110} : null);
+        return transliterate(word, join ? new TranslitFeature[]{FeatureConstants.TRANSLIT_JOIN_FEATURE_VAL_110} : null);
     }
 
 
@@ -306,7 +307,7 @@ public final class EnglishToTamilCharacterLookUpContext implements Transliterato
                     }
                     if (looked == null) {
                         looked = new TamilWord();
-                        looked.add ( UnknownCharacter.getFor('\\'));
+                        //looked.add ( UnknownCharacter.getFor('\\'));
                         for (int j = 0; j < english.length(); j++) {
                             looked.add( UnknownCharacter.getFor(english.charAt(j)));
                         }

@@ -21,13 +21,15 @@
     <script>
 
 
-       function _onpage_blur() {
+        function _onpage_blur() {
             localStorage.setItem("english-text___", myCodeMirror.getValue());
         }
 
 
-
         function _load() {
+            $('#TAMIL_APPLET_INJECTED').attr("archive", TamilFactory.context + "/api/browse/tamil-letter-1.1.jar")
+            console.log(TamilFactory.context + "/api/browse/tamil-letter-1.1.jar");
+            document.getElementById('applet_div').style.display = 'block';
             var old = localStorage.getItem("english-text___");
             if (old) {
                 $("#edit").val(old);
@@ -39,7 +41,21 @@
     </script>
 
 </head>
-<body  onblur="_onpage_blur()" >
+
+
+<body onblur="_onpage_blur()">
+
+<div id="applet_div" style="display: none; visibility: hidden">
+    <object  type="application/x-java-applet"
+            id="TAMIL_APPLET_INJECTED" name="TamilPlatform Applet"
+            archive=""
+            width="0" height="0">
+        <param name="code" value="tamil.lang.api.applet.AppletTamilFactory"/>
+        <param name="java_arguments" value="-Dfile.encoding=UTF-8"/>
+
+    </object>
+</div>
+
 <a href="../index.html">&lt;-பின்னுக்குச்செல்க</a>
 <!--<div id="tool_tip" class="temp_tamil_tip"></div>-->
 <p>Press CTRL+t to toggle transliteration.</p>
@@ -55,15 +71,6 @@
 
     _load();
 
-
-    function _load() {
-        var old = localStorage.getItem("english-text___");
-        if (old) {
-            $("#edit").val(old);
-        } else {
-            $("#edit").val("");
-        }
-    }
 
 </script>
 <a href="../index.html">&lt;-பின்னுக்குச்செல்க</a>

@@ -188,9 +188,18 @@ public final class TamilWord extends AbstractWord<AbstractCharacter> implements 
         return startsWith(new TamilWord(start));
     }
 
+    public boolean startsWith(TamilCharacter start) {
+        return startsWith(new TamilWord(start));
+    }
+
 
     public boolean endsWith(TamilWord end) {
         return endsWith(end, true);
+    }
+
+
+    public boolean endsWith(TamilCharacter end) {
+        return endsWith(new TamilWord(end), true);
     }
 
     public boolean endsWith(TamilWord end, boolean fullMatch) {

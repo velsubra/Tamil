@@ -258,6 +258,24 @@ public abstract class PersistenceInterface {
         return list;
     }
 
+    public static List<IKnownWord> onlySuggestMatchingDerivedWords(TamilWord search, int max, List<Class<? extends IKnownWord>> includeTypes) {
+
+        List<IKnownWord> list = suggestions.get(search.suggestionHashCode());
+        if (list == null) {
+            list = new ArrayList<IKnownWord>();
+        }
+        if (list.size() < max) {
+            list.addAll(findMatchingDerivedWords(consonantset, search, false, max - list.size() - 1, includeTypes, true));
+            list.addAll(findMatchingDerivedWords(hashset, search, false, max - list.size(), includeTypes, true));
+        }
+        while (list.size() > max) {
+            list.remove(list.size() - 1);
+        }
+
+        return list;
+    }
+
+
     public static List<IKnownWord> findMatchingDerivedWords(SortedSet<IKnownWord> thisset, TamilWord start, boolean exact, int max, List<Class<? extends IKnownWord>> includeTypes) {
         return findMatchingDerivedWords(thisset, start, exact, max, includeTypes, false);
     }

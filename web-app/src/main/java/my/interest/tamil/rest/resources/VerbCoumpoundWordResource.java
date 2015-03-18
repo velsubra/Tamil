@@ -15,7 +15,7 @@ import javax.xml.bind.JAXBElement;
  * @author velsubra
  */
 @Path("compound-word")
-public class VerbCoumpoindWordResource {
+public class VerbCoumpoundWordResource {
 
 
 

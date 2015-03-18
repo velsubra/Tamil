@@ -7,10 +7,7 @@ import tamil.lang.TamilWord;
 import tamil.lang.api.number.NumberReader;
 import tamil.lang.api.number.ReaderFeature;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
+import javax.ws.rs.*;
 
 /**
  * <p>
@@ -25,7 +22,7 @@ public class NumberReaderResource extends BaseResource {
     @GET
     @Path("/one/")
     @Produces("application/json; charset=UTF-8")
-    public String readGet(@QueryParam("number") String number,@QueryParam("features") String features) throws Exception {
+    public String readGet(@QueryParam("number") String number, @DefaultValue("") @QueryParam("features") String features) throws Exception {
         JSONObject obj = new JSONObject();
         try {
             NumberReader reader = TamilFactory.getNumberReader();

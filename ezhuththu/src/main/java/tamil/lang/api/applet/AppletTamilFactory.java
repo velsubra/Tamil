@@ -84,7 +84,7 @@ public class AppletTamilFactory extends JApplet {
         try {
 
             TamilWord w = reader.readNumber(number, FeatureSet.findFeatures(ReaderFeature.class, features).toArray(new ReaderFeature[]{}));
-            System.out.println("Number:" + w.toString());
+           // System.out.println("Number:" + w.toString());
            // System.out.println("file.encoding:" +System.getProperty("file.encoding"));
             JSONObject obj = new JSONObject();
             obj.put("tamil", w.toString());
@@ -113,8 +113,9 @@ public class AppletTamilFactory extends JApplet {
             TranslitFeature[] fs = FeatureSet.findFeatures(TranslitFeature.class, features).toArray(new TranslitFeature[]{});
             JSONObject obj = new JSONObject();
             TamilWord w = trans.transliterate(text, fs);
-            System.out.println("Tamil:" + w.toString());
+          //  System.out.println("Tamil:" + w.toString());
             obj.put("tamil", w.toString());
+            obj.put("given", text);
             return obj.toString();
         } catch (Exception e) {
             return handle(e).toString();

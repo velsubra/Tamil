@@ -11,6 +11,7 @@ import my.interest.lang.tamil.punar.TamilWordPartContainer;
 import my.interest.lang.tamil.punar.handler.AbstractPunarchiHandler;
 import my.interest.lang.tamil.translit.EnglishToTamilCharacterLookUpContext;
 import tamil.lang.api.feature.Feature;
+import tamil.lang.api.feature.FeatureConstants;
 import tamil.lang.api.trans.TranslitFeature;
 
 import javax.ws.rs.*;
@@ -239,7 +240,7 @@ public class PunarchiResource {
             }
         }
         TranslitResult result = new TranslitResult();
-        TamilWord word = array ?  EnglishToTamilCharacterLookUpContext.getArrayValue(english)  : EnglishToTamilCharacterLookUpContext.TRANSLIST.transliterate(english, join ? new TranslitFeature[]{TranslitFeature.TRANSLIT_JOIN_FEATURE_VAL_110, Feature.TRANSLIT_NOUN_LOOKUP_FEATURE_VAL_115} : null);
+        TamilWord word = array ?  EnglishToTamilCharacterLookUpContext.getArrayValue(english)  : EnglishToTamilCharacterLookUpContext.TRANSLIST.transliterate(english, join ? new TranslitFeature[]{FeatureConstants.TRANSLIT_JOIN_FEATURE_VAL_110, FeatureConstants.TRANSLIT_NOUN_LOOKUP_FEATURE_VAL_115} : null);
         result.setTamilWord(word.toString());
 
         if (!array && parse) {

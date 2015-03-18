@@ -75,6 +75,7 @@ public class SimpleSplitResult implements Comparable {
      * @return null if it cannot split.
      */
     public List<SimpleSplitResult> checkAndsplitToKnown(boolean firstpartUnknownOk, boolean quickReturn) {
+
         mapContext = new HashMap<String, List<IKnownWord>>();
         return checkAndsplitToKnownPrivate(firstpartUnknownOk, quickReturn, new HashMap<String, Set<SimpleSplitResult>>(), new HashSet<String>(), mapContext, new HashSet<String>(), false, true);
     }
@@ -94,6 +95,7 @@ public class SimpleSplitResult implements Comparable {
         boolean lastsplit = false;
         int count1 = 0;
         for (String w : splitList) {
+            if (w.length() > 40) return  null;// Defence for now.
             count1++;
             lastsplit = count1 == splitList.size();
 

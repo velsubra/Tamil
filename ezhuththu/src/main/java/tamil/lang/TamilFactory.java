@@ -1,15 +1,16 @@
 package tamil.lang;
 
 import my.interest.lang.tamil.impl.DefaultNumberReader;
-
 import my.interest.lang.tamil.impl.dictionary.DictionaryCollection;
 import my.interest.lang.tamil.punar.handler.WordsJoinHandler;
 import my.interest.lang.tamil.translit.EnglishToTamilCharacterLookUpContext;
 import tamil.lang.api.dictionary.TamilDictionary;
 import tamil.lang.api.join.WordsJoiner;
 import tamil.lang.api.number.NumberReader;
+import tamil.lang.api.parser.CompoundWordParser;
 import tamil.lang.api.trans.Transliterator;
 import tamil.lang.exception.service.ServiceException;
+import tamil.lang.spi.CompoundWordParserProvider;
 import tamil.lang.spi.TamilDictionaryProvider;
 
 import java.util.Iterator;
@@ -17,32 +18,42 @@ import java.util.ServiceLoader;
 
 /**
  * <p>
- *    The platform class that can provide entry point for different services.
+ * The platform class that can provide entry point for different services.
  * </p>
  *
- * @see TamilWord#from(String)
- *
  * @author velsubra
+ * @see TamilWord#from(String)
  */
 public final class TamilFactory {
 
     /**
      * This has to be init.
      */
-
-    private static TamilDictionary systemDictionary = null;
     public static void init() {
         TamilCharacterLookUpContext.lookup(0);
     }
 
+
+    private static TamilDictionary systemDictionary = null;
+    private static CompoundWordParser systemParser = null;
+
     private TamilFactory() {
 
     }
-    static {
-        ServiceLoader loader =  ServiceLoader.load(TamilDictionaryProvider.class);
 
+    static {
+        ServiceLoader loader = ServiceLoader.load(TamilDictionaryProvider.class);
         loader.reload();
         systemDictionary = new DictionaryCollection(loader.iterator());
+
+
+        loader = ServiceLoader.load(CompoundWordParserProvider.class);
+        loader.reload();
+        Iterator<CompoundWordParserProvider> it = loader.iterator();
+        if (it.hasNext()) {
+            systemParser = it.next().crate();
+        }
+
     }
 
 
@@ -50,7 +61,7 @@ public final class TamilFactory {
      * Gets the system dictionary that can be used to look for known tamil words.
      *
      * @return the dictionary object.
-     * @throws  tamil.lang.exception.service.ServiceException when there is an issue while getting this service.
+     * @throws tamil.lang.exception.service.ServiceException when there is an issue while getting this service.
      */
     public static TamilDictionary getSystemDictionary() throws ServiceException {
 
@@ -62,9 +73,9 @@ public final class TamilFactory {
      *
      * @param fromLanguage the source language. Currently it is ignored. English is the only supported language!
      * @return the Transliterator
-     * @throws  tamil.lang.exception.service.ServiceException when there is an issue while getting this service.
+     * @throws tamil.lang.exception.service.ServiceException when there is an issue while getting this service.
      */
-    public static Transliterator getTransliterator(String fromLanguage) {
+    public static Transliterator getTransliterator(String fromLanguage) throws ServiceException {
         return EnglishToTamilCharacterLookUpContext.TRANSLIST;
     }
 
@@ -73,9 +84,9 @@ public final class TamilFactory {
      *
      * @param nilaiMozhi the initial word. (நிலைமொழி )
      * @return the WordsJoiner
-     * @throws  tamil.lang.exception.service.ServiceException when there is an issue while creating this service.
+     * @throws tamil.lang.exception.service.ServiceException when there is an issue while creating this service.
      */
-    public static WordsJoiner createWordJoiner(TamilWord nilaiMozhi) {
+    public static WordsJoiner createWordJoiner(TamilWord nilaiMozhi) throws ServiceException {
         WordsJoinHandler handler = new WordsJoinHandler();
         handler.add(nilaiMozhi);
         return handler;
@@ -84,11 +95,21 @@ public final class TamilFactory {
 
     /**
      * Gets the number reader interface.
-     * @return  the instance of a number reader.
-     * @throws  tamil.lang.exception.service.ServiceException when there is an issue while getting this service.
+     *
+     * @return the instance of a number reader.
+     * @throws tamil.lang.exception.service.ServiceException when there is an issue while getting this service.
      */
-    public static NumberReader getNumberReader() {
-          return DefaultNumberReader.reader;
+    public static NumberReader getNumberReader() throws ServiceException {
+        return DefaultNumberReader.reader;
+    }
+
+
+    public static CompoundWordParser getCompoundWordParser() throws ServiceException {
+        if (systemParser == null) {
+            throw new ServiceException("Unimplemented!");
+        } else {
+            return systemParser;
+        }
     }
 
 }
