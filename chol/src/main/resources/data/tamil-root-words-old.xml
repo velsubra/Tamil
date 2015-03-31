@@ -484,6 +484,13 @@
             </global-description>
             <list>
                 <word>
+                    <root>நாளை</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                        <property name="definition.type" value="k"/>
+                    </description>
+                </word>
+                <word>
                     <root>கோப்பை</root>
                     <description>
                         <property name=".deletable" value="true"/>
@@ -1983,6 +1990,8 @@
                         <property name="definition.type" value="pa"/>
                         <property name="i.definition.type.pa.mai" value="true"/>
                         <property name="i.i.definition.type.pa.mai.true.pp" value="பழம்"/>
+                        <property name="i.definition.type.pa.pe" value="பழைய"/>
+                        <property name="meaning.english.words" value="heritage"/>
                     </description>
                 </word>
                 <word>
@@ -4108,7 +4117,14 @@
                 </word>
                 <word>
                     <root>எளிமை</root>
-                    <description/>
+                    <description>
+                        <property name="definition.type" value="pa"/>
+                        <property name="i.definition.type.pa.mai" value="true"/>
+                        <property name="i.i.definition.type.pa.mai.true.pp" value="எளி"/>
+                        <property name="i.definition.type.pa.pe" value="எளிய"/>
+                        <property name="i.definition.type.pa.uv" value="p"/>
+                        <property name="meaning.english.words" value="easiness"/>
+                    </description>
                 </word>
                 <word>
                     <root>விலை</root>

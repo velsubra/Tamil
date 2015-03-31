@@ -320,7 +320,7 @@
                         <resources>
                             <name>gs/possibles.gv</name>
                             <type>GROOVY</type>
-                            <content>aW1wb3J0JTIwdGFtaWwubGFuZy4qJTNCJTBBaW1wb3J0JTIwdGFtaWwudXRpbC4qJTNCJTBBaW1wb3J0JTIwdGFtaWwubGFuZy5rbm93bi4qJTNCJTBBaW1wb3J0JTIwdGFtaWwubGFuZy5rbm93bi5ub24uZGVyaXZlZC4qJTNCJTBBJTIwaW1wb3J0JTIwb3JnLmpzb24uKiUzQiUwQSUwQWRpY3Rpb25hcnklMjAlM0QlMjBUYW1pbEZhY3Rvcnkuc3lzdGVtRGljdGlvbmFyeSUzQiUwQSUwQUxpc3QlM0NJS25vd25Xb3JkJTNFJTIwbm91bnMlMjAlMjAlM0QlMjBkaWN0aW9uYXJ5LnNlYXJjaChuZXclMjBUYW1pbFdvcmQoKSUyQ2ZhbHNlJTJDJTIwNTAwMDAlMkMlMjAlNUJJVmluYWl5ZWNoY2hhbS5jbGFzcyU1RCklM0IlMEFTdHJpbmclMjByZXQlMjAlM0QlMjIlMjIlM0IlMEFmb3IlMjAoSUtub3duV29yZCUyMGVjaCUyMCUzQW5vdW5zKSUyMCU3QiUwQSUyMCUyMCUyMCUwQSUyMCUyMCUyMCUyMFRhbWlsV29yZCUyMHclMjAlM0QlMjBlY2gud29yZC5kdXBsaWNhdGUoKSUzQiUwQSUyMCUyMCUyMCUyMHcuYWRkKFRhbWlsQ29tcG91bmRDaGFyYWN0ZXIuSU0pJTNCJTBBJTIwJTIwJTIwJTIwcmV0JTIwJTJCJTNEJTIwdy50b1N0cmluZygpJTIwJTJCJTIyJTVDbiUyMiUzQiUwQSUyMCUyMCUyMCUyMCUwQSU3RCUwQSUwQXJldHVybiUyMHJldCUzQiUwQSUyMA==</content>
+                            <content>aW1wb3J0JTIwdGFtaWwubGFuZy4qJTNCJTBBaW1wb3J0JTIwdGFtaWwudXRpbC4qJTNCJTBBaW1wb3J0JTIwdGFtaWwubGFuZy5rbm93bi4qJTNCJTBBaW1wb3J0JTIwdGFtaWwubGFuZy5rbm93bi5ub24uZGVyaXZlZC4qJTNCJTBBaW1wb3J0JTIwdGFtaWwubGFuZy5rbm93bi5kZXJpdmVkLiolM0IlMEFpbXBvcnQlMjBvcmcuanNvbi4qJTNCJTBBJTBBZGljdGlvbmFyeSUyMCUzRCUyMFRhbWlsRmFjdG9yeS5zeXN0ZW1EaWN0aW9uYXJ5JTNCJTBBJTBBTGlzdCUzQ0lLbm93bldvcmQlM0UlMjBub3VucyUyMCUyMCUzRCUyMGRpY3Rpb25hcnkuc2VhcmNoKG5ldyUyMFRhbWlsV29yZCgpJTJDZmFsc2UlMkMlMjA1MDAwMCUyQyUyMCU1QlZpeWFuZ29hbGguY2xhc3MlNUQpJTNCJTBBU3RyaW5nJTIwcmV0JTIwJTNEJTIyc2l6ZSUzQSUyMiUyMCUyQiUyMG5vdW5zLnNpemUoKSUyMCUyQiUyMCUyMiU1Q24lMjIlM0IlMEFmb3IlMjAoSUtub3duV29yZCUyMGVjaCUyMCUzQW5vdW5zKSUyMCU3QiUwQSUyMCUyMCUyMCUwQSUyMCUyMCUyMCUyMFRhbWlsV29yZCUyMHclMjAlM0QlMjBlY2gud29yZC5kdXBsaWNhdGUoKSUzQiUwQSUyMCUyMCUyMCUwQSUyMCUyMCUyMCUyMHJldCUyMCUyQiUzRCUyMHcudG9TdHJpbmcoKSUyMCUyQiUyMiU1Q24lMjIlM0IlMEElMjAlMjAlMjAlMjAlMEElN0QlMEElMEFyZXR1cm4lMjByZXQlM0IlMEElMjA=</content>
                         </resources>
                     </resources>
                     <resourceInheritance>
@@ -483,6 +483,13 @@
                 <property name="i.definition.type.pa.true.vigaaram" value="${root}"/>
             </global-description>
             <list>
+                <word>
+                    <root>நாளை</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                        <property name="definition.type" value="k"/>
+                    </description>
+                </word>
                 <word>
                     <root>கோப்பை</root>
                     <description>
@@ -1983,6 +1990,8 @@
                         <property name="definition.type" value="pa"/>
                         <property name="i.definition.type.pa.mai" value="true"/>
                         <property name="i.i.definition.type.pa.mai.true.pp" value="பழம்"/>
+                        <property name="i.definition.type.pa.pe" value="பழைய"/>
+                        <property name="meaning.english.words" value="heritage"/>
                     </description>
                 </word>
                 <word>
@@ -4108,7 +4117,14 @@
                 </word>
                 <word>
                     <root>எளிமை</root>
-                    <description/>
+                    <description>
+                        <property name="definition.type" value="pa"/>
+                        <property name="i.definition.type.pa.mai" value="true"/>
+                        <property name="i.i.definition.type.pa.mai.true.pp" value="எளி"/>
+                        <property name="i.definition.type.pa.pe" value="எளிய"/>
+                        <property name="i.definition.type.pa.uv" value="p"/>
+                        <property name="meaning.english.words" value="easiness"/>
+                    </description>
                 </word>
                 <word>
                     <root>விலை</root>

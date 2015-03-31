@@ -250,7 +250,7 @@ function _suggestionCallback(lineno, startCol, fullword) {
         if (!current_tamil_obj.parsed) {
             var unicodeOffset = 0;
             if (current_tamil_obj.hint) {
-                unicodeOffset =  current_tamil_obj.hint.unicodeStartIndex;
+                unicodeOffset = current_tamil_obj.hint.unicodeStartIndex;
             }
             // console.log(current_tamil_obj);
             myCodeMirror.markText({
@@ -270,7 +270,7 @@ function _suggestionCallback(lineno, startCol, fullword) {
     return this;
 }
 
-function _backgroundSpellCheck() {
+function _backgroundSpellCheck(changed) {
     var markers_old = [];
     var marks = myCodeMirror.getAllMarks();
     if (marks) {
@@ -279,19 +279,35 @@ function _backgroundSpellCheck() {
         }
     }
 
+
+    for (var i = 0; i < markers_old.length; i++) {
+        var toclear = true;
+        if (changed) {
+            var markerrange = markers_old[i].find();
+            if (markerrange) {
+                toclear = changed.from.line <= markerrange.from.line && changed.to.line >= markerrange.from.line;
+            }
+        }
+        if (toclear) {
+            markers_old[i].clear();
+        }
+    }
+
     if (isToSPELLCHECK()) {
         myCodeMirror.eachLine(function (lineHandle) {
             var text = lineHandle.text;
             var lineno = lineHandle.lineNo();
-            _processLineForSpellCheck(lineno, text);
+            var linechanged = true;
+            if (changed) {
+                linechanged = changed.from.line <= lineno && changed.to.line >= lineno;
+            }
+            if (linechanged) {
+                setTimeout(_processLineForSpellCheck(lineno, text), 100);
+            }
 
         });
     }
 
-
-    for (var i = 0; i < markers_old.length; i++) {
-        markers_old[i].clear();
-    }
 
 //            if (myCodeMirror.getAllMarks().length > 0) {
 //                //setTimeout(_backgroundSpellCheck, 5000);
@@ -373,6 +389,18 @@ function _onKeyHandled(cm, name, event) {
 
 }
 
+function isLocalAlreadyThere(localdata, token) {
+    var already_there = false;
+    for (var j = 0; j < localdata.length; j++) {
+        if (localdata[j].text === token) {
+            already_there = true;
+            break;
+        }
+    }
+    return already_there;
+
+}
+
 
 function getLocalHints(cm, tamil) {
 
@@ -384,14 +412,23 @@ function getLocalHints(cm, tamil) {
 
             var token = "";
             for (var i = 0; i < fullLine.length; i++) {
+
                 var ch = fullLine.charAt(i);
                 if (ch == ' ') {
                     if (token.trim()) {
                         if (token != tamil && token.indexOf(tamil) == 0) {
-                            localdata.push({
-                                text: token,
-                                displayText: token
-                            });
+
+
+                            if (!isLocalAlreadyThere(localdata, token)) {
+                                localdata.push({
+                                    text: token,
+                                    displayText: token + '(local)'
+                                });
+
+                            } else {
+                                console.log("skipping:" + token);
+                            }
+
                         }
 
                     }
@@ -406,10 +443,12 @@ function getLocalHints(cm, tamil) {
             token = token.trim();
             if (token) {
                 if (token != tamil && token.indexOf(tamil) == 0) {
-                    localdata.push({
-                        text: token,
-                        displayText: token
-                    });
+                    if (!isLocalAlreadyThere(localdata, token)) {
+                        localdata.push({
+                            text: token,
+                            displayText: token
+                        });
+                    }
                 }
             }
         }
@@ -438,6 +477,16 @@ function _provideHint(cm, callback, options) {
         }
         var data = getLocalHints(cm, trans_now);
 
+        var pos = cm.getCursor();
+        var from_word = {line: pos.line, ch: pos.ch - current_word.length};
+        if (data.length > 0) {
+            callback({
+                list: data, from: from_word, to: cm.getCursor()
+            });
+            return;
+        }
+
+
         if (suggestedwords && suggestedwords.list) {
             for (var sug = 0; sug < suggestedwords.list.length; sug++) {
 
@@ -456,8 +505,8 @@ function _provideHint(cm, callback, options) {
                 });
             }
         }
-        var pos = cm.getCursor();
-        var from_word = {line: pos.line, ch: pos.ch - current_word.length};
+        pos = cm.getCursor();
+        from_word = {line: pos.line, ch: pos.ch - current_word.length};
 
 
         callback({
@@ -497,7 +546,7 @@ function _onChange(cm, changed) {
     if (SPELL_CHECK) {
         clearTimeout(SPELL_CHECK);
     }
-    SPELL_CHECK = setTimeout(_backgroundSpellCheck, 200);
+    SPELL_CHECK = setTimeout(_backgroundSpellCheck(changed), 200);
 
     if (isToSUGGEST()) {
         _autocomplete(cm);

@@ -2,7 +2,7 @@
 var server = "rest/";
 
 //Enable this for local deployment , For server deployment comment-out.
-server = "";
+//server = "";
 
 
 var current_questions_id = null;
