@@ -807,6 +807,11 @@ public final class TamilCompoundCharacter extends TamilCharacter implements Comp
     }
 
     @Override
+    public int getCodePointsCount() {
+        return consonants.length + 1;
+    }
+
+    @Override
     public String getVowelDigest() {
         if (isMeyyezhuththu()) {
             return super.getVowelDigest();

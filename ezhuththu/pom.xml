@@ -26,6 +26,21 @@
             <scope>provided</scope>
         </dependency>
 
+
+        <!--<dependency>-->
+            <!--<groupId>com.sun.jersey</groupId>-->
+            <!--<artifactId>jersey-client</artifactId>-->
+            <!--<version>1.9</version>-->
+            <!--<scope>provided</scope>-->
+        <!--</dependency>-->
+
+        <!--<dependency>-->
+            <!--<groupId>com.sun.jersey</groupId>-->
+            <!--<artifactId>jersey-core</artifactId>-->
+            <!--<version>1.9</version>-->
+            <!--<scope>provided</scope>-->
+        <!--</dependency>-->
+
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
@@ -56,11 +71,13 @@
                         <configuration>
                             <includes>
                                 <include>org.json:json</include>
+                                <!--<include>com.sun.jersey:jersey-client</include>-->
+                                <!--<include>com.sun.jersey:jersey-core</include>-->
                             </includes>
                             <rules>
                                 <rule>
                                     <pattern>nomatch.org.objectweb.asm.**</pattern>
-                                    <result>oracle.cloud.jcs.org.objectweb.asm.@1</result>
+                                    <result>tamil.nothing.asm.@1</result>
                                 </rule>
                             </rules>
                         </configuration>

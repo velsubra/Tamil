@@ -345,7 +345,7 @@ public abstract class PersistenceInterface {
 
     public static void addKnown(IKnownWord w) {
 
-
+        w.getWord().setLocked();
         set.add(w);
         consonantset.add(w);
         hashset.add(w);

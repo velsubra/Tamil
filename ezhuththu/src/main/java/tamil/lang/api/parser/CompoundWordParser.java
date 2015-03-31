@@ -33,4 +33,6 @@ public interface CompoundWordParser {
      */
     public List<ParserResult> parse(TamilWord singleWord, int maxReturn, ParseFeature ... features);
 
+
+
 }

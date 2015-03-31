@@ -22,6 +22,7 @@ import java.util.List;
 @Path("api/parse")
 public class ParserResource extends BaseResource {
 
+
     @GET
     @Path("/one/")
     @Produces("application/json; charset=UTF-8")
@@ -36,10 +37,13 @@ public class ParserResource extends BaseResource {
 
     private void populate(String word, JSONObject obj, List<ParserResult> with) throws Exception {
         try {
-             obj.put("given", word);
+            boolean parsed = true;
+            obj.put("given", word);
             if (with == null || with.isEmpty()) {
                 obj.put("parsed", false);
+                parsed = false;
             } else {
+
                 JSONArray array = new JSONArray();
                 for (int i = with.size() - 1; i >= 0; i--) {
                     ParserResult r = with.get(i);
@@ -52,14 +56,37 @@ public class ParserResource extends BaseResource {
                     for (IKnownWord split : r.getSplitWords()) {
                         arraysplits.put(from(split));
                     }
+                    if (!r.isParsed()) {
+                        parsed = false;
+                        break;
+
+                    }
                 }
                 if (array.length() > 0) {
-                    obj.put("parsed", true);
+                    obj.put("parsed", parsed);
+
                     obj.put("splitways", array);
                 } else {
                     obj.put("parsed", false);
+                    parsed = false;
                 }
 
+            }
+
+            if (!parsed) {
+                if (with != null && !with.isEmpty()) {
+                    ParserResult.PARSE_HINT hint = with.get(0).getParseHint();
+                    if (hint != null) {
+                        JSONObject hintObj = new JSONObject();
+                        obj.put("hint", hintObj);
+                        hintObj.put("tamilStartIndex", hint.getTamilStartIndex());
+                        hintObj.put("tamilEndIndex", hint.getTamilEndIndex());
+                        hintObj.put("unicodeStartIndex", hint.getUnicodeStartIndex());
+                        hintObj.put("unicodeEndIndex", hint.getUnicodeEndIndex());
+                        hintObj.put("message", hint.getMessage());
+                    }
+
+                }
             }
 
 

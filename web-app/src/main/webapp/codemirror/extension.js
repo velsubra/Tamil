@@ -9,13 +9,25 @@ if (server) {
 
 var EDIT_TRANSLIT = TamilFactory.createTransliterator();
 var EDIT_PARSE = TamilFactory.createParser(1);
-var EDIT_DICTIONARY = TamilFactory.createDictionary(50);
-
+var EDIT_DICTIONARY = TamilFactory.createDictionary(20);
 
 
 //Starts with pulli and then aa
 var glyph = ['\u0BCD', '\u0BBE', '\u0BBF', '\u0BC0', '\u0BC1', '\u0BC2', '\u0BC6', '\u0BC7', '\u0BC8', '\u0BCA', '\u0BCB', '\u0BCC'];
-var TRANSLIT = true;
+
+
+function isToTRANSLIT() {
+    return $('#opt_tamil').prop('checked');
+}
+
+function isToSUGGEST() {
+    return $('#opt_suggestion').prop('checked');
+}
+
+function isToSPELLCHECK() {
+    return $('#opt_spell').prop('checked');
+}
+
 function containsInArray(a, obj) {
     for (var i = 0; i < a.length; i++) {
 
@@ -69,6 +81,7 @@ function handleCursorForTamilGlyphs(cm, left, shiftKey) {
 
     var currentToken = cm.getTokenAt(pos, true);
     if (!currentToken || !currentToken.string) {
+        $('#tool_tip').hide();
         return;
     }
 
@@ -93,7 +106,7 @@ function handleCursorForTamilGlyphs(cm, left, shiftKey) {
 
     var current_word = get_current_word(cm);
 
-    if (TRANSLIT) {
+    if (isToTRANSLIT()) {
 
         _translitCallback.fullword = current_word;
         _translitCallback.widget = {
@@ -109,6 +122,7 @@ function handleCursorForTamilGlyphs(cm, left, shiftKey) {
         if (tool_tip.parentNode) {
             tool_tip.parentNode.removeChild(tool_tip);
         }
+
         cm.addWidget(pos, tool_tip, true);
         $('#tool_tip').html(current_tamil_word);
 
@@ -169,7 +183,7 @@ function _processWordForSpellCheck(lineno, startCol, fullword) {
     var instance_callback = new _suggestionCallback(lineno, startCol, fullword);
 
     var transresult = EDIT_TRANSLIT.transliterate(fullword, "110,115");
-    EDIT_PARSE.parseAsync(instance_callback.method_callback, transresult.tamil, "");
+    EDIT_PARSE.parseAsync(instance_callback.method_callback, transresult.tamil, "175");
 
 
 }
@@ -234,11 +248,14 @@ function _suggestionCallback(lineno, startCol, fullword) {
     this.method_callback = function (current_tamil_obj) {
         // console.log(current_tamil_obj);
         if (!current_tamil_obj.parsed) {
-
+            var unicodeOffset = 0;
+            if (current_tamil_obj.hint) {
+                unicodeOffset =  current_tamil_obj.hint.unicodeStartIndex;
+            }
             // console.log(current_tamil_obj);
             myCodeMirror.markText({
                     line: lineno,
-                    ch: startCol
+                    ch: startCol + unicodeOffset
                 }, {
                     line: lineno,
                     ch: startCol + fullword.length
@@ -262,12 +279,14 @@ function _backgroundSpellCheck() {
         }
     }
 
-    myCodeMirror.eachLine(function (lineHandle) {
-        var text = lineHandle.text;
-        var lineno = lineHandle.lineNo();
-        _processLineForSpellCheck(lineno, text);
+    if (isToSPELLCHECK()) {
+        myCodeMirror.eachLine(function (lineHandle) {
+            var text = lineHandle.text;
+            var lineno = lineHandle.lineNo();
+            _processLineForSpellCheck(lineno, text);
 
-    });
+        });
+    }
 
 
     for (var i = 0; i < markers_old.length; i++) {
@@ -283,7 +302,7 @@ function _backgroundSpellCheck() {
 }
 
 function _beforeChange(cm, change) {
-    if (!TRANSLIT) return;
+    if (!isToTRANSLIT()) return;
     var space = change.text.length == 1 && change.text[0] == " ";
     var newline = change.text.length == 2 && change.text[0] == "" && change.text[1] == "";
     if (space || newline) {
@@ -312,11 +331,14 @@ function _cursorActivity(cm) {
 
 function _keydown(cm, event) {
     if (event.ctrlKey && event.which == 84) {
-        TRANSLIT = !TRANSLIT;
+        $('#opt_tamil').click();
+
         handleCursorForTamilGlyphs(cm, false, event ? event.shiftKey : window.event ? window.event.shiftKey : false);
         event.preventDefault();
         return;
     }
+
+
 }
 
 function _contextmenu(cm, event) {
@@ -331,9 +353,11 @@ function _onKeyHandled(cm, name, event) {
     if (event.ctrlKey && event.which == 32) {
         return;
     }
+
+
     //backspace.
     //if (event.keyCode == 8) {
-    //    _autocomplete(cm);
+    //
     //}
 
     handleCursorForTamilGlyphs(cm, event.keyCode == 37 || event.keyCode == 8, event.shiftKey);
@@ -345,8 +369,55 @@ function _onKeyHandled(cm, name, event) {
             return;
         }
     }
+
+
 }
 
+
+function getLocalHints(cm, tamil) {
+
+    var localdata = [];
+
+    cm.eachLine(function (lineHandle) {
+        var fullLine = lineHandle.text;
+        if (fullLine) {
+
+            var token = "";
+            for (var i = 0; i < fullLine.length; i++) {
+                var ch = fullLine.charAt(i);
+                if (ch == ' ') {
+                    if (token.trim()) {
+                        if (token != tamil && token.indexOf(tamil) == 0) {
+                            localdata.push({
+                                text: token,
+                                displayText: token
+                            });
+                        }
+
+                    }
+
+                    token = "";
+                } else {
+                    token += ch;
+                }
+            }
+
+            //last token
+            token = token.trim();
+            if (token) {
+                if (token != tamil && token.indexOf(tamil) == 0) {
+                    localdata.push({
+                        text: token,
+                        displayText: token
+                    });
+                }
+            }
+        }
+
+    });
+    return localdata;
+
+}
 
 function _provideHint(cm, callback, options) {
 
@@ -354,7 +425,7 @@ function _provideHint(cm, callback, options) {
 
     var current_word = get_current_word(cm);
 
-     var trans = EDIT_TRANSLIT.transliterate(current_word, "110,115").tamil;
+    var trans = EDIT_TRANSLIT.transliterate(current_word, "110,115").tamil;
     // if (current_word) {
     EDIT_DICTIONARY.searchAsync(function (suggestedwords) {
         // console.log(suggestedwords);
@@ -365,7 +436,8 @@ function _provideHint(cm, callback, options) {
             _autocomplete(cm);
             // return;
         }
-        var data = [];
+        var data = getLocalHints(cm, trans_now);
+
         if (suggestedwords && suggestedwords.list) {
             for (var sug = 0; sug < suggestedwords.list.length; sug++) {
 
@@ -373,14 +445,14 @@ function _provideHint(cm, callback, options) {
                     // getTamilWord(current_word, false, false, true).tamilWord;
                     if (trans_now != suggestedwords[0]) {
                         data.push({
-                            text: trans_now,
-                            displayText: ">> " + trans_now + "(Space)"
+                            text: (isToTRANSLIT() ? trans_now : current_word_now ),
+                            displayText: ">> " + (isToTRANSLIT() ? trans_now : current_word_now ) + "(Space)"
                         });
                     }
                 }
                 data.push({
                     text: suggestedwords.list[sug].tamil,
-                    displayText: suggestedwords.list[sug].tamil + "     " + suggestedwords.list[sug].type + (sug == 0 ? "(Enter)" : "")
+                    displayText: suggestedwords.list[sug].tamil + "     " + suggestedwords.list[sug].type
                 });
             }
         }
@@ -403,12 +475,12 @@ function _provideHint(cm, callback, options) {
 _provideHint.async = true;
 
 function _autocomplete(cm) {
+    $('#tool_tip').hide();
     EDIT_TRANSLIT.transliterateAsync(_translitCallback, get_current_word(cm), "110,115");
 
     if ($('.CodeMirror-hints') && $('.CodeMirror-hints').is(":visible")) {
 
-    }
-    else {
+    } else {
         cm.showHint({
             hint: _provideHint
 
@@ -426,5 +498,9 @@ function _onChange(cm, changed) {
         clearTimeout(SPELL_CHECK);
     }
     SPELL_CHECK = setTimeout(_backgroundSpellCheck, 200);
+
+    if (isToSUGGEST()) {
+        _autocomplete(cm);
+    }
 
 }

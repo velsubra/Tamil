@@ -5,6 +5,9 @@ import common.lang.impl.AbstractWord;
 import common.lang.impl.UnknownCharacter;
 import my.interest.lang.tamil.EzhuththuUtils;
 import my.interest.lang.tamil.parser.impl.TamilWordListener;
+import tamil.lang.exception.TamilPlatformException;
+
+import java.util.Collection;
 
 /**
  * <p>
@@ -27,6 +30,12 @@ import my.interest.lang.tamil.parser.impl.TamilWordListener;
 public final class TamilWord extends AbstractWord<AbstractCharacter> implements Comparable {
 
     private int suggestionCode = 0;
+
+    public void setLocked() {
+        this.locked = true;
+    }
+
+    private boolean locked = false;
 
     /**
      * Returns if all the characters in the word are pure.
@@ -102,7 +111,6 @@ public final class TamilWord extends AbstractWord<AbstractCharacter> implements 
     }
 
 
-
     /**
      * Checks if the  word starts with  the given word.
      *
@@ -147,6 +155,12 @@ public final class TamilWord extends AbstractWord<AbstractCharacter> implements 
         }
         return true;
     }
+
+
+    public boolean endsWith(TamilCharacter end, boolean full) {
+        return endsWith(new TamilWord(end), full);
+    }
+
 
     /**
      * Checks if the current word ends with the given set of characters in the order.
@@ -428,6 +442,83 @@ public final class TamilWord extends AbstractWord<AbstractCharacter> implements 
     public void addSpace() {
         add(UnknownCharacter.SPACE);
     }
+
+    private void checkLocked() {
+        if (locked) {
+            throw new TamilPlatformException("Dictionary word cannot be modified.");
+        }
+    }
+
+    @Override
+    public boolean add(AbstractCharacter character) {
+        checkLocked();
+        return super.add(character);
+    }
+
+    @Override
+    public boolean addAll(int index, Collection<? extends AbstractCharacter> c) {
+        checkLocked();
+        return super.addAll(index, c);
+    }
+
+    @Override
+    public void clear() {
+        checkLocked();
+        super.clear();
+    }
+
+    @Override
+    public AbstractCharacter remove(int index) {
+        checkLocked();
+        return super.remove(index);
+    }
+
+    @Override
+    public AbstractCharacter remove() {
+        checkLocked();
+        return super.remove();
+    }
+
+    @Override
+    public boolean remove(Object o) {
+        checkLocked();
+        return super.remove(o);
+    }
+
+    @Override
+    public AbstractCharacter removeFirst() {
+        checkLocked();
+        return super.removeFirst();
+    }
+
+
+    @Override
+    public AbstractCharacter removeLast() {
+        checkLocked();
+        return super.removeLast();
+    }
+
+
+    @Override
+    public void removeRange(int fromIndex, int toIndex) {
+        checkLocked();
+        super.removeRange(fromIndex, toIndex);
+    }
+
+
+    /**
+     * Returns the total number of codepoints used by all the characters in the word
+     * @return the count >=0, by counting all the characters size in terms of number of unicode codepoints used.
+     */
+    public int  getCodePointsTotalCount() {
+
+        int count = 0;
+        for (AbstractCharacter c : this.toArray(new AbstractCharacter[0])) {
+           count += c.getCodePointsCount();
+        }
+        return count;
+    }
+
 
 
 }

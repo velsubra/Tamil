@@ -21,6 +21,44 @@
     <script>
 
 
+        function just_post() {
+            var msg = myCodeMirror.getValue();
+            console.log("Posing:" + msg);
+
+            var params = {};
+            params['message'] = msg;
+           // params['name'] = 'Name';
+            params['description'] = 'Post from Tamil Platform';
+            params['link'] = 'https://javas2-jcscdc.java.us2.oraclecloudapps.com/tamil/codemirror/editor-applet.html';
+          //  params['caption'] = 'Caption';
+
+            FB.api('/me/feed', 'post', params, function (response) {
+                console.log(response);
+                if (!response || response.error) {
+                    alert('Error occurred:' + response.error.message);
+                } else {
+                    alert('Post Done with ID: ' + response.id);
+                }
+            });
+        }
+
+        function _postToFB() {
+
+            FB.getLoginStatus(function (response) {
+                if (response.status === 'connected') {
+                    just_post();
+                }
+                else {
+                    FB.login(function () {
+                        just_post();
+                    }, {scope: 'publish_stream'});
+                }
+            });
+
+
+        }
+
+
         function _onpage_blur() {
             localStorage.setItem("english-text___", myCodeMirror.getValue());
         }
@@ -45,22 +83,62 @@
 
 <body onblur="_onpage_blur()">
 
+
+<script>
+    window.fbAsyncInit = function () {
+        FB.init({
+            appId: '1493373077613181',
+            status: true,
+            xfbml: true,
+            version: 'v2.3'
+        });
+
+
+    };
+
+
+    (function (d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) {
+            return;
+        }
+        js = d.createElement(s);
+        js.id = id;
+        js.src = "//connect.facebook.net/ta_IN/sdk.js";
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+</script>
+
+<div
+        class="fb-like"
+        data-share="true"
+
+       >
+</div>
 <div id="applet_div" style="display: none; visibility: hidden">
-    <object  type="application/x-java-applet"
+    <object type="application/x-java-applet"
             id="TAMIL_APPLET_INJECTED" name="TamilPlatform Applet"
             archive=""
             width="0" height="0">
         <param name="code" value="tamil.lang.api.applet.AppletTamilFactory"/>
+
         <param name="java_arguments" value="-Dfile.encoding=UTF-8"/>
 
     </object>
 </div>
-
-<a href="../index.html">&lt;-பின்னுக்குச்செல்க</a>
+<p>This page needs the applet to be loaded. You need Java 1.7 installed in your machine. After that, please follow <a
+        href="https://www.facebook.com/photo.php?fbid=872165799515084&set=p.872165799515084">the step</a> for applet
+    configuration. </p>
+<!--<a href="../index.html">&lt;-பின்னுக்குச்செல்க</a>-->
+<input class="small_text" type="button" onclick="javascript:_postToFB()" value="Post to my FB wall"/>
 <!--<div id="tool_tip" class="temp_tamil_tip"></div>-->
-<p>Press CTRL+t to toggle transliteration.</p>
+|
+Transliterate on Edit:<input type="checkbox" checked id="opt_tamil"
+                             title="CTRL+ALT+t to toggle transliteration."/> |
+Suggestions on Edit:<input type="checkbox" id="opt_suggestion" title="Press CTRL+space to look for suggestions."/> |
+Spell Check on Edit:<input type="checkbox" checked id="opt_spell" title="Do background spell-check"/>
 
-<p>Press CTRL+space to look for suggestions.</p>
+
 <textarea rows="10" cols="80" id="edit">
 
 

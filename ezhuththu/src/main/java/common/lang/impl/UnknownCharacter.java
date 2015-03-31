@@ -48,4 +48,8 @@ public class UnknownCharacter extends AbstractCharacter implements SimpleCharact
     }
 
 
+    @Override
+    public int getCodePointsCount() {
+        return 1;
+    }
 }

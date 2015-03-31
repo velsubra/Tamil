@@ -20,7 +20,8 @@ import java.util.List;
  */
 @Path("api/dictionary")
 public class DictionaryResource extends BaseResource {
-
+      //FB App id 1493373077613181
+      //f4ff1a747a36f626c3408c9b3257994a
 
     @GET
     @Path("search/")
@@ -32,6 +33,30 @@ public class DictionaryResource extends BaseResource {
             TamilDictionary dictionary = TamilFactory.getSystemDictionary();
             List<IKnownWord> list = dictionary.search(TamilWord.from(word), max, null, FeatureSet.findFeatures(DictionaryFeature.class, features).toArray(new DictionaryFeature[]{}));
             obj.put("list", from(list));
+            return obj.toString();
+
+        } catch (Exception e) {
+            handle(obj, e);
+
+
+        }
+        return obj.toString();
+    }
+
+    @GET
+    @Path("peekenglish/")
+    @Produces("application/json; charset=UTF-8")
+    public String peekenglish(@QueryParam("word") String word) throws Exception {
+        JSONObject obj = new JSONObject();
+        try {
+            obj.put("given", word);
+            TamilDictionary dictionary = TamilFactory.getSystemDictionary();
+            IKnownWord tamil  = dictionary.peekEnglish(word);
+            if (tamil != null) {
+                obj.put("found", from(tamil));
+            } else {
+             //   obj.put("tamil", word);
+            }
             return obj.toString();
 
         } catch (Exception e) {

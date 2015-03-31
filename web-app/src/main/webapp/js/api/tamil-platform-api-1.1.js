@@ -568,7 +568,7 @@ var TamilFactory = new function () {
                                    // console.log("Passing async response ..---------*****---------." + data.splitways);
                                     return;
                                 }
-                            })}, 200);
+                            })}, 100);
                     }
                 }
 

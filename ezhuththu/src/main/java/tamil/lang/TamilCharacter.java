@@ -324,7 +324,7 @@ public abstract class TamilCharacter extends AbstractCharacter {
 
             if (ch.isUyirezhuththu()) {
                 if (isUyirezhuththu() || isUyirMeyyezhuththu()) {
-                    return ch.getUyirPart().getValue() <= getUyirPart().getValue();
+                    return ch.getUyirPart().getValue() == getUyirPart().getValue();
                 } else {
                     return false;
                 }
@@ -340,7 +340,7 @@ public abstract class TamilCharacter extends AbstractCharacter {
 
             if (ch.isUyirMeyyezhuththu()) {
                 if (isUyirMeyyezhuththu()) {
-                    return ch.getMeiPart().getConsonant() == getMeiPart().getConsonant() && ch.getUyirPart().getValue() <= getUyirPart().getValue();
+                    return ch.getMeiPart().getConsonant() == getMeiPart().getConsonant() && ch.getUyirPart().getValue() == getUyirPart().getValue();
                 } else {
                     return false;
                 }

@@ -638,6 +638,11 @@ public final class TamilSimpleCharacter extends TamilCharacter implements Simple
 
     }
 
+    @Override
+    public int getCodePointsCount() {
+        return 1;
+    }
+
 
     private String consonantDigest = null;
 

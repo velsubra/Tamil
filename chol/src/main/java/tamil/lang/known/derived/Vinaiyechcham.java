@@ -6,6 +6,7 @@ import my.interest.lang.tamil.generated.types.RootVerbDescription;
 import my.interest.lang.tamil.generated.types.SimpleTense;
 import my.interest.lang.tamil.internal.api.PersistenceInterface;
 import my.interest.lang.tamil.punar.PropertyDescriptionContainer;
+import my.interest.lang.tamil.punar.TamilWordPartContainer;
 import my.interest.lang.tamil.punar.handler.VinaiMutruCreationHandler;
 import tamil.lang.TamilCharacter;
 import tamil.lang.TamilCompoundCharacter;
@@ -61,6 +62,22 @@ public class Vinaiyechcham extends DerivativeWithTense implements IVinaiyechcham
         super(word, vinaiyadi, tense);
 
         if (!derived) {
+
+            if (tense == SimpleTense.PRESENT) {
+                //viyangolh
+
+                if (word.endsWith(TamilSimpleCharacter.KA) && !new TamilWordPartContainer(vinaiyadi.getWord()).isUkkurralh()) {
+                    Viyangoalh v = new Viyangoalh(word, vinaiyadi);
+                    PersistenceInterface.addKnown(v);
+                } else {
+                    TamilWord viyangoalh = vinaiyadi.getWord().duplicate();
+                    viyangoalh.add(TamilSimpleCharacter.KA);
+                    Viyangoalh v = new Viyangoalh(viyangoalh, vinaiyadi);
+                    PersistenceInterface.addKnown(v);
+                }
+
+            }
+
             if (ulhlhana.isEmpty()) {
                 fillMap();
                 RootVerbDescription iru = PersistenceInterface.get().findRootVerbDescription("இரு");

@@ -174,6 +174,19 @@ public class TamilWordPartContainer {
 
     }
 
+
+    public boolean isUkkurralh() {
+        digest();
+        if (word.size() == 1) return false;
+
+        if (word.size() == 2) {
+            if (iStartingWithTwoKurils()) return false;
+        }
+
+        return word.endsWith(TamilSimpleCharacter.U, false);
+
+    }
+
     public boolean isEndingWithUgaaram() {
         digest();
         if (!DIGEST_VOWEL_STR.endsWith(TamilSimpleCharacter.U.getVowelDigest())) return false;

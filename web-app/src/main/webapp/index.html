@@ -25,6 +25,31 @@
 </head>
 <body>
 
+<script>
+    window.fbAsyncInit = function() {
+        FB.init({
+            appId      : '1493373077613181',
+            xfbml      : true,
+            version    : 'v2.3'
+        });
+    };
+
+    (function(d, s, id){
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) {return;}
+        js = d.createElement(s); js.id = id;
+        js.src = "//connect.facebook.net/ta_IN/sdk.js";
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+</script>
+
+<div
+        class="fb-like"
+        data-share="true"
+        data-width="450"
+        data-show-faces="true">
+</div>
+
 <div id="header"><a href="#"><h3>இந்த செயலியின் நோக்கம் என்ன? </h3></a></div>
 <div class="showhide" style="display: none;">
     தமிழை புரிந்துகொள்ளுகிற ஒரு தளமென்பொருளை (a <b>platform</b>) உருவாக்குதலே எனது முதற்கட்டமுயற்சி. இது ஒரு குறிப்பிட்ட
@@ -89,10 +114,11 @@
 <hr/>
 <a href="digest.html#தமிழ்,செம்மொழி">வேடிக்கை</a> <br/>
 <hr/>
-
-<a href="edit.html">ஆங்கிலவரிவடிவம் -> தமிழ்வரிவடிவம் </a> <br/>
-
+<a href="codemirror/editor-applet.html">Codemirror + Applet based (Faster! when you can have Java) - ஆங்கிலவரிவடிவம் -> தமிழ்வரிவடிவம் </a> <br/>
 <a href="codemirror/editor.html">Codemirror based - ஆங்கிலவரிவடிவம் -> தமிழ்வரிவடிவம் </a> <br/>
+<a href="edit.html">(OLD)ஆங்கிலவரிவடிவம் -> தமிழ்வரிவடிவம் </a> <br/>
+
+
 
 <hr/>
 

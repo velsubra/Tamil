@@ -1,6 +1,7 @@
 package tamil.lang.api.applet;
 
 import my.interest.lang.tamil.impl.FeatureSet;
+import my.interest.lang.tamil.impl.dictionary.RemoteDictionaryProvider;
 import org.json.JSONObject;
 import tamil.lang.TamilFactory;
 import tamil.lang.TamilWord;
@@ -31,7 +32,7 @@ import javax.swing.*;
  * Many APIs take a features argument that is a String. It is because these methods are typically called from javascript running at the browser.
  * To understand how the features list is formed, please refer to java doc of the class {@link tamil.lang.api.feature.Feature} that defines various features as public static final variables.
  * The variable ends with number. You have to specify that number if you need the feature.
- * E.g) {@link tamil.lang.api.feature.Feature#TRANSLIT_JOIN_FEATURE_VAL_110} means the join feature.
+ * E.g) {@link tamil.lang.api.feature.FeatureConstants#TRANSLIT_JOIN_FEATURE_VAL_110} means the join feature.
  * If you need that feature, you have to specify "110" as the required feature. Multiple features can be specified with comma as the separator.
  * Features not-recognized by a service method will be ignored.
  * </p>
@@ -44,9 +45,28 @@ public class AppletTamilFactory extends JApplet {
     Transliterator trans = null;
     NumberReader reader = null;
 
+    public AppletTamilFactory() {
+        super();
+    }
+
     @Override
     public void init() {
-        System.out.println("TAMIL Platform Applet init......------------");
+
+        String url = getParameter("archive");
+        System.out.println("TAMIL....------------:" + url );
+         java.net.URL doc = getDocumentBase();
+
+        int api = url.indexOf("/api/");
+        if (api > 0) {
+            url = url.substring(0, api) + "/api/dictionary/";
+            try {
+                RemoteDictionaryProvider.REMOTE_SERVER_DICTIONARY_URL = doc.toURI().resolve(url).toString();
+                System.out.println("SEt:" + RemoteDictionaryProvider.REMOTE_SERVER_DICTIONARY_URL);
+            } catch (Exception e) {
+                e.printStackTrace();;
+            }
+        }
+
         TamilFactory.init();
         trans = TamilFactory.getTransliterator(null);
         reader = TamilFactory.getNumberReader();
@@ -54,12 +74,12 @@ public class AppletTamilFactory extends JApplet {
 
     @Override
     public void start() {
-
+       this.showStatus("Applet Started.");
     }
 
     @Override
     public void stop() {
-
+        this.showStatus("Applet Stopped.");
     }
 
     @Override
@@ -84,8 +104,8 @@ public class AppletTamilFactory extends JApplet {
         try {
 
             TamilWord w = reader.readNumber(number, FeatureSet.findFeatures(ReaderFeature.class, features).toArray(new ReaderFeature[]{}));
-           // System.out.println("Number:" + w.toString());
-           // System.out.println("file.encoding:" +System.getProperty("file.encoding"));
+            // System.out.println("Number:" + w.toString());
+            // System.out.println("file.encoding:" +System.getProperty("file.encoding"));
             JSONObject obj = new JSONObject();
             obj.put("tamil", w.toString());
             return obj.toString();
@@ -113,7 +133,7 @@ public class AppletTamilFactory extends JApplet {
             TranslitFeature[] fs = FeatureSet.findFeatures(TranslitFeature.class, features).toArray(new TranslitFeature[]{});
             JSONObject obj = new JSONObject();
             TamilWord w = trans.transliterate(text, fs);
-          //  System.out.println("Tamil:" + w.toString());
+            //  System.out.println("Tamil:" + w.toString());
             obj.put("tamil", w.toString());
             obj.put("given", text);
             return obj.toString();

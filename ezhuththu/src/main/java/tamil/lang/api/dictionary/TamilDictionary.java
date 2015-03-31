@@ -70,6 +70,9 @@ public interface TamilDictionary {
     public IKnownWord peekEnglish(String english);
 
 
+
+
+
     /**
      * Suggests words for a specific word, and of specific type.
      *

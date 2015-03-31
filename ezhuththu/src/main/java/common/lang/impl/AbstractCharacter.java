@@ -84,5 +84,7 @@ public abstract class AbstractCharacter implements common.lang.Character, Compar
         return "_00_";
     }
 
+    public abstract int getCodePointsCount();
+
 
 }

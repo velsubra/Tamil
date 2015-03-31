@@ -237,7 +237,7 @@ public class SimpleSplitResult implements Comparable {
                         toadd = !(isAllJustOfKind(previousKnowns, Vinaiyadi.class));
                     }
 //                    if (toadd) {
-//                  //     toadd =   !isAllJustOfKind(knowns, Idaichchol.class) ||  !isAllJustOfKind(previousKnowns, Idaichchol.class) ;
+//                       toadd =   !isAllJustOfKind(knowns, Ottu.class) ||  !isAllJustOfKind(previousKnowns, IIdaichchol.class) ;
 //                    }
 
                     if (toadd) {
