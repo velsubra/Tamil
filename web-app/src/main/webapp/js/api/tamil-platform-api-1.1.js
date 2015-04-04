@@ -97,7 +97,7 @@ var TamilFactory = new function () {
              *
              * @return {json} - Please refer to method searchAsync  for return type   details
              */
-            this.lookupCache = function (word, features) {
+            this.lookupDictionaryCache = function (word, features) {
 
                 features = typeof features !== 'undefined' ? features.trim() : "0";
                 if (!features) {
@@ -251,7 +251,7 @@ var TamilFactory = new function () {
              *
              * @return {json} - Please refer to method parseAsync  for return type   details
              */
-            this.lookupCache = function (word, features) {
+            this.lookupParserCache = function (word, features) {
 
                 features = typeof features !== 'undefined' ? features.trim() : "0";
                 if (!features) {

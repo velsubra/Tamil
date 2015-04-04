@@ -313,7 +313,7 @@ public class DefinitionFactory {
 
                                 commavalues = " ";
                             }
-                            commavalueslist = TamilUtils.parseString(commavalues, ",", false);
+                            commavalueslist = TamilUtils.parseString(commavalues, ",", false,true);
 
                         } else if (item.getDerivedValues() != null) {
                             DefinedValues sub = new DefinedValues();
@@ -352,7 +352,9 @@ public class DefinitionFactory {
 
                                     }
                                     if (derived != null) {
-                                        commavalueslist.add(derived);
+                                        if (!commavalueslist.contains(derived)) {
+                                            commavalueslist.add(derived);
+                                        }
                                     }
                                 }
                             }
@@ -375,7 +377,7 @@ public class DefinitionFactory {
                             }
 
                             if (val != null) {
-                                commavalueslist = TamilUtils.parseString(val.toString(), ",", false);
+                                commavalueslist = TamilUtils.parseString(val.toString(), ",", false, true);
                             }
 
                         } else {

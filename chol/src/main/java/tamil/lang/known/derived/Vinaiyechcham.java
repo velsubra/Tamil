@@ -63,6 +63,32 @@ public class Vinaiyechcham extends DerivativeWithTense implements IVinaiyechcham
 
         if (!derived) {
 
+            if (this.tense == SimpleTense.PRESENT) {
+                if (new TamilWordPartContainer(vinaiyadi.getWord()).isUkkurralh()) {
+                    //பற்றுகை
+                    TamilWord w = vinaiyadi.getWord().duplicate();
+                    w.add(TamilCompoundCharacter.IK_I);
+                    ThozhirrPeyar th = new ThozhirrPeyar(w, vinaiyadi);
+                    PersistenceInterface.addKnown(th);
+                }  else if (word.endsWith(TamilSimpleCharacter.KA)) {
+                    //பார்க்கை
+                    TamilWord w = word.duplicate();
+                    w.removeLast();
+                    w.add(TamilCompoundCharacter.IK_I);
+                    ThozhirrPeyar th = new ThozhirrPeyar(w, vinaiyadi);
+                    PersistenceInterface.addKnown(th);
+                }   else {
+
+                    //காண்கை
+
+                    TamilWord w = vinaiyadi.getWord().duplicate();
+                    w.add(TamilCompoundCharacter.IK_I);
+                    ThozhirrPeyar th = new ThozhirrPeyar(w, vinaiyadi);
+                    PersistenceInterface.addKnown(th);
+                }
+
+            }
+
             if (tense == SimpleTense.PRESENT) {
                 //viyangolh
 
@@ -114,6 +140,7 @@ public class Vinaiyechcham extends DerivativeWithTense implements IVinaiyechcham
                     VinaiMutruCreationHandler neghandler = new VinaiMutruCreationHandler();
                     neghandler.add(word);
                     neghandler.add(illai);
+                    //வரவில்லை
                     EthirMarraiVinaiMuttu nvm = new EthirMarraiVinaiMuttu(neghandler.getVinaiMutru(), vinaiyadi, SimpleTense.PAST, v, true);
                     PersistenceInterface.addKnown(nvm);
                 }

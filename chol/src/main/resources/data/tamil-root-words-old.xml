@@ -320,7 +320,7 @@
                         <resources>
                             <name>gs/possibles.gv</name>
                             <type>GROOVY</type>
-                            <content>aW1wb3J0JTIwdGFtaWwubGFuZy4qJTNCJTBBaW1wb3J0JTIwdGFtaWwudXRpbC4qJTNCJTBBaW1wb3J0JTIwdGFtaWwubGFuZy5rbm93bi4qJTNCJTBBaW1wb3J0JTIwdGFtaWwubGFuZy5rbm93bi5ub24uZGVyaXZlZC4qJTNCJTBBJTIwaW1wb3J0JTIwb3JnLmpzb24uKiUzQiUwQSUwQWRpY3Rpb25hcnklMjAlM0QlMjBUYW1pbEZhY3Rvcnkuc3lzdGVtRGljdGlvbmFyeSUzQiUwQSUwQUxpc3QlM0NJS25vd25Xb3JkJTNFJTIwbm91bnMlMjAlMjAlM0QlMjBkaWN0aW9uYXJ5LnNlYXJjaChuZXclMjBUYW1pbFdvcmQoKSUyQ2ZhbHNlJTJDJTIwNTAwMDAlMkMlMjAlNUJJVmluYWl5ZWNoY2hhbS5jbGFzcyU1RCklM0IlMEFTdHJpbmclMjByZXQlMjAlM0QlMjIlMjIlM0IlMEFmb3IlMjAoSUtub3duV29yZCUyMGVjaCUyMCUzQW5vdW5zKSUyMCU3QiUwQSUyMCUyMCUyMCUwQSUyMCUyMCUyMCUyMFRhbWlsV29yZCUyMHclMjAlM0QlMjBlY2gud29yZC5kdXBsaWNhdGUoKSUzQiUwQSUyMCUyMCUyMCUyMHcuYWRkKFRhbWlsQ29tcG91bmRDaGFyYWN0ZXIuSU0pJTNCJTBBJTIwJTIwJTIwJTIwcmV0JTIwJTJCJTNEJTIwdy50b1N0cmluZygpJTIwJTJCJTIyJTVDbiUyMiUzQiUwQSUyMCUyMCUyMCUyMCUwQSU3RCUwQSUwQXJldHVybiUyMHJldCUzQiUwQSUyMA==</content>
+                            <content>aW1wb3J0JTIwdGFtaWwubGFuZy4qJTNCJTBBaW1wb3J0JTIwdGFtaWwudXRpbC4qJTNCJTBBaW1wb3J0JTIwdGFtaWwubGFuZy5rbm93bi4qJTNCJTBBaW1wb3J0JTIwdGFtaWwubGFuZy5rbm93bi5ub24uZGVyaXZlZC4qJTNCJTBBaW1wb3J0JTIwdGFtaWwubGFuZy5rbm93bi5kZXJpdmVkLiolM0IlMEFpbXBvcnQlMjBvcmcuanNvbi4qJTNCJTBBJTBBZGljdGlvbmFyeSUyMCUzRCUyMFRhbWlsRmFjdG9yeS5zeXN0ZW1EaWN0aW9uYXJ5JTNCJTBBJTBBTGlzdCUzQ0lLbm93bldvcmQlM0UlMjBub3VucyUyMCUyMCUzRCUyMGRpY3Rpb25hcnkuc2VhcmNoKG5ldyUyMFRhbWlsV29yZCgpJTJDZmFsc2UlMkMlMjA1MDAwMCUyQyUyMCU1QlZpeWFuZ29hbGguY2xhc3MlNUQpJTNCJTBBU3RyaW5nJTIwcmV0JTIwJTNEJTIyc2l6ZSUzQSUyMiUyMCUyQiUyMG5vdW5zLnNpemUoKSUyMCUyQiUyMCUyMiU1Q24lMjIlM0IlMEFmb3IlMjAoSUtub3duV29yZCUyMGVjaCUyMCUzQW5vdW5zKSUyMCU3QiUwQSUyMCUyMCUyMCUwQSUyMCUyMCUyMCUyMFRhbWlsV29yZCUyMHclMjAlM0QlMjBlY2gud29yZC5kdXBsaWNhdGUoKSUzQiUwQSUyMCUyMCUyMCUwQSUyMCUyMCUyMCUyMHJldCUyMCUyQiUzRCUyMHcudG9TdHJpbmcoKSUyMCUyQiUyMiU1Q24lMjIlM0IlMEElMjAlMjAlMjAlMjAlMEElN0QlMEElMEFyZXR1cm4lMjByZXQlM0IlMEElMjA=</content>
                         </resources>
                     </resources>
                     <resourceInheritance>
@@ -483,6 +483,700 @@
                 <property name="i.definition.type.pa.true.vigaaram" value="${root}"/>
             </global-description>
             <list>
+                <word>
+                    <root>ஓமன்</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>சான்றோர்</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>ஆன்றோர்</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>கிமு</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>கிருத்துவம்</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>பிணக்கம்</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>காண்டல்</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>வணங்கல்</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>பறிமுதல்</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>வேண்டுகோள்</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>சாகுபடி</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>கசடதபற</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>சலுகை</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>பருத்தி</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>பச்சிளம்</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>ஒழுகல்</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>அட்டூழியம்</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>மேசை</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>தந்தம்</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>தில்லை</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>தவிடு</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>அஞ்சல்</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>ஆகமம்</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>ஆந்திரா</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>தரணி</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>தேவாரம்</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>ஊர்தி</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>செயலகம்</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>இல்லாமை</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                        <property name="definition.type" value="pa"/>
+                        <property name="i.definition.type.pa.mai" value="true"/>
+                        <property name="i.i.definition.type.pa.mai.true.pp" value="இல்லா"/>
+                        <property name="i.definition.type.pa.pe" value="இல்லாத"/>
+                        <property name="i.definition.type.pa.ve" value="இல்லாது"/>
+                    </description>
+                </word>
+                <word>
+                    <root>நடிகர்</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>பதாகம்</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>வில்லன்</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>விளம்பரம்</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>புராரி</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>பட்டிணம்</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>பாண்டியம்</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>நீட்டல்</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>நெல்</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>சமுத்திரம்</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>சாண்</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>அடைக்கலம்</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>சிங்களம்</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>மோசடி</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>வளி</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>அளவி</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>கூளம்</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>தொடரி</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>ஐயர்</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>நெஞ்சம்</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>சரணம்</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>பரத்தை</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>புழுதி</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>ஆவனம்</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>சூட்டல்</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>கவிராயர்</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>பங்குனி</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>சக்கரை</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>வீரசோழியம்</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>மங்கலம்</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>பிறர்</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>தகைமை</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                        <property name="definition.type" value="pa"/>
+                        <property name="i.definition.type.pa.mai" value="true"/>
+                        <property name="i.i.definition.type.pa.mai.true.pp" value="தகை"/>
+                        <property name="i.definition.type.pa.pe" value="தகுந்த"/>
+                    </description>
+                </word>
+                <word>
+                    <root>அலி</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>வைதேகி</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>சாத்திரம்</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>தெரிவு</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>கணியம்</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>வில்லை</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>அந்தந்த</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>கூலி</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>மத்தியம்</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>வாணி</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>ஆகாசம்</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>ஒவ்வோர்</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>ஏச்சு</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>பதாகை</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>மூலதனம்</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>எங்ஙனம்</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>எழுச்சி</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>புதுதில்லி</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>கானல்</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>ஊரகம்</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>தேவநாகரி</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>நடத்துநர்</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>வள்ளுவம்</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>ஐரோப்பியம்</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>ஆய்தம்</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>சித்தம்</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>சனவரி</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>ஔவை</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>சேர்க்கை</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>சிக்கனம்</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>தேய்மானம்</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>பொறிஞர்</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>செல்வி</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>கடுமை</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                        <property name="definition.type" value="pa"/>
+                        <property name="i.definition.type.pa.mai" value="true"/>
+                        <property name="i.i.definition.type.pa.mai.true.pp" value="கடும்"/>
+                        <property name="i.definition.type.pa.ve" value="கடிந்து"/>
+                    </description>
+                </word>
+                <word>
+                    <root>செம்மல்</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>ஆதிக்கம்</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>நாட்டியம்</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>இலட்சுமி</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>சுகிசிவம்</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>கம்பராமாயணம்</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>இராசராசன்</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>மாணாக்கர்</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>எல்லா</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>தேர்ச்சி</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>சடுகுடு</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>உருது</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>பிரச்சாரம்</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>குறுமை</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                        <property name="definition.type" value="pa"/>
+                        <property name="i.definition.type.pa.mai" value="true"/>
+                        <property name="i.i.definition.type.pa.mai.true.pp" value="குறும்"/>
+                    </description>
+                </word>
+                <word>
+                    <root>மண்டலம்</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>நடுவண்</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>வெய்யில்</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>வேடம்</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
                 <word>
                     <root>நாளை</root>
                     <description>
@@ -2440,7 +3134,7 @@
                         <property name="i.definition.type.pa.mai" value="true"/>
                         <property name="i.i.definition.type.pa.mai.true.pp" value="புது"/>
                         <property name="i.definition.type.pa.pe" value="புதிய"/>
-                        <property name="i.definition.type.pa.ve" value="புதிது"/>
+                        <property name="i.definition.type.pa.ve" value=""/>
                         <property name="i.definition.type.pa.uv" value="p"/>
                     </description>
                 </word>
@@ -11539,7 +12233,12 @@
                 </word>
                 <word>
                     <root>கொடுமை</root>
-                    <description/>
+                    <description>
+                        <property name="definition.type" value="pa"/>
+                        <property name="i.definition.type.pa.mai" value="true"/>
+                        <property name="i.i.definition.type.pa.mai.true.pp" value="கொடும்"/>
+                        <property name="i.definition.type.pa.pe" value="கொடிய"/>
+                    </description>
                 </word>
                 <word>
                     <root>வினாடி</root>
@@ -12638,7 +13337,12 @@
                 </word>
                 <word>
                     <root>உரிமை</root>
-                    <description/>
+                    <description>
+                        <property name="definition.type" value="pa"/>
+                        <property name="i.definition.type.pa.mai" value="true"/>
+                        <property name="i.i.definition.type.pa.mai.true.pp" value="உரி"/>
+                        <property name="i.definition.type.pa.pe" value="உரிய"/>
+                    </description>
                 </word>
                 <word>
                     <root>ஆட்சி</root>
@@ -12928,13 +13632,18 @@
                         <property name="definition.type" value="pa"/>
                         <property name="i.definition.type.pa.mai" value="true"/>
                         <property name="i.i.definition.type.pa.mai.true.pp" value="மூது"/>
-                        <property name="i.definition.type.pa.pe" value="மூத்த"/>
+                        <property name="i.definition.type.pa.pe" value="மூத்த,முதிய"/>
                         <property name="i.definition.type.pa.ve" value="மூத்து"/>
                     </description>
                 </word>
                 <word>
                     <root>இளமை</root>
-                    <description/>
+                    <description>
+                        <property name="definition.type" value="pa"/>
+                        <property name="i.definition.type.pa.mai" value="true"/>
+                        <property name="i.i.definition.type.pa.mai.true.pp" value="இள"/>
+                        <property name="i.definition.type.pa.pe" value="இளைய"/>
+                    </description>
                 </word>
                 <word>
                     <root>தனிமை</root>
@@ -15263,6 +15972,125 @@
                 <property name="vinaimuttu.transitive.idainilai.past" value="ற்"/>
             </named-description>
             <list>
+                <verb>
+                    <root>சுணக்கு</root>
+                    <description name="kutriyalugaram">
+                        <property name=".deletable" value="true"/>
+                        <property name="thozhirrpeyar.transitive.nouns" value="சுணக்குதல்,சுணக்கம்"/>
+                    </description>
+                </verb>
+                <verb>
+                    <root>பிணங்கு</root>
+                    <description name="kutriyalugaram">
+                        <property name=".deletable" value="true"/>
+                        <property name="property.intransitive" value="true"/>
+                        <property name="property.transitive" value="false"/>
+                    </description>
+                </verb>
+                <verb>
+                    <root>பிணக்கு</root>
+                    <description name="kutriyalugaram">
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </verb>
+                <verb>
+                    <root>பம்மு</root>
+                    <description name="kutriyalugaram">
+                        <property name=".deletable" value="true"/>
+                        <property name="property.intransitive" value="true"/>
+                        <property name="property.transitive" value="false"/>
+                        <property name="vinaiyechcham.intransitive.viguthi.past" value="i"/>
+                        <property name="thozhirrpeyar.intransitive.nouns" value="பம்மல்,பம்முதல்"/>
+                    </description>
+                </verb>
+                <verb>
+                    <root>எய்து</root>
+                    <description name="kutriyalugaram">
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </verb>
+                <verb>
+                    <root>விண்ணப்பி</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                        <property name="property.intransitive" value="true"/>
+                        <property name="property.transitive" value="false"/>
+                        <property name="vinaimuttu.intransitive.santhi.future" value="ப்"/>
+                        <property name="vinaimuttu.intransitive.santhi.future.thu" value="க்"/>
+                        <property name="vinaimuttu.intransitive.idainilai.future" value="ப்"/>
+                        <property name="vinaimuttu.intransitive.santhi.past" value="த்"/>
+                        <property name="vinaimuttu.intransitive.saariyai.future.thu" value="க்"/>
+                        <property name="vinaimuttu.intransitive.santhi.present" value="க்"/>
+                    </description>
+                </verb>
+                <verb>
+                    <root>வசிகரி</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </verb>
+                <verb>
+                    <root>மசி</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                        <property name="property.intransitive" value="true"/>
+                    </description>
+                </verb>
+                <verb>
+                    <root>அரவணை</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </verb>
+                <verb>
+                    <root>காந்து</root>
+                    <description name="kutriyalugaram">
+                        <property name=".deletable" value="true"/>
+                        <property name="property.intransitive" value="true"/>
+                        <property name="property.transitive" value="false"/>
+                        <property name="vinaiyechcham.intransitive.viguthi.past" value="i"/>
+                    </description>
+                </verb>
+                <verb>
+                    <root>பரத்து</root>
+                    <description name="kutriyalugaram">
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </verb>
+                <verb>
+                    <root>அமர்த்து</root>
+                    <description name="kutriyalugaram">
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </verb>
+                <verb>
+                    <root>பாய்ச்சு</root>
+                    <description name="kutriyalugaram">
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </verb>
+                <verb>
+                    <root>பூ</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                        <property name="property.intransitive" value="true"/>
+                        <property name="property.transitive" value="false"/>
+                        <property name="vinaimuttu.intransitive.santhi.present" value="க்"/>
+                        <property name="vinaimuttu.intransitive.santhi.past" value="த்"/>
+                        <property name="vinaimuttu.intransitive.santhi.future" value="ப்"/>
+                        <property name="vinaimuttu.intransitive.santhi.future.thu" value="க்"/>
+                        <property name="vinaimuttu.intransitive.saariyai.future.thu" value="க்"/>
+                        <property name="vinaimuttu.intransitive.idainilai.future" value="ப்"/>
+                    </description>
+                </verb>
+                <verb>
+                    <root>வீற்றிரு</root>
+                    <description name="ending_with_iru">
+                        <property name=".deletable" value="true"/>
+                        <property name="property.intransitive" value="true"/>
+                        <property name="property.transitive" value="false"/>
+                    </description>
+                </verb>
                 <verb>
                     <root>சாட்டு</root>
                     <description name="kutriyalugaram"/>
@@ -17772,7 +18600,9 @@
                 </verb>
                 <verb>
                     <root>சூடு</root>
-                    <description name="kutriyalugaram"/>
+                    <description name="kutriyalugaram">
+                        <property name="thozhirrpeyar.transitive.nouns" value="சூடுதல்,சூட்டல்"/>
+                    </description>
                 </verb>
                 <verb>
                     <root>விஞ்சு</root>
@@ -17805,7 +18635,7 @@
                     <root>ஈர்</root>
                     <description>
                         <property name="thozhirrpeyar.transitive.nouns" value="ஈர்ப்பு,ஈர்த்தல்"/>
-                        <property name="property.intransitive" value="true"/>
+                        <property name="vinaimuttu.locked" value="true"/>
                     </description>
                 </verb>
                 <verb>
@@ -18008,7 +18838,6 @@
                         <property name="property.intransitive" value="true"/>
                         <property name="property.transitive" value="false"/>
                         <property name="vinaiyechcham.intransitive.viguthi.past" value="இ"/>
-                        <property name="issue.transitive.generation.vinaimuttu" value="true"/>
                     </description>
                 </verb>
                 <verb>
@@ -19100,7 +19929,9 @@
                 </verb>
                 <verb>
                     <root>நிறுத்து</root>
-                    <description name="kutriyalugaram"/>
+                    <description name="kutriyalugaram">
+                        <property name="thozhirrpeyar.transitive.nouns" value="நிறுத்துதல்,நிறுத்தம்"/>
+                    </description>
                 </verb>
                 <verb>
                     <root>பிழி</root>
@@ -19766,7 +20597,6 @@
                         <property name="property.intransitive" value="true"/>
                         <property name="property.transitive" value="false"/>
                         <property name="vinaimuttu.locked" value="true"/>
-                        <property name="issue.intransitive.generation.vinaimuttu" value="true"/>
                     </description>
                 </verb>
                 <verb>
@@ -20588,12 +21418,13 @@
                         <property name="vinaimuttu.transitive.santhi.past" value=""/>
                         <property name="vinaimuttu.intransitive.santhi.past" value=""/>
                         <property name="vinaimuttu.transitive.santhi.future" value=""/>
-                        <property name="vinaimuttu.transitive.idainilai.future.thu" value=""/>
-                        <property name="vinaimuttu.transitive.santhi.future.thu" value=""/>
                         <property name="vinaimuttu.locked" value="true"/>
                         <property name="vinaiyechcham.transitive.santhi.present" value="க்"/>
                         <property name="vinaiyechcham.locked" value="true"/>
-                        <property name="issue.transitive.generation.vinaimuttu" value="true"/>
+                        <property name="vinaimuttu.transitive.idainilai.future.thu" value="க்"/>
+                        <property name="vinaimuttu.transitive.idainilai.future.a" value="க்"/>
+                        <property name="ethirmarrai-peyarechcham.transitive.vigaaram" value="ஏற்க்"/>
+                        <property name="thozhirrpeyar.transitive.nouns" value="ஏற்பு,ஏற்றல்"/>
                     </description>
                 </verb>
                 <verb>
@@ -20825,8 +21656,10 @@
                         <property name="vinaimuttu.transitive.santhi.future.thu" value=""/>
                         <property name="vinaimuttu.transitive.santhi.past" value="ந்"/>
                         <property name="vinaiyechcham.locked" value="true"/>
-                        <property name="vinaimuttu.locked" value="true"/>
+                        <property name="vinaimuttu.locked" value="false"/>
                         <property name="thozhirrpeyar.transitive.verbasnoun" value="true"/>
+                        <property name="vinaimuttu.transitive.vigaaram.present" value="தொடர்,தொடரு"/>
+                        <property name="vinaimuttu.transitive.vigaaram.future" value="தொடர்,தொடரு"/>
                     </description>
                 </verb>
                 <verb>
@@ -20940,7 +21773,7 @@
                         <property name="property.intransitive" value="true"/>
                         <property name="vinaiyechcham.intransitive.viguthi.past" value="இ"/>
                         <property name="vinaiyechcham.locked" value="false"/>
-                        <property name="vinaimuttu.locked" value="false"/>
+                        <property name="vinaimuttu.locked" value="true"/>
                         <property name="vinaimuttu.intransitive.vigaaram.present" value="ஆ,ஆகு"/>
                         <property name="vinaimuttu.intransitive.vigaaram.future" value="ஆ,ஆகு"/>
                         <property name="vinaimurrrru.locked" value="false"/>
@@ -20949,7 +21782,7 @@
                         <property name="vinaimuttu.intransitive.idainilai.past" value=""/>
                         <property name="vinaimuttu.intransitive.idainilai.past.thu" value=""/>
                         <property name="vinaimuttu.intransitive.vigaaram.past.a" value="ஆகின்,ஆனன்"/>
-                        <property name="vinaiyechcham.intransitive.vigaaram.past" value="ஆகு"/>
+                        <property name="vinaiyechcham.intransitive.vigaaram.past" value="ஆகு,ஆய்"/>
                     </description>
                 </verb>
                 <verb>
@@ -21105,7 +21938,9 @@
                 </verb>
                 <verb>
                     <root>ஏசு</root>
-                    <description name="kutriyalugaram"/>
+                    <description name="kutriyalugaram">
+                        <property name="thozhirrpeyar.transitive.nouns" value="ஏச்சு,ஏசுதல்"/>
+                    </description>
                 </verb>
                 <verb>
                     <root>பூரி</root>
@@ -21127,8 +21962,8 @@
                         <property name="vinaiyechcham.locked" value="true"/>
                         <property name="thozhirrpeyar.transitive.nouns" value="கலைத்தல்,கலைப்பு"/>
                         <property name="thozhirrpeyar.intransitive.nouns" value="கலைதல்,கலைவு"/>
-                        <property name="issue.transitive.generation.vinaiyechcham" value="true"/>
-                        <property name="description" value="kalaiyum"/>
+                        <property name="description" value=""/>
+                        <property name="vinaimuttu.locked" value="true"/>
                     </description>
                 </verb>
                 <verb>
@@ -21376,6 +22211,7 @@
                     <root>பெருக்கு</root>
                     <description name="kutriyalugaram">
                         <property name="vinaiyechcham.locked" value="true"/>
+                        <property name="thozhirrpeyar.transitive.nouns" value="பெருகுதல்,பெருக்கம்"/>
                     </description>
                 </verb>
                 <verb>
@@ -21902,7 +22738,9 @@
                 </verb>
                 <verb>
                     <root>நீட்டு</root>
-                    <description name="kutriyalugaram"/>
+                    <description name="kutriyalugaram">
+                        <property name="thozhirrpeyar.transitive.nouns" value="நீட்டுதல்,நீட்டம்"/>
+                    </description>
                 </verb>
                 <verb>
                     <root>நீங்கு</root>
@@ -22876,8 +23714,8 @@
                         <property name="ethirmarrai-peyarechcham.transitive.vigaaram" value="கேள்,கேட்க்"/>
                         <property name="ethirmarrai-peyarechcham.locked" value="true"/>
                         <property name="thozhirrpeyar.transitive.nouns" value="கேட்டல்,கேள்வி"/>
-                        <property name="issue.transitive.generation.vinaimuttu" value="true"/>
-                        <property name="description" value="kealhum?"/>
+                        <property name="description" value=""/>
+                        <property name="vinaimuttu.locked" value="true"/>
                     </description>
                 </verb>
                 <verb>

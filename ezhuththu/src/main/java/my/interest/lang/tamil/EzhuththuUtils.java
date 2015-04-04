@@ -533,6 +533,10 @@ public class EzhuththuUtils {
     }
 
     public static List<String> parseString(String s, String del, boolean ignoreNull) {
+            return  parseString(s,del, ignoreNull, false);
+    }
+
+    public static List<String> parseString(String s, String del, boolean ignoreNull, boolean ignoreDup) {
         if (s == null)
             return null;
         List<String> ret = new ArrayList<String>();
@@ -551,7 +555,12 @@ public class EzhuththuUtils {
                 }
             }
             if (toAdd) {
-                ret.add(tokenSingle);
+                if (ignoreDup) {
+                    toAdd = !ret.contains(tokenSingle);
+                }
+                if (toAdd) {
+                    ret.add(tokenSingle);
+                }
             }
         }
         return ret;

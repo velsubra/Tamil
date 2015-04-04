@@ -263,7 +263,9 @@ public final class TamilWord extends AbstractWord<AbstractCharacter> implements 
      */
     public TamilWord duplicate() {
         TamilWord w = new TamilWord();
-        w.addAll(this);
+        for (AbstractCharacter c: this) {
+            w.add(c);
+        }
         return w;
     }
 

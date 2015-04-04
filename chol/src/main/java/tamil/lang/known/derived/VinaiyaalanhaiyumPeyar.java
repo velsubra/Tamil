@@ -52,6 +52,7 @@ public final class VinaiyaalanhaiyumPeyar extends DerivativeWithTenseAndPaal imp
                     VinaiMutruCreationHandler handler = new VinaiMutruCreationHandler();
                     handler.add(word);
                     handler.add(unhdu);
+                    //வந்ததுண்டு
                     VinaiMuttu vm = new VinaiMuttu(handler.getVinaiMutru(), vinaiyadi, SimpleTense.PRESENT, v,true);
                     vm.addProperty("muttu", "true");
                     PersistenceInterface.addKnown(vm);

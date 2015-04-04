@@ -138,6 +138,17 @@ public final class DefaultPlatformDictionary implements TamilDictionary, TamilDi
             Collections.sort(list, new Comparator<IKnownWord>() {
                 @Override
                 public int compare(IKnownWord o1, IKnownWord o2) {
+                    boolean onesuggestionmatches = o1.getWord().suggestionHashCode() == word.suggestionHashCode();
+                    boolean twosuggestionmatches = o2.getWord().suggestionHashCode() == word.suggestionHashCode();
+                    if (onesuggestionmatches) {
+                        if (!twosuggestionmatches) {
+                           return  -1;
+                        }
+                    }  else if (twosuggestionmatches) {
+                        return  1;
+                    }
+
+
                     boolean onestarts = o1.getWord().startsWith(word, false);
                     boolean twostarts = o2.getWord().startsWith(word, false);
                     if (onestarts) {

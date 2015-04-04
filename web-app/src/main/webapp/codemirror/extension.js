@@ -9,6 +9,7 @@ if (server) {
 
 var EDIT_TRANSLIT = TamilFactory.createTransliterator();
 var EDIT_PARSE = TamilFactory.createParser(1);
+var PARSE_FEATURES = "175";
 var EDIT_DICTIONARY = TamilFactory.createDictionary(20);
 
 
@@ -164,8 +165,8 @@ $(document).ready(function () {
     myCodeMirror.on("cursorActivity", _cursorActivity);
     myCodeMirror.on("beforeChange", _beforeChange);
     myCodeMirror.on("keydown", _keydown);
-    myCodeMirror.on("contextmenu", _contextmenu);
-    myCodeMirror.on("dblclick", _contextmenu);
+    //  myCodeMirror.on("contextmenu", _contextmenu);
+    //   myCodeMirror.on("dblclick", _contextmenu);
 
     $('<div/>', {
         id: 'tool_tip',
@@ -183,7 +184,7 @@ function _processWordForSpellCheck(lineno, startCol, fullword) {
     var instance_callback = new _suggestionCallback(lineno, startCol, fullword);
 
     var transresult = EDIT_TRANSLIT.transliterate(fullword, "110,115");
-    EDIT_PARSE.parseAsync(instance_callback.method_callback, transresult.tamil, "175");
+    EDIT_PARSE.parseAsync(instance_callback.method_callback, transresult.tamil, PARSE_FEATURES);
 
 
 }
@@ -421,12 +422,12 @@ function getLocalHints(cm, tamil) {
 
                             if (!isLocalAlreadyThere(localdata, token)) {
                                 localdata.push({
+
                                     text: token,
                                     displayText: token + '(local)'
+
                                 });
 
-                            } else {
-                                console.log("skipping:" + token);
                             }
 
                         }
@@ -446,7 +447,8 @@ function getLocalHints(cm, tamil) {
                     if (!isLocalAlreadyThere(localdata, token)) {
                         localdata.push({
                             text: token,
-                            displayText: token
+                            displayText: token,
+                            completeSingle: false
                         });
                     }
                 }
@@ -458,6 +460,28 @@ function getLocalHints(cm, tamil) {
 
 }
 
+function _getParsedEquation(trans_now) {
+    var parse_result = EDIT_PARSE.lookupParserCache(trans_now, PARSE_FEATURES);
+    var ret = "";
+    if (parse_result && parse_result.parsed) {
+        var splitway = parse_result.splitways[0].splits;
+        if (splitway.length > 1) {
+            for (var i = 0; i < splitway.length; i++) {
+                if (i == 0) {
+                    ret += "(";
+                }
+                ret += splitway[i].tamil;
+                if (i == splitway.length - 1) {
+                    ret += ")";
+                } else {
+                    ret += "+";
+                }
+            }
+        }
+    }
+    return ret;
+}
+
 function _provideHint(cm, callback, options) {
 
     // console.log(callback);
@@ -466,6 +490,7 @@ function _provideHint(cm, callback, options) {
 
     var trans = EDIT_TRANSLIT.transliterate(current_word, "110,115").tamil;
     // if (current_word) {
+
     EDIT_DICTIONARY.searchAsync(function (suggestedwords) {
         // console.log(suggestedwords);
         var current_word_now = get_current_word(cm);
@@ -477,37 +502,39 @@ function _provideHint(cm, callback, options) {
         }
         var data = getLocalHints(cm, trans_now);
 
-        var pos = cm.getCursor();
-        var from_word = {line: pos.line, ch: pos.ch - current_word.length};
-        if (data.length > 0) {
-            callback({
-                list: data, from: from_word, to: cm.getCursor()
-            });
-            return;
-        }
+        if (data.length < 2) {
 
 
-        if (suggestedwords && suggestedwords.list) {
-            for (var sug = 0; sug < suggestedwords.list.length; sug++) {
+            if (suggestedwords && suggestedwords.list) {
+                for (var sug = 0; sug < suggestedwords.list.length; sug++) {
 
-                if (sug == 1 && current_word) {
-                    // getTamilWord(current_word, false, false, true).tamilWord;
-                    if (trans_now != suggestedwords[0]) {
-                        data.push({
-                            text: (isToTRANSLIT() ? trans_now : current_word_now ),
-                            displayText: ">> " + (isToTRANSLIT() ? trans_now : current_word_now ) + "(Space)"
-                        });
+                    if (sug == 1 && current_word) {
+                        // getTamilWord(current_word, false, false, true).tamilWord;
+                        var parse_result = null;
+                        if (isToTRANSLIT()) {
+                            parse_result = _getParsedEquation(trans_now);
+                        }
+
+                        if (trans_now != suggestedwords[0]) {
+                            data.push({
+
+                                text: (isToTRANSLIT() ? trans_now : current_word_now ),
+                                displayText: "> " + parse_result + " " + (isToTRANSLIT() ? trans_now : current_word_now ) + "(Space)"
+                            });
+                        }
                     }
+                    data.push({
+
+                        text: suggestedwords.list[sug].tamil,
+                        displayText: suggestedwords.list[sug].tamil + "     " + suggestedwords.list[sug].type
+
+                    });
                 }
-                data.push({
-                    text: suggestedwords.list[sug].tamil,
-                    displayText: suggestedwords.list[sug].tamil + "     " + suggestedwords.list[sug].type
-                });
             }
         }
-        pos = cm.getCursor();
-        from_word = {line: pos.line, ch: pos.ch - current_word.length};
 
+        var pos = cm.getCursor();
+        var from_word = {line: pos.line, ch: pos.ch - current_word.length};
 
         callback({
             list: data, from: from_word, to: cm.getCursor()
@@ -531,7 +558,9 @@ function _autocomplete(cm) {
 
     } else {
         cm.showHint({
-            hint: _provideHint
+            hint: _provideHint,
+            completeSingle: false  ,
+            alignWithWord :true
 
         });
     }
