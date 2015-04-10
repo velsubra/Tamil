@@ -6,6 +6,7 @@ import tamil.lang.known.non.derived.Vinaiyadi;
 
 /**
  * <p>
+ *    வியங்கோள்வினைமுற்று    எ.கா) வருக
  * </p>
  *
  * @author velsubra

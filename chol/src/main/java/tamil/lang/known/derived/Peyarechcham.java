@@ -2,9 +2,7 @@ package tamil.lang.known.derived;
 
 import my.interest.lang.tamil.generated.types.SimpleTense;
 import my.interest.lang.tamil.internal.api.PersistenceInterface;
-import my.interest.lang.tamil.punar.TamilWordPartContainer;
 import tamil.lang.TamilCompoundCharacter;
-import tamil.lang.TamilSimpleCharacter;
 import tamil.lang.TamilWord;
 import tamil.lang.known.AbstractVinaiyadiPeyarechcham;
 import tamil.lang.known.non.derived.Vinaiyadi;
@@ -28,7 +26,7 @@ public final class Peyarechcham extends AbstractVinaiyadiPeyarechcham implements
         if (this.tense == SimpleTense.PAST) {
             TamilWord t = word.duplicate();
             t.addLast(TamilCompoundCharacter.IM_I);
-            PeyarechchapPeyar thozhir = new PeyarechchapPeyar(t, vinaiyadi);
+            MaiyeettupPeyarechchapPeyar thozhir = new MaiyeettupPeyarechchapPeyar(t, this);
             PersistenceInterface.addKnown(thozhir);
         } else if (this.tense == SimpleTense.FUTURE && word.getLast() == TamilCompoundCharacter.IM) {
             //வருமாறு

@@ -43,6 +43,8 @@ import java.util.*;
  */
 public abstract class PersistenceInterface {
 
+    protected  static  final TamilWord iduword = TamilWord.from("இடு");
+
     public void setAutoLoad(boolean autoLoad) {
         this.autoLoad = autoLoad;
     }

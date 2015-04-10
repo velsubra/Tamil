@@ -79,6 +79,7 @@
                             <content>JTJGKiUwQSUyMFdFJTIwY2FuJTIwZG8lMjBub3clMjBkbyUyMGJhc2ljJTIwYXV0byUyMGNvbXBsZXRlLiUwQSUyMFRoaXMlMjBzY3JpcHRzJTIwd3JpdGUlMjBzb21ldGhpbmclMjBiYWNrLiUwQSUyMCUwQSUyMFByZXNzJTIwQ3RybCUyMCUyQiUyMHNwYWNlJTIwZm9yJTIwYXV0byUyMGNvbXBsZXRlJTIwbWVudSUwQSUwQSolMkYlMEElMEFSX0xPRy5wcmludGxuKCUyMkklMjBhbSUyMGFwcGxjaWF0aW9uJTIwJTNBJTIyJTIwJTJCJTIwUl9BUFBfTkFNRSUyMCUyQiUyMiUyMHByaW50aW5nJTIwdGhpcyUyMGNvbnRlbnQuJTIyKSUzQiUwQVJfTE9HLnByaW50bG4oJTIyVGhpcyUyMGlzJTIwRW5nbGlzaCUyMiklM0IlMEFSX0xPRy5wcmludGxuKCUyMlQlN0JpdGh1JTIwdGhhbWl6aCU3RCUyMiklM0IlMEElMEFyZXR1cm4lMjBSX0xPRyUzQiUyMCUwQQ==</content>
                         </resources>
                     </resources>
+                    <cache></cache>
                 </app>
                 <app>
                     <platform>1.1</platform>
@@ -123,6 +124,7 @@
                             <content>JTdCJTBBJTIwJTIwJTIwJTIwJTIyaW5zdGFuY2UlMjIlM0ElMjAlN0IlMEElMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMkYlMkZPdGhlciUyMGluc3RhbmNlJTIwcmVsYXRlZCUyMGluZm9ybWF0aW9uJTIwZ29lcyUyMGhlcmUlMEElMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMEElMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjJtb25pdG9yaW5nJTIyJTNBJTIwJTdCJTIwJTIwJTIwJTIwJTIwJTIwJTJGJTJGVGhpcyUyMGVsZW1lbnQlMjBpcyUyMHByb2R1Y2VkJTIwb25seSUyMGlmJTIwbW9uJTIwc3dpdGNoJTIwaXMlMjBvbiUwQSUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMnRpbWVzdGFtcCUyMiUzQSUyMCUyMiUzQ0RhdGUlMjBUaW1lJTNFJTIyJTJDJTBBJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIyc3VtbWFyeSUyMiUzQSUyMCU3QiUwQSUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMnN0YXR1cyUyMiUyMCUzQSUyMCUyMm9wZXJhdGlvbmFsJTIwJTdDJTIwcGFydGlhbGx5LW9wZXJhdGlvbmFsJTdDJTIwbm90LW9wZXJhdGlvbmFsJTIwJTdDJTIwZXJyb3ItdW5kZXRlcm1pbmVkJTIyJTJDJTBBJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIyZXJyb3ItdW5kZXRlcm1pbmVkJTIyJTIwJTNBJTIwJTdCJTBBJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIyY29tcG9uZW50cyUyMiUyMCUzQSUyMCUyMkxCJTJDJTIwV0xTJTIyJTJDJTBBJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTdEJTBBJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTdEJTJDJTIwJTBBJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIybWV0cmljcyUyMiUyMCUzQSUyMCU3QiUwQSUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMnN0YXR1cy1zaW5jZSUyMiUyMCUzQSUyMCUyMiUzQ0RhdGUlMjBUaW1lJTNFJTIyJTJDJTBBJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTJGJTJGT3RoZXIlMjBpbnN0YW5jZSUyMGxldmVsJTIwbWV0cmljcyUyMGlmJTIwYW55JTBBJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTBBJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTdEJTBBJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTdEJTBBJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIyY29tcG9uZW50cyUyMiUzQSUyMCU1QiUwQSUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCU3QiUwQSUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMkxCJTIyJTIwJTNBJTIwJTdCJTBBJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTJGJTJGT3RoZXIlMjBMQiUyMHJlbGF0ZWQlMjBpbmZvcm1hdGlvbiUyMGdvZXMlMjBoZXJlJTBBJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIybW9uaXRvcmluZyUyMiUzQSUyMCU3QiUyMCUyMCUyMCUyMCUyMCUyMCUyRiUyRlRoaXMlMjBlbGVtZW50JTIwaXMlMjBwcm9kdWNlZCUyMG9ubHklMjBpZiUyMG1vbiUyMHN3aXRjaCUyMGlzJTIwb24lMEElMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjJ0aW1lc3RhbXAlMjIlM0ElMjAlMjIlM0NEYXRlJTIwVGltZSUzRSUyMiUyQyUwQSUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMnN1bW1hcnklMjIlM0ElMjAlN0IlMEElMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjJzdGF0dXMlMjIlMjAlM0ElMjAlMjJvcGVyYXRpb25hbCUyMCU3QyUyMHBhcnRpYWxseS1vcGVyYXRpb25hbCU3QyUyMG5vdC1vcGVyYXRpb25hbCUyMCU3QyUyMGVycm9yLXVuZGV0ZXJtaW5lZCUyMiUyQyUwQSUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMnN0YXR1cy1jb2RlJTIyJTIwJTNBJTIwJTdCJTBBJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIyY29kZSUyMiUyMCUzQSUyMCUyMlZNX05PVF9SRUFDSEFCTEUlMjAlN0NWTV9DT05ORUNUSU9OX1RJTUVEX09VVCUyMCU3QyUyMEFETUlOX1NFUlZFUl9OT1RfUkVBQ0hBQkxFJTIwJTdDJTIwTEJfSU5TVEFOQ0VfTk9UX1JVTk5JTkclMjAlN0MlMjBPUEVSQVRJT05fVElNRURfT1VUJTIwJTdDJTIwU1lTVEVNX0VSUk9SJTIwJTdDJTIwVE9PTFNfVk9MVU1FX0NIQU5HRUQlMjIlMkMlMEElMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjJtZXNzYWdlJTIyJTNBJTIwJTIyVW5hYmxlJTIwdG8lMjBjb25uZWN0JTIwdG8lMjBhZG1pbiUyMHNlcnZlciUyMiUwQSUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCU3RCUwQSUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCU3RCUyQyUyMCUwQSUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMm1ldHJpY3MlMjIlMjAlM0ElMjAlN0IlMEElMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjJzdGF0dXMtc2luY2UlMjIlMjAlM0ElMjAlMjIlM0NEYXRlJTIwVGltZSUzRSUyMiUyQyUwQSUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMmVwc0xhc3Q1TWluQXZnJTIyJTIwJTNBJTIyJTIyJTJDJTBBJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIycnRMYXN0NU1pbkF2ZyUyMiUyMCUzQSUyMCUyMiUyMiUyQyUwQSUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMmxvYWQ1TWludXRlQXZlcmFnZSUyMiUyMCUzQSUyMiUyMiUwQSUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyRiUyRk90aGVyJTIwT1REJTIwbGV2ZWwlMjBtZXRyaWNzJTIwaWYlMjBhbnklMEElMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMEElMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlN0QlMEElMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlN0QlMkMlMEElMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMEElMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjJWTXMlMjIlMjAlM0ElMjAlNUIlMEElMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlN0IlMEElMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMkYlMkYlMjBWbSUyMGluZm9ybWF0aW9uJTIwMSUyMC0lMjBObyUyMG1ldHJpY3MlMjBmb3IlMjBub3cuJTBBJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTdEJTIwJTBBJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTVEJTBBJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTdEJTJDJTBBJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIyV0xTJTIyJTIwJTNBJTdCJTBBJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIybW9uaXRvcmluZyUyMiUzQSUyMCU3QiUyMCUyMCUyMCUyMCUyMCUyMCUyRiUyRlRoaXMlMjBlbGVtZW50JTIwaXMlMjBwcm9kdWNlZCUyMG9ubHklMjBpZiUyMG1vbiUyMHN3aXRjaCUyMGlzJTIwb24lMEElMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjJ0aW1lc3RhbXAlMjIlM0ElMjAlMjIlM0NEYXRlJTIwVGltZSUzRSUyMiUyQyUwQSUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMnN1bW1hcnklMjIlM0ElMjAlN0IlMEElMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjJzdGF0dXMlMjIlMjAlM0ElMjAlMjJvcGVyYXRpb25hbCUyMCU3QyUyMHBhcnRpYWxseS1vcGVyYXRpb25hbCU3QyUyMG5vdC1vcGVyYXRpb25hbCUyMCU3QyUyMGVycm9yLXVuZGV0ZXJtaW5lZCUyMiUyQyUwQSUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMnN0YXR1cy1jb2RlJTIyJTIwJTNBJTIwJTdCJTBBJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIyY29kZSUyMiUyMCUzQSUyMCUyMlZNX05PVF9SRUFDSEFCTEUlMjAlN0NWTV9DT05ORUNUSU9OX1RJTUVEX09VVCUyMCU3QyUyMEFETUlOX1NFUlZFUl9OT1RfUkVBQ0hBQkxFJTIwJTIwJTdDJTIwT1BFUkFUSU9OX1RJTUVEX09VVCUyMCU3QyUyMFNZU1RFTV9FUlJPUiUyMCU3QyUyMFRPT0xTX1ZPTFVNRV9DSEFOR0VEJTIyJTJDJTBBJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIybWVzc2FnZSUyMiUzQSUyMCUyMlVuYWJsZSUyMHRvJTIwY29ubmVjdCUyMHRvJTIwYWRtaW4lMjBzZXJ2ZXIlMjIlMEElMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlN0QlMEElMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlN0QlMkMlMjAlMEElMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjJtZXRyaWNzJTIyJTIwJTNBJTIwJTdCJTBBJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIyc3RhdHVzLXNpbmNlJTIyJTIwJTNBJTIwJTIyJTNDRGF0ZSUyMFRpbWUlM0UlMjIlMkMlMEElMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjJoZWFwLWtiJTIyJTIwJTNBJTIwJTdCJTIwJTJGJTJGJTIwVGhpcyUyMGlzJTIwY3VtdWxhdGl2ZSUyMG9mJTIwYWxsJTIwc2VydmVycyUwQSUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMm1heCUyMiUzQSUyMCUyMjMyNDIzJTIyJTJDJTBBJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIyZnJlZSUyMiUyMCUzQSUyMjQzMzQlMjIlMEElMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlN0QlMEElMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMkYlMkZPdGhlciUyMGluc3RhbmNlJTIwbGV2ZWwlMjBtZXRyaWNzJTIwaWYlMjBhbnklMEElMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMEElMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlN0QlMEElMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlN0QlMkMlMEElMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMEElMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjJ2bXMlMjIlMjAlM0ElMjAlNUIlMEElMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlN0IlMEElMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMkYlMkYlMjBWbSUyMGluZm9ybWF0aW9uJTIwMSUwQSUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMnNlcnZlcnMlMjIlMjAlM0ElNUIlMEElMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlN0IlMEElMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjJuYW1lJTIyJTIwJTNBJTIwJTIybWFuYWdlZHNlcnZlcjElMjIlMkMlMEElMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMkYlMkYlMjBPdGhlciUyMHNlcnZlciUyMGRldGFpbHMlMjBmcm9tJTIwdG9wb2xvZ3klMEElMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjJtb25pdG9yaW5nJTIyJTNBJTIwJTdCJTIwJTIwJTIwJTIwJTIwJTIwJTJGJTJGVGhpcyUyMGVsZW1lbnQlMjBpcyUyMHByb2R1Y2VkJTIwb25seSUyMGlmJTIwbW9uJTIwc3dpdGNoJTIwaXMlMjBvbiUwQSUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMnRpbWVzdGFtcCUyMiUzQSUyMCUyMiUzQ0RhdGUlMjBUaW1lJTNFJTIyJTJDJTBBJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIyc3VtbWFyeSUyMiUzQSUyMCU3QiUwQSUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMnN0YXR1cyUyMiUyMCUzQSUyMCUyMm9wZXJhdGlvbmFsJTIwJTdDJTIwcGFydGlhbGx5LW9wZXJhdGlvbmFsJTdDJTIwbm90LW9wZXJhdGlvbmFsJTIwJTdDJTIwZXJyb3ItdW5kZXRlcm1pbmVkJTIyJTJDJTBBJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIyc3RhdHVzLWNvZGUlMjIlMjAlM0ElMjAlN0IlMEElMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjJjb2RlJTIyJTIwJTNBJTIwJTIyVk1fTk9UX1JFQUNIQUJMRSUyMCU3Q1ZNX0NPTk5FQ1RJT05fVElNRURfT1VUJTIwJTdDJTIwQURNSU5fU0VSVkVSX05PVF9SRUFDSEFCTEUlMjAlMjAlN0MlMjBPUEVSQVRJT05fVElNRURfT1VUJTIwJTdDJTIwU1lTVEVNX0VSUk9SJTIwJTdDJTIwVE9PTFNfVk9MVU1FX0NIQU5HRUQlMjIlMkMlMEElMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjJtZXNzYWdlJTIyJTNBJTIwJTIyVW5hYmxlJTIwdG8lMjBjb25uZWN0JTIwdG8lMjBhZG1pbiUyMHNlcnZlciUyMiUwQSUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCU3RCUwQSUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCU3RCUyQyUyMCUwQSUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMm1ldHJpY3MlMjIlMjAlM0ElMjAlN0IlMEElMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjJzdGF0dXMtc2luY2UlMjIlMjAlM0ElMjAlMjIlM0NEYXRlJTIwVGltZSUzRSUyMiUyQyUwQSUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMmhlYXAta2IlMjIlMjAlM0ElMjAlN0IlMjAlMkYlMkYlMjBUaGlzJTIwaXMlMjBjdW11bGF0aXZlJTIwb2YlMjBhbGwlMjBzZXJ2ZXJzJTBBJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIybWF4JTIyJTNBJTIwJTIyMzI0MjMlMjIlMkMlMEElMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjJmcmVlJTIyJTIwJTNBJTIyNDMzNCUyMiUwQSUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCU3RCUwQSUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUwQSUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUwQSUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCU3RCUwQSUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCU3RCUwQSUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCU3RCUyQyUwQSUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCU3QiUwQSUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMm5hbWUlMjIlMjAlM0ElMjAlMjJtYW5hZ2Vkc2VydmVyMiUyMiUyQyUwQSUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyRiUyRiUyME90aGVyJTIwc2VydmVyJTIwZGV0YWlscyUyMCUyMCUwQSUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMm1vbml0b3JpbmclMjIlM0ElMjAlN0IlMEElMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlN0QlMEElMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlN0QlMEElMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlNUQlMEElMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlN0QlMkMlMEElMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlN0IlMEElMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAlMkYlMkYlMjBWbSUyMGluZm9ybWF0aW9uJTIwMiUyMCUwQSUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCU3RCUwQSUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCU1RCUwQSUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCU3RCUwQSUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCU1RCUwQSUyMCUyMCUyMCUyMCUyMCUwQSUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUwQSUyMCUyMCUyMCUyMCUyMCUyMCUyMCU3RCUwQSUyMCUyMCUyMCUyMCU3RCUwQSU3RA==</content>
                         </resources>
                     </resources>
+                    <cache></cache>
                 </app>
                 <app>
                     <platform>1.1</platform>
@@ -320,7 +322,7 @@
                         <resources>
                             <name>gs/possibles.gv</name>
                             <type>GROOVY</type>
-                            <content>aW1wb3J0JTIwdGFtaWwubGFuZy4qJTNCJTBBaW1wb3J0JTIwdGFtaWwudXRpbC4qJTNCJTBBaW1wb3J0JTIwdGFtaWwubGFuZy5rbm93bi4qJTNCJTBBaW1wb3J0JTIwdGFtaWwubGFuZy5rbm93bi5ub24uZGVyaXZlZC4qJTNCJTBBaW1wb3J0JTIwdGFtaWwubGFuZy5rbm93bi5kZXJpdmVkLiolM0IlMEFpbXBvcnQlMjBvcmcuanNvbi4qJTNCJTBBJTBBZGljdGlvbmFyeSUyMCUzRCUyMFRhbWlsRmFjdG9yeS5zeXN0ZW1EaWN0aW9uYXJ5JTNCJTBBJTBBTGlzdCUzQ0lLbm93bldvcmQlM0UlMjBub3VucyUyMCUyMCUzRCUyMGRpY3Rpb25hcnkuc2VhcmNoKG5ldyUyMFRhbWlsV29yZCgpJTJDZmFsc2UlMkMlMjA1MDAwMCUyQyUyMCU1QlZpeWFuZ29hbGguY2xhc3MlNUQpJTNCJTBBU3RyaW5nJTIwcmV0JTIwJTNEJTIyc2l6ZSUzQSUyMiUyMCUyQiUyMG5vdW5zLnNpemUoKSUyMCUyQiUyMCUyMiU1Q24lMjIlM0IlMEFmb3IlMjAoSUtub3duV29yZCUyMGVjaCUyMCUzQW5vdW5zKSUyMCU3QiUwQSUyMCUyMCUyMCUwQSUyMCUyMCUyMCUyMFRhbWlsV29yZCUyMHclMjAlM0QlMjBlY2gud29yZC5kdXBsaWNhdGUoKSUzQiUwQSUyMCUyMCUyMCUwQSUyMCUyMCUyMCUyMHJldCUyMCUyQiUzRCUyMHcudG9TdHJpbmcoKSUyMCUyQiUyMiU1Q24lMjIlM0IlMEElMjAlMjAlMjAlMjAlMEElN0QlMEElMEFyZXR1cm4lMjByZXQlM0IlMEElMjA=</content>
+                            <content>aW1wb3J0JTIwdGFtaWwubGFuZy4qJTNCJTBBaW1wb3J0JTIwdGFtaWwudXRpbC4qJTNCJTBBaW1wb3J0JTIwdGFtaWwubGFuZy5rbm93bi4qJTNCJTBBaW1wb3J0JTIwdGFtaWwubGFuZy5rbm93bi5ub24uZGVyaXZlZC4qJTNCJTBBaW1wb3J0JTIwdGFtaWwubGFuZy5rbm93bi5kZXJpdmVkLiolM0IlMEFpbXBvcnQlMjBvcmcuanNvbi4qJTNCJTBBJTBBZGljdGlvbmFyeSUyMCUzRCUyMFRhbWlsRmFjdG9yeS5zeXN0ZW1EaWN0aW9uYXJ5JTNCJTBBJTBBTGlzdCUzQ0lLbm93bldvcmQlM0UlMjBub3VucyUyMCUyMCUzRCUyMGRpY3Rpb25hcnkuc2VhcmNoKG5ldyUyMFRhbWlsV29yZCgpJTJDZmFsc2UlMkMlMjA1MDAwMCUyQyUyMCU1Qkt1cnJpcHB1VmluYWl5ZWNoY2hhbS5jbGFzcyU1RCklM0IlMEFTdHJpbmclMjByZXQlMjAlM0QlMjJzaXplJTNBJTIyJTIwJTJCJTIwbm91bnMuc2l6ZSgpJTIwJTJCJTIwJTIyJTVDbiUyMFQlN0JLdXJyaXBwdVZpbmFpeWVjaGNoYW0lN0QlMjAlM0MlM0QlMjBUJTdCcGFuaHB1cHBleWFyJTdEJTIwJTVDbi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0lNUNuJTIyJTNCJTBBZm9yJTIwKElLbm93bldvcmQlMjBlY2glMjAlM0Fub3VucyklMjAlN0IlMEElMjAlMjAlMjAlMEElMjAlMjAlMjAlMjBUYW1pbFdvcmQlMjB3JTIwJTNEJTIwZWNoLndvcmQuZHVwbGljYXRlKCklM0IlMEElMjAlMjAlMjAlMEElMjAlMjAlMjAlMjByZXQlMjAlMkIlM0QlMjAlMjB3LnRvU3RyaW5nKCklMjAlMkIlMjAlMjIlMjAlMjAlMjAlM0MlM0QlMjAlMjAlMjIlMjAlMkIlMjBlY2gucGV5YXIud29yZC50b1N0cmluZygpJTIwJTJCJTIyJTVDbiUyMiUzQiUwQSUyMCUyMCUyMCUyMCUwQSU3RCUwQSUwQXJldHVybiUyMHJldCUzQiUwQSUyMA==</content>
                         </resources>
                     </resources>
                     <resourceInheritance>
@@ -484,6 +486,309 @@
             </global-description>
             <list>
                 <word>
+                    <root>போர்வை</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>வாழை</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                        <property name="definition.type" value="p"/>
+                    </description>
+                </word>
+                <word>
+                    <root>அரியணை</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>நிசி</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>நறுமை</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                        <property name="definition.type" value="pa"/>
+                        <property name="i.definition.type.pa.mai" value="true"/>
+                        <property name="i.i.definition.type.pa.mai.true.pp" value="நறு"/>
+                    </description>
+                </word>
+                <word>
+                    <root>இல்லம்</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>மகரம்</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>கொற்றவை</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>நாயகி</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>குட்டை</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>தச்சன்</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>சீற்றம்</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>குறடு</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>பிடரி</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>குளம்பு</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>அருவி</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>தாழை</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>ஆணவம்</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>கூரை</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>வியர்வை</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>பகடை</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>குமட்டல்</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>உற்சவம்</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>தடயம்</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>கரூர்</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>அனல்</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>ஏப்ரல்</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>கீரை</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>நெல்லி</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>வடிதல்</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>அலமாரி</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>வைகோ</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>அந்தோணியார்</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>இராமதாசு</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>இராம்</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>கூவல்</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>அறைகூவல்</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>சனநாயகம்</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>நெடுமை</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                        <property name="definition.type" value="pa"/>
+                        <property name="i.definition.type.pa.mai" value="true"/>
+                        <property name="i.i.definition.type.pa.mai.true.pp" value="நெடும்"/>
+                        <property name="i.definition.type.pa.pe" value="நெடிய"/>
+                        <property name="i.definition.type.pa.ve" value="நெடிந்து"/>
+                    </description>
+                </word>
+                <word>
+                    <root>தசரதன்</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>அனுமன்</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>சீதை</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>துறவி</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>வால்மீகி</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>உத்தமி</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>யாகம்</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>காண்டம்</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>பண்டிதம்</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>பெளத்தம்</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
                     <root>ஓமன்</root>
                     <description>
                         <property name=".deletable" value="true"/>
@@ -613,6 +918,8 @@
                     <root>அஞ்சல்</root>
                     <description>
                         <property name=".deletable" value="true"/>
+                        <property name="meaning.english.words" value="post"/>
+                        <property name="meaning.english.locked" value="true"/>
                     </description>
                 </word>
                 <word>
@@ -3390,8 +3697,10 @@
                     <description>
                         <property name="definition.type" value="pa"/>
                         <property name="i.definition.type.pa.mai" value="true"/>
-                        <property name="i.i.definition.type.pa.mai.true.pp" value="பொறு"/>
+                        <property name="i.i.definition.type.pa.mai.true.pp" value="பொறும்"/>
                         <property name="i.definition.type.pa.uv" value="p"/>
+                        <property name="i.definition.type.pa.ve" value="பொறுத்து"/>
+                        <property name="i.definition.type.pa.pe" value="பொறுத்த"/>
                     </description>
                 </word>
                 <word>
@@ -7378,6 +7687,7 @@
                         <property name="definition.type" value="t"/>
                         <property name="i.definition.type.t.verb" value="அசை"/>
                         <property name="i.definition.type.t.verb.transitive" value="true"/>
+                        <property name="meaning.english.words" value="movement"/>
                     </description>
                 </word>
                 <word>
@@ -7888,7 +8198,12 @@
                 </word>
                 <word>
                     <root>கூர்மை</root>
-                    <description/>
+                    <description>
+                        <property name="definition.type" value="pa"/>
+                        <property name="i.definition.type.pa.mai" value="true"/>
+                        <property name="i.i.definition.type.pa.mai.true.pp" value="கூர்"/>
+                        <property name="i.definition.type.pa.pe" value="கூரிய"/>
+                    </description>
                 </word>
                 <word>
                     <root>மசோதா</root>
@@ -8694,8 +9009,9 @@
                 <word>
                     <root>அக்கா</root>
                     <description>
-                        <property name="definition.type" value="o"/>
+                        <property name="definition.type" value="p"/>
                         <property name="issue.definition" value="true"/>
+                        <property name="meaning.english.words" value="sister"/>
                     </description>
                 </word>
                 <word>
@@ -10435,7 +10751,12 @@
                 </word>
                 <word>
                     <root>தூய்மை</root>
-                    <description/>
+                    <description>
+                        <property name="definition.type" value="pa"/>
+                        <property name="i.definition.type.pa.mai" value="true"/>
+                        <property name="i.i.definition.type.pa.mai.true.pp" value="தூய்"/>
+                        <property name="i.definition.type.pa.pe" value="தூய"/>
+                    </description>
                 </word>
                 <word>
                     <root>அரங்கம்</root>
@@ -11149,6 +11470,8 @@
                     <description>
                         <property name="definition.type" value="p"/>
                         <property name="meaning.english.words" value="print"/>
+                        <property name="definition.locked" value="true"/>
+                        <property name="description" value=""/>
                     </description>
                 </word>
                 <word>
@@ -11799,6 +12122,7 @@
                         <property name="definition.type" value="pa"/>
                         <property name="i.definition.type.pa.mai" value="true"/>
                         <property name="i.i.definition.type.pa.mai.true.pp" value="வன்"/>
+                        <property name="i.definition.type.pa.pe" value="வல்ல"/>
                     </description>
                 </word>
                 <word>
@@ -14195,7 +14519,6 @@
                     <root>அடி</root>
                     <description>
                         <property name="definition.locked" value="true"/>
-                        <property name="issue.definition" value="true"/>
                         <property name="meaning.english.words" value="foot,beat"/>
                     </description>
                 </word>
@@ -15973,6 +16296,52 @@
             </named-description>
             <list>
                 <verb>
+                    <root>தித்தி</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                        <property name="property.intransitive" value="true"/>
+                        <property name="property.transitive" value="false"/>
+                        <property name="vinaimuttu.intransitive.santhi.past" value="த்"/>
+                        <property name="vinaimuttu.intransitive.santhi.future" value="ப்"/>
+                        <property name="vinaimuttu.intransitive.idainilai.future" value="ப்"/>
+                        <property name="vinaimuttu.intransitive.santhi.future.thu" value="க்"/>
+                        <property name="vinaimuttu.intransitive.saariyai.future.thu" value="க்"/>
+                        <property name="vinaimuttu.intransitive.santhi.present" value="க்"/>
+                    </description>
+                </verb>
+                <verb>
+                    <root>அவி</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                        <property name="property.intransitive" value="true"/>
+                    </description>
+                </verb>
+                <verb>
+                    <root>அளை</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                        <property name="vinaimuttu.transitive.santhi.present" value=""/>
+                        <property name="vinaimuttu.transitive.santhi.past" value="ந்"/>
+                        <property name="vinaimuttu.transitive.idainilai.future" value="வ்"/>
+                        <property name="vinaimuttu.transitive.saariyai.future.thu" value=""/>
+                        <property name="vinaimuttu.transitive.santhi.future" value=""/>
+                        <property name="vinaimuttu.transitive.santhi.future.thu" value=""/>
+                    </description>
+                </verb>
+                <verb>
+                    <root>நொதி</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                        <property name="property.intransitive" value="true"/>
+                        <property name="property.transitive" value="false"/>
+                        <property name="vinaimuttu.intransitive.santhi.future.thu" value="க்"/>
+                        <property name="vinaimuttu.intransitive.saariyai.future.thu" value="க்"/>
+                        <property name="vinaimuttu.intransitive.santhi.past" value="த்"/>
+                        <property name="vinaimuttu.intransitive.santhi.future" value="ப்"/>
+                        <property name="vinaimuttu.intransitive.santhi.present" value="க்"/>
+                    </description>
+                </verb>
+                <verb>
                     <root>சுணக்கு</root>
                     <description name="kutriyalugaram">
                         <property name=".deletable" value="true"/>
@@ -16836,6 +17205,7 @@
                     <root>அனுபவி</root>
                     <description>
                         <property name="thozhirrpeyar.transitive.nouns" value="அனுபவம்,அனுபவிப்பு,அனுபவித்தல்"/>
+                        <property name="meaning.english.transitive.words" value="experience"/>
                     </description>
                 </verb>
                 <verb>
@@ -17665,6 +18035,7 @@
                     <description name="kutriyalugaram">
                         <property name="property.intransitive" value="true"/>
                         <property name="property.transitive" value="false"/>
+                        <property name="vinaiyechcham.intransitive.viguthi.past" value="i"/>
                     </description>
                 </verb>
                 <verb>
@@ -20105,6 +20476,7 @@
                         <property name="vinaiyechcham.intransitive.santhi.past" value="ந்"/>
                         <property name="vinaiyechcham.intransitive.idainilai.past" value="த்"/>
                         <property name="vinaiyechcham.locked" value="true"/>
+                        <property name="meaning.english.transitive.words" value="vibrate"/>
                     </description>
                 </verb>
                 <verb>
@@ -20762,6 +21134,7 @@
                         <property name="vinaiyechcham.locked" value="true"/>
                         <property name="peyarechcham.locked" value="true"/>
                         <property name="thozhirrpeyar.transitive.nouns" value="அதிகரிப்பு,அதிகரித்தல்"/>
+                        <property name="meaning.english.transitive.words" value="increase"/>
                     </description>
                 </verb>
                 <verb>
@@ -22881,7 +23254,7 @@
                         <property name="vinaimuttu.transitive.santhi.present" value=""/>
                         <property name="vinaimuttu.transitive.santhi.past" value=""/>
                         <property name="vinaimuttu.transitive.idainilai.past" value="ட்"/>
-                        <property name="vinaimuttu.transitive.vigaaram.past" value="இ"/>
+                        <!--<property name="vinaimuttu.transitive.vigaaram.past" value="இ"/>-->
                         <property name="vinaimuttu.transitive.santhi.future" value=""/>
                         <property name="vinaimuttu.transitive.idainilai.future" value="வ்"/>
                         <property name="vinaimuttu.transitive.saariyai.future.thu" value=""/>

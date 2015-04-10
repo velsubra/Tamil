@@ -7,11 +7,12 @@ import tamil.lang.known.non.derived.Vinaiyadi;
 
 /**
  * <p>
+ *      Base for வினையடியைக்கருவாகக்கொண்ட  பெயரெச்சம்.
  * </p>
  *
  * @author velsubra
  */
-public class AbstractVinaiyadiPeyarechcham extends VinaiyadiDerivative implements IPeyarechcham {
+public abstract  class AbstractVinaiyadiPeyarechcham extends VinaiyadiDerivative implements IPeyarechcham {
 
     public AbstractVinaiyadiPeyarechcham(TamilWord word, Vinaiyadi vinaiyadi) {
         super(word, vinaiyadi);

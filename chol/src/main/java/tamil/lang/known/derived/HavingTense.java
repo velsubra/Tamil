@@ -11,5 +11,9 @@ import my.interest.lang.tamil.generated.types.SimpleTense;
  */
 public interface HavingTense {
 
+    /**
+     * Gets the tense part in the word.
+     * @return  non-null tense.
+     */
     public SimpleTense getTense();
 }

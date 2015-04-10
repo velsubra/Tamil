@@ -56,7 +56,7 @@ public final class KurrippupPeyarechcham extends PeyarchcholDerivative implement
                     VinaiMutruCreationHandler handler = new VinaiMutruCreationHandler();
                     handler.add(kpeyar1);
                     handler.add(vi);
-                    PersistenceInterface.addKnown(new KurrippupPeyarechchappeyar(handler.getVinaiMutru(), peyar, v));
+                    PersistenceInterface.addKnown(new KurrippupPeyarechchappeyar(handler.getVinaiMutru(), this, v));
                 }
             }
         }

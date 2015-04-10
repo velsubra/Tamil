@@ -176,7 +176,7 @@ $(document).ready(function () {
 
     tool_tip = document.getElementById('tool_tip');
 
-    setTimeout(_backgroundSpellCheck, 100);
+    setTimeout(_backgroundSpellCheck, 5000);
 });
 
 
@@ -252,6 +252,12 @@ function _suggestionCallback(lineno, startCol, fullword) {
             var unicodeOffset = 0;
             if (current_tamil_obj.hint) {
                 unicodeOffset = current_tamil_obj.hint.unicodeStartIndex;
+                if ( containsInArray(glyph, fullword.charAt(unicodeOffset)))  {
+                    if (fullword.length > unicodeOffset) {
+                        unicodeOffset ++;
+
+                    }
+                }
             }
             // console.log(current_tamil_obj);
             myCodeMirror.markText({
@@ -272,6 +278,7 @@ function _suggestionCallback(lineno, startCol, fullword) {
 }
 
 function _backgroundSpellCheck(changed) {
+    console.log("Spell check .....");
     var markers_old = [];
     var marks = myCodeMirror.getAllMarks();
     if (marks) {
@@ -303,7 +310,7 @@ function _backgroundSpellCheck(changed) {
                 linechanged = changed.from.line <= lineno && changed.to.line >= lineno;
             }
             if (linechanged) {
-                setTimeout(_processLineForSpellCheck(lineno, text), 100);
+                _processLineForSpellCheck(lineno, text);
             }
 
         });
@@ -570,12 +577,14 @@ function _autocomplete(cm) {
 
 
 var SPELL_CHECK = null;
+var LAST_CHANGE = null;
 function _onChange(cm, changed) {
     // no change
+    LAST_CHANGE = changed;
     if (SPELL_CHECK) {
         clearTimeout(SPELL_CHECK);
     }
-    SPELL_CHECK = setTimeout(_backgroundSpellCheck(changed), 200);
+    SPELL_CHECK = setTimeout('_backgroundSpellCheck(LAST_CHANGE)', 500);
 
     if (isToSUGGEST()) {
         _autocomplete(cm);

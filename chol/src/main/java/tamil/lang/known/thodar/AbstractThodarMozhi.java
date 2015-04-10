@@ -9,6 +9,7 @@ import java.util.List;
 
 /**
  * <p>
+ *     Base class for  compound word implementation.
  * </p>
  *
  * @author velsubra

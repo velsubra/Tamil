@@ -5,11 +5,12 @@ import my.interest.lang.tamil.generated.types.RootVerbDescription;
 import my.interest.lang.tamil.internal.api.DefinitionFactory;
 import my.interest.lang.tamil.internal.api.PersistenceInterface;
 import my.interest.lang.tamil.punar.PropertyDescriptionContainer;
+import my.interest.lang.tamil.punar.TamilWordPartContainer;
+import tamil.lang.TamilFactory;
 import tamil.lang.TamilWord;
+import tamil.lang.api.join.WordsJoiner;
 import tamil.lang.known.derived.*;
 import tamil.lang.known.non.derived.Vinaiyadi;
-
-import java.util.List;
 
 /**
  * <p>
@@ -20,6 +21,9 @@ import java.util.List;
 public class WordGeneratorFromVinaiyadi extends WordsGenerator {
 
     RootVerbDescription root = null;
+
+    RootVerbDescription idu = null;
+    TamilWord iduword = TamilWord.from("இடு");
 
     public WordGeneratorFromVinaiyadi(RootVerbDescription root) {
         this.root = root;
@@ -111,9 +115,6 @@ public class WordGeneratorFromVinaiyadi extends WordsGenerator {
             PersistenceInterface.addDerivative(container, false, table, Kaddalhai.class);
 
 
-
-
-
             table = DefinitionFactory.generatePeyarechcham(root.getRoot(), true);
             PersistenceInterface.addDerivativeWithTense(container, true, table, Peyarechcham.class);
 
@@ -144,15 +145,35 @@ public class WordGeneratorFromVinaiyadi extends WordsGenerator {
             PersistenceInterface.addDerivative(container, false, table, EthirmarraipPeyarechcham.class);
 
 
-            table = DefinitionFactory.generateThozhirPeyar(root.getRoot(), true);
+            table = DefinitionFactory.generateThozhirPeyar(root, true);
             PersistenceInterface.addDerivative(container, true, table, ThozhirrPeyar.class);
 
 
-            table = DefinitionFactory.generateThozhirPeyar(root.getRoot(), false);
+            table = DefinitionFactory.generateThozhirPeyar(root, false);
             PersistenceInterface.addDerivative(container, false, table, ThozhirrPeyar.class);
+
+
+            TamilWord currentRoot = TamilWord.from(root.getRoot());
+            if (!currentRoot.endsWith(iduword, false) && new TamilWordPartContainer(currentRoot).isUkkurralh()) {
+                if (idu == null) {
+                    idu = PersistenceInterface.get().findRootVerbDescription(iduword.toString());
+                }
+
+                WordsJoiner joiner = TamilFactory.createWordJoiner(currentRoot);
+                joiner.addVaruMozhi(iduword);
+                currentRoot = joiner.getSum();
+                Vinaiyadi vi = new Vinaiyadi(currentRoot, container, true);
+                PersistenceInterface.addKnown(vi);
+
+               // System.out.println("IDU:" + currentRoot);
+
+            }
+
 
         } catch (Throwable e) {
             e.printStackTrace();
         }
     }
+
+
 }

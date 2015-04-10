@@ -1,6 +1,5 @@
 package tamil.lang.known.derived;
 
-import my.interest.lang.tamil.internal.api.PersistenceInterface;
 import tamil.lang.TamilWord;
 import tamil.lang.known.non.derived.IVinaiyechcham;
 import tamil.lang.known.non.derived.Peyarchchol;
@@ -10,7 +9,9 @@ import tamil.lang.known.non.derived.Peyarchchol;
  * குறிப்புவினையெச்சம்
  * <p/>   <p>
  * <p/>
- * எ.கா) சிவந்து
+ * எ.கா)
+ * இல்லாது (இல்லாமை)
+ * சிவந்து (சிவப்பு)
  * </p>
  *
  * @author velsubra

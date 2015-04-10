@@ -4,6 +4,7 @@ import my.interest.lang.tamil.generated.types.PaalViguthi;
 import my.interest.lang.tamil.generated.types.SimpleTense;
 import my.interest.lang.tamil.internal.api.PersistenceInterface;
 import my.interest.lang.tamil.punar.handler.VinaiMutruCreationHandler;
+import tamil.lang.TamilSimpleCharacter;
 import tamil.lang.TamilWord;
 import tamil.lang.known.non.derived.IPeyarchchol;
 import tamil.lang.known.non.derived.Vinaiyadi;
@@ -26,6 +27,13 @@ public final class VinaiyaalanhaiyumPeyar extends DerivativeWithTenseAndPaal imp
 
 
             if (SimpleTense.FUTURE == tense) {
+                //நடப்பன
+                TamilWord ntadappana = word.duplicate();
+                ntadappana.removeLast();
+                ntadappana.add(TamilSimpleCharacter.NA);
+                PersistenceInterface.addKnown(new Vinaippeyar(ntadappana,vinaiyadi));
+
+
                 //படுவது   it comes without tense and person.
                 ThozhirrPeyar thozhi = new ThozhirrPeyar(word, vinaiyadi);
                 PersistenceInterface.addKnown(thozhi);

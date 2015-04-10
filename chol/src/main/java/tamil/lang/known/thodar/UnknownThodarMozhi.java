@@ -7,6 +7,7 @@ import java.util.List;
 
 /**
  * <p>
+ *     This represents intermediate state of a compound word. For e.g) while it is being identified.
  * </p>
  *
  * @author velsubra
@@ -16,8 +17,8 @@ public final class UnknownThodarMozhi extends AbstractThodarMozhi {
         super(word, knowns);
     }
 
-    @Override
-    public List<TYPE_SIG> getTypes() {
-        return null;
-    }
+//    @Override
+//    public List<TYPE_SIG> getTypes() {
+//        return null;
+//    }
 }

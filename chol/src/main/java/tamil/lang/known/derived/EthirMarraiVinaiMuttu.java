@@ -10,6 +10,7 @@ import tamil.lang.known.non.derived.Vinaiyadi;
 
 /**
  * <p>
+ *     Represents எதிர்மறைவினைமுற்று எ.கா) வரவில்லை.
  * </p>
  *
  * @author velsubra

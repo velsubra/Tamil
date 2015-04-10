@@ -1,25 +1,23 @@
 package tamil.lang.known.non.derived;
 
+import my.interest.lang.tamil.translit.EnglishToTamilCharacterLookUpContext;
 import tamil.lang.TamilWord;
 import tamil.lang.known.IKnownWord;
-import my.interest.lang.tamil.translit.EnglishToTamilCharacterLookUpContext;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-import java.util.HashSet;
+import java.util.*;
 
 /**
  * <p>
- *      அறியப்பட்ட சொல்லைக்குறிப்பது.
- *
+ * அறியப்பட்ட சொல்லைக்குறிப்பது.
+ * The base implementation that is shared by many of the concrete implementation of  concrete words.
+ * <p/>
  * </p>
  *
  * @author velsubra
  */
 public abstract class AbstractKnownWord implements IKnownWord {
-    private static final  Set<Class>  knownTypes = new HashSet<Class>();
+    private static final Set<Class> knownTypes = new HashSet<Class>();
+
     public Set<String> getPropertyNames() {
         if (properties == null) {
             return Collections.emptySet();

@@ -49,11 +49,20 @@ public class DefinitionFactory {
 
 
     public static GenericTenseTable generateThozhirPeyar(String v, boolean fortransitive) {
-        GenericTenseTable table = new GenericTenseTable();
-        table.setRoot(v);
-
         PersistenceInterface per = PersistenceInterface.get();
         RootVerbDescription verb = per.findRootVerbDescription(v);
+        if (verb == null) {
+            throw new RuntimeException("No verb:" + v);
+        }
+        return generateThozhirPeyar(verb,fortransitive);
+    }
+
+    public static GenericTenseTable generateThozhirPeyar(RootVerbDescription verb, boolean fortransitive) {
+        GenericTenseTable table = new GenericTenseTable();
+        table.setRoot(verb.getRoot());
+
+        PersistenceInterface per = PersistenceInterface.get();
+       // RootVerbDescription verb = per.findRootVerbDescription(v);
 
         PropertyDescriptionContainer container = per.getConsolidatedPropertyContainerFor(verb);
         if (fortransitive && !container.isTransitive()) return table;
@@ -63,8 +72,8 @@ public class DefinitionFactory {
             row.setRowname("முதனிலைத்தொழிற்பெயர் ");
             DerivedValues val = new DerivedValues();
             val.getList().add(new DerivedValue());
-            val.getList().get(0).setEquation(v);
-            val.getList().get(0).setValue(v);
+            val.getList().get(0).setEquation(verb.getRoot());
+            val.getList().get(0).setValue(verb.getRoot());
             row.setPresent(val);
             table.getRows().add(row);
         }

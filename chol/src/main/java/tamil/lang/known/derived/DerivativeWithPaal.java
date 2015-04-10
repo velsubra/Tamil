@@ -7,7 +7,7 @@ import tamil.lang.known.non.derived.Vinaiyadi;
 
 /**
  * <p>
- *     A known verb driven word associated person (பால் )
+ *     A known verb driven word associated person (பால் )   and a verb
  * </p>
  *
  * @author velsubra

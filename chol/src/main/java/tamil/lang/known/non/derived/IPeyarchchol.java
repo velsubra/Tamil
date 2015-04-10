@@ -17,6 +17,10 @@ public interface IPeyarchchol extends IKnownWord {
      */
     public boolean isUyarThinhai();
 
+    /**
+     * Tells if the word is a pro noun    எ.கா) நான் , நாம் , அவன்
+     * @return true if its is pro noun else other wise.
+     */
     public boolean isProNoun();
 
 }

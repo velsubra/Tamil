@@ -7,6 +7,8 @@ import tamil.lang.known.non.derived.Peyarchchol;
 
 /**
  * <p>
+ * குறிப்புப்பெயரெச்சப்பெயர்
+ * eg) இனியவள்      ,நல்லவன்
  * </p>
  *
  * @author velsubra
@@ -15,9 +17,20 @@ public final class KurrippupPeyarechchappeyar extends PeyarchcholDerivative impl
 
     private PaalViguthi viguthi;
 
-    public KurrippupPeyarechchappeyar(TamilWord word, Peyarchchol peyar,PaalViguthi viguthi) {
-        super(word, peyar);
+    /**
+     * Gets the underlying  {@link KurrippupPeyarechcham}
+     * @return  எச்சம் never null.
+     */
+    public KurrippupPeyarechcham getPeyarechcham() {
+        return peyarechcham;
+    }
+
+    private KurrippupPeyarechcham peyarechcham = null;
+
+    public KurrippupPeyarechchappeyar(TamilWord word, KurrippupPeyarechcham peyar, PaalViguthi viguthi) {
+        super(word, peyar.getPeyar());
         this.viguthi = viguthi;
+        this.peyarechcham = peyar;
     }
 
     @Override

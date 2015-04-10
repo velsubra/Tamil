@@ -9,7 +9,7 @@ package tamil.lang.api.trans;
  *
  * </p>
  *
- * @see tamil.lang.api.feature.Feature#TRANSLIT_JOIN_FEATURE_VAL_110
+ * @see tamil.lang.api.feature.FeatureConstants#TRANSLIT_JOIN_FEATURE_VAL_110
  *
  * @author velsubra
  */

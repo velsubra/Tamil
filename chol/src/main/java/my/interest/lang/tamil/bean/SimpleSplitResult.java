@@ -234,7 +234,7 @@ public class SimpleSplitResult implements Comparable {
 
                     if (toadd) {
                         //  toadd = !(isAllJustOfKind(previousKnowns, Vinaiyadi.class) && isAllJustOfKind(knowns, Vinaiyadi.class));
-                        toadd = !(isAllJustOfKind(previousKnowns, Vinaiyadi.class));
+                        toadd = isAtleastKind(knowns, IPeyarchchol.class) || !(isAllJustOfKind(previousKnowns, Vinaiyadi.class));
                     }
 //                    if (toadd) {
 //                       toadd =   !isAllJustOfKind(knowns, Ottu.class) ||  !isAllJustOfKind(previousKnowns, IIdaichchol.class) ;
@@ -257,7 +257,12 @@ public class SimpleSplitResult implements Comparable {
                         if (count == r.getSplitList().size()) {
                             //last
                             toadd = !isAtleastKind(knowns, INonEndingIdaichchol.class);
+
+                            if (toadd && isAllJustOfKind(knowns, Vinaiyadi.class)) {
+                                toadd = isAtleastKind(previousKnowns, IPeyarchchol.class);
+                            }
                         }
+
 
                     }
                     if (!toadd) {

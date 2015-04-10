@@ -12,6 +12,7 @@ import tamil.lang.api.trans.NounLookupFeature;
 
 /**
  * <p>
+ *     Most of the APIs takes for list of features
  * </p>
  *
  * @author velsubra

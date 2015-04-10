@@ -20,11 +20,12 @@ import java.util.Map;
 
 /**
  * <p>
+ *     வினையெச்சம் எ.கா) வர, வந்து
  * </p>
  *
  * @author velsubra
  */
-public class Vinaiyechcham extends DerivativeWithTense implements IVinaiyechcham {
+public final class Vinaiyechcham extends DerivativeWithTense implements IVinaiyechcham {
 
     static TamilWord ulh = TamilWord.from("ulh");
     static TamilWord illai = TamilWord.from("illai");

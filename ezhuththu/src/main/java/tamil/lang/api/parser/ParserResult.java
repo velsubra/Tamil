@@ -47,13 +47,21 @@ public class ParserResult {
     }
 
 
-
+    /**
+     * Tells if the system could parse the word
+     * @return  true, when successfully parsed based on the features passed, false otherwise.
+     */
     public boolean isParsed() {
         return parsed;
     }
 
 
-
+    /**
+     * Returns parsing hints that have been encountered during parsing.
+     * @return  the parse hint object, null when no parse hint was available
+     *
+     * @see tamil.lang.api.feature.FeatureConstants#PARSE_FIND_FAILURE_INDEX_VAL_175
+     */
     public PARSE_HINT getParseHint() {
         return parseHint;
     }
@@ -71,6 +79,9 @@ public class ParserResult {
     }
 
 
+    /**
+     * The class containing details for parse hints.
+     */
     public static final  class  PARSE_HINT {
         private int tamilStartIndex;
         private int tamilEndIndex;
@@ -85,24 +96,45 @@ public class ParserResult {
             this.message = message;
         }
 
+
         private String message;
 
+        /**
+         * Gets the starting index of given Tamil word that has some hint
+         * @return  index of the character from which the hint is applicable.
+         */
         public int getTamilStartIndex() {
             return tamilStartIndex;
         }
 
+        /**
+         * Gets the end index    of given Tamil word that has some hint
+         * @return  index of the character up to which the hint is applicable.
+         */
         public int getTamilEndIndex() {
             return tamilEndIndex;
         }
 
-        public int getUnicodeStartIndex() {
+        /**
+         * Gets the starting index of given Tamil word that has some hint
+         * @return  index of the unicode character from which the hint is applicable.
+         */public int getUnicodeStartIndex() {
             return unicodeStartIndex;
         }
 
+        /**
+         * Gets the end index    of given Tamil word that has some hint
+         * @return  index of the unicode character up to which the hint is applicable.
+         */
         public int getUnicodeEndIndex() {
             return unicodeEndIndex;
         }
 
+
+        /**
+         * Gets the hint message
+         * @return  message if there is some useful hint, null otherwise.
+         */
         public String getMessage() {
             return message;
         }
