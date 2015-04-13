@@ -27,6 +27,8 @@ import tamil.lang.known.non.derived.AbstractKnownWord;
 import tamil.lang.known.non.derived.NonStartingIdaichchol;
 import tamil.lang.known.non.derived.Peyarchchol;
 import tamil.lang.known.non.derived.Vinaiyadi;
+import tamil.lang.manager.persist.*;
+import tamil.lang.spi.PersistenceManagerProvider;
 
 import javax.script.CompiledScript;
 import javax.script.ScriptException;
@@ -41,7 +43,7 @@ import java.util.*;
  *
  * @author velsubra
  */
-public abstract class PersistenceInterface {
+public abstract class PersistenceInterface implements PersistenceManagerProvider, PersistenceManager, RootVerbManager,PrepositionManager,NounManager,ApplicationManager {
 
     protected  static  final TamilWord iduword = TamilWord.from("இடு");
 
@@ -122,10 +124,13 @@ public abstract class PersistenceInterface {
         return WORK_DIR;
     }
 
-
+    /**
+     * TODO: Need to fix this
+     * @return
+     */
     public static PersistenceInterface get() {
 
-        return new FileBasedPersistence(new File(getWorkDir(), "i18n.xml").getAbsolutePath());
+        return new FileBasedPersistence();
 
     }
 
@@ -1359,29 +1364,7 @@ public abstract class PersistenceInterface {
     }
 
     public static AppDescription findApp(String name, TamilRootWords file, boolean context) {
-        if (name == null || name.trim().equals("") || file == null) return null;
-
-        if (file.getApps() == null) {
-            file.setApps(new Apps());
-        }
-        if (file.getApps().getApps() == null) {
-            file.getApps().setApps(new AppsDescription());
-        }
-        if (file.getApps().getApps().getList() == null) {
-            file.getApps().getApps().setList(new AppsDescriptionList());
-        }
-        for (AppDescription a : file.getApps().getApps().getList().getApp()) {
-            if (context) {
-                if (name.equals(a.getRoot())) {
-                    return a;
-                }
-            } else {
-                if (name.equals(a.getName())) {
-                    return a;
-                }
-            }
-        }
-        return null;
+       return  EzhuththuUtils.findApp(name, file, context);
     }
 
     public void createAppAs(String code, String name, String as) {
@@ -1839,6 +1822,42 @@ public abstract class PersistenceInterface {
         }
         return null;
 
+    }
+
+    @Override
+    public PeyarchcholDescription findNounDescription(String root) {
+        return findPeyarchcholDescription(root);
+    }
+
+    @Override
+    public ApplicationManager getApplicationManager() {
+        return this;
+    }
+
+    @Override
+    public RootVerbManager getRootVerbManager() {
+        return this;
+    }
+
+    @Override
+    public PrepositionManager getPrepositionManager() {
+        return this;
+    }
+
+    @Override
+    public NounManager getNounManager() {
+        return this;
+    }
+
+    @Override
+    public IdaichcholDescription findPrepositionDescription(String root) {
+        return findIdaichcholDescription(root);
+    }
+
+
+    @Override
+    public PersistenceManager create() {
+        return new FileBasedPersistence();
     }
 
 }

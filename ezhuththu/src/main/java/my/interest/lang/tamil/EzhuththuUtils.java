@@ -1,9 +1,18 @@
 package my.interest.lang.tamil;
 
 import common.lang.impl.AbstractCharacter;
+import my.interest.lang.tamil.generated.types.*;
+import my.interest.lang.tamil.generated.types.AppDescription;
+import my.interest.lang.tamil.generated.types.AppsDescription;
+import my.interest.lang.tamil.generated.types.AppsDescriptionList;
+import my.interest.lang.tamil.generated.types.PaalViguthi;
+import my.interest.lang.tamil.generated.types.SimpleTense;
+import my.interest.lang.tamil.generated.types.TamilRootWords;
 import my.interest.lang.tamil.internal.api.TamilCharacterParserListener;
 import my.interest.lang.tamil.internal.api.TamilSoundParserListener;
 import tamil.lang.*;
+import tamil.lang.known.IKnownWord;
+import tamil.lang.known.non.derived.IPeyarchchol;
 import tamil.lang.sound.AtomicSound;
 import tamil.lang.sound.TamilSoundLookUpContext;
 
@@ -20,6 +29,50 @@ import java.util.*;
  */
 public class EzhuththuUtils {
     public static final String ENCODING = "UTF-8";
+
+    public static final String NS_TAMIL = "http://my.interest.lang.tamil";
+    public static final String NS_XML = "http://www.w3.org/2001/XMLSchema";
+    public static final String VINAIMUTRU_BASE = "vinaimuttu.transitive";
+    public static final String VINAIMUTRU_BASE_INTRANSITIVE = "vinaimuttu.intransitive";
+
+
+    private static List<Class<? extends IKnownWord>> peyar = new ArrayList<Class<? extends IKnownWord>>();
+
+    static {
+        peyar.add(IPeyarchchol.class);
+    }
+
+
+    public static boolean isUyarThinhai(PaalViguthi viguthi) {
+        return (viguthi != PaalViguthi.A) && (viguthi != PaalViguthi.THU);
+    }
+
+
+    public static boolean isPadarkkai(PaalViguthi viguthi) {
+        return viguthi == PaalViguthi.A
+                || viguthi == PaalViguthi.THU ||
+                viguthi == PaalViguthi.AALH ||
+                viguthi == PaalViguthi.AAN ||
+                viguthi == PaalViguthi.AAR || viguthi ==
+                PaalViguthi.AR;
+    }
+
+    public static boolean isVinaiMuttuAsNoun(SimpleTense tense, PaalViguthi viguthi) {
+        if (!isPadarkkai(viguthi)) return false;
+        if (viguthi == PaalViguthi.A) {
+            return false;
+
+        }
+        if (viguthi == PaalViguthi.THU) {
+            if (tense == SimpleTense.FUTURE) {
+                return false;
+            } else {
+                return true;
+            }
+        }
+        if (tense == SimpleTense.PRESENT) return false;
+        return true;
+    }
 
 
     public static byte[] readAllFromFile(String file) {
@@ -146,14 +199,39 @@ public class EzhuththuUtils {
         return file;
     }
 
+    private static final List<TamilWord> suggenstionNullifer = new ArrayList<TamilWord>() {
+        {
+            add(new TamilWord(TamilCompoundCharacter.IL, TamilCompoundCharacter.IL));
+            add(new TamilWord(TamilCompoundCharacter.ILL, TamilCompoundCharacter.ILL));
+            add(new TamilWord(TamilCompoundCharacter.IK, TamilCompoundCharacter.IK));
+            add(new TamilWord(TamilCompoundCharacter.ICH, TamilCompoundCharacter.ICH));
+            add(new TamilWord(TamilCompoundCharacter.IDD, TamilCompoundCharacter.IDD));
+            add(new TamilWord(TamilCompoundCharacter.ITH, TamilCompoundCharacter.ITH));
+            add(new TamilWord(TamilCompoundCharacter.INJ, TamilCompoundCharacter.INJ));
+
+            add(new TamilWord(TamilSimpleCharacter.U));
+
+        }
+    };
+
     /**
      * 31 is the driving prime number for hash.
      *
-     * @param w
-     * @return
+     * @param w1 the word for which the hash code is to be found
+     * @return the hashcode of the word
      */
 
-    public static int suggestionHashCode(TamilWord w) {
+    public static int suggestionHashCode(TamilWord w1) {
+        TamilWord w = w1.duplicate();
+        for (TamilWord sug : suggenstionNullifer) {
+            if (sug.size() > 1) {
+                w.replaceAll(0, sug, new TamilWord(sug.getLast()), false, true);
+            } else {
+                w.replaceAll(0, sug, new TamilWord(), false, false);
+            }
+        }
+
+
         TamilCharacter lastcons = null;
         int hash = 0;
         for (int i = 0; i < w.size(); i++) {
@@ -190,7 +268,11 @@ public class EzhuththuUtils {
                 }
 
                 if (cons != null) {
-                    if (cons.equals(TamilCompoundCharacter.ILL)) {
+                    if (cons.equals(TamilCompoundCharacter.IDD)) {
+                        cons = TamilCompoundCharacter.IRR;
+                    } else if (cons.equals(TamilCompoundCharacter.ITH)) {
+                        cons = TamilCompoundCharacter.IRR;
+                    } else if (cons.equals(TamilCompoundCharacter.ILL)) {
                         cons = TamilCompoundCharacter.IL;
                     } else if (cons.equals(TamilCompoundCharacter.ILLL)) {
                         cons = TamilCompoundCharacter.IL;
@@ -533,7 +615,7 @@ public class EzhuththuUtils {
     }
 
     public static List<String> parseString(String s, String del, boolean ignoreNull) {
-            return  parseString(s,del, ignoreNull, false);
+        return parseString(s, del, ignoreNull, false);
     }
 
     public static List<String> parseString(String s, String del, boolean ignoreNull, boolean ignoreDup) {
@@ -610,5 +692,31 @@ public class EzhuththuUtils {
         }
         buffer.append(close);
         return buffer.toString();
+    }
+
+    public static AppDescription findApp(String name, TamilRootWords file, boolean context) {
+        if (name == null || name.trim().equals("") || file == null) return null;
+
+        if (file.getApps() == null) {
+            file.setApps(new my.interest.lang.tamil.generated.types.Apps());
+        }
+        if (file.getApps().getApps() == null) {
+            file.getApps().setApps(new AppsDescription());
+        }
+        if (file.getApps().getApps().getList() == null) {
+            file.getApps().getApps().setList(new AppsDescriptionList());
+        }
+        for (AppDescription a : file.getApps().getApps().getList().getApp()) {
+            if (context) {
+                if (name.equals(a.getRoot())) {
+                    return a;
+                }
+            } else {
+                if (name.equals(a.getName())) {
+                    return a;
+                }
+            }
+        }
+        return null;
     }
 }

@@ -14,6 +14,8 @@ import tamil.lang.TamilFactory;
 import tamil.lang.TamilWord;
 import tamil.lang.api.join.WordsJoiner;
 import tamil.lang.known.non.derived.*;
+import tamil.lang.manager.persist.*;
+import tamil.lang.spi.PersistenceManagerProvider;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
@@ -31,7 +33,7 @@ import java.util.logging.Logger;
  *
  * @author velsubra
  */
-public class FileBasedPersistence extends PersistenceInterface {
+public class FileBasedPersistence extends PersistenceInterface   {
     static final Logger logger = Logger.getLogger(FileBasedPersistence.class.getName());
     private String path = null;
 
@@ -168,8 +170,8 @@ public class FileBasedPersistence extends PersistenceInterface {
         }
     }
 
-    public FileBasedPersistence(String path) {
-        this.path = path;
+    public FileBasedPersistence() {
+        this.path = new File(getWorkDir(), "i18n.xml").getAbsolutePath();
         if (lastloaded == null) {
             lastloaded = getLastModified();
         }
@@ -420,4 +422,7 @@ public class FileBasedPersistence extends PersistenceInterface {
             throw new RuntimeException("Unable to check ...", e);
         }
     }
+
+
+
 }

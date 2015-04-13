@@ -139,6 +139,7 @@
                             <content>JTNDIURPQ1RZUEUlMjBodG1sJTNFJTBBJTNDaHRtbCUyMHhtbG5zJTNEJTIyaHR0cCUzQSUyRiUyRnd3dy53My5vcmclMkYxOTk5JTJGaHRtbCUyMiUzRSUwQSUzQ2hlYWQlM0UlMEElMjAlMjAlMjAlMjAlM0NtZXRhJTIwY2hhcnNldCUzRCUyMlVURi04JTIyJTNFJTBBJTIwJTIwJTIwJTIwJTNDdGl0bGUlM0VCaW5kJTIwdGV4dCUyMGZpZWxkJTIwdG8lMjBUYW1pbCUyMGZlYXR1cmVzISUzQyUyRnRpdGxlJTNFJTBBJTIwJTIwJTIwJTIwJTBBJTIwJTIwJTIwJTIwJTIwJTNDc2NyaXB0JTIwc3JjJTNEJTIyJTI0JTdCUl9KUVVFUllfSlNfUEFUSCU3RCUyMiUyMHR5cGUlM0QlMjJ0ZXh0JTJGamF2YXNjcmlwdCUyMiUyMGNoYXJzZXQlM0QlMjJ1dGYtOCUyMiUzRSUzQyUyRnNjcmlwdCUzRSUwQSUyMCUyMCUyMCUyMCUyMCUzQ3NjcmlwdCUyMHNyYyUzRCUyMiUyNCU3QlJfUExBVEZPUk1fSlNfUEFUSCU3RCUyMiUyMHR5cGUlM0QlMjJ0ZXh0JTJGamF2YXNjcmlwdCUyMiUyMGNoYXJzZXQlM0QlMjJ1dGYtOCUyMiUzRSUzQyUyRnNjcmlwdCUzRSUwQSUyMCUyMCUyMCUyMCUyMCUzQ2xpbmslMjByZWwlM0QlMjJzdHlsZXNoZWV0JTIyJTIwdHlwZSUzRCUyMnRleHQlMkZjc3MlMjIlMjBocmVmJTNEJTIyJTI0JTdCUl9QTEFURk9STV9DU1NfUEFUSCU3RCUyMiUyRiUzRSUwQSUyMCUyMCUyMCUyMCUyMCUyMCUyMCUwQSUyMCUyMCUyMCUyMCUyMCUzQ3NjcmlwdCUyMHR5cGUlM0QndGV4dCUyRmphdmFzY3JpcHQnJTNFJTJGJTJGJTNDISU1QkNEQVRBJTVCJTBBJTIwJTIwJTIwJTIwJTIwJTBBJTIwJTIwJTIwJTIwJTIwJTIwJTJGJTJGJTIwTm8lMjB1c2VyJTIwc2NyaXB0JTIwYXQlMjBhbGwuJTBBJTBBJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTJGJTJGJTVEJTVEJTNFJTBBJTIwJTIwJTIwJTIwJTIwJTNDJTJGc2NyaXB0JTNFJTBBJTIwJTIwJTIwJTIwJTBBJTNDJTJGaGVhZCUzRSUwQSUwQSUyMCUzQ2JvZHklM0UlMEElMjAlMjAlMjAlMjAlMjAlMEElMjAlMEElMjAlMjAlMjAlMjAlMjAlM0NhJTIwaHJlZiUzRCUyMiUyNCU3QlJfUExBVEZPUk1fQ09OVEVYVCU3RCUyRmFwcC1yZXNvdXJjZS1lZGl0Lmh0bWwlMjMlMjQlN0JSX1BBVEglN0QlMkMlMjQlN0JSX0FQUF9OQU1FJTdEJTIyJTNFSFRNTCUyMHNvdXJjZSUyMG9mJTIwdGhpcyUyMHBhZ2UlM0MlMkZhJTNFJTIwJTdDJTBBJTIwJTIwJTIwJTIwJTIwJTNDYSUyMGhyZWYlM0QlMjIlMjQlN0JSX1BMQVRGT1JNX0NPTlRFWFQlN0QlMkZhcHAtZGV2ZWxvcGVyLWd1aWRlLmh0bWwlMjIlM0VUYW1pbCUyMEFwcGxpY2F0aW9uJTIwRGV2ZWxvcGVyJTIwR3VpZGUlM0MlMkZhJTNFJTIwJTIwJTBBJTIwJTIwJTIwJTIwJTIwJTNDYnIlMkYlM0UlM0NiciUyRiUzRVQlN0JUYW1pemglN0QlMjAoVGV4dCUyMEZpZWxkKSUzQSUwQSUyMCUyMCUyMCUyMCUyMCUwQSUyMCUyMCUyMCUyMCUyMCUzQ2lucHV0JTIwdHlwZSUzRCUyMnRleHQlMjIlMjBjbGFzcyUzRCUyMnRhbWlsLXRleHQlMjIlMjB2YWx1ZSUzRCUyMnRoYW1pemglMjIlMjBzaXplJTNEJTIyMjAlMjIlMkYlM0UlMEElMjAlMjAlMjAlMjAlMjAlMEElMjAlMjAlMjAlMjAlMjAlM0NiciUyRiUzRVQlN0JUYW1pemglN0QlMjAoVGV4dCUyMEFyZWEpJTNBJTNDYnIlMkYlM0UlMEElMjAlMjAlMjAlMjAlMjAlMEElMjAlMjAlMjAlMjAlMjAlM0N0ZXh0YXJlYSUyMHR5cGUlM0QlMjJ0ZXh0JTIyJTIwY2xhc3MlM0QlMjJ0YW1pbC10ZXh0JTIyJTIwcm93cyUzRCUyMjEwJTIyJTIwY29scyUzRCUyMjQwJTIyJTNFdGhhbWl6aCUwQSUyMCUyMCUyMCUyMCUyMG9ydSUyMCUwQSUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMCUyMHNlbW1vemhpJTBBJTIwJTIwJTIwJTIwJTIwJTNDJTJGdGV4dGFyZWElM0UlMEElMjAlMjAlMjAlMjAlMjAlMEElMjAlMjAlMEElMjAlM0MlMkZib2R5JTNFJTBBJTNDJTJGaHRtbCUzRQ==</content>
                         </resources>
                     </resources>
+                    <cache></cache>
                 </app>
                 <app>
                     <platform>1.1</platform>
@@ -324,6 +325,11 @@
                             <type>GROOVY</type>
                             <content>aW1wb3J0JTIwdGFtaWwubGFuZy4qJTNCJTBBaW1wb3J0JTIwdGFtaWwudXRpbC4qJTNCJTBBaW1wb3J0JTIwdGFtaWwubGFuZy5rbm93bi4qJTNCJTBBaW1wb3J0JTIwdGFtaWwubGFuZy5rbm93bi5ub24uZGVyaXZlZC4qJTNCJTBBaW1wb3J0JTIwdGFtaWwubGFuZy5rbm93bi5kZXJpdmVkLiolM0IlMEFpbXBvcnQlMjBvcmcuanNvbi4qJTNCJTBBJTBBZGljdGlvbmFyeSUyMCUzRCUyMFRhbWlsRmFjdG9yeS5zeXN0ZW1EaWN0aW9uYXJ5JTNCJTBBJTBBTGlzdCUzQ0lLbm93bldvcmQlM0UlMjBub3VucyUyMCUyMCUzRCUyMGRpY3Rpb25hcnkuc2VhcmNoKG5ldyUyMFRhbWlsV29yZCgpJTJDZmFsc2UlMkMlMjA1MDAwMCUyQyUyMCU1Qkt1cnJpcHB1VmluYWl5ZWNoY2hhbS5jbGFzcyU1RCklM0IlMEFTdHJpbmclMjByZXQlMjAlM0QlMjJzaXplJTNBJTIyJTIwJTJCJTIwbm91bnMuc2l6ZSgpJTIwJTJCJTIwJTIyJTVDbiUyMFQlN0JLdXJyaXBwdVZpbmFpeWVjaGNoYW0lN0QlMjAlM0MlM0QlMjBUJTdCcGFuaHB1cHBleWFyJTdEJTIwJTVDbi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0lNUNuJTIyJTNCJTBBZm9yJTIwKElLbm93bldvcmQlMjBlY2glMjAlM0Fub3VucyklMjAlN0IlMEElMjAlMjAlMjAlMEElMjAlMjAlMjAlMjBUYW1pbFdvcmQlMjB3JTIwJTNEJTIwZWNoLndvcmQuZHVwbGljYXRlKCklM0IlMEElMjAlMjAlMjAlMEElMjAlMjAlMjAlMjByZXQlMjAlMkIlM0QlMjAlMjB3LnRvU3RyaW5nKCklMjAlMkIlMjAlMjIlMjAlMjAlMjAlM0MlM0QlMjAlMjAlMjIlMjAlMkIlMjBlY2gucGV5YXIud29yZC50b1N0cmluZygpJTIwJTJCJTIyJTVDbiUyMiUzQiUwQSUyMCUyMCUyMCUyMCUwQSU3RCUwQSUwQXJldHVybiUyMHJldCUzQiUwQSUyMA==</content>
                         </resources>
+                        <resources>
+                            <name>ethirmarrai.gv</name>
+                            <type>GROOVY</type>
+                            <content>aW1wb3J0JTIwdGFtaWwubGFuZy4qJTNCJTBBaW1wb3J0JTIwdGFtaWwudXRpbC4qJTNCJTBBaW1wb3J0JTIwdGFtaWwubGFuZy5rbm93bi4qJTNCJTBBaW1wb3J0JTIwdGFtaWwubGFuZy5rbm93bi5ub24uZGVyaXZlZC4qJTNCJTBBaW1wb3J0JTIwdGFtaWwubGFuZy5rbm93bi5kZXJpdmVkLiolM0IlMEFpbXBvcnQlMjBvcmcuanNvbi4qJTNCJTBBJTBBZGljdGlvbmFyeSUyMCUzRCUyMFRhbWlsRmFjdG9yeS5zeXN0ZW1EaWN0aW9uYXJ5JTNCJTBBJTBBTGlzdCUzQ0lLbm93bldvcmQlM0UlMjBub3VucyUyMCUyMCUzRCUyMGRpY3Rpb25hcnkuc2VhcmNoKG5ldyUyMFRhbWlsV29yZCgpJTJDZmFsc2UlMkMlMjAxMDAwMDAlMkMlMjAlNUJFdGhpck1hcnJhaVZpbmFpTXV0dHUuY2xhc3MlNUQpJTNCJTBBU3RyaW5nJTIwcmV0JTIwJTNEJTIyJTIwVCU3QkV0aGlyTWFycmFpVmluYWlNdXR0dSU3RCUyMCUzQyUzRCUyMFQlN0J2aW5haW11dHR1JTdEJTIwJTVDbi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0lNUNuJTIyJTNCJTBBVGFtaWxXb3JkJTIwZWFuJTIwJTNEJTIwVGFtaWxXb3JkLmZyb20oJTIyJUUwJUFFJThGJUUwJUFFJUE5JUUwJUFGJThEJTIyKSUzQiUwQWZvciUyMChJS25vd25Xb3JkJTIwZWNoJTIwJTNBbm91bnMpJTIwJTdCJTBBJTIwJTIwJTIwJTIwaWYlMjAoZWNoLndvcmQuZW5kc1dpdGgoZWFuJTJDZmFsc2UpJTIwJTI2JTI2JTIwZWNoLnZpbmFpeWFkaS53b3JkLnNpemUoKSUyMCUzQyUyMDQlMjAlMjYlMjYlMjAoZWNoLnZpbmFpeWFkaS53b3JkLmVuZHNXaXRoKFRhbWlsU2ltcGxlQ2hhcmFjdGVyLmElMkNmYWxzZSklMjAlN0MlN0MlMjBlY2gudmluYWl5YWRpLndvcmQuZW5kc1dpdGgoVGFtaWxTaW1wbGVDaGFyYWN0ZXIuVSUyQ2ZhbHNlKSkpJTIwJTdCJTBBJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwVGFtaWxXb3JkJTIwdyUyMCUzRCUyMGVjaC53b3JkLmR1cGxpY2F0ZSgpJTNCJTBBJTIwJTIwJTIwJTBBJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwcmV0JTIwJTJCJTNEJTIwJTIwdy50b1N0cmluZygpJTIwJTJCJTIwJTIyJTIwJTIwJTIwJTNDJTNEJTIwJTIwJTIyJTIwJTJCJTIwZWNoLnZpbmFpeWFkaS53b3JkLnRvU3RyaW5nKCklMjAlMkIlMjIlNUNuJTIyJTNCJTBBJTIwJTIwJTIwJTIwJTdEJTBBJTIwJTIwJTIwJTIwJTBBJTdEJTBBJTBBcmV0dXJuJTIwcmV0JTNCJTBBJTIw</content>
+                        </resources>
                     </resources>
                     <resourceInheritance>
                         <inheritanceOrder>DEPTH_FIRST_PRE_ORDER</inheritanceOrder>
@@ -485,6 +491,123 @@
                 <property name="i.definition.type.pa.true.vigaaram" value="${root}"/>
             </global-description>
             <list>
+                <word>
+                    <root>பயிறு</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>ஆண்மை</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                        <property name="definition.type" value="pa"/>
+                        <property name="i.definition.type.pa.mai" value="true"/>
+                        <property name="i.i.definition.type.pa.mai.true.pp" value="ஆண்"/>
+                    </description>
+                </word>
+                <word>
+                    <root>சீர்மை</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                        <property name="definition.type" value="pa"/>
+                        <property name="i.definition.type.pa.mai" value="true"/>
+                        <property name="i.i.definition.type.pa.mai.true.pp" value="சீர்"/>
+                        <property name="i.definition.type.pa.pe" value="சீரிய"/>
+                    </description>
+                </word>
+                <word>
+                    <root>நேர்மை</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                        <property name="definition.type" value="pa"/>
+                        <property name="i.definition.type.pa.mai" value="true"/>
+                        <property name="i.i.definition.type.pa.mai.true.pp" value="நேர்"/>
+                        <property name="i.definition.type.pa.pe" value="நேரிய"/>
+                    </description>
+                </word>
+                <word>
+                    <root>கத்தரி</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>எழுமை</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                        <property name="definition.type" value="pa"/>
+                        <property name="i.definition.type.pa.mai" value="true"/>
+                        <property name="i.i.definition.type.pa.mai.true.pp" value="எழு"/>
+                    </description>
+                </word>
+                <word>
+                    <root>மறுமை</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                        <property name="definition.type" value="pa"/>
+                        <property name="i.definition.type.pa.mai" value="true"/>
+                        <property name="i.i.definition.type.pa.mai.true.pp" value="மறு"/>
+                    </description>
+                </word>
+                <word>
+                    <root>தீமை</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                        <property name="definition.type" value="pa"/>
+                        <property name="i.definition.type.pa.mai" value="true"/>
+                        <property name="i.i.definition.type.pa.mai.true.pp" value="தீ"/>
+                        <property name="i.definition.type.pa.pe" value="தீய"/>
+                    </description>
+                </word>
+                <word>
+                    <root>வேலி</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>உளறல்</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>நாகரீகம்</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>குப்பம்</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>கர்த்தா</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>இடதுசாரி</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>உந்து</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>கதறல்</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
                 <word>
                     <root>போர்வை</root>
                     <description>
@@ -964,7 +1087,7 @@
                         <property name=".deletable" value="true"/>
                         <property name="definition.type" value="pa"/>
                         <property name="i.definition.type.pa.mai" value="true"/>
-                        <property name="i.i.definition.type.pa.mai.true.pp" value="இல்லா"/>
+                        <property name="i.i.definition.type.pa.mai.true.pp" value="இல்"/>
                         <property name="i.definition.type.pa.pe" value="இல்லாத"/>
                         <property name="i.definition.type.pa.ve" value="இல்லாது"/>
                     </description>
@@ -16296,6 +16419,20 @@
             </named-description>
             <list>
                 <verb>
+                    <root>நீர்</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                        <property name="property.intransitive" value="true"/>
+                        <property name="property.transitive" value="false"/>
+                        <property name="vinaimuttu.intransitive.santhi.present" value="க்"/>
+                        <property name="vinaimuttu.intransitive.santhi.past" value="த்"/>
+                        <property name="vinaimuttu.intransitive.santhi.future" value="ப்"/>
+                        <property name="vinaimuttu.intransitive.santhi.future.thu" value="க்"/>
+                        <property name="vinaimuttu.intransitive.saariyai.future.thu" value="க்"/>
+                        <property name="vinaimuttu.intransitive.idainilai.future" value="ப்"/>
+                    </description>
+                </verb>
+                <verb>
                     <root>தித்தி</root>
                     <description>
                         <property name=".deletable" value="true"/>
@@ -23254,7 +23391,7 @@
                         <property name="vinaimuttu.transitive.santhi.present" value=""/>
                         <property name="vinaimuttu.transitive.santhi.past" value=""/>
                         <property name="vinaimuttu.transitive.idainilai.past" value="ட்"/>
-                        <!--<property name="vinaimuttu.transitive.vigaaram.past" value="இ"/>-->
+                        <property name="vinaimuttu.transitive.vigaaram.past" value="இ"/>
                         <property name="vinaimuttu.transitive.santhi.future" value=""/>
                         <property name="vinaimuttu.transitive.idainilai.future" value="வ்"/>
                         <property name="vinaimuttu.transitive.saariyai.future.thu" value=""/>

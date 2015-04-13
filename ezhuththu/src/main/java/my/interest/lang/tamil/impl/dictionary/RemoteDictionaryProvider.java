@@ -10,9 +10,7 @@ import tamil.lang.known.IKnownWord;
 import tamil.lang.spi.TamilDictionaryProvider;
 
 import java.net.HttpURLConnection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.logging.Logger;
 
 /**
@@ -25,6 +23,9 @@ public class RemoteDictionaryProvider implements TamilDictionary, TamilDictionar
 
 
     public static String REMOTE_SERVER_DICTIONARY_URL = null;
+
+    private static final Map<String, List<IKnownWord>> english_mapping = Collections.synchronizedMap(new HashMap<String, List<IKnownWord>>());
+    private static final SortedSet<IKnownWord> set = Collections.synchronizedSortedSet(new TreeSet<IKnownWord>());
 
 
     static final Logger logger = Logger.getLogger(RemoteDictionaryProvider.class.getName());
@@ -97,6 +98,11 @@ public class RemoteDictionaryProvider implements TamilDictionary, TamilDictionar
 
     @Override
     public IKnownWord peekEnglish(String english) {
+
+        List<IKnownWord> list = english_mapping.get(english);
+        if (list != null && !list.isEmpty()) {
+            return list.get(0);
+        }
         java.net.URL url = null;
         HttpURLConnection connection = null;
         try {
@@ -120,6 +126,9 @@ public class RemoteDictionaryProvider implements TamilDictionary, TamilDictionar
                     if (found != null) {
                         IKnownWord known = new KNOWN(found.getString("tamil"), found.getString("type"));
                         System.out.println("-------->Returning:" + known);
+                        list = new ArrayList<IKnownWord>();
+                        list.add(known);
+                        english_mapping.put(english, list);
                         return known;
                     } else {
                         return null;
@@ -142,6 +151,16 @@ public class RemoteDictionaryProvider implements TamilDictionary, TamilDictionar
     @Override
     public List<IKnownWord> suggest(TamilWord word, int maxCount, List<Class<? extends IKnownWord>> includeTypes) {
         return Collections.emptyList();
+    }
+
+    /**
+     * Adds a new word to the dictionary.
+     *
+     * @param word the known word to be added
+     */
+    @Override
+    public void add(IKnownWord word) {
+         set.add(word);
     }
 
     /**

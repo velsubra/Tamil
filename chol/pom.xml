@@ -69,26 +69,7 @@
     </reporting>
     <build>
         <plugins>
-            <plugin>
-                <groupId>org.jvnet.jaxb2.maven2</groupId>
-                <artifactId>maven-jaxb2-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>generate</goal>
-                        </goals>
-                        <configuration>
-                            <specVersion>2.1</specVersion>
-                        </configuration>
-                    </execution>
-                </executions>
-                <configuration>
-                    <extension>true</extension>
-                    <schemaDirectory>src/main/resources/schema</schemaDirectory>
-                    <generatePackage>my.interest.lang.tamil.generated.types</generatePackage>
-                    <generateDirectory>${project.build.directory}/generated-sources/jaxb</generateDirectory>
-                </configuration>
-            </plugin>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>

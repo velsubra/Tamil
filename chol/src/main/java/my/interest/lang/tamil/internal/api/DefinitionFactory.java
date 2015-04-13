@@ -3,12 +3,15 @@ package my.interest.lang.tamil.internal.api;
 import groovy.lang.Binding;
 import groovy.lang.GroovyShell;
 import groovy.lang.Script;
+import my.interest.lang.tamil.EzhuththuUtils;
 import my.interest.lang.tamil.StringUtils;
 import my.interest.lang.tamil.TamilUtils;
+import tamil.lang.TamilFactory;
 import tamil.lang.TamilWord;
 import my.interest.lang.tamil.generated.types.*;
 import my.interest.lang.tamil.punar.PropertyDescriptionContainer;
 import my.interest.lang.tamil.punar.handler.VinaiMutruCreationHandler;
+import tamil.lang.manager.persist.PersistenceManager;
 
 import java.lang.ref.SoftReference;
 import java.util.ArrayList;
@@ -23,13 +26,10 @@ import java.util.logging.Logger;
  *
  * @author velsubra
  */
-public class DefinitionFactory {
+public class DefinitionFactory extends EzhuththuUtils {
     static final Logger logger = Logger.getLogger(DefinitionFactory.class.getName());
 
-    public static final String NS_TAMIL = "http://my.interest.lang.tamil";
-    public static final String NS_XML = "http://www.w3.org/2001/XMLSchema";
-    public static final String VINAIMUTRU_BASE = "vinaimuttu.transitive";
-    public static final String VINAIMUTRU_BASE_INTRANSITIVE = "vinaimuttu.intransitive";
+
 
     static final GroovyShell shell = new GroovyShell();
     static final Map<String, SoftReference<Script>> compiledScripts = new HashMap<String, SoftReference<Script>>();
@@ -49,8 +49,8 @@ public class DefinitionFactory {
 
 
     public static GenericTenseTable generateThozhirPeyar(String v, boolean fortransitive) {
-        PersistenceInterface per = PersistenceInterface.get();
-        RootVerbDescription verb = per.findRootVerbDescription(v);
+        PersistenceManager per = TamilFactory.getPersistenceManager();
+        RootVerbDescription verb = per.getRootVerbManager().findRootVerbDescription(v);
         if (verb == null) {
             throw new RuntimeException("No verb:" + v);
         }
@@ -61,10 +61,10 @@ public class DefinitionFactory {
         GenericTenseTable table = new GenericTenseTable();
         table.setRoot(verb.getRoot());
 
-        PersistenceInterface per = PersistenceInterface.get();
+        PersistenceManager per = TamilFactory.getPersistenceManager();
        // RootVerbDescription verb = per.findRootVerbDescription(v);
 
-        PropertyDescriptionContainer container = per.getConsolidatedPropertyContainerFor(verb);
+        PropertyDescriptionContainer container = per.getRootVerbManager().getConsolidatedPropertyContainerFor(verb);
         if (fortransitive && !container.isTransitive()) return table;
         if (!fortransitive && !container.isInTransitive()) return table;
         if (container.isVerbAsNoun(fortransitive)) {

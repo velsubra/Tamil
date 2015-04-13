@@ -84,5 +84,12 @@ public interface TamilDictionary {
     public List<IKnownWord> suggest(TamilWord word, int maxCount, List<Class<? extends IKnownWord>> includeTypes);
 
 
+    /**
+     * Adds a new word to the dictionary.
+     * @param word  the known word to be added
+     */
+    public void add(IKnownWord word);
+
+
 
 }

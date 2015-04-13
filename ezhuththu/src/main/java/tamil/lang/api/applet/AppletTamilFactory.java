@@ -15,8 +15,8 @@ import javax.swing.*;
 /**
  * <p>
  * Tamil platform applet that can be downloaded into the html resource of any application.
- * The macro ${R_INJECT_PLATFORM_APPLET}  , will inject this applet into the resource.
- * All the platform provided will make use of this applet and avoid expensive ReST calls over HTTP
+ * The macro ${R_INJECT_PLATFORM_APPLET}   will inject this applet into the resource.
+ * All the platform provided APIs could make use of this applet and avoid expensive ReST calls over HTTP
  * <p/>
  * When an application asks for the applet, the user experience is supposed to be better as some service are locally executed.
  * <p/>
@@ -24,15 +24,15 @@ import javax.swing.*;
  * <p/>
  * <p>
  * Please note: Applets need Java installed in the machine from where the application is accessed.
- * If applet is not initialized the services fall back on ReST.
+ * If applet is not initialized the services fall back on ReST APIs.
  * </p>
  * <p/>
  * <b>Note: </b>
  * <p>
  * Many APIs take a features argument that is a String. It is because these methods are typically called from javascript running at the browser.
- * To understand how the features list is formed, please refer to java doc of the class {@link tamil.lang.api.feature.Feature} that defines various features as public static final variables.
- * The variable ends with number. You have to specify that number if you need the feature.
- * E.g) {@link tamil.lang.api.feature.FeatureConstants#TRANSLIT_JOIN_FEATURE_VAL_110} means the join feature.
+ * To understand how the features list is formed, please refer to java doc of the class {@link tamil.lang.api.feature.Feature} that is the base for
+ * various features. The class {@link tamil.lang.api.feature.FeatureConstants} declares features as public static final variables ending with number. You have to specify that number if you need the feature.
+ * E.g) {@link tamil.lang.api.feature.FeatureConstants#TRANSLIT_JOIN_FEATURE_VAL_110} means the join feature used by {@link tamil.lang.api.trans.Transliterator}.
  * If you need that feature, you have to specify "110" as the required feature. Multiple features can be specified with comma as the separator.
  * Features not-recognized by a service method will be ignored.
  * </p>

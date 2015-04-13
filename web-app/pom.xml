@@ -134,7 +134,7 @@
                         <phase>compile</phase>
                         <id>attach-jsdocs</id>
                         <goals>
-                             <goal>jsdoc3</goal>
+                            <goal>jsdoc3</goal>
                         </goals>
                     </execution>
                 </executions>

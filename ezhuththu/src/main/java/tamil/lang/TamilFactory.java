@@ -10,7 +10,9 @@ import tamil.lang.api.number.NumberReader;
 import tamil.lang.api.parser.CompoundWordParser;
 import tamil.lang.api.trans.Transliterator;
 import tamil.lang.exception.service.ServiceException;
+import tamil.lang.manager.persist.PersistenceManager;
 import tamil.lang.spi.CompoundWordParserProvider;
+import tamil.lang.spi.PersistenceManagerProvider;
 import tamil.lang.spi.TamilDictionaryProvider;
 
 import java.util.Iterator;
@@ -19,6 +21,7 @@ import java.util.ServiceLoader;
 /**
  * <p>
  * The platform class that can provide entry point for different services.
+ * If you use as API, Please make sure you call {@link TamilFactory#init()}  before using any API.
  * </p>
  *
  * @author velsubra
@@ -36,22 +39,34 @@ public final class TamilFactory {
 
     private static TamilDictionary systemDictionary = null;
     private static CompoundWordParser systemParser = null;
+    private static PersistenceManager persistenceManager = null;
 
     private TamilFactory() {
 
     }
 
     static {
-        ServiceLoader loader = ServiceLoader.load(TamilDictionaryProvider.class);
-        loader.reload();
-        systemDictionary = new DictionaryCollection(loader.iterator());
+        try {
+            ServiceLoader loader = ServiceLoader.load(TamilDictionaryProvider.class);
+            loader.reload();
+            systemDictionary = new DictionaryCollection(loader.iterator());
 
 
-        loader = ServiceLoader.load(CompoundWordParserProvider.class);
-        loader.reload();
-        Iterator<CompoundWordParserProvider> it = loader.iterator();
-        if (it.hasNext()) {
-            systemParser = it.next().crate();
+            loader = ServiceLoader.load(CompoundWordParserProvider.class);
+            loader.reload();
+            Iterator<CompoundWordParserProvider> it = loader.iterator();
+            if (it.hasNext()) {
+                systemParser = it.next().crate();
+            }
+
+            loader = ServiceLoader.load(PersistenceManagerProvider.class);
+            loader.reload();
+            Iterator<PersistenceManagerProvider> its = loader.iterator();
+            if (its.hasNext()) {
+                persistenceManager = its.next().create();
+            }
+        } catch (Throwable t) {
+            t.printStackTrace();
         }
 
     }
@@ -109,6 +124,14 @@ public final class TamilFactory {
             throw new ServiceException("Unimplemented!");
         } else {
             return systemParser;
+        }
+    }
+
+    public static PersistenceManager getPersistenceManager() throws ServiceException {
+        if (persistenceManager == null) {
+            throw new ServiceException("Unimplemented!");
+        } else {
+            return persistenceManager;
         }
     }
 

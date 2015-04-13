@@ -3,10 +3,7 @@ package test.server;
 
 import com.sun.jersey.api.container.grizzly2.servlet.GrizzlyWebContainerFactory;
 import com.sun.jersey.api.json.JSONConfiguration;
-import tamil.lang.TamilCharacterLookUpContext;
-import tamil.lang.TamilCompoundCharacter;
-import tamil.lang.TamilSimpleCharacter;
-import tamil.lang.TamilWord;
+import tamil.lang.*;
 import my.interest.lang.tamil.multi.ExecuteManager;
 import my.interest.lang.tamil.translit.EnglishToTamilCharacterLookUpContext;
 import org.glassfish.grizzly.http.server.HttpServer;
@@ -24,6 +21,9 @@ import java.util.Map;
  */
 
 public class ServerTest {
+    static {
+        TamilFactory.init();
+    }
 
 
     @Test
@@ -88,9 +88,9 @@ public class ServerTest {
 
     @Test
     public void testStartServer() throws Exception {
-        TamilCharacterLookUpContext.lookup(0);
 
-      if (true) return;
+
+      //if (true) return;
         final String baseUri = "http://localhost:8080/xyz";
         final Map<String, String> initParams =
                 new HashMap<String, String>();

@@ -191,6 +191,16 @@ public final class DefaultPlatformDictionary implements TamilDictionary, TamilDi
         return PersistenceInterface.onlySuggestMatchingDerivedWords(word, maxCount, includeTypes);
     }
 
+    /**
+     * Adds a new word to the dictionary.
+     *
+     * @param word the known word to be added
+     */
+    @Override
+    public void add(IKnownWord word) {
+        PersistenceInterface.addKnown(word);
+    }
+
     @Override
     public TamilDictionary create() {
         return this;

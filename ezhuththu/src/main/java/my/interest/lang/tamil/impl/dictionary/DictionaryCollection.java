@@ -148,4 +148,18 @@ public class DictionaryCollection implements TamilDictionary {
         }
         return list;
     }
+
+    /**
+     * Adds a new word to the dictionary.
+     *
+     * @param word the known word to be added
+     */
+    @Override
+    public void add(IKnownWord word) {
+        for (TamilDictionary d : this.list) {
+            if (d == this) continue;
+            d.add(word);
+        }
+
+    }
 }
