@@ -4,7 +4,6 @@ import my.interest.lang.tamil.EzhuththuUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 import tamil.lang.TamilWord;
-import tamil.lang.api.dictionary.DictionaryFeature;
 import tamil.lang.api.dictionary.TamilDictionary;
 import tamil.lang.known.IKnownWord;
 import tamil.lang.spi.TamilDictionaryProvider;
@@ -19,13 +18,10 @@ import java.util.logging.Logger;
  *
  * @author velsubra
  */
-public class RemoteDictionaryProvider implements TamilDictionary, TamilDictionaryProvider {
+public class RemoteDictionaryProvider extends DefaultPlatformDictionaryBase implements TamilDictionaryProvider {
 
 
     public static String REMOTE_SERVER_DICTIONARY_URL = null;
-
-    private static final Map<String, List<IKnownWord>> english_mapping = Collections.synchronizedMap(new HashMap<String, List<IKnownWord>>());
-    private static final SortedSet<IKnownWord> set = Collections.synchronizedSortedSet(new TreeSet<IKnownWord>());
 
 
     static final Logger logger = Logger.getLogger(RemoteDictionaryProvider.class.getName());
@@ -69,30 +65,6 @@ public class RemoteDictionaryProvider implements TamilDictionary, TamilDictionar
 
     public RemoteDictionaryProvider() {
 
-    }
-
-
-    @Override
-    public List<IKnownWord> lookup(TamilWord word) {
-        return Collections.emptyList();
-    }
-
-
-    @Override
-    public IKnownWord peek(TamilWord word) {
-        return null;
-    }
-
-
-    @Override
-    public List<IKnownWord> search(TamilWord word, boolean exactMatch, int maxCount, List<Class<? extends IKnownWord>> includeTypes) {
-        return Collections.emptyList();
-    }
-
-
-    @Override
-    public List<IKnownWord> search(TamilWord word, int maxCount, List<Class<? extends IKnownWord>> includeTypes, DictionaryFeature... features) {
-        return Collections.emptyList();
     }
 
 
@@ -148,21 +120,6 @@ public class RemoteDictionaryProvider implements TamilDictionary, TamilDictionar
     }
 
 
-    @Override
-    public List<IKnownWord> suggest(TamilWord word, int maxCount, List<Class<? extends IKnownWord>> includeTypes) {
-        return Collections.emptyList();
-    }
-
-    /**
-     * Adds a new word to the dictionary.
-     *
-     * @param word the known word to be added
-     */
-    @Override
-    public void add(IKnownWord word) {
-         set.add(word);
-    }
-
     /**
      * Callback to the dictionary provider.
      *
@@ -171,6 +128,9 @@ public class RemoteDictionaryProvider implements TamilDictionary, TamilDictionar
     @Override
     public TamilDictionary create() {
         System.out.println("Creating remote Dictionary!");
+        if (REMOTE_SERVER_DICTIONARY_URL == null) {
+            return null;
+        }
         return this;
     }
 }

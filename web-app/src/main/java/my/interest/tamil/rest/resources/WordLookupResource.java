@@ -1,6 +1,7 @@
 package my.interest.tamil.rest.resources;
 
 import common.lang.impl.AbstractCharacter;
+import tamil.lang.TamilFactory;
 import tamil.lang.TamilWord;
 import my.interest.lang.tamil.internal.api.PersistenceInterface;
 import my.interest.lang.tamil.generated.types.*;
@@ -55,9 +56,9 @@ public class WordLookupResource {
 
         List<IKnownWord> words = null;
         if (suggest) {
-            words = PersistenceInterface.suggestMatchingDerivedWords(pattern, maxcount, list);
+            words = TamilFactory.getSystemDictionary().suggest(TamilFactory.getTransliterator(null).transliterate( pattern), maxcount, list);
         } else {
-            words = PersistenceInterface.findMatchingDerivedWords(pattern, maxcount, list);
+            words = TamilFactory.getSystemDictionary().search(TamilFactory.getTransliterator(null).transliterate(pattern), maxcount, list);
         }
 
         for (IKnownWord d : words) {
@@ -93,7 +94,7 @@ public class WordLookupResource {
             }
         }
 
-        List<IKnownWord> list = PersistenceInterface.findWords(pure.toString());
+        List<IKnownWord> list = TamilFactory.getSystemDictionary().search(pure,true,10,null);
         KnownWords words = new KnownWords();
         for (IKnownWord w : list) {
             KnownWord k = new KnownWord();

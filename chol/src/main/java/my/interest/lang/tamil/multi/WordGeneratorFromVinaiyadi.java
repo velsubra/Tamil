@@ -163,7 +163,7 @@ public class WordGeneratorFromVinaiyadi extends WordsGenerator {
                 joiner.addVaruMozhi(iduword);
                 currentRoot = joiner.getSum();
                 Vinaiyadi vi = new Vinaiyadi(currentRoot, container, true);
-                PersistenceInterface.addKnown(vi);
+                PersistenceInterface.addOrUpdateKnown(vi);
 
                // System.out.println("IDU:" + currentRoot);
 

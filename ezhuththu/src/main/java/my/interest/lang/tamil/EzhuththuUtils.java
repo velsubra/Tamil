@@ -2,12 +2,6 @@ package my.interest.lang.tamil;
 
 import common.lang.impl.AbstractCharacter;
 import my.interest.lang.tamil.generated.types.*;
-import my.interest.lang.tamil.generated.types.AppDescription;
-import my.interest.lang.tamil.generated.types.AppsDescription;
-import my.interest.lang.tamil.generated.types.AppsDescriptionList;
-import my.interest.lang.tamil.generated.types.PaalViguthi;
-import my.interest.lang.tamil.generated.types.SimpleTense;
-import my.interest.lang.tamil.generated.types.TamilRootWords;
 import my.interest.lang.tamil.internal.api.TamilCharacterParserListener;
 import my.interest.lang.tamil.internal.api.TamilSoundParserListener;
 import tamil.lang.*;
@@ -207,6 +201,7 @@ public class EzhuththuUtils {
             add(new TamilWord(TamilCompoundCharacter.ICH, TamilCompoundCharacter.ICH));
             add(new TamilWord(TamilCompoundCharacter.IDD, TamilCompoundCharacter.IDD));
             add(new TamilWord(TamilCompoundCharacter.ITH, TamilCompoundCharacter.ITH));
+            add(new TamilWord(TamilCompoundCharacter.IRR, TamilCompoundCharacter.IRR));
             add(new TamilWord(TamilCompoundCharacter.INJ, TamilCompoundCharacter.INJ));
 
             add(new TamilWord(TamilSimpleCharacter.U));
@@ -232,7 +227,6 @@ public class EzhuththuUtils {
         }
 
 
-        TamilCharacter lastcons = null;
         int hash = 0;
         for (int i = 0; i < w.size(); i++) {
 
@@ -269,9 +263,9 @@ public class EzhuththuUtils {
 
                 if (cons != null) {
                     if (cons.equals(TamilCompoundCharacter.IDD)) {
-                        cons = TamilCompoundCharacter.IRR;
+                        cons = TamilCompoundCharacter.IR;
                     } else if (cons.equals(TamilCompoundCharacter.ITH)) {
-                        cons = TamilCompoundCharacter.IRR;
+                        cons = TamilCompoundCharacter.IR;
                     } else if (cons.equals(TamilCompoundCharacter.ILL)) {
                         cons = TamilCompoundCharacter.IL;
                     } else if (cons.equals(TamilCompoundCharacter.ILLL)) {
@@ -283,17 +277,6 @@ public class EzhuththuUtils {
                     } else if (cons.equals(TamilCompoundCharacter.INTH)) {
                         cons = TamilCompoundCharacter.IN;
                     }
-
-                    if (cons.equals(lastcons)) {
-                        cons = null;
-
-
-                    }
-
-
-                    lastcons = cons;
-                } else {
-                    lastcons = null;
                 }
 
                 if (cons != null) {

@@ -7,6 +7,7 @@ import my.interest.lang.tamil.generated.types.*;
 import my.interest.lang.tamil.generated.types.Properties;
 import my.interest.lang.tamil.impl.FileBasedPersistence;
 import my.interest.lang.tamil.impl.PropertyFinderForResource;
+import my.interest.lang.tamil.impl.dictionary.DefaultPlatformDictionaryBase;
 import my.interest.lang.tamil.multi.ExecuteManager;
 import my.interest.lang.tamil.multi.WordGeneratorFromIdai;
 import my.interest.lang.tamil.multi.WordGeneratorFromPeyar;
@@ -23,7 +24,6 @@ import tamil.lang.known.IKnownWord;
 import tamil.lang.known.derived.DerivativeWithPaal;
 import tamil.lang.known.derived.DerivativeWithTenseAndPaal;
 import tamil.lang.known.derived.VinaiyadiDerivative;
-import tamil.lang.known.non.derived.AbstractKnownWord;
 import tamil.lang.known.non.derived.NonStartingIdaichchol;
 import tamil.lang.known.non.derived.Peyarchchol;
 import tamil.lang.known.non.derived.Vinaiyadi;
@@ -43,9 +43,11 @@ import java.util.*;
  *
  * @author velsubra
  */
-public abstract class PersistenceInterface implements PersistenceManagerProvider, PersistenceManager, RootVerbManager,PrepositionManager,NounManager,ApplicationManager {
+public abstract class PersistenceInterface extends DefaultPlatformDictionaryBase implements PersistenceManagerProvider, PersistenceManager, RootVerbManager, PrepositionManager, NounManager, ApplicationManager {
 
-    protected  static  final TamilWord iduword = TamilWord.from("இடு");
+    protected static final TamilWord iduword = TamilWord.from("இடு");
+
+    private static PersistenceInterface ME = null;
 
     public void setAutoLoad(boolean autoLoad) {
         this.autoLoad = autoLoad;
@@ -126,6 +128,7 @@ public abstract class PersistenceInterface implements PersistenceManagerProvider
 
     /**
      * TODO: Need to fix this
+     *
      * @return
      */
     public static PersistenceInterface get() {
@@ -134,7 +137,7 @@ public abstract class PersistenceInterface implements PersistenceManagerProvider
 
     }
 
-    private static final SortedSet<IKnownWord> set = Collections.synchronizedSortedSet(new TreeSet<IKnownWord>());
+
     private static final SortedSet<IKnownWord> consonantset = Collections.synchronizedSortedSet(new TreeSet<IKnownWord>(new Comparator<IKnownWord>() {
         @Override
         public int compare(IKnownWord o1, IKnownWord o2) {
@@ -148,9 +151,6 @@ public abstract class PersistenceInterface implements PersistenceManagerProvider
             return ret;
         }
     }));
-
-    private static final Map<Integer, List<IKnownWord>> suggestions = new HashMap<Integer, List<IKnownWord>>();
-    private static final Map<String, List<IKnownWord>> english_mapping = Collections.synchronizedMap(new HashMap<String, List<IKnownWord>>());
 
 
     public static synchronized void addEnglishMappings(String eng, IKnownWord w) {
@@ -167,14 +167,6 @@ public abstract class PersistenceInterface implements PersistenceManagerProvider
         }
     }
 
-    public static TamilWord lookupEnglish(String eng) {
-        List<IKnownWord> list = english_mapping.get(eng);
-        if (list == null || list.isEmpty()) {
-            return null;
-        } else {
-            return list.get(0).getWord();
-        }
-    }
 
     private static synchronized void addEnglishMapping(String eng, IKnownWord w) {
         List<IKnownWord> list = english_mapping.get(eng);
@@ -218,35 +210,10 @@ public abstract class PersistenceInterface implements PersistenceManagerProvider
         return set.size();
     }
 
-    public static List<IKnownWord> findWords(String word) {
-        return findMatchingDerivedWords(word, true, 10, null);
-    }
 
-    // static int  count = 0;
-    public static List<IKnownWord> findFirstWord(String word) {
-        //   System.out.println(count ++ +":" +word);
-        return findMatchingDerivedWords(word, true, 1, null);
-    }
-
-    public static List<IKnownWord> findMatchingDerivedWords(String start, int max, List<Class<? extends IKnownWord>> includeTypes) {
-        List<IKnownWord> ret = findMatchingDerivedWords(start, false, max, includeTypes);
-        return ret;
-    }
-
-    public static List<IKnownWord> findMatchingDerivedWords(String start, boolean exact, int max, List<Class<? extends IKnownWord>> includeTypes) {
-        TamilWord search = EnglishToTamilCharacterLookUpContext.getBestMatch(start);
-        return findMatchingDerivedWords(search, exact, max, includeTypes);
-    }
-
-    public static List<IKnownWord> findMatchingDerivedWords(TamilWord search, boolean exact, int max, List<Class<? extends IKnownWord>> includeTypes) {
-
-        return findMatchingDerivedWords(set, search, exact, max, includeTypes);
-    }
-
-    public static List<IKnownWord> suggestMatchingDerivedWords(String start, int max, List<Class<? extends IKnownWord>> includeTypes) {
-        TamilWord search = EnglishToTamilCharacterLookUpContext.getBestMatch(start);
-        List<IKnownWord> list = findMatchingDerivedWords(set, search, false, (int) (max / 3), includeTypes);
-
+    @Override
+    public List<IKnownWord> suggest(TamilWord search, int max, List<Class<? extends IKnownWord>> includeTypes) {
+        List<IKnownWord> list = super.suggest(search, (int) (max / 3), includeTypes);
         if (list.size() < max) {
             List<IKnownWord> sug = suggestions.get(search.suggestionHashCode());
             if (sug != null) {
@@ -265,147 +232,28 @@ public abstract class PersistenceInterface implements PersistenceManagerProvider
         return list;
     }
 
-    public static List<IKnownWord> onlySuggestMatchingDerivedWords(TamilWord search, int max, List<Class<? extends IKnownWord>> includeTypes) {
-
-        List<IKnownWord> list = suggestions.get(search.suggestionHashCode());
-        if (list == null) {
-            list = new ArrayList<IKnownWord>();
-        }
-        if (list.size() < max) {
-            list.addAll(findMatchingDerivedWords(consonantset, search, false, max - list.size() - 1, includeTypes, true));
-            list.addAll(findMatchingDerivedWords(hashset, search, false, max - list.size(), includeTypes, true));
-        }
-        while (list.size() > max) {
-            list.remove(list.size() - 1);
-        }
-
-        return list;
-    }
 
 
-    public static List<IKnownWord> findMatchingDerivedWords(SortedSet<IKnownWord> thisset, TamilWord start, boolean exact, int max, List<Class<? extends IKnownWord>> includeTypes) {
-        return findMatchingDerivedWords(thisset, start, exact, max, includeTypes, false);
-    }
-
-    public static List<IKnownWord> findMatchingDerivedWords(SortedSet<IKnownWord> thiset, TamilWord search, boolean exact, int max, List<Class<? extends IKnownWord>> includeTypes, boolean suggest) {
-        // System.out.println(start);
-        List<IKnownWord> ret = new ArrayList<IKnownWord>();
-        if (search == null || thiset.isEmpty() || max <= 0) return ret;
-
-
-        Comparator<? super IKnownWord> comparator = thiset.comparator();
-        synchronized (thiset) {
-            IKnownWord base = new AbstractKnownWord(search) {
-            };
-            Iterator<IKnownWord> sub = thiset.tailSet(base).iterator();
-
-            if (max < 0) {
-                max = -max;
-            }
-            while (max > 0) {
-
-                if (sub.hasNext()) {
-                    IKnownWord re = sub.next();
-                    boolean add = false;
-
-                    if (!suggest) {
-                        if (exact) {
-                            add = re.getWord().equals(search);
-                        } else {
-                            add = re.getWord().startsWith(search, false);
-                        }
-                    } else {
-                        if (comparator == null) {
-                            throw new RuntimeException("Comp is null");
-                        }
-                        //   System.out.println("Candidate:" + re.getWord().toString());
-                        add = comparator.compare(re, base) >= 0;
-                    }
-                    if (add) {
-                        if (includeTypes == null || includeTypes.isEmpty() || isInIncludeTypes(includeTypes, re.getClass())) {
-                            max--;
-                            ret.add(re);
-                        }
-                    } else {
-
-                        break;
-                    }
-                } else {
-                    break;
-                }
-
-            }
-        }
-
-        return ret;
-    }
-
-    private static boolean isInIncludeTypes(List<Class<? extends IKnownWord>> list, Class<? extends IKnownWord> cls) {
-        for (Class kn : list) {
-            if (kn.isAssignableFrom(cls)) {
-                return true;
-            }
-        }
-        return false;
-
-    }
-
-    public static void addKnown(IKnownWord w) {
-
-        w.getWord().setLocked();
-        set.add(w);
-        consonantset.add(w);
-        hashset.add(w);
-
-        synchronized (suggestions) {
-            int code = w.getWord().suggestionHashCode();
-            List<IKnownWord> linked = suggestions.get(code);
-            if (linked == null) {
-                linked = new LinkedList<IKnownWord>();
-                suggestions.put(code, linked);
-
-            }
-            if (!linked.contains(w)) {
-                linked.add(w);
-            }
-        }
-
-
-        // vowelset.appendNodesToAllPaths(w);
-    }
-
-//    private static IKnownWord find(List<IKnownWord> list, IKnownWord find) {
-//        if (list == null) {
-//            return  null;
-//        }
-//        for (IKnownWord it : list) {
-//            if (it.equals(find)) {
-//
-//            }
-//        }
-//    }
-
-    public static void removeKnown(IKnownWord w) {
-
-        set.remove(w);
+    protected void removeKnown(IKnownWord w) {
         consonantset.remove(w);
         hashset.remove(w);
-
-        synchronized (suggestions) {
-            int code = w.getWord().suggestionHashCode();
-            List<IKnownWord> linked = suggestions.get(code);
-            if (linked != null) {
-                linked.remove(w);
-
-            }
-        }
-        //vowelset.remove(w);
+        super.removeKnown(w);
 
     }
 
+    protected void addKnown(IKnownWord w) {
+        consonantset.add(w);
+        hashset.add(w);
+        super.addKnown(w);
+    }
+
+
     public static void addOrUpdateKnown(IKnownWord w) {
-        removeKnown(w);
-        addKnown(w);
+        if (ME == null) {
+            ME = get();
+        }
+        ME.removeKnown(w);
+        ME.addKnown(w);
     }
 
 
@@ -451,7 +299,7 @@ public abstract class PersistenceInterface implements PersistenceManagerProvider
                 if (r.getPresent() != null) {
                     for (DerivedValue d : r.getPresent().getList()) {
                         DerivativeWithPaal vinai = cls.getConstructor(TamilWord.class, Vinaiyadi.class, PaalViguthi.class).newInstance(TamilWord.from(d.getValue()), vi, viguthi);
-                        addKnown(vinai);
+                        addOrUpdateKnown(vinai);
                     }
                 }
 
@@ -474,7 +322,7 @@ public abstract class PersistenceInterface implements PersistenceManagerProvider
                 if (r.getPresent() != null) {
                     for (DerivedValue d : r.getPresent().getList()) {
                         VinaiyadiDerivative vinai = cls.getConstructor(TamilWord.class, Vinaiyadi.class).newInstance(TamilWord.from(d.getValue()), vi);
-                        addKnown(vinai);
+                        addOrUpdateKnown(vinai);
                     }
                 }
 
@@ -1364,7 +1212,7 @@ public abstract class PersistenceInterface implements PersistenceManagerProvider
     }
 
     public static AppDescription findApp(String name, TamilRootWords file, boolean context) {
-       return  EzhuththuUtils.findApp(name, file, context);
+        return EzhuththuUtils.findApp(name, file, context);
     }
 
     public void createAppAs(String code, String name, String as) {

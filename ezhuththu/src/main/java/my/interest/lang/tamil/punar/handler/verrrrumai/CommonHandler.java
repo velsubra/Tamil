@@ -25,7 +25,7 @@ abstract class CommonHandler extends AbstractVearrrrumaiHandler {
 
     @Override
     public boolean isOnRightViguthi(TamilWordPartContainer varum) {
-        return varum.getWord().equals(getUrubu());
+        return varum.getWord().startsWith(getUrubu(), false);
     }
 
     @Override

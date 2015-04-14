@@ -25,6 +25,9 @@ import java.util.*;
 
 /**
  * <p>
+ *     WARNING: Applications should not directly use any class under my.interest.** packages.
+ *     These are subject to change. Applications should only use tamil.** packages. The entry point for the application is
+ *     {@link tamil.lang.TamilFactory}
  * </p>
  *
  * @author velsubra

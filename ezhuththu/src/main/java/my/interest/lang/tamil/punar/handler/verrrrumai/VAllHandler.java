@@ -110,6 +110,7 @@ public class VAllHandler extends AbstractPunarchiHandler {
             if (r != null) {
                 Veattumaiththodar thodar = new Veattumaiththodar(r.getWord(),p, u);
                 list.add(thodar);
+
                 TamilFactory.getSystemDictionary().add(thodar);
             }
         }

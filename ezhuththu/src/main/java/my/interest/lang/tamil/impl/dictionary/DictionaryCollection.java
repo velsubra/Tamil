@@ -23,7 +23,10 @@ public class DictionaryCollection implements TamilDictionary {
     public DictionaryCollection(Iterator<TamilDictionaryProvider> iterator) {
         list = new ArrayList<TamilDictionary>();
         while (iterator.hasNext()) {
-            list.add(iterator.next().create());
+            TamilDictionary d =iterator.next().create();
+            if (d != null) {
+                list.add(d);
+            }
         }
 
     }

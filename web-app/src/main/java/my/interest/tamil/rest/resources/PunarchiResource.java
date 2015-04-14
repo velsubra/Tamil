@@ -2,6 +2,7 @@ package my.interest.tamil.rest.resources;
 
 import common.lang.impl.AbstractCharacter;
 import tamil.lang.TamilCompoundCharacter;
+import tamil.lang.TamilFactory;
 import tamil.lang.TamilWord;
 import my.interest.lang.tamil.TamilUtils;
 import my.interest.lang.tamil.internal.api.HandlerFactory;
@@ -125,7 +126,7 @@ public class PunarchiResource {
     }
 
     private static boolean wordExists(String w) {
-        return !PersistenceInterface.findWords(w).isEmpty();
+        return !TamilFactory.getSystemDictionary().lookup(TamilWord.from(w)).isEmpty();
     }
 
 

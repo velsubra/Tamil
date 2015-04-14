@@ -26,7 +26,8 @@ public abstract class AbstractVearrrrumaiHandler extends AbstractPunarchiHandler
 
 
     public abstract TamilWord getUrubu();
-    public abstract  int getNumber();
+
+    public abstract int getNumber();
 
 //    private static TamilWord nteengalh = TamilWord.from("நீங்கள்");
 //    private static TamilWord ungalh = TamilWord.from("உங்கள்");
@@ -45,19 +46,21 @@ public abstract class AbstractVearrrrumaiHandler extends AbstractPunarchiHandler
         uyarthinais.put(uyar.getWord(), uyar);
     }
 
-    public static  boolean isUyarThinhaipPeyar(TamilWord w) {
+    public static boolean isUyarThinhaipPeyar(TamilWord w) {
         return uyarthinais.containsKey(w);
     }
 
 
     /**
      * Naan -> en
+     *
      * @param word
      * @return
      */
     public static TamilWord getProNounThiribu(TamilWord word) {
-
-
+//
+//        System.out.println("pronoun_thiribu:"+ pronoun_thiribu.size());
+//        System.out.println(pronoun_thiribu);
         PeyarchCholThiribu t = pronoun_thiribu.get(word);
         if (t != null) {
             return t.getWord();
@@ -96,6 +99,8 @@ public abstract class AbstractVearrrrumaiHandler extends AbstractPunarchiHandler
         if (pronouwn) {
             n = translateForProNoun(nilai);
         }
+
         return handleJoin(n, v, pronouwn);
+
     }
 }

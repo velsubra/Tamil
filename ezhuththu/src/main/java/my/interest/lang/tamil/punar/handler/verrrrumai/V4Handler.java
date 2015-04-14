@@ -1,11 +1,9 @@
 package my.interest.lang.tamil.punar.handler.verrrrumai;
 
 
-
 import my.interest.lang.tamil.punar.TamilWordPartContainer;
 import my.interest.lang.tamil.punar.handler.AbstractPunarchiHandler;
 import my.interest.lang.tamil.punar.handler.VinaiMutruCreationHandler;
-import my.interest.lang.tamil.punar.handler.WordsJoinHandler;
 import my.interest.lang.tamil.punar.handler.iyalbu.IyalbuPunarchiHandler;
 import my.interest.lang.tamil.punar.handler.iyalbu.JustAddHandler;
 import my.interest.lang.tamil.punar.handler.udambadu.UadambaduMeiHandler;
@@ -19,7 +17,7 @@ import tamil.lang.TamilWord;
  *
  * @author velsubra
  */
- class V4Handler extends AbstractVearrrrumaiHandler {
+class V4Handler extends AbstractVearrrrumaiHandler {
 
     public static final V4Handler HANDLER = new V4Handler();
 
@@ -36,10 +34,14 @@ import tamil.lang.TamilWord;
     public static final TamilWord IKKU = TamilWord.from("க்கு");
 
 
-
     @Override
     public TamilWordPartContainer translateForProNoun(TamilWordPartContainer nilai) {
-        return IyalbuPunarchiHandler.HANDLER.join(nilai, new TamilWordPartContainer(new TamilWord(TamilSimpleCharacter.a)));
+        //உங்கள்
+        if (!nilai.getWord().endsWith(TamilCompoundCharacter.ILL)) {
+            return IyalbuPunarchiHandler.HANDLER.join(nilai, new TamilWordPartContainer(new TamilWord(TamilSimpleCharacter.a)));
+        } else {
+            return super.translateForProNoun(nilai);
+        }
     }
 
     @Override
@@ -53,7 +55,8 @@ import tamil.lang.TamilWord;
     }
 
     public boolean isOnRightViguthi(TamilWordPartContainer varum) {
-        return varum.getWord().equals(KU);
+        return varum.getWord().startsWith(getUrubu(), false);
+
     }
 
 
@@ -71,7 +74,7 @@ import tamil.lang.TamilWord;
         } else {
             if (nilai.getWord().endsWith(TamilCompoundCharacter.IM)) {
 
-                if (nilai.size() <=3 && isUyarThinhaipPeyar(nilai.getWord())) {//E.gகலாம் -உயர்திணை
+                if (nilai.size() <= 3 && isUyarThinhaipPeyar(nilai.getWord())) {//E.gகலாம் -உயர்திணை
                     n = nilai.getWord();
                     v = IRRKU;
                     handler = IyalbuPunarchiHandler.HANDLER;

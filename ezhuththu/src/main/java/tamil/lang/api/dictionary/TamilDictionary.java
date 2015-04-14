@@ -79,7 +79,7 @@ public interface TamilDictionary {
      * @param word         the word or first part of word to be searched.
      * @param maxCount     the max count expected. The suggestion search returns after the maxCount is reached or when the search is finished.
      * @param includeTypes the list of classes indicating the types of word to be returned.
-     * @return the list of words that are suggested in the  context.
+     * @return the list of words that are suggested in the  context.  Never null.
      */
     public List<IKnownWord> suggest(TamilWord word, int maxCount, List<Class<? extends IKnownWord>> includeTypes);
 

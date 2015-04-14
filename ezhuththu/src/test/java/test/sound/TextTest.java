@@ -31,4 +31,27 @@ public class TextTest {
 
 
     }
+
+    @Test
+    public void testSuggestionCode1() {
+        testSugestion("கழட்டு","கழற்று");
+        testSugestion("கழத்து","கழற்று");
+
+        testSugestion("கழத்து","கழற்று");
+
+        testSugestion("kalai", "kalhai");
+
+        testSugestion("amma", "ammaa");
+        testSugestion("paarkka", "paarrka");
+
+    }
+
+    static void testSugestion(String first, String second)  {
+        TamilWord f = TamilFactory.getTransliterator(null).transliterate(first);
+        TamilWord s = TamilFactory.getTransliterator(null).transliterate(second);
+        System.out.println(f +":" +s);
+        Assert.assertEquals(f.suggestionHashCode(), s.suggestionHashCode());
+
+
+    }
 }

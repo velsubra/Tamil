@@ -44,7 +44,7 @@ import tamil.lang.TamilWord;
     }
 
     public boolean isOnRightViguthi(TamilWordPartContainer varum) {
-        return varum.getWord().equals(KANH);
+        return varum.getWord().startsWith(getUrubu(), false);
     }
 
 
