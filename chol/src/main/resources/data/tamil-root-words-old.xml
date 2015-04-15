@@ -492,6 +492,54 @@
             </global-description>
             <list>
                 <word>
+                    <root>இல்லாள்</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>மலேரியா</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>சூடு</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>தெப்பம்</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>ஈரம்</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>ஆமாம்</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>நிறுவனர்</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>திருநீறு</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
                     <root>இனிது</root>
                     <description>
                         <property name=".deletable" value="true"/>
@@ -3143,7 +3191,9 @@
                 </word>
                 <word>
                     <root>முன்</root>
-                    <description/>
+                    <description>
+                        <property name="definition.type" value="i"/>
+                    </description>
                 </word>
                 <word>
                     <root>பின்</root>
@@ -16795,6 +16845,15 @@
                 <property name="vinaimuttu.transitive.idainilai.past" value="ற்"/>
             </named-description>
             <list>
+                <verb>
+                    <root>திக்குமுக்காடு</root>
+                    <description name="kutriyalugaram">
+                        <property name=".deletable" value="true"/>
+                        <property name="property.intransitive" value="true"/>
+                        <property name="property.transitive" value="false"/>
+                        <property name="vinaiyechcham.intransitive.viguthi.past" value="i"/>
+                    </description>
+                </verb>
                 <verb>
                     <root>தோய்</root>
                     <description>

@@ -67,7 +67,6 @@ public final class EnglishToTamilCharacterLookUpContext implements Transliterato
         preprocess.put('A', "aa");
         preprocess.put('E', "ea");
         preprocess.put('I', "ee");
-        preprocess.put('I', "ee");
         preprocess.put('O', "oa");
         preprocess.put('U', "oo");
         preprocess.put('L', "lh");
@@ -128,15 +127,18 @@ public final class EnglishToTamilCharacterLookUpContext implements Transliterato
         map.put("llll", new TamilWord(TamilCompoundCharacter.ILL, TamilCompoundCharacter.ILL));
         map.put("lllll", new TamilWord(TamilCompoundCharacter.ILL, TamilCompoundCharacter.ILL));
         map.put("lh", new TamilWord(TamilCompoundCharacter.ILL));
+        map.put("lhh", new TamilWord(TamilCompoundCharacter.ILLL));
         map.put("llh", new TamilWord(TamilCompoundCharacter.ILL, TamilCompoundCharacter.ILL));
         map.put("lhl", new TamilWord(TamilCompoundCharacter.ILL, TamilCompoundCharacter.ILL));
         map.put("lhlh", new TamilWord(TamilCompoundCharacter.ILL, TamilCompoundCharacter.ILL));
         map.put("ln", new TamilWord(TamilCompoundCharacter.ILLL));
         map.put("lnt", new TamilWord(TamilCompoundCharacter.IL, TamilCompoundCharacter.INTH));
         map.put("m", new TamilWord(TamilCompoundCharacter.IM));
+        map.put("mz", new TamilWord(TamilCompoundCharacter.IM));
         map.put(" n", new TamilWord(TamilCompoundCharacter.INTH));
         map.put(" nt", new TamilWord(TamilCompoundCharacter.INTH));
         map.put("n", new TamilWord(TamilCompoundCharacter.IN));
+        map.put("nz", new TamilWord(TamilCompoundCharacter.IN));
         map.put("ny ", new TamilWord(TamilCompoundCharacter.IN_I));
         map.put("nn", new TamilWord(TamilCompoundCharacter.IN, TamilCompoundCharacter.IN));
         map.put("nnn", new TamilWord(TamilCompoundCharacter.INNN));
@@ -169,6 +171,7 @@ public final class EnglishToTamilCharacterLookUpContext implements Transliterato
         map.put("ntt", new TamilWord(TamilCompoundCharacter.INTH, TamilCompoundCharacter.ITH));
         map.put("ntth", new TamilWord(TamilCompoundCharacter.INTH, TamilCompoundCharacter.ITH));
         map.put("nh", new TamilWord(TamilCompoundCharacter.INNN));
+        map.put("nhh", new TamilWord(TamilCompoundCharacter.INTH));
         map.put("nht", new TamilWord(TamilCompoundCharacter.IN, TamilCompoundCharacter.IRR));
         map.put("nhth", new TamilWord(TamilCompoundCharacter.INNN, TamilCompoundCharacter.ITH));
         map.put("nhr", new TamilWord(TamilCompoundCharacter.IN, TamilCompoundCharacter.IRR));
@@ -190,6 +193,7 @@ public final class EnglishToTamilCharacterLookUpContext implements Transliterato
         map.put("ry ", new TamilWord(TamilCompoundCharacter.IR_I));
         map.put(" r", new TamilWord(TamilSimpleCharacter.E, TamilCompoundCharacter.IR));
         map.put("rr", new TamilWord(TamilCompoundCharacter.IRR));
+        map.put("rh", new TamilWord(TamilCompoundCharacter.IRR));
         map.put("rrr", new TamilWord(TamilCompoundCharacter.IRR, TamilCompoundCharacter.IRR));
         map.put("rrrr", new TamilWord(TamilCompoundCharacter.IRR, TamilCompoundCharacter.IRR));
         map.put("s", new TamilWord(TamilCompoundCharacter.ICH));

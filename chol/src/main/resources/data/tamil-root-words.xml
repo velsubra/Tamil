@@ -492,6 +492,48 @@
             </global-description>
             <list>
                 <word>
+                    <root>இல்லாள்</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>மலேரியா</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>சூடு</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>தெப்பம்</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>ஈரம்</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>ஆமாம்</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
+                    <root>நிறுவனர்</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
                     <root>திருநீறு</root>
                     <description>
                         <property name=".deletable" value="true"/>
@@ -3149,7 +3191,9 @@
                 </word>
                 <word>
                     <root>முன்</root>
-                    <description/>
+                    <description>
+                        <property name="definition.type" value="i"/>
+                    </description>
                 </word>
                 <word>
                     <root>பின்</root>
@@ -15326,12 +15370,21 @@
                 </word>
                 <word>
                     <root>எனில்</root>
+                    <description>
+                        <property name="definition.type" value="je"/>
+                    </description>
                 </word>
                 <word>
                     <root>என்று</root>
+                    <description>
+                        <property name="definition.type" value="je"/>
+                    </description>
                 </word>
                 <word>
                     <root>என்பது</root>
+                    <description>
+                        <property name="definition.type" value="ji"/>
+                    </description>
                 </word>
                 <word>
                     <root>மாட்டு</root>
