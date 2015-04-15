@@ -1,8 +1,8 @@
-package my.interest.lang.tamil.internal.api;
+package tamil.lang.api.persist.matcher;
 
 import my.interest.lang.tamil.generated.types.RootVerbDescription;
 import my.interest.lang.tamil.punar.PropertyDescriptionContainer;
-import tamil.lang.manager.persist.PersistenceManager;
+import tamil.lang.api.persist.manager.PersistenceManager;
 
 /**
  * <p>

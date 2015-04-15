@@ -12,25 +12,16 @@ import tamil.lang.spi.TamilDictionaryProvider;
  *
  * @author velsubra
  */
-public final class DefaultPlatformDictionary extends DefaultPlatformDictionaryBase implements TamilDictionaryProvider {
+public final class DefaultPlatformDictionary implements TamilDictionaryProvider {
 
     public DefaultPlatformDictionary() {
 
     }
 
 
-    /**
-     * Adds a new word to the dictionary.
-     *
-     * @param word the known word to be added
-     */
-    @Override
-    public void add(IKnownWord word) {
-        PersistenceInterface.addOrUpdateKnown(word);
-    }
 
     @Override
     public TamilDictionary create() {
-        return this;
+        return  PersistenceInterface.get();
     }
 }

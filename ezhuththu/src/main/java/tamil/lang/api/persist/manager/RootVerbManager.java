@@ -1,4 +1,4 @@
-package tamil.lang.manager.persist;
+package tamil.lang.api.persist.manager;
 
 import my.interest.lang.tamil.generated.types.RootVerbDescription;
 import my.interest.lang.tamil.punar.PropertyDescriptionContainer;

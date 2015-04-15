@@ -10,7 +10,7 @@ import tamil.lang.api.number.NumberReader;
 import tamil.lang.api.parser.CompoundWordParser;
 import tamil.lang.api.trans.Transliterator;
 import tamil.lang.exception.service.ServiceException;
-import tamil.lang.manager.persist.PersistenceManager;
+import tamil.lang.api.persist.manager.PersistenceManager;
 import tamil.lang.spi.CompoundWordParserProvider;
 import tamil.lang.spi.PersistenceManagerProvider;
 import tamil.lang.spi.TamilDictionaryProvider;

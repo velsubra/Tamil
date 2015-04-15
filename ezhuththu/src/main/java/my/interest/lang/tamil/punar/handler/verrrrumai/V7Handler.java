@@ -44,14 +44,14 @@ import tamil.lang.TamilWord;
     }
 
     public boolean isOnRightViguthi(TamilWordPartContainer varum) {
-        return varum.getWord().startsWith(getUrubu(), false);
+        return varum.getWord().startsWith(getUrubu(), true);
     }
 
 
     @Override
     public TamilWordPartContainer handleJoin(TamilWordPartContainer nilai, TamilWordPartContainer varum, boolean pronoun) {
 
-        TamilWord v = varum.getWord();
+        TamilWord v = getUrubu();
         TamilWord n = nilai.getWord();
         AbstractPunarchiHandler handler = new VinaiMutruCreationHandler();
         if (nilai.size() == 1) {
@@ -84,6 +84,8 @@ import tamil.lang.TamilWord;
             }
 
         }
-        return handler.join(new TamilWordPartContainer(n), new TamilWordPartContainer(v));
+        TamilWord  torepalce  = varum.getWord().duplicate();
+        torepalce.replace(getUrubu(),v,true);
+        return handler.join(new TamilWordPartContainer(n), new TamilWordPartContainer(torepalce));
     }
 }

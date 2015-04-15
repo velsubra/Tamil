@@ -11,7 +11,7 @@ import tamil.lang.TamilWord;
 import my.interest.lang.tamil.generated.types.*;
 import my.interest.lang.tamil.punar.PropertyDescriptionContainer;
 import my.interest.lang.tamil.punar.handler.VinaiMutruCreationHandler;
-import tamil.lang.manager.persist.PersistenceManager;
+import tamil.lang.api.persist.manager.PersistenceManager;
 
 import java.lang.ref.SoftReference;
 import java.util.ArrayList;

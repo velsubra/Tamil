@@ -1,6 +1,6 @@
 package tamil.lang.spi;
 
-import tamil.lang.manager.persist.PersistenceManager;
+import tamil.lang.api.persist.manager.PersistenceManager;
 
 /**
  * <p>

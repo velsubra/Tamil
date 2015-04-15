@@ -492,6 +492,12 @@
             </global-description>
             <list>
                 <word>
+                    <root>திருநீறு</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
                     <root>இனிது</root>
                     <description>
                         <property name=".deletable" value="true"/>
@@ -16795,6 +16801,15 @@
                 <property name="vinaimuttu.transitive.idainilai.past" value="ற்"/>
             </named-description>
             <list>
+                <verb>
+                    <root>திக்குமுக்காடு</root>
+                    <description name="kutriyalugaram">
+                        <property name=".deletable" value="true"/>
+                        <property name="property.intransitive" value="true"/>
+                        <property name="property.transitive" value="false"/>
+                        <property name="vinaiyechcham.intransitive.viguthi.past" value="i"/>
+                    </description>
+                </verb>
                 <verb>
                     <root>தோய்</root>
                     <description>

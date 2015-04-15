@@ -43,7 +43,7 @@ abstract class CommonHandler extends AbstractVearrrrumaiHandler {
 
 
 
-                if (nilai.size() <=3 && isUyarThinhaipPeyar(nilai.getWord())) {//E.gகலாம் -உயர்திணை
+                if ( nilai.size() <=2  ||isUyarThinhaipPeyar(nilai.getWord())) {//E.gகலாம் -உயர்திணை
                     n = nilai.getWord();
                 } else {
                     n = nilai.getWord().subWord(0, nilai.getWord().size() - 1);

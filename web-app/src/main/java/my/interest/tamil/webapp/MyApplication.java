@@ -43,6 +43,8 @@ public class MyApplication extends Application {
         set.add(TranslitResource.class);
         set.add(NumberReaderResource.class);
         set.add(FileAccessResource.class);
+        set.add(PersistenceResource.class);
+
 
 
 

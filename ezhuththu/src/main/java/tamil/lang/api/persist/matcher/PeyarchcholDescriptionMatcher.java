@@ -1,8 +1,8 @@
-package my.interest.lang.tamil.internal.api;
+package tamil.lang.api.persist.matcher;
 
 import my.interest.lang.tamil.generated.types.PeyarchcholDescription;
 import my.interest.lang.tamil.punar.PropertyDescriptionContainer;
-import tamil.lang.manager.persist.PersistenceManager;
+import tamil.lang.api.persist.manager.PersistenceManager;
 
 /**
  * <p>
@@ -11,6 +11,16 @@ import tamil.lang.manager.persist.PersistenceManager;
  * @author velsubra
  */
 public interface PeyarchcholDescriptionMatcher extends DescriptionMatcher<PeyarchcholDescription> {
+
+    public static final PeyarchcholDescriptionMatcher FOR_APPLET_MATCHER = new PeyarchcholDescriptionMatcher() {
+
+        @Override
+        public boolean matches(PeyarchcholDescription pattern, PeyarchcholDescription root, PersistenceManager per) {
+            PropertyDescriptionContainer container = per.getNounManager().getConsolidatedPropertyContainerFor(root);
+            return  container.isUyarthinhaipPeyar() || container.getProNounMaruvi() != null;
+        }
+    };
+
 
     public static final PeyarchcholDescriptionMatcher STARTS_MATCHER = new PeyarchcholDescriptionMatcher() {
 

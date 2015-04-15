@@ -2,16 +2,11 @@ package my.interest.lang.tamil.punar;
 
 import my.interest.lang.tamil.EzhuththuUtils;
 import my.interest.lang.tamil.StringUtils;
-import my.interest.lang.tamil.generated.types.IdaichcholDescription;
-import my.interest.lang.tamil.generated.types.PeyarchcholDescription;
-import my.interest.lang.tamil.generated.types.Property;
-import my.interest.lang.tamil.generated.types.RootVerbDescription;
-import tamil.lang.TamilCharacter;
 import my.interest.lang.tamil.TamilUtils;
-
-import my.interest.lang.tamil.internal.api.IPropertyFinder;
 import my.interest.lang.tamil.generated.types.*;
 import my.interest.lang.tamil.generated.types.Properties;
+import my.interest.lang.tamil.internal.api.IPropertyFinder;
+import tamil.lang.TamilCharacter;
 
 import java.util.*;
 
@@ -59,7 +54,19 @@ public class PropertyDescriptionContainer implements IPropertyFinder {
     }
 
     public String getProNounMaruvi() {
-        return findProperty("i.i.definition.type.p.it.pn.v");
+        if ("pn".equals(findProperty("i.definition.type.p.it"))) {
+            String maruvis = findProperty("i.i.definition.type.p.it.pn.v");
+            if (maruvis != null) {
+                maruvis = maruvis.trim();
+            }
+            if (maruvis == null || maruvis.equals("")) {
+                return null;
+            }
+            return maruvis;
+        } else {
+            return null;
+        }
+
     }
 
 
@@ -73,7 +80,7 @@ public class PropertyDescriptionContainer implements IPropertyFinder {
     }
 
     public boolean isUyarthinhaipPeyar() {
-        return isPorudPeyar() &&   Boolean.valueOf(findProperty("i.definition.type.p.uyarthinhai"));
+        return isPorudPeyar() && Boolean.valueOf(findProperty("i.definition.type.p.uyarthinhai"));
     }
 
 
@@ -215,24 +222,24 @@ public class PropertyDescriptionContainer implements IPropertyFinder {
 
     }
 
-    public String getVigaaram(boolean  transitive, String tense, String paal) {
+    public String getVigaaram(boolean transitive, String tense, String paal) {
         String name = null;
         if (transitive) {
-            name = EzhuththuUtils.VINAIMUTRU_BASE ;
+            name = EzhuththuUtils.VINAIMUTRU_BASE;
 
         } else {
             name = EzhuththuUtils.VINAIMUTRU_BASE_INTRANSITIVE;
         }
         name += ".vigaaram";
         if (tense != null) {
-            name += "."+ tense.toLowerCase();
+            name += "." + tense.toLowerCase();
         }
         if (paal != null) {
-            name += "."+ paal.toLowerCase();
+            name += "." + paal.toLowerCase();
         }
 
 
-         return  findProperty(name);
+        return findProperty(name);
     }
 
     public void setIdaiNilai(String ch, String tense, boolean transitive) {
@@ -294,7 +301,7 @@ public class PropertyDescriptionContainer implements IPropertyFinder {
 
 
     public PropertyDescriptionContainer(Properties props) {
-        this(props, (PropertyDescriptionContainer[])null);
+        this(props, (PropertyDescriptionContainer[]) null);
     }
 
     public PropertyDescriptionContainer(Properties props, PropertyDescriptionContainer... parent) {

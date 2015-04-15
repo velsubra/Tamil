@@ -1,7 +1,7 @@
-package my.interest.lang.tamil.internal.api;
+package tamil.lang.api.persist.matcher;
 
 import my.interest.lang.tamil.generated.types.IdaichcholDescription;
-import tamil.lang.manager.persist.PersistenceManager;
+import tamil.lang.api.persist.manager.PersistenceManager;
 
 /**
  * <p>
@@ -9,7 +9,7 @@ import tamil.lang.manager.persist.PersistenceManager;
  *
  * @author velsubra
  */
-public interface IdaichcholDescriptionMatcher extends DescriptionMatcher<IdaichcholDescription>  {
+public interface IdaichcholDescriptionMatcher extends DescriptionMatcher<IdaichcholDescription> {
 
     public static final IdaichcholDescriptionMatcher STARTS_MATCHER = new IdaichcholDescriptionMatcher() {
 

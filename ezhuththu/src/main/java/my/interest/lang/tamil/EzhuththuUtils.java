@@ -2,8 +2,12 @@ package my.interest.lang.tamil;
 
 import common.lang.impl.AbstractCharacter;
 import my.interest.lang.tamil.generated.types.*;
+import my.interest.lang.tamil.generated.types.Properties;
 import my.interest.lang.tamil.internal.api.TamilCharacterParserListener;
 import my.interest.lang.tamil.internal.api.TamilSoundParserListener;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import tamil.lang.*;
 import tamil.lang.known.IKnownWord;
 import tamil.lang.known.non.derived.IPeyarchchol;
@@ -34,6 +38,84 @@ public class EzhuththuUtils {
 
     static {
         peyar.add(IPeyarchchol.class);
+    }
+
+
+    public static PeyarchchchorrkalhDescription getPeyarchchchorrkalhDescription(JSONObject obj) throws JSONException {
+        PeyarchchchorrkalhDescription desc = new PeyarchchchorrkalhDescription();
+        desc.setGlobalDescription(new Properties());
+        desc.setList(new PeyarchchchorrkalhList());
+        JSONObject list = obj.getJSONObject("list");
+        if (list != null) {
+            JSONArray words = list.getJSONArray("word");
+            int length = words.length();
+            for (int i = 0; i < length; i++) {
+                try {
+                    desc.getList().getWord().add(gePeyarchcholDescription(words.getJSONObject(i)));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }
+        return desc;
+    }
+
+    /**
+     * {
+     * "root": "கலாம்",
+     * "description": {
+     * "property": [
+     * {
+     * "name": "definition.type",
+     * "value": "p"
+     * },
+     * {
+     * "name": "i.definition.type.p.uyarthinhai",
+     * "value": "true"
+     * },
+     * {
+     * "name": "i.definition.type.p.it",
+     * "value": "ot"
+     * }
+     * ],
+     * "name": null
+     * }
+     *
+     * @param obj
+     * @return
+     * @throws JSONException
+     */
+    public static PeyarchcholDescription gePeyarchcholDescription(JSONObject obj) throws JSONException {
+        PeyarchcholDescription peyar = new PeyarchcholDescription();
+        peyar.setDescription(new Properties());
+        peyar.setRoot(obj.getString("root"));
+
+        JSONObject list = obj.getJSONObject("description");
+        if (list != null) {
+            JSONArray words = list.getJSONArray("property");
+            int length = words.length();
+
+            for (int i = 0; i < length; i++) {
+                try {
+                    peyar.getDescription().getProperty().add(geProperty(words.getJSONObject(i)));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }
+
+        return peyar;
+
+    }
+
+    public static Property geProperty(JSONObject obj) throws JSONException {
+        Property property = new Property();
+        property.setName(obj.getString("name"));
+        property.setValue(obj.getString("value"));
+        return  property;
+
     }
 
 

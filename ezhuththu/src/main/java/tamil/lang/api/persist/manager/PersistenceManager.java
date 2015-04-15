@@ -1,7 +1,8 @@
-package tamil.lang.manager.persist;
+package tamil.lang.api.persist.manager;
 
 /**
  * <p>
+ *     The manager for storing all persisted configuration.
  * </p>
  *
  * @author velsubra

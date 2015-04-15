@@ -58,10 +58,10 @@ public class AppletTamilFactory extends JApplet {
 
         int api = url.indexOf("/api/");
         if (api > 0) {
-            url = url.substring(0, api) + "/api/dictionary/";
+            url = url.substring(0, api) + "/api/";
             try {
-                RemoteDictionaryProvider.REMOTE_SERVER_DICTIONARY_URL = doc.toURI().resolve(url).toString();
-                System.out.println("SEt:" + RemoteDictionaryProvider.REMOTE_SERVER_DICTIONARY_URL);
+                RemoteDictionaryProvider.REMOTE_SERVER_API_URL = doc.toURI().resolve(url).toString();
+                System.out.println("SEt:" + RemoteDictionaryProvider.REMOTE_SERVER_API_URL);
             } catch (Exception e) {
                 e.printStackTrace();;
             }
@@ -70,6 +70,8 @@ public class AppletTamilFactory extends JApplet {
         TamilFactory.init();
         trans = TamilFactory.getTransliterator(null);
         reader = TamilFactory.getNumberReader();
+
+
     }
 
     @Override

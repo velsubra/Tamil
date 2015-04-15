@@ -278,7 +278,7 @@ function _suggestionCallback(lineno, startCol, fullword) {
 }
 
 function _backgroundSpellCheck(changed) {
-    console.log("Spell check .....");
+   // console.log("Spell check .....");
     var markers_old = [];
     var marks = myCodeMirror.getAllMarks();
     if (marks) {
@@ -468,8 +468,10 @@ function getLocalHints(cm, tamil) {
 }
 
 function _getParsedEquation(trans_now) {
+   // console.log("Returning equation:" + ret);
     var parse_result = EDIT_PARSE.lookupParserCache(trans_now, PARSE_FEATURES);
     var ret = "";
+    //console.log("Returning equation:" + parse_result);
     if (parse_result && parse_result.parsed) {
         var splitway = parse_result.splitways[0].splits;
         if (splitway.length > 1) {
@@ -486,12 +488,13 @@ function _getParsedEquation(trans_now) {
             }
         }
     }
+  //  console.log("Returning equation:" + ret);
     return ret;
 }
 
 function _provideHint(cm, callback, options) {
 
-    // console.log(callback);
+   // console.log("Hint:" +callback);
 
     var current_word = get_current_word(cm);
 

@@ -5,7 +5,7 @@ import my.interest.lang.tamil.generated.types.AppDescription;
 import my.interest.lang.tamil.generated.types.ResourceInheritanceOrder;
 import my.interest.lang.tamil.generated.types.TamilRootWords;
 import tamil.lang.TamilFactory;
-import tamil.lang.manager.persist.ApplicationManager;
+import tamil.lang.api.persist.manager.ApplicationManager;
 
 
 import java.util.ArrayList;

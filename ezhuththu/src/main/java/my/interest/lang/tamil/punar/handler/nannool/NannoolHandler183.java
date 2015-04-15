@@ -1,11 +1,13 @@
 package my.interest.lang.tamil.punar.handler.nannool;
 
-import tamil.lang.TamilCharacter;
-import tamil.lang.TamilCompoundCharacter;
-import tamil.lang.TamilWord;
 import my.interest.lang.tamil.punar.TamilWordPartContainer;
 import my.interest.lang.tamil.punar.TamilWordSplitResult;
 import my.interest.lang.tamil.punar.handler.AbstractPunarchiHandler;
+import tamil.lang.TamilCharacter;
+import tamil.lang.TamilCompoundCharacter;
+import tamil.lang.TamilFactory;
+import tamil.lang.TamilWord;
+import tamil.lang.api.join.WordsJoiner;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,12 +19,16 @@ import java.util.List;
  * @author velsubra
  */
 public class NannoolHandler183 extends AbstractPunarchiHandler {
+
+    static final TamilWord ntoorru = TamilWord.from("நூறு");
+    static final TamilWord koadi = TamilWord.from("கோடி");
     @Override
     public String getName() {
         return "நன்னூல்விதி183(நெடிலோ டுயிர்த்தொடர்க் குற்றுக ரங்களுட்\n" +
                 "டறவொற் றிரட்டும்)";
     }
-    public  static final NannoolHandler183 HANDLER = new NannoolHandler183();
+
+    public static final NannoolHandler183 HANDLER = new NannoolHandler183();
 
     protected boolean isEmptyVaruMozhiOk() {
         return true;
@@ -61,6 +67,22 @@ public class NannoolHandler183 extends AbstractPunarchiHandler {
 
     @Override
     public TamilWordPartContainer join(TamilWordPartContainer nilai, TamilWordPartContainer varum) {
+        if (nilai.isKutriyaLugaram()) {
+            if (varum.getWord().startsWith(koadi) && nilai.getWord().equals(ntoorru)) {
+                return null;
+            }
+            TamilCharacter lastbutone = nilai.getWord().get(nilai.size() - 2).asTamilCharacter();
+            if (lastbutone.isUyirMeyyezhuththu() || lastbutone.isUyirezhuththu()) {
+                TamilCompoundCharacter last = (TamilCompoundCharacter) nilai.getWord().getLast();
+                if (last == TamilCompoundCharacter.IDD_U || last == TamilCompoundCharacter.IRR_U) {
+                    TamilWord dup = nilai.getWord().duplicate();
+                    dup.add(dup.size() - 1, last.getMeiPart());
+                    WordsJoiner joiner = TamilFactory.createWordJoiner(dup);
+                    joiner.addVaruMozhi(varum.getWord());
+                    return new TamilWordPartContainer(joiner.getSum());
+                }
+            }
+        }
         return null;
     }
 }

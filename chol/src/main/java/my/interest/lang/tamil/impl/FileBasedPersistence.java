@@ -8,14 +8,9 @@ import my.interest.lang.tamil.multi.ExecuteManager;
 import my.interest.lang.tamil.multi.WordGeneratorFromIdai;
 import my.interest.lang.tamil.multi.WordGeneratorFromPeyar;
 import my.interest.lang.tamil.multi.WordGeneratorFromVinaiyadi;
-import my.interest.lang.tamil.punar.TamilWordPartContainer;
 import my.interest.lang.tamil.punar.handler.verrrrumai.VAllHandler;
-import tamil.lang.TamilFactory;
 import tamil.lang.TamilWord;
-import tamil.lang.api.join.WordsJoiner;
 import tamil.lang.known.non.derived.*;
-import tamil.lang.manager.persist.*;
-import tamil.lang.spi.PersistenceManagerProvider;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;

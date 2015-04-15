@@ -4,6 +4,7 @@ import my.interest.lang.tamil.punar.TamilWordPartContainer;
 
 import my.interest.lang.tamil.punar.handler.magaraveeru.NannolHandler219;
 
+import my.interest.lang.tamil.punar.handler.nannool.NannoolHandler183;
 import my.interest.lang.tamil.punar.handler.verrrrumai.VAllHandler;
 import tamil.lang.TamilWord;
 import tamil.lang.api.join.WordsJoiner;
@@ -25,6 +26,7 @@ public final class WordsJoinHandler extends VinaiMutruCreationHandler implements
 
         prependInstanceHandler(NannolHandler219.HANDLER);
         prependInstanceHandler(VAllHandler.HANDLER);
+        prependInstanceHandler(NannoolHandler183.HANDLER);
 
     }
 
