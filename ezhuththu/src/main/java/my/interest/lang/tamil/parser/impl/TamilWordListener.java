@@ -2,10 +2,9 @@ package my.interest.lang.tamil.parser.impl;
 
 import common.lang.impl.UnknownCharacter;
 import my.interest.lang.tamil.EzhuththuUtils;
-import tamil.lang.TamilCharacter;
-
-import tamil.lang.TamilWord;
 import my.interest.lang.tamil.internal.api.TamilCharacterParserListener;
+import tamil.lang.TamilCharacter;
+import tamil.lang.TamilWord;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -18,9 +17,10 @@ import java.io.InputStream;
  */
 public class TamilWordListener implements TamilCharacterParserListener<TamilWord> {
 
-    public TamilWordListener() {}
+    public TamilWordListener() {
+    }
 
-    TamilWordListener(boolean  readAll) {
+    TamilWordListener(boolean readAll) {
         this.readAll = readAll;
     }
 
@@ -56,11 +56,10 @@ public class TamilWordListener implements TamilCharacterParserListener<TamilWord
                 word = new TamilWord();
             }
 
-            word.add( UnknownCharacter.getFor(nonTamil));
+            word.add(UnknownCharacter.getFor(nonTamil));
             return false;
         }
     }
-
 
 
     @Override
@@ -70,11 +69,19 @@ public class TamilWordListener implements TamilCharacterParserListener<TamilWord
     }
 
     public static TamilWord readUTF8(String word) {
-        return readUTF8(new ByteArrayInputStream(word.getBytes()));
+        try {
+            return readUTF8(new ByteArrayInputStream(word.getBytes(EzhuththuUtils.ENCODING)));
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
-    public static TamilWord readUTF8(String word, boolean  readAll) {
-        return readUTF8(new ByteArrayInputStream(word.getBytes()), readAll);
+    public static TamilWord readUTF8(String word, boolean readAll) {
+        try {
+            return readUTF8(new ByteArrayInputStream(word.getBytes(EzhuththuUtils.ENCODING)), readAll);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public static TamilWord readUTF8(InputStream inputStream) {

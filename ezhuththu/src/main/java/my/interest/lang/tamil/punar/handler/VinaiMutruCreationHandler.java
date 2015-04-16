@@ -89,7 +89,17 @@ public class VinaiMutruCreationHandler extends AbstractPunarchiHandler  {
         return equation;
     }
 
+    public void insertFirst(TamilWordPartContainer part) {
+        if (part.size() == 0) return;
+        TamilWordPartContainer reverse = new TamilWordPartContainer(vinaiMutru);
+        vinaiMutru = part.getWord();
+        add(reverse, true);
+    }
     public void add(TamilWordPartContainer part) {
+        add(part, false);
+    }
+
+    private void add(TamilWordPartContainer part, boolean reversed) {
         if (part.getWord().isEmpty()) {
             return;
         }
@@ -97,7 +107,11 @@ public class VinaiMutruCreationHandler extends AbstractPunarchiHandler  {
             vinaiMutru.addAll(part.getWord().duplicate());
             equation = part.toString();
         } else {
-            equation += "+" + part.toString();
+            if (reversed) {
+                equation =  part.toString() + "+" + equation;
+            } else {
+                equation += "+" + part.toString();
+            }
             boolean applied = false;
             for (AbstractPunarchiHandler handler : instancehandlers) {
                 TamilWordPartContainer result = handler.join(new TamilWordPartContainer(vinaiMutru), part);

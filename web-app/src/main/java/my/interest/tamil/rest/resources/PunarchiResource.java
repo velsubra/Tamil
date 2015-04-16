@@ -2,6 +2,7 @@ package my.interest.tamil.rest.resources;
 
 import common.lang.impl.AbstractCharacter;
 import tamil.lang.TamilCompoundCharacter;
+import tamil.lang.TamilFactory;
 import tamil.lang.TamilWord;
 import my.interest.lang.tamil.TamilUtils;
 import my.interest.lang.tamil.internal.api.HandlerFactory;
@@ -11,6 +12,7 @@ import my.interest.lang.tamil.punar.TamilWordPartContainer;
 import my.interest.lang.tamil.punar.handler.AbstractPunarchiHandler;
 import my.interest.lang.tamil.translit.EnglishToTamilCharacterLookUpContext;
 import tamil.lang.api.feature.Feature;
+import tamil.lang.api.feature.FeatureConstants;
 import tamil.lang.api.trans.TranslitFeature;
 
 import javax.ws.rs.*;
@@ -124,7 +126,7 @@ public class PunarchiResource {
     }
 
     private static boolean wordExists(String w) {
-        return !PersistenceInterface.findWords(w).isEmpty();
+        return !TamilFactory.getSystemDictionary().lookup(TamilWord.from(w)).isEmpty();
     }
 
 
@@ -239,7 +241,7 @@ public class PunarchiResource {
             }
         }
         TranslitResult result = new TranslitResult();
-        TamilWord word = array ?  EnglishToTamilCharacterLookUpContext.getArrayValue(english)  : EnglishToTamilCharacterLookUpContext.TRANSLIST.transliterate(english, join ? new TranslitFeature[]{TranslitFeature.TRANSLIT_JOIN_FEATURE_VAL_110, Feature.TRANSLIT_NOUN_LOOKUP_FEATURE_VAL_115} : null);
+        TamilWord word = array ?  EnglishToTamilCharacterLookUpContext.getArrayValue(english)  : EnglishToTamilCharacterLookUpContext.TRANSLIST.transliterate(english, join ? new TranslitFeature[]{FeatureConstants.TRANSLIT_JOIN_FEATURE_VAL_110, FeatureConstants.TRANSLIT_NOUN_LOOKUP_FEATURE_VAL_115} : null);
         result.setTamilWord(word.toString());
 
         if (!array && parse) {

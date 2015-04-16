@@ -5,7 +5,6 @@ import my.interest.lang.tamil.punar.TamilWordSplitResult;
 import tamil.lang.TamilWord;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -53,7 +52,7 @@ public abstract class AbstractPunarchiHandler {
         }
 
     }
-
+    static final TamilWord IKKU = TamilWord.from("க்கு");
 
     protected List<TamilWordSplitResult> splitAndFilter(TamilWordPartContainer nilai, TamilWordPartContainer varum) {
         List<TamilWordSplitResult> list = split(nilai, varum);
@@ -64,8 +63,12 @@ public abstract class AbstractPunarchiHandler {
                 boolean valid = true;
                 for (TamilWordPartContainer c : r) {
                     if (c.size() > 1 && (!c.isEndingFine() || c.isStartingWithMei())) {
-                        valid = false;
-                        break;
+                        if (c.size() == 2 && c.getWord().equals(IKKU)) {
+                            // hack to allow IKKU
+                        } else {
+                            valid = false;
+                            break;
+                        }
                     }
                 }
                 if (valid) {

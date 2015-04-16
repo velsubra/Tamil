@@ -2,7 +2,7 @@ package my.interest.tamil.rest.resources;
 
 
 import tamil.lang.TamilWord;
-import my.interest.lang.tamil.internal.api.IdaichcholDescriptionMatcher;
+import tamil.lang.api.persist.matcher.IdaichcholDescriptionMatcher;
 import my.interest.lang.tamil.internal.api.PersistenceInterface;
 import my.interest.lang.tamil.generated.types.*;
 import my.interest.tamil.rest.resources.exception.ResourceException;

@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Tamil Editor</title>
+    <script src="lib/codemirror.js"></script>
+    <script src="addon/selection/active-line.js"></script>
+    <script src="addon/hint/show-hint.js"></script>
+    <script type="text/javascript" src="../jquery-1.9.1.js" charset="utf-8"></script>
+    <script type="text/javascript" src="../js/api/tamil-platform-api-1.1.js" charset="utf-8"></script>
+
+    <script type="text/javascript" src="../service-consumer.js" charset="utf-8"></script>
+
+    <script type="text/javascript" src="extension.js" charset="utf-8"></script>
+
+    <link rel="stylesheet" href="lib/codemirror.css">
+    <link rel="stylesheet" href="addon/hint/show-hint.css">
+    <link rel="stylesheet" type="text/css" href="../punarchi.css"/>
+
+
+    <script>
+
+
+        function just_post() {
+            var msg = myCodeMirror.getValue();
+            console.log("Posing:" + msg);
+
+            var params = {};
+            params['message'] = msg;
+           // params['name'] = 'Name';
+            params['description'] = 'Post from Tamil Platform';
+            params['link'] = 'https://javas2-jcscdc.java.us2.oraclecloudapps.com/tamil/codemirror/editor-applet.html';
+          //  params['caption'] = 'Caption';
+
+            FB.api('/me/feed', 'post', params, function (response) {
+                console.log(response);
+                if (!response || response.error) {
+                    alert('Error occurred:' + response.error.message);
+                } else {
+                    alert('Post Done with ID: ' + response.id);
+                }
+            });
+        }
+
+        function _postToFB() {
+
+            FB.getLoginStatus(function (response) {
+                if (response.status === 'connected') {
+                    just_post();
+                }
+                else {
+                    FB.login(function () {
+                        just_post();
+                    }, {scope: 'publish_stream'});
+                }
+            });
+
+
+        }
+
+
+        function _onpage_blur() {
+            localStorage.setItem("english-text___", myCodeMirror.getValue());
+        }
+
+
+        function _load() {
+            $('#TAMIL_APPLET_INJECTED').attr("archive", TamilFactory.context + "/api/browse/tamil-letter-1.1.jar")
+            console.log(TamilFactory.context + "/api/browse/tamil-letter-1.1.jar");
+            document.getElementById('applet_div').style.display = 'block';
+            var old = localStorage.getItem("english-text___");
+            if (old) {
+                $("#edit").val(old);
+            } else {
+                $("#edit").val("");
+            }
+        }
+
+    </script>
+
+</head>
+<!--<script>-->
+<!--window.fbAsyncInit = function () {-->
+<!--FB.init({-->
+<!--appId: '1493373077613181',-->
+<!--status: true,-->
+<!--xfbml: true,-->
+<!--version: 'v2.3'-->
+<!--});-->
+
+
+<!--};-->
+
+
+<!--(function (d, s, id) {-->
+<!--var js, fjs = d.getElementsByTagName(s)[0];-->
+<!--if (d.getElementById(id)) {-->
+<!--return;-->
+<!--}-->
+<!--js = d.createElement(s);-->
+<!--js.id = id;-->
+<!--js.src = "//connect.facebook.net/ta_IN/sdk.js";-->
+<!--fjs.parentNode.insertBefore(js, fjs);-->
+<!--}(document, 'script', 'facebook-jssdk'));-->
+<!--</script>-->
+
+<!--<div-->
+<!--class="fb-like"-->
+
+<!--data-show-faces="false"-->
+<!--data-width="450"-->
+<!-->
+<!--</div>-->
+
+<body onblur="_onpage_blur()">
+This page needs the applet to be loaded. You need Java 1.5 installed in your machine. After that, please follow <a
+        href="https://www.facebook.com/photo.php?fbid=872165799515084&set=p.872165799515084">the step</a> for applet
+configuration.
+<hr/>
+<div id="applet_div" style="display: none; visibility: hidden">
+    <object type="application/x-java-applet"
+            id="TAMIL_APPLET_INJECTED" name="TamilPlatform Applet"
+            archive=""
+            width="0" height="0">
+        <param name="code" value="tamil.lang.api.applet.AppletTamilFactory"/>
+
+        <param name="java_arguments" value="-Dfile.encoding=UTF-8"/>
+
+    </object>
+</div>
+
+<!--<a href="../index.html">&lt;-பின்னுக்குச்செல்க</a>-->
+<input class="small_text" disabled type="button" onclick="javascript:_postToFB()" value="Post to my FB wall"/>
+<!--<div id="tool_tip" class="temp_tamil_tip"></div>-->
+|
+Transliterate on Edit:<input type="checkbox" checked id="opt_tamil"
+                             title="CTRL+ALT+t to toggle transliteration."/> |
+Suggestions on Edit:<input type="checkbox" id="opt_suggestion" title="Press CTRL+space to look for suggestions."/> |
+Spell Check on Edit:<input type="checkbox" checked id="opt_spell" onclick="_backgroundSpellCheck()" title="Do background spell-check"/>
+
+
+<textarea rows="10" cols="80" id="edit">
+
+
+</textarea>
+
+<script>
+
+
+    _load();
+
+
+</script>
+<a href="../index.html">&lt;-பின்னுக்குச்செல்க</a>
+</body>
+</html>

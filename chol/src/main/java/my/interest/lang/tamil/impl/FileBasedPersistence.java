@@ -8,11 +8,9 @@ import my.interest.lang.tamil.multi.ExecuteManager;
 import my.interest.lang.tamil.multi.WordGeneratorFromIdai;
 import my.interest.lang.tamil.multi.WordGeneratorFromPeyar;
 import my.interest.lang.tamil.multi.WordGeneratorFromVinaiyadi;
+import my.interest.lang.tamil.punar.handler.verrrrumai.VAllHandler;
 import tamil.lang.TamilWord;
-import tamil.lang.known.non.derived.Aththu;
-import tamil.lang.known.non.derived.AtomicIsolatedIdai;
-import tamil.lang.known.non.derived.Kalh;
-import tamil.lang.known.non.derived.Ottu;
+import tamil.lang.known.non.derived.*;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
@@ -21,9 +19,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.net.URLDecoder;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.TreeSet;
+import java.util.*;
 import java.util.logging.Logger;
 
 /**
@@ -32,9 +28,11 @@ import java.util.logging.Logger;
  *
  * @author velsubra
  */
-public class FileBasedPersistence extends PersistenceInterface {
+public class FileBasedPersistence extends PersistenceInterface   {
     static final Logger logger = Logger.getLogger(FileBasedPersistence.class.getName());
     private String path = null;
+
+
 
     static TamilRootWords cached = null;
     static String lastloaded = null;
@@ -108,9 +106,38 @@ public class FileBasedPersistence extends PersistenceInterface {
         }
 
 
-        roots.addAll(cached.getVinai().getVerbs().getList().getVerb());
+
         peyars.addAll(cached.getPeyar().getWords().getList().getWord());
         idais.addAll(cached.getIdai().getWords().getList().getWord());
+        roots.addAll(cached.getVinai().getVerbs().getList().getVerb());
+
+
+        //List<RootVerbDescription> kuttu = new ArrayList<RootVerbDescription>();
+//        for (RootVerbDescription root : cached.getVinai().getVerbs().getList().getVerb()) {
+//
+//            TamilWord currentRoot = TamilWord.from(root.getRoot());
+//            if (!currentRoot.endsWith(iduword, false) && new TamilWordPartContainer(currentRoot).isUkkurralh()) {
+//                kuttu.add(root);
+//            }
+//
+//        }
+//        RootVerbDescription idu = PersistenceInterface.get().findRootVerbDescription(iduword.toString());
+//        //வணங்கிடு
+//        for (RootVerbDescription k : kuttu)  {
+//            TamilWord currentRoot = TamilWord.from(k.getRoot());
+//            WordsJoiner joiner = TamilFactory.createWordJoiner(currentRoot);
+//            joiner.addVaruMozhi(iduword);
+//            currentRoot = joiner.getSum();
+//
+//            RootVerbDescription _idu = new RootVerbDescription();
+//            _idu.setRoot(currentRoot.toString());
+//            _idu.setDescription(idu.getDescription());
+//           // cached.getVinai().getVerbs().getList().getVerb().add(_idu);
+//            roots.add(_idu);
+//        }
+
+
+
 
         reCompileAllScripts();
 
@@ -138,8 +165,8 @@ public class FileBasedPersistence extends PersistenceInterface {
         }
     }
 
-    public FileBasedPersistence(String path) {
-        this.path = path;
+    public FileBasedPersistence() {
+        this.path = new File(getWorkDir(), "i18n.xml").getAbsolutePath();
         if (lastloaded == null) {
             lastloaded = getLastModified();
         }
@@ -212,20 +239,32 @@ public class FileBasedPersistence extends PersistenceInterface {
 
             if (isEmptyKnown() && autoLoad) {
 
+                trim(cached.getPeyar().getGlobalTypes());
+                trim(cached.getIdai().getGlobalTypes());
+                trim(cached.getVinai().getGlobalTypes());
+
+
 
                 ExecuteManager.fire(new Runnable() {
 
                     @Override
                     public void run() {
-                        for (RootVerbDescription root : cached.getVinai().getVerbs().getList().getVerb()) {
+
+                        for (RootVerbDescription root : roots) {
 
                             // System.out.print(count++ + ":" + root.getRoot() + ":");
                             ExecuteManager.fire(new WordGeneratorFromVinaiyadi(root));
                             // System.out.println(set.size());
 
+
                         }
+
                     }
                 });
+
+                for (VUrubu u: VAllHandler.all.keySet()) {
+                    addKnown(u);
+                }
 
 
                 addKnown(new Kalh());
@@ -258,9 +297,6 @@ public class FileBasedPersistence extends PersistenceInterface {
                     }
                 });
 
-                trim(cached.getPeyar().getGlobalTypes());
-                trim(cached.getIdai().getGlobalTypes());
-                trim(cached.getVinai().getGlobalTypes());
 
 
                 ExecuteManager.fire(new Runnable() {
@@ -381,4 +417,7 @@ public class FileBasedPersistence extends PersistenceInterface {
             throw new RuntimeException("Unable to check ...", e);
         }
     }
+
+
+
 }

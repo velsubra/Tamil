@@ -365,6 +365,12 @@ public final class TamilSimpleCharacter extends TamilCharacter implements Simple
     }
 
 
+    // 22  ஸ
+    public boolean isSSa_() {
+        return isSSa_(getValue());
+    }
+
+
     public static final TamilSimpleCharacter KA = new TamilSimpleCharacter('\u0B95');
 
 
@@ -517,8 +523,16 @@ public final class TamilSimpleCharacter extends TamilCharacter implements Simple
     }
 
 
+    public static final TamilSimpleCharacter SSA_ = new TamilSimpleCharacter('\u0BB8');
+    // 22  ஸ
+    public static boolean isSSa_(int value) {
+        return value == SSA_.value;
+    }
+
+
+
     private boolean _isVadaMozhiYezhuththu() {
-        return isJa_() || isSHa_() || isHa_();
+        return isJa_() || isSHa_() || isHa_() ||isSSa_();
     }
 
 
@@ -529,12 +543,12 @@ public final class TamilSimpleCharacter extends TamilCharacter implements Simple
 
 
     public static boolean isUyirMeyyezhuththu(int value) {
-        return isJa_(value) || isSHa_(value) || isHa_(value) || isKa(value) || isNga(value) || isSa(value) || isNya(value) || isDa(value) || isNNNa(value) || isTha(value) || isNtha(value) || isPa(value) || isMa(value) || isYa(value) || isRa(value) || isLa(value) || isVa(value) || isLLLa(value) || isLLa(value) || isRRa(value) || isNa(value);
+        return isJa_(value) || isSHa_(value) || isHa_(value) ||  isSSa_(value)|| isKa(value) || isNga(value) || isSa(value) || isNya(value) || isDa(value) || isNNNa(value) || isTha(value) || isNtha(value) || isPa(value) || isMa(value) || isYa(value) || isRa(value) || isLa(value) || isVa(value) || isLLLa(value) || isLLa(value) || isRRa(value) || isNa(value);
 
     }
 
     public static boolean isVadaMozhiYezhuththu(int value) {
-        return isJa_(value) || isSHa_(value) || isHa_(value);
+        return isJa_(value) || isSHa_(value) || isHa_(value) ||  isSSa_(value);
     }
 
 
@@ -622,6 +636,11 @@ public final class TamilSimpleCharacter extends TamilCharacter implements Simple
         }
         return soundStrength;
 
+    }
+
+    @Override
+    public int getCodePointsCount() {
+        return 1;
     }
 
 

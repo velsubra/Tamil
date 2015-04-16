@@ -5,6 +5,7 @@ import org.junit.Test;
 import tamil.lang.TamilFactory;
 import tamil.lang.TamilWord;
 import tamil.lang.api.feature.Feature;
+import tamil.lang.api.feature.FeatureConstants;
 import tamil.lang.api.number.IgnoreNonDigitFeature;
 import tamil.lang.api.number.NotANumberException;
 import tamil.lang.api.number.NumberReader;
@@ -35,7 +36,7 @@ public class NumberTest {
             Assert.assertEquals("Index:0 Invalid character: ", e.getMessage());
         }
 
-        word = reader.readNumber("100000", IgnoreNonDigitFeature.INSTANCE_IGNORE_NON_DIGIT, Feature.READ_NUMBER_PUNHARCHCHI_KEEP_ONLY_POSITION_VAL_135);
+        word = reader.readNumber("100000", IgnoreNonDigitFeature.INSTANCE_IGNORE_NON_DIGIT, FeatureConstants.READ_NUMBER_PUNHARCHCHI_KEEP_ONLY_POSITION_VAL_135);
         System.out.println(word);
         Assert.assertEquals("ஓரிலட்சம்", word.toString());
 
@@ -56,7 +57,7 @@ public class NumberTest {
         Assert.assertEquals("ஒன்பது", word.toString());
 
 
-        word = reader.readNumber(" 1 9q 0", IgnoreNonDigitFeature.INSTANCE_TREAT_NON_DIGIT_AS_0, Feature.READ_NUMBER_PUNHARCHCHI_KEEP_ONLY_POSITION_VAL_135);
+        word = reader.readNumber(" 1 9q 0", IgnoreNonDigitFeature.INSTANCE_TREAT_NON_DIGIT_AS_0, FeatureConstants.READ_NUMBER_PUNHARCHCHI_KEEP_ONLY_POSITION_VAL_135);
         System.out.println(word);
         Assert.assertEquals("ஓரிலட்சத்து ஒன்பதாயிரம்", word.toString());
 
@@ -107,7 +108,7 @@ public class NumberTest {
         System.out.println(word);
         Assert.assertEquals("நூற்று ஒன்று", word.toString());
 
-        word = reader.readNumber("100000000000101", Feature.READ_NUMBER_PUNHARCHCHI_KEEP_ONLY_POSITION_VAL_135);
+        word = reader.readNumber("100000000000101", FeatureConstants.READ_NUMBER_PUNHARCHCHI_KEEP_ONLY_POSITION_VAL_135);
         System.out.println(word);
         Assert.assertEquals("ஒருகோடியே கோடியே நூற்று ஒன்று", word.toString());
 
@@ -127,15 +128,15 @@ public class NumberTest {
         System.out.println(word);
         Assert.assertEquals("பத்துகோடி", word.toString());
 
-        word = reader.readNumber("10000000", Feature.READ_NUMBER_PUNHARCHCHI_KEEP_ONLY_POSITION_VAL_135);
+        word = reader.readNumber("10000000", FeatureConstants.READ_NUMBER_PUNHARCHCHI_KEEP_ONLY_POSITION_VAL_135);
         System.out.println(word);
         Assert.assertEquals("ஒருகோடி", word.toString());
 
-        word = reader.readNumber("10000001", Feature.READ_NUMBER_PUNHARCHCHI_KEEP_ONLY_POSITION_VAL_135);
+        word = reader.readNumber("10000001", FeatureConstants.READ_NUMBER_PUNHARCHCHI_KEEP_ONLY_POSITION_VAL_135);
         System.out.println(word);
         Assert.assertEquals("ஒருகோடியே ஒன்று", word.toString());
 
-        word = reader.readNumber("200091", Feature.READ_NUMBER_PUNHARCHCHI_KEEP_ONLY_POSITION_VAL_135);
+        word = reader.readNumber("200091", FeatureConstants.READ_NUMBER_PUNHARCHCHI_KEEP_ONLY_POSITION_VAL_135);
         System.out.println(word);
         Assert.assertEquals("இரண்டிலட்சத்து தொண்ணூற்றொன்று", word.toString());
 
@@ -145,7 +146,7 @@ public class NumberTest {
         Assert.assertEquals("ஓரிலட்சத்துப்பதினொன்று", word.toString());
 
 
-        word = reader.readNumber("100001", Feature.READ_NUMBER_PUNHARCHCHI_KEEP_ONLY_POSITION_VAL_135);
+        word = reader.readNumber("100001", FeatureConstants.READ_NUMBER_PUNHARCHCHI_KEEP_ONLY_POSITION_VAL_135);
         System.out.println(word);
         Assert.assertEquals("ஓரிலட்சத்து ஒன்று", word.toString());
 
@@ -211,7 +212,7 @@ public class NumberTest {
         System.out.println(word);
         Assert.assertEquals("நானூற்று நாற்பத்து நான்கு", word.toString());
 
-        word = reader.readNumber("167", Feature.READ_NUMBER_PUNHARCHCHI_KEEP_ONLY_POSITION_VAL_135);
+        word = reader.readNumber("167", FeatureConstants.READ_NUMBER_PUNHARCHCHI_KEEP_ONLY_POSITION_VAL_135);
         System.out.println(word);
         Assert.assertEquals("நூற்று அறுபத்தேழு", word.toString());
 

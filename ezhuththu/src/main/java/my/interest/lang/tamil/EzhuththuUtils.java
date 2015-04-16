@@ -1,11 +1,22 @@
 package my.interest.lang.tamil;
 
 import common.lang.impl.AbstractCharacter;
+import my.interest.lang.tamil.generated.types.*;
+import my.interest.lang.tamil.generated.types.Properties;
 import my.interest.lang.tamil.internal.api.TamilCharacterParserListener;
+import my.interest.lang.tamil.internal.api.TamilSoundParserListener;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import tamil.lang.*;
 import tamil.lang.known.IKnownWord;
+import tamil.lang.known.non.derived.IPeyarchchol;
+import tamil.lang.sound.AtomicSound;
+import tamil.lang.sound.TamilSoundLookUpContext;
 
 import java.io.*;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.*;
 
 /**
@@ -17,7 +28,127 @@ import java.util.*;
 public class EzhuththuUtils {
     public static final String ENCODING = "UTF-8";
 
+    public static final String NS_TAMIL = "http://my.interest.lang.tamil";
+    public static final String NS_XML = "http://www.w3.org/2001/XMLSchema";
+    public static final String VINAIMUTRU_BASE = "vinaimuttu.transitive";
+    public static final String VINAIMUTRU_BASE_INTRANSITIVE = "vinaimuttu.intransitive";
 
+
+    private static List<Class<? extends IKnownWord>> peyar = new ArrayList<Class<? extends IKnownWord>>();
+
+    static {
+        peyar.add(IPeyarchchol.class);
+    }
+
+
+    public static PeyarchchchorrkalhDescription getPeyarchchchorrkalhDescription(JSONObject obj) throws JSONException {
+        PeyarchchchorrkalhDescription desc = new PeyarchchchorrkalhDescription();
+        desc.setGlobalDescription(new Properties());
+        desc.setList(new PeyarchchchorrkalhList());
+        JSONObject list = obj.getJSONObject("list");
+        if (list != null) {
+            JSONArray words = list.getJSONArray("word");
+            int length = words.length();
+            for (int i = 0; i < length; i++) {
+                try {
+                    desc.getList().getWord().add(gePeyarchcholDescription(words.getJSONObject(i)));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }
+        return desc;
+    }
+
+    /**
+     * {
+     * "root": "கலாம்",
+     * "description": {
+     * "property": [
+     * {
+     * "name": "definition.type",
+     * "value": "p"
+     * },
+     * {
+     * "name": "i.definition.type.p.uyarthinhai",
+     * "value": "true"
+     * },
+     * {
+     * "name": "i.definition.type.p.it",
+     * "value": "ot"
+     * }
+     * ],
+     * "name": null
+     * }
+     *
+     * @param obj
+     * @return
+     * @throws JSONException
+     */
+    public static PeyarchcholDescription gePeyarchcholDescription(JSONObject obj) throws JSONException {
+        PeyarchcholDescription peyar = new PeyarchcholDescription();
+        peyar.setDescription(new Properties());
+        peyar.setRoot(obj.getString("root"));
+
+        JSONObject list = obj.getJSONObject("description");
+        if (list != null) {
+            JSONArray words = list.getJSONArray("property");
+            int length = words.length();
+
+            for (int i = 0; i < length; i++) {
+                try {
+                    peyar.getDescription().getProperty().add(geProperty(words.getJSONObject(i)));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }
+
+        return peyar;
+
+    }
+
+    public static Property geProperty(JSONObject obj) throws JSONException {
+        Property property = new Property();
+        property.setName(obj.getString("name"));
+        property.setValue(obj.getString("value"));
+        return  property;
+
+    }
+
+
+    public static boolean isUyarThinhai(PaalViguthi viguthi) {
+        return (viguthi != PaalViguthi.A) && (viguthi != PaalViguthi.THU);
+    }
+
+
+    public static boolean isPadarkkai(PaalViguthi viguthi) {
+        return viguthi == PaalViguthi.A
+                || viguthi == PaalViguthi.THU ||
+                viguthi == PaalViguthi.AALH ||
+                viguthi == PaalViguthi.AAN ||
+                viguthi == PaalViguthi.AAR || viguthi ==
+                PaalViguthi.AR;
+    }
+
+    public static boolean isVinaiMuttuAsNoun(SimpleTense tense, PaalViguthi viguthi) {
+        if (!isPadarkkai(viguthi)) return false;
+        if (viguthi == PaalViguthi.A) {
+            return false;
+
+        }
+        if (viguthi == PaalViguthi.THU) {
+            if (tense == SimpleTense.FUTURE) {
+                return false;
+            } else {
+                return true;
+            }
+        }
+        if (tense == SimpleTense.PRESENT) return false;
+        return true;
+    }
 
 
     public static byte[] readAllFromFile(String file) {
@@ -144,15 +275,40 @@ public class EzhuththuUtils {
         return file;
     }
 
+    private static final List<TamilWord> suggenstionNullifer = new ArrayList<TamilWord>() {
+        {
+            add(new TamilWord(TamilCompoundCharacter.IL, TamilCompoundCharacter.IL));
+            add(new TamilWord(TamilCompoundCharacter.ILL, TamilCompoundCharacter.ILL));
+            add(new TamilWord(TamilCompoundCharacter.IK, TamilCompoundCharacter.IK));
+            add(new TamilWord(TamilCompoundCharacter.ICH, TamilCompoundCharacter.ICH));
+            add(new TamilWord(TamilCompoundCharacter.IDD, TamilCompoundCharacter.IDD));
+            add(new TamilWord(TamilCompoundCharacter.ITH, TamilCompoundCharacter.ITH));
+            add(new TamilWord(TamilCompoundCharacter.IRR, TamilCompoundCharacter.IRR));
+            add(new TamilWord(TamilCompoundCharacter.INJ, TamilCompoundCharacter.INJ));
+
+            add(new TamilWord(TamilSimpleCharacter.U));
+
+        }
+    };
+
     /**
      * 31 is the driving prime number for hash.
      *
-     * @param w
-     * @return
+     * @param w1 the word for which the hash code is to be found
+     * @return the hashcode of the word
      */
 
-    public static int suggestionHashCode(TamilWord w) {
-        TamilCharacter lastcons = null;
+    public static int suggestionHashCode(TamilWord w1) {
+        TamilWord w = w1.duplicate();
+        for (TamilWord sug : suggenstionNullifer) {
+            if (sug.size() > 1) {
+                w.replaceAll(0, sug, new TamilWord(sug.getLast()), false, true);
+            } else {
+                w.replaceAll(0, sug, new TamilWord(), false, false);
+            }
+        }
+
+
         int hash = 0;
         for (int i = 0; i < w.size(); i++) {
 
@@ -188,7 +344,11 @@ public class EzhuththuUtils {
                 }
 
                 if (cons != null) {
-                    if (cons.equals(TamilCompoundCharacter.ILL)) {
+                    if (cons.equals(TamilCompoundCharacter.IDD)) {
+                        cons = TamilCompoundCharacter.IR;
+                    } else if (cons.equals(TamilCompoundCharacter.ITH)) {
+                        cons = TamilCompoundCharacter.IR;
+                    } else if (cons.equals(TamilCompoundCharacter.ILL)) {
                         cons = TamilCompoundCharacter.IL;
                     } else if (cons.equals(TamilCompoundCharacter.ILLL)) {
                         cons = TamilCompoundCharacter.IL;
@@ -199,17 +359,6 @@ public class EzhuththuUtils {
                     } else if (cons.equals(TamilCompoundCharacter.INTH)) {
                         cons = TamilCompoundCharacter.IN;
                     }
-
-                    if (cons.equals(lastcons)) {
-                        cons = null;
-
-
-                    }
-
-
-                    lastcons = cons;
-                } else {
-                    lastcons = null;
                 }
 
                 if (cons != null) {
@@ -375,6 +524,114 @@ public class EzhuththuUtils {
         return listener.get();
     }
 
+    private static AtomicSound findRelevantSound(TamilSoundLookUpContext context, boolean previousConsonant, boolean previousVowel) {
+        if (previousVowel && context.nextToUyirSound != null) {
+            return context.nextToUyirSound;
+        }
+
+        if (previousConsonant && context.nextToConsonantSound != null) {
+            return context.nextToConsonantSound;
+        }
+
+        return context.directSound;
+
+    }
+
+    public static List<Field> getPublicStaticFinalFieldsOfType(Class from, Class type) {
+        Field[] fields = from.getFields();
+        List<Field> list = new ArrayList<Field>();
+        for (Field f : fields) {
+            if (Modifier.isStatic(f.getModifiers())) {
+                if (Modifier.isFinal(f.getModifiers())) {
+                    if (Modifier.isPublic(f.getModifiers())) {
+                        if (type == null || type.isAssignableFrom(f.getType())) {
+                            list.add(f);
+                        }
+                    }
+                }
+            }
+        }
+        return list;
+    }
+
+
+    public static void readSound(TamilWord word, TamilSoundParserListener listener) throws Exception {
+        if (word == null || word.isEmpty()) return;
+
+        TamilSoundLookUpContext context = null;
+        AbstractCharacter read = null;
+        AbstractCharacter lastconsumed = null;
+        AbstractCharacter lastLooked = null;
+        boolean previousConsonant = false;
+        boolean previousVowel = false;
+
+        for (int i = 0; i < word.size(); i++) {
+            previousConsonant = false;
+            previousVowel = false;
+            if (lastconsumed != null) {
+                if (lastconsumed.isTamilLetter()) {
+                    TamilCharacter last = (TamilCharacter) lastconsumed;
+                    previousConsonant = last.isMeyyezhuththu();
+                    previousVowel = last.isUyirezhuththu() || last.isUyirMeyyezhuththu();
+                }
+            }
+
+            read = word.get(i);
+            if (context != null) {
+                TamilSoundLookUpContext followContext = context.next(read);
+                if (followContext == null) {
+                    AtomicSound current = findRelevantSound(context, previousConsonant, previousVowel);
+
+                    if (current == null) {
+                        //TODO: Need to handle incomplete characters later
+                    } else {
+                        lastconsumed = lastLooked;
+                        if (listener.tamilSound(current)) {
+
+                            return;
+                        }
+                        context = null;
+                    }
+                } else {
+                    context = followContext;
+                    lastLooked = read;
+                }
+            }
+            if (context == null) {
+                context = TamilSoundLookUpContext.lookup(read);
+                lastLooked = read;
+            }
+
+
+            if (context == null) {
+
+                if (listener.nonTamilSound(read)) {
+                    return;
+                }
+            }
+        }
+
+
+        //Handle last character.
+
+        if (context != null) {
+            if (lastconsumed != null) {
+                if (lastconsumed.isTamilLetter()) {
+                    TamilCharacter last = (TamilCharacter) lastconsumed;
+                    previousConsonant = last.isMeyyezhuththu();
+                    previousVowel = last.isUyirezhuththu() || last.isUyirMeyyezhuththu();
+                }
+            }
+            AtomicSound current = findRelevantSound(context, previousConsonant, previousVowel);
+            if (current != null) {
+                listener.tamilSound(current);
+                //  consumed = read;
+            }
+
+        }
+
+    }
+
 
     public static String getCommaSeparatedListOfString(String[] list) {
         if (list == null)
@@ -423,6 +680,10 @@ public class EzhuththuUtils {
     }
 
     public static List<String> parseString(String s, String del, boolean ignoreNull) {
+        return parseString(s, del, ignoreNull, false);
+    }
+
+    public static List<String> parseString(String s, String del, boolean ignoreNull, boolean ignoreDup) {
         if (s == null)
             return null;
         List<String> ret = new ArrayList<String>();
@@ -441,7 +702,12 @@ public class EzhuththuUtils {
                 }
             }
             if (toAdd) {
-                ret.add(tokenSingle);
+                if (ignoreDup) {
+                    toAdd = !ret.contains(tokenSingle);
+                }
+                if (toAdd) {
+                    ret.add(tokenSingle);
+                }
             }
         }
         return ret;
@@ -491,5 +757,31 @@ public class EzhuththuUtils {
         }
         buffer.append(close);
         return buffer.toString();
+    }
+
+    public static AppDescription findApp(String name, TamilRootWords file, boolean context) {
+        if (name == null || name.trim().equals("") || file == null) return null;
+
+        if (file.getApps() == null) {
+            file.setApps(new my.interest.lang.tamil.generated.types.Apps());
+        }
+        if (file.getApps().getApps() == null) {
+            file.getApps().setApps(new AppsDescription());
+        }
+        if (file.getApps().getApps().getList() == null) {
+            file.getApps().getApps().setList(new AppsDescriptionList());
+        }
+        for (AppDescription a : file.getApps().getApps().getList().getApp()) {
+            if (context) {
+                if (name.equals(a.getRoot())) {
+                    return a;
+                }
+            } else {
+                if (name.equals(a.getName())) {
+                    return a;
+                }
+            }
+        }
+        return null;
     }
 }

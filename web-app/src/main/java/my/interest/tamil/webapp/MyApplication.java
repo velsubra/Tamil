@@ -1,15 +1,12 @@
 package my.interest.tamil.webapp;
 
 import my.interest.tamil.rest.resources.*;
-import my.interest.tamil.rest.resources.api.NumberReaderResource;
-import my.interest.tamil.rest.resources.api.TranslitResource;
-import my.interest.tamil.rest.resources.apps.AppAccessResource;
+import my.interest.tamil.rest.resources.api.*;
 import my.interest.tamil.rest.resources.apps.AppManagementResource;
 import my.interest.tamil.rest.resources.apps.AppsAccessResource;
 import my.interest.tamil.rest.resources.filters.TamilContainerFilter;
 
 import javax.ws.rs.ApplicationPath;
-import javax.ws.rs.Path;
 import javax.ws.rs.core.Application;
 import java.util.HashSet;
 import java.util.Set;
@@ -31,7 +28,7 @@ public class MyApplication extends Application {
         set.add(HandlerResource.class);
         set.add(RootVerbResource.class);
         set.add(ResourceExceptionMapper.class);
-        set.add(VerbCoumpoindWordResource.class);
+        set.add(VerbCoumpoundWordResource.class);
         set.add(NoCacheFilter.class);
         set.add(WordLookupResource.class);
         set.add(PeyarchcholResource.class);
@@ -41,9 +38,14 @@ public class MyApplication extends Application {
 
         set.add(AppsAccessResource.class);
         set.add(AppManagementResource.class);
-
+        set.add(DictionaryResource.class);
+        set.add(ParserResource.class);
         set.add(TranslitResource.class);
         set.add(NumberReaderResource.class);
+        set.add(FileAccessResource.class);
+        set.add(PersistenceResource.class);
+
+
 
 
 

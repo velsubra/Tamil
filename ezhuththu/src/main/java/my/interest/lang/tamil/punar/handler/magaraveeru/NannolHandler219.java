@@ -113,6 +113,7 @@ public class NannolHandler219 extends AbstractPunarchiHandler {
 
     @Override
     public TamilWordPartContainer join(TamilWordPartContainer nilai, TamilWordPartContainer varum) {
+        if (nilai.isThanikKurilOtru()) return  null;
         if (nilai.getWord().endsWith(TamilCompoundCharacter.IM)) {
             TamilWord mgone = nilai.getWord().subWord(0, nilai.getWord().size() - 1);
             if (varum.isStartingWithUyir()) {

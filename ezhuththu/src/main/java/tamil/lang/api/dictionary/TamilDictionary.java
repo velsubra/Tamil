@@ -41,11 +41,25 @@ public interface TamilDictionary {
      *
      * @param word         the word or first part of word to be searched.
      * @param exactMatch   flag to say if exact match has be performed. When false, words starting with the given word may be returned.
-     * @param maxCount     the max count expected. The search returns after the maxCount is reached or when nothing is found.
+     * @param maxCount     the max count expected. The search returns after the maxCount is reached or when the search is finished.
      * @param includeTypes the list of classes indicating the types of word to be returned.
      * @return the list of words found matching the search criteria.
      */
     public List<IKnownWord> search(TamilWord word, boolean exactMatch, int maxCount, List<Class<? extends IKnownWord>> includeTypes);
+
+
+
+    /**
+     * Searches for a specific word and of specific type.
+     *
+     * @param word         the word or first part of word to be searched.
+     * @param maxCount     the max count expected. The search returns after the maxCount is reached or when the search is finished.
+     * @param includeTypes the list of classes indicating the types of word to be returned.
+     * @param features the features used while doing the search.
+     * @return the list of words found matching the search criteria.
+     */
+    public List<IKnownWord> search(TamilWord word,  int maxCount, List<Class<? extends IKnownWord>> includeTypes, DictionaryFeature ... features);
+
 
     /**
      * Peeks a quick Tamil word from an english word
@@ -54,6 +68,28 @@ public interface TamilDictionary {
      * @return the known tamil word.
      */
     public IKnownWord peekEnglish(String english);
+
+
+
+
+
+    /**
+     * Suggests words for a specific word, and of specific type.
+     *
+     * @param word         the word or first part of word to be searched.
+     * @param maxCount     the max count expected. The suggestion search returns after the maxCount is reached or when the search is finished.
+     * @param includeTypes the list of classes indicating the types of word to be returned.
+     * @return the list of words that are suggested in the  context.  Never null.
+     */
+    public List<IKnownWord> suggest(TamilWord word, int maxCount, List<Class<? extends IKnownWord>> includeTypes);
+
+
+    /**
+     * Adds a new word to the dictionary.
+     * @param word  the known word to be added
+     */
+    public void add(IKnownWord word);
+
 
 
 }

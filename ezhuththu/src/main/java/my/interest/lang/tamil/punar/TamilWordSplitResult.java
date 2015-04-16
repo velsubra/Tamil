@@ -49,6 +49,7 @@ public class TamilWordSplitResult extends LinkedList<TamilWordPartContainer>  {
         return buffer.toString();
     }
     public boolean equals(Object obj) {
+        if (obj == null) return false;
         return toString().equals(obj.toString());
     }
 

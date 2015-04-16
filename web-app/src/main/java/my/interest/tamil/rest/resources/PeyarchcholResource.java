@@ -3,7 +3,7 @@ package my.interest.tamil.rest.resources;
 
 import tamil.lang.TamilWord;
 import my.interest.lang.tamil.internal.api.PersistenceInterface;
-import my.interest.lang.tamil.internal.api.PeyarchcholDescriptionMatcher;
+import tamil.lang.api.persist.matcher.PeyarchcholDescriptionMatcher;
 import my.interest.lang.tamil.generated.types.*;
 import my.interest.tamil.rest.resources.exception.ResourceException;
 import my.interest.tamil.rest.resources.exception.ResourceNotFoundException;

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jnlp spec="1.0+" codebase="tamil" href="">
+    <information>
+        <title>amil Platform Applet</title>
+        <vendor>Sun</vendor>
+    </information>
+    <resources>
+        <!-- Application Resources -->
+        <j2se version="1.7+"
+              href="http://java.sun.com/products/autodl/j2se"/>
+        <jar href="tamil-letter-1.0.jar" main="true" />
+
+    </resources>
+    <applet-desc
+            name="Tamil Platform Applet"
+            main-class="tamil.lang.api.applet.AppletTamilFactory"
+            width="1"
+            height="1">
+    </applet-desc>
+    <!--<update check="background"/>-->
+    <update check="force"/>
+</jnlp>

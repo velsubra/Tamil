@@ -3,6 +3,7 @@ package my.interest.lang.tamil.impl;
 import my.interest.lang.tamil.EzhuththuUtils;
 
 import tamil.lang.api.feature.Feature;
+import tamil.lang.api.feature.FeatureConstants;
 import tamil.lang.api.number.IgnoreNonDigitFeature;
 import tamil.lang.api.number.PunharchiFeature;
 
@@ -24,7 +25,7 @@ public final class FeatureSet {
     private static Map<String, Feature > registeredFeatures = new HashMap<String, Feature>();
 
     static {
-        Field[] fields = Feature.class.getFields();
+        Field[] fields = FeatureConstants.class.getFields();
         for (Field f : fields) {
             if (Modifier.isStatic(f.getModifiers())) {
                 if (Modifier.isFinal(f.getModifiers())) {
@@ -108,7 +109,7 @@ public final class FeatureSet {
     }
 
 
-    public<T extends Feature>  boolean isEnabled (Class<T> feature) {
+    public<T extends Feature>  boolean isFeatureEnabled (Class<T> feature) {
         return getFeature(feature) != null;
     }
 
@@ -135,6 +136,8 @@ public final class FeatureSet {
         if ( f == null) return false;
         return f.isFull();
     }
+
+
 
 
 }

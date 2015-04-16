@@ -5,7 +5,7 @@ package tamil.lang.api.trans;
  *     Feature that enables transliterating      அவன்idam into அவனிடம்
  * </p>
  *
- * @see tamil.lang.api.feature.Feature#TRANSLIT_NOUN_LOOKUP_FEATURE_VAL_115
+ * @see tamil.lang.api.feature.FeatureConstants#TRANSLIT_NOUN_LOOKUP_FEATURE_VAL_115
  *
  *
  * @author velsubra

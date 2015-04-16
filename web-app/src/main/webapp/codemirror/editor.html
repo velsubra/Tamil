@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Tamil Editor</title>
+    <script src="lib/codemirror.js"></script>
+    <script src="addon/selection/active-line.js"></script>
+    <script src="addon/hint/show-hint.js"></script>
+    <script type="text/javascript" src="../jquery-1.9.1.js" charset="utf-8"></script>
+    <script type="text/javascript" src="../js/api/tamil-platform-api-1.1.js" charset="utf-8"></script>
+
+    <script type="text/javascript" src="../service-consumer.js" charset="utf-8"></script>
+
+    <script type="text/javascript" src="extension.js" charset="utf-8"></script>
+
+    <link rel="stylesheet" href="lib/codemirror.css">
+    <link rel="stylesheet" href="addon/hint/show-hint.css">
+    <link rel="stylesheet" type="text/css" href="../punarchi.css"/>
+
+
+    <script>
+
+
+       function _onpage_blur() {
+            localStorage.setItem("english-text___", myCodeMirror.getValue());
+        }
+
+
+
+        function _load() {
+            var old = localStorage.getItem("english-text___");
+            if (old) {
+                $("#edit").val(old);
+            } else {
+                $("#edit").val("");
+            }
+        }
+
+    </script>
+
+</head>
+<body  onblur="_onpage_blur()" >
+For real time editing experience, you can switch to  <a
+        href="editor-applet.html">applet based editing.</a>
+<hr/>
+<a href="../index.html">&lt;-பின்னுக்குச்செல்க</a>
+<!--<div id="tool_tip" class="temp_tamil_tip"></div>-->
+&nbsp;&nbsp;&nbsp;Transliterate on Edit:<input type="checkbox" checked id="opt_tamil"
+                                               title="CTRL+ALT+t to toggle transliteration."/> |
+Suggestions on Edit:<input type="checkbox" id="opt_suggestion" title="Press CTRL+space to look for suggestions."/> |
+Spell Check on Edit:<input type="checkbox" checked id="opt_spell" title="Do background spell-check" onclick="_backgroundSpellCheck()"/>
+
+<textarea rows="10" cols="80" id="edit">
+
+
+</textarea>
+
+<script>
+
+
+    _load();
+
+
+    function _load() {
+        var old = localStorage.getItem("english-text___");
+        if (old) {
+            $("#edit").val(old);
+        } else {
+            $("#edit").val("");
+        }
+    }
+
+</script>
+<a href="../index.html">&lt;-பின்னுக்குச்செல்க</a>
+</body>
+</html>

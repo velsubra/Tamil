@@ -38,7 +38,7 @@ public interface Transliterator {
     /**
      * Performs transliteration of text with the specified set of features.
      * <p>
-     * Please see {@link tamil.lang.api.feature.Feature#TRANSLIT_JOIN_FEATURE_VAL_110}  and {@link tamil.lang.api.feature.Feature#TRANSLIT_NOUN_LOOKUP_FEATURE_VAL_115}
+     * Please see {@link tamil.lang.api.feature.FeatureConstants#TRANSLIT_JOIN_FEATURE_VAL_110}  and {@link tamil.lang.api.feature.FeatureConstants#TRANSLIT_NOUN_LOOKUP_FEATURE_VAL_115}
      * </p>
      *
      * @param text     the text to be   transliterated
@@ -46,4 +46,18 @@ public interface Transliterator {
      * @return the transliterated Tamil text.
      */
     public TamilWord transliterate(String text, TranslitFeature... features);
+
+
+//
+//    /**
+//     * Performs transliteration of text with the specified set of features.
+//     * <p>
+//     * Please see {@link tamil.lang.api.feature.Feature#TRANSLIT_JOIN_FEATURE_VAL_110}  and {@link tamil.lang.api.feature.FeatureConstants#TRANSLIT_NOUN_LOOKUP_FEATURE_VAL_115}
+//     * </p>
+//     *
+//     * @param text     the text to be   transliterated
+//     * @param features the list of TranslitFeature used to transliterate
+//     * @return the transliterated Tamil text.
+//     */
+//    public String translit(String text, TranslitFeature... features);
 }

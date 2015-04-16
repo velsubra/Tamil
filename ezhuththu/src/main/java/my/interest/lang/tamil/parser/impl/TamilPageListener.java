@@ -61,7 +61,11 @@ public class TamilPageListener implements TamilCharacterParserListener<TamilPage
     }
 
     public static TamilPage readUTF8(String page) {
-        return readUTF8(new ByteArrayInputStream(page.getBytes()));
+        try {
+            return readUTF8(new ByteArrayInputStream(page.getBytes(EzhuththuUtils.ENCODING)));
+        } catch(Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public static TamilPage readUTF8(InputStream inputStream) {

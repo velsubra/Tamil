@@ -1,5 +1,6 @@
 package test.simple;
 
+import tamil.lang.TamilFactory;
 import tamil.lang.TamilWord;
 import my.interest.lang.tamil.internal.api.HandlerFactory;
 import my.interest.lang.tamil.internal.api.PersistenceInterface;
@@ -36,14 +37,14 @@ public class ParseTest {
        // ExecuteManager.fire(new WordGeneratorFromVinaiyadi(inter.findRootVerbDescription("போ")));
        // ExecuteManager.fire(new WordGeneratorFromVinaiyadi(inter.findRootVerbDescription("முடி")));
 
-        PersistenceInterface.addKnown(new Peyarchchol(EnglishToTamilCharacterLookUpContext.getBestMatch("thamizh"),0));
-        PersistenceInterface.addKnown(new Peyarchchol(EnglishToTamilCharacterLookUpContext.getBestMatch("vellam"),0));
-        PersistenceInterface.addKnown(new Peyarchchol(EnglishToTamilCharacterLookUpContext.getBestMatch("thaazhi"),0));
-        PersistenceInterface.addKnown(new Aththu());
-        PersistenceInterface.addKnown(new Ottu("க்"));
-        PersistenceInterface.addKnown(new Ottu("ச்"));
-        PersistenceInterface.addKnown(new Ottu("த்"));
-        PersistenceInterface.addKnown(new Ottu("ப்"));
+        TamilFactory.getSystemDictionary().add(new Peyarchchol(EnglishToTamilCharacterLookUpContext.getBestMatch("thamizh"), 0));
+        TamilFactory.getSystemDictionary().add(new Peyarchchol(EnglishToTamilCharacterLookUpContext.getBestMatch("vellam"),0));
+        TamilFactory.getSystemDictionary().add(new Peyarchchol(EnglishToTamilCharacterLookUpContext.getBestMatch("thaazhi"),0));
+        TamilFactory.getSystemDictionary().add(new Aththu());
+        TamilFactory.getSystemDictionary().add(new Ottu("க்"));
+        TamilFactory.getSystemDictionary().add(new Ottu("ச்"));
+        TamilFactory.getSystemDictionary().add(new Ottu("த்"));
+        TamilFactory.getSystemDictionary().add(new Ottu("ப்"));
 
 
 

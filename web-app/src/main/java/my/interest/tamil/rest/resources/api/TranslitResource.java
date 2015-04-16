@@ -1,8 +1,11 @@
 package my.interest.tamil.rest.resources.api;
 
+import my.interest.lang.tamil.impl.FeatureSet;
 import org.json.JSONObject;
 import tamil.lang.TamilFactory;
 import tamil.lang.TamilWord;
+import tamil.lang.api.number.ReaderFeature;
+import tamil.lang.api.trans.TranslitFeature;
 import tamil.lang.api.trans.Transliterator;
 
 import javax.ws.rs.*;
@@ -20,14 +23,16 @@ public class TranslitResource extends BaseResource {
     @GET
     @Path("/one/")
     @Produces("application/json; charset=UTF-8")
-    public String translitGet(@QueryParam("word") String english, @QueryParam("join") boolean join) throws Exception {
+    public String translitGet(@QueryParam("word") String english,  @DefaultValue("") @QueryParam("features") String features) throws Exception {
         JSONObject obj = new JSONObject();
         try {
             Transliterator transliterator = TamilFactory.getTransliterator(null);
-            TamilWord w = transliterator.transliterate(english, join);
+            TamilWord w = transliterator.transliterate(english, FeatureSet.findFeatures(TranslitFeature.class, features).toArray(new TranslitFeature[] {}));
+            if (w != null ){
+                obj.put("given", english);
+                obj.put("tamil", w.toString());
+            }
 
-
-            obj.put("tamil", w.toString());
         } catch (Exception e) {
             handle(obj, e);
         }
@@ -39,13 +44,13 @@ public class TranslitResource extends BaseResource {
     @PUT
     @Path("/one/")
     @Produces("application/json; charset=UTF-8")
-    public String translit(String english, @QueryParam("join") boolean join) throws Exception {
+    public String translit(String english,  @DefaultValue("") @QueryParam("features") String features) throws Exception {
         JSONObject obj = new JSONObject();
         try {
             Transliterator transliterator = TamilFactory.getTransliterator(null);
-            TamilWord w = transliterator.transliterate(english, join);
+            TamilWord w = transliterator.transliterate(english, FeatureSet.findFeatures(TranslitFeature.class, features).toArray(new TranslitFeature[] {}));
 
-
+            obj.put("given", english);
             obj.put("tamil", w.toString());
         } catch (Exception e) {
             handle(obj, e);

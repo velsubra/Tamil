@@ -65,7 +65,7 @@ public final class TamilCompoundCharacter extends TamilCharacter implements Comp
 
     @Override
     public int[] getConsonants() {
-        return consonants;
+        return consonants.clone();
     }
 
 
@@ -471,6 +471,7 @@ public final class TamilCompoundCharacter extends TamilCharacter implements Comp
     public static final TamilCompoundCharacter IJ_ = new TamilCompoundCharacter(TamilSimpleCharacter.JA_.getValue(), PULLI);
     public static final TamilCompoundCharacter IH_ = new TamilCompoundCharacter(TamilSimpleCharacter.HA_.getValue(), PULLI);
     public static final TamilCompoundCharacter ISH_ = new TamilCompoundCharacter(TamilSimpleCharacter.SHA_.getValue(), PULLI);
+    public static final TamilCompoundCharacter ISS_ = new TamilCompoundCharacter(TamilSimpleCharacter.SSA_.getValue(), PULLI);
 
 
     public static final TamilCompoundCharacter IK_aa = new TamilCompoundCharacter(TamilSimpleCharacter.KA.getValue(), aa);
@@ -495,6 +496,7 @@ public final class TamilCompoundCharacter extends TamilCharacter implements Comp
     public static final TamilCompoundCharacter IJ_aa = new TamilCompoundCharacter(TamilSimpleCharacter.JA_.getValue(), aa);
     public static final TamilCompoundCharacter IH_aa = new TamilCompoundCharacter(TamilSimpleCharacter.HA_.getValue(), aa);
     public static final TamilCompoundCharacter ISH_aa = new TamilCompoundCharacter(TamilSimpleCharacter.SHA_.getValue(), aa);
+    public static final TamilCompoundCharacter ISS_aa = new TamilCompoundCharacter(TamilSimpleCharacter.SSA_.getValue(), aa);
 
 
     public static final TamilCompoundCharacter IK_E = new TamilCompoundCharacter(TamilSimpleCharacter.KA.getValue(), E);
@@ -519,6 +521,7 @@ public final class TamilCompoundCharacter extends TamilCharacter implements Comp
     public static final TamilCompoundCharacter IJ_E = new TamilCompoundCharacter(TamilSimpleCharacter.JA_.getValue(), E);
     public static final TamilCompoundCharacter IH_E = new TamilCompoundCharacter(TamilSimpleCharacter.HA_.getValue(), E);
     public static final TamilCompoundCharacter ISH_E = new TamilCompoundCharacter(TamilSimpleCharacter.SHA_.getValue(), E);
+    public static final TamilCompoundCharacter ISS_E = new TamilCompoundCharacter(TamilSimpleCharacter.SSA_.getValue(), E);
 
 
     public static final TamilCompoundCharacter IK_EE = new TamilCompoundCharacter(TamilSimpleCharacter.KA.getValue(), EE);
@@ -543,6 +546,7 @@ public final class TamilCompoundCharacter extends TamilCharacter implements Comp
     public static final TamilCompoundCharacter IJ_EE = new TamilCompoundCharacter(TamilSimpleCharacter.JA_.getValue(), EE);
     public static final TamilCompoundCharacter IH_EE = new TamilCompoundCharacter(TamilSimpleCharacter.HA_.getValue(), EE);
     public static final TamilCompoundCharacter ISH_EE = new TamilCompoundCharacter(TamilSimpleCharacter.SHA_.getValue(), EE);
+    public static final TamilCompoundCharacter ISS_EE = new TamilCompoundCharacter(TamilSimpleCharacter.SSA_.getValue(), EE);
 
 
     public static final TamilCompoundCharacter IK_U = new TamilCompoundCharacter(TamilSimpleCharacter.KA.getValue(), U);
@@ -567,6 +571,7 @@ public final class TamilCompoundCharacter extends TamilCharacter implements Comp
     public static final TamilCompoundCharacter IJ_U = new TamilCompoundCharacter(TamilSimpleCharacter.JA_.getValue(), U);
     public static final TamilCompoundCharacter IH_U = new TamilCompoundCharacter(TamilSimpleCharacter.HA_.getValue(), U);
     public static final TamilCompoundCharacter ISH_U = new TamilCompoundCharacter(TamilSimpleCharacter.SHA_.getValue(), U);
+    public static final TamilCompoundCharacter ISS_U = new TamilCompoundCharacter(TamilSimpleCharacter.SSA_.getValue(), U);
 
 
     public static final TamilCompoundCharacter IK_UU = new TamilCompoundCharacter(TamilSimpleCharacter.KA.getValue(), UU);
@@ -591,6 +596,7 @@ public final class TamilCompoundCharacter extends TamilCharacter implements Comp
     public static final TamilCompoundCharacter IJ_UU = new TamilCompoundCharacter(TamilSimpleCharacter.JA_.getValue(), UU);
     public static final TamilCompoundCharacter IH_UU = new TamilCompoundCharacter(TamilSimpleCharacter.HA_.getValue(), UU);
     public static final TamilCompoundCharacter ISH_UU = new TamilCompoundCharacter(TamilSimpleCharacter.SHA_.getValue(), UU);
+    public static final TamilCompoundCharacter ISS_UU = new TamilCompoundCharacter(TamilSimpleCharacter.SSA_.getValue(), UU);
 
 
     public static final TamilCompoundCharacter IK_A = new TamilCompoundCharacter(TamilSimpleCharacter.KA.getValue(), A);
@@ -615,6 +621,7 @@ public final class TamilCompoundCharacter extends TamilCharacter implements Comp
     public static final TamilCompoundCharacter IJ_A = new TamilCompoundCharacter(TamilSimpleCharacter.JA_.getValue(), A);
     public static final TamilCompoundCharacter IH_A = new TamilCompoundCharacter(TamilSimpleCharacter.HA_.getValue(), A);
     public static final TamilCompoundCharacter ISH_A = new TamilCompoundCharacter(TamilSimpleCharacter.SHA_.getValue(), A);
+    public static final TamilCompoundCharacter ISS_A = new TamilCompoundCharacter(TamilSimpleCharacter.SSA_.getValue(), A);
 
 
     public static final TamilCompoundCharacter IK_AA = new TamilCompoundCharacter(TamilSimpleCharacter.KA.getValue(), AA);
@@ -639,6 +646,7 @@ public final class TamilCompoundCharacter extends TamilCharacter implements Comp
     public static final TamilCompoundCharacter IJ_AA = new TamilCompoundCharacter(TamilSimpleCharacter.JA_.getValue(), AA);
     public static final TamilCompoundCharacter IH_AA = new TamilCompoundCharacter(TamilSimpleCharacter.HA_.getValue(), AA);
     public static final TamilCompoundCharacter ISH_AA = new TamilCompoundCharacter(TamilSimpleCharacter.SHA_.getValue(), AA);
+    public static final TamilCompoundCharacter ISS_AA = new TamilCompoundCharacter(TamilSimpleCharacter.SSA_.getValue(), AA);
 
 
     public static final TamilCompoundCharacter IK_I = new TamilCompoundCharacter(TamilSimpleCharacter.KA.getValue(), I);
@@ -663,6 +671,8 @@ public final class TamilCompoundCharacter extends TamilCharacter implements Comp
     public static final TamilCompoundCharacter IJ_I = new TamilCompoundCharacter(TamilSimpleCharacter.JA_.getValue(), I);
     public static final TamilCompoundCharacter IH_I = new TamilCompoundCharacter(TamilSimpleCharacter.HA_.getValue(), I);
     public static final TamilCompoundCharacter ISH_I = new TamilCompoundCharacter(TamilSimpleCharacter.SHA_.getValue(), I);
+    public static final TamilCompoundCharacter ISS_I = new TamilCompoundCharacter(TamilSimpleCharacter.SSA_.getValue(), I);
+
 
 
     public static final TamilCompoundCharacter IK_O = new TamilCompoundCharacter(TamilSimpleCharacter.KA.getValue(), O);
@@ -687,6 +697,7 @@ public final class TamilCompoundCharacter extends TamilCharacter implements Comp
     public static final TamilCompoundCharacter IJ_O = new TamilCompoundCharacter(TamilSimpleCharacter.JA_.getValue(), O);
     public static final TamilCompoundCharacter IH_O = new TamilCompoundCharacter(TamilSimpleCharacter.HA_.getValue(), O);
     public static final TamilCompoundCharacter ISH_O = new TamilCompoundCharacter(TamilSimpleCharacter.SHA_.getValue(), O);
+    public static final TamilCompoundCharacter ISS_O = new TamilCompoundCharacter(TamilSimpleCharacter.SSA_.getValue(), O);
 
 
     public static final TamilCompoundCharacter IK_OO = new TamilCompoundCharacter(TamilSimpleCharacter.KA.getValue(), OO);
@@ -711,6 +722,7 @@ public final class TamilCompoundCharacter extends TamilCharacter implements Comp
     public static final TamilCompoundCharacter IJ_OO = new TamilCompoundCharacter(TamilSimpleCharacter.JA_.getValue(), OO);
     public static final TamilCompoundCharacter IH_OO = new TamilCompoundCharacter(TamilSimpleCharacter.HA_.getValue(), OO);
     public static final TamilCompoundCharacter ISH_OO = new TamilCompoundCharacter(TamilSimpleCharacter.SHA_.getValue(), OO);
+    public static final TamilCompoundCharacter ISS_OO = new TamilCompoundCharacter(TamilSimpleCharacter.SSA_.getValue(), OO);
 
 
     public static final TamilCompoundCharacter IK_OU = new TamilCompoundCharacter(TamilSimpleCharacter.KA.getValue(), OU);
@@ -735,6 +747,7 @@ public final class TamilCompoundCharacter extends TamilCharacter implements Comp
     public static final TamilCompoundCharacter IJ_OU = new TamilCompoundCharacter(TamilSimpleCharacter.JA_.getValue(), OU);
     public static final TamilCompoundCharacter IH_OU = new TamilCompoundCharacter(TamilSimpleCharacter.HA_.getValue(), OU);
     public static final TamilCompoundCharacter ISH_OU = new TamilCompoundCharacter(TamilSimpleCharacter.SHA_.getValue(), OU);
+    public static final TamilCompoundCharacter ISS_OU = new TamilCompoundCharacter(TamilSimpleCharacter.SSA_.getValue(), OU);
 
 
     /**
@@ -791,6 +804,11 @@ public final class TamilCompoundCharacter extends TamilCharacter implements Comp
     @Override
     public String getSoundStrengthDigest() {
         return asSimpleTamilCharacter().getSoundStrengthDigest();
+    }
+
+    @Override
+    public int getCodePointsCount() {
+        return consonants.length + 1;
     }
 
     @Override

@@ -1,27 +1,37 @@
 package my.interest.lang.tamil.internal.api;
 
+import my.interest.lang.tamil.EzhuththuUtils;
 import my.interest.lang.tamil.StringUtils;
 import my.interest.lang.tamil.TamilUtils;
 import my.interest.lang.tamil.generated.types.*;
 import my.interest.lang.tamil.generated.types.Properties;
 import my.interest.lang.tamil.impl.FileBasedPersistence;
 import my.interest.lang.tamil.impl.PropertyFinderForResource;
+import my.interest.lang.tamil.impl.dictionary.DefaultPlatformDictionaryBase;
 import my.interest.lang.tamil.multi.ExecuteManager;
 import my.interest.lang.tamil.multi.WordGeneratorFromIdai;
 import my.interest.lang.tamil.multi.WordGeneratorFromPeyar;
 import my.interest.lang.tamil.multi.WordGeneratorFromVinaiyadi;
 import my.interest.lang.tamil.punar.PropertyDescriptionContainer;
 import my.interest.lang.tamil.punar.TamilWordPartContainer;
-import my.interest.lang.tamil.punar.handler.verrrrumai.VAllHandler;
-import my.interest.lang.tamil.translit.EnglishToTamilCharacterLookUpContext;
+import my.interest.lang.tamil.xml.AppCache;
 import org.codehaus.groovy.jsr223.GroovyScriptEngineImpl;
 import tamil.lang.TamilCompoundCharacter;
+import tamil.lang.TamilFactory;
 import tamil.lang.TamilWord;
+import tamil.lang.api.persist.manager.*;
+import tamil.lang.api.persist.matcher.DescriptionMatcher;
+import tamil.lang.api.persist.matcher.IdaichcholDescriptionMatcher;
+import tamil.lang.api.persist.matcher.PeyarchcholDescriptionMatcher;
+import tamil.lang.api.persist.matcher.RootVerbDescriptionMatcher;
 import tamil.lang.known.IKnownWord;
 import tamil.lang.known.derived.DerivativeWithPaal;
 import tamil.lang.known.derived.DerivativeWithTenseAndPaal;
 import tamil.lang.known.derived.VinaiyadiDerivative;
-import tamil.lang.known.non.derived.*;
+import tamil.lang.known.non.derived.NonStartingIdaichchol;
+import tamil.lang.known.non.derived.Peyarchchol;
+import tamil.lang.known.non.derived.Vinaiyadi;
+import tamil.lang.spi.PersistenceManagerProvider;
 
 import javax.script.CompiledScript;
 import javax.script.ScriptException;
@@ -36,7 +46,11 @@ import java.util.*;
  *
  * @author velsubra
  */
-public abstract class PersistenceInterface {
+public abstract class PersistenceInterface extends DefaultPlatformDictionaryBase implements PersistenceManagerProvider, PersistenceManager, RootVerbManager, PrepositionManager, NounManager, ApplicationManager {
+
+    protected static final TamilWord iduword = TamilWord.from("இடு");
+
+    private static PersistenceInterface ME = null;
 
     public void setAutoLoad(boolean autoLoad) {
         this.autoLoad = autoLoad;
@@ -84,24 +98,49 @@ public abstract class PersistenceInterface {
         idaimatchermap.put("NEW", IdaichcholDescriptionMatcher.NEW);
         idaimatchermap.put("DEFN_UNLOCKED", IdaichcholDescriptionMatcher.DEFN_UNLOCKED);
 
-
+        TamilFactory.init();
     }
 
+    /**
+     * Do not create this on your local env. /customer/scratch is used when the app is deployed in the oracle cloud.
+     *
+     * @return
+     */
     public static boolean isOnCloud() {
         return new File("/customer/scratch").exists();
     }
 
+    static File WORK_DIR = null;
 
-    public static PersistenceInterface get() {
-        if (isOnCloud()) {
-            return new FileBasedPersistence("/customer/scratch/i18n/i18n.xml");
-        } else {
+    public static File getWorkDir() {
+        if (WORK_DIR == null) {
+            if (isOnCloud()) {
+                WORK_DIR = new File("/customer/scratch/i18n");
+            } else {
 
-            return new FileBasedPersistence("/Users/velsubra/Downloads/i18n/i18n.xml");
+                WORK_DIR = new File(System.getProperty("user.home"), "tamil-platform");
+                if (!WORK_DIR.exists()) {
+                    WORK_DIR.mkdirs();
+                }
+                System.out.println("Work Dir:" + WORK_DIR.getAbsolutePath());
+
+            }
         }
+        return WORK_DIR;
     }
 
-    private static final SortedSet<IKnownWord> set = Collections.synchronizedSortedSet(new TreeSet<IKnownWord>());
+    /**
+     * TODO: Need to fix this
+     *
+     * @return
+     */
+    public static PersistenceInterface get() {
+
+        return new FileBasedPersistence();
+
+    }
+
+
     private static final SortedSet<IKnownWord> consonantset = Collections.synchronizedSortedSet(new TreeSet<IKnownWord>(new Comparator<IKnownWord>() {
         @Override
         public int compare(IKnownWord o1, IKnownWord o2) {
@@ -115,9 +154,6 @@ public abstract class PersistenceInterface {
             return ret;
         }
     }));
-
-    private static final Map<Integer, List<IKnownWord>> suggestions = new HashMap<Integer, List<IKnownWord>>();
-    private static final Map<String, List<IKnownWord>> english_mapping = Collections.synchronizedMap(new HashMap<String, List<IKnownWord>>());
 
 
     public static synchronized void addEnglishMappings(String eng, IKnownWord w) {
@@ -134,14 +170,6 @@ public abstract class PersistenceInterface {
         }
     }
 
-    public static TamilWord lookupEnglish(String eng) {
-        List<IKnownWord> list = english_mapping.get(eng);
-        if (list == null || list.isEmpty()) {
-            return null;
-        } else {
-            return list.get(0).getWord();
-        }
-    }
 
     private static synchronized void addEnglishMapping(String eng, IKnownWord w) {
         List<IKnownWord> list = english_mapping.get(eng);
@@ -185,35 +213,10 @@ public abstract class PersistenceInterface {
         return set.size();
     }
 
-    public static List<IKnownWord> findWords(String word) {
-        return findMatchingDerivedWords(word, true, 10, null);
-    }
 
-    // static int  count = 0;
-    public static List<IKnownWord> findFirstWord(String word) {
-        //   System.out.println(count ++ +":" +word);
-        return findMatchingDerivedWords(word, true, 1, null);
-    }
-
-    public static List<IKnownWord> findMatchingDerivedWords(String start, int max, List<Class<? extends IKnownWord>> includeTypes) {
-        List<IKnownWord> ret = findMatchingDerivedWords(start, false, max, includeTypes);
-        return ret;
-    }
-
-    public static List<IKnownWord> findMatchingDerivedWords(String start, boolean exact, int max, List<Class<? extends IKnownWord>> includeTypes) {
-        TamilWord search = EnglishToTamilCharacterLookUpContext.getBestMatch(start);
-        return findMatchingDerivedWords(search, exact, max, includeTypes);
-    }
-
-    public static List<IKnownWord> findMatchingDerivedWords(TamilWord search, boolean exact, int max, List<Class<? extends IKnownWord>> includeTypes) {
-
-        return findMatchingDerivedWords(set, search, exact, max, includeTypes);
-    }
-
-    public static List<IKnownWord> suggestMatchingDerivedWords(String start, int max, List<Class<? extends IKnownWord>> includeTypes) {
-        TamilWord search = EnglishToTamilCharacterLookUpContext.getBestMatch(start);
-        List<IKnownWord> list = findMatchingDerivedWords(set, search, false, (int) (max / 3), includeTypes);
-
+    @Override
+    public List<IKnownWord> suggest(TamilWord search, int max, List<Class<? extends IKnownWord>> includeTypes) {
+        List<IKnownWord> list = super.suggest(search, (int) (max / 3), includeTypes);
         if (list.size() < max) {
             List<IKnownWord> sug = suggestions.get(search.suggestionHashCode());
             if (sug != null) {
@@ -232,131 +235,28 @@ public abstract class PersistenceInterface {
         return list;
     }
 
-    public static List<IKnownWord> findMatchingDerivedWords(SortedSet<IKnownWord> thisset, TamilWord start, boolean exact, int max, List<Class<? extends IKnownWord>> includeTypes) {
-        return findMatchingDerivedWords(thisset, start, exact, max, includeTypes, false);
-    }
-
-    public static List<IKnownWord> findMatchingDerivedWords(SortedSet<IKnownWord> thiset, TamilWord search, boolean exact, int max, List<Class<? extends IKnownWord>> includeTypes, boolean suggest) {
-        // System.out.println(start);
-        List<IKnownWord> ret = new ArrayList<IKnownWord>();
-        if (search == null || thiset.isEmpty() || max <= 0) return ret;
 
 
-        Comparator<? super IKnownWord> comparator = thiset.comparator();
-        synchronized (thiset) {
-            IKnownWord base = new AbstractKnownWord(search) {
-            };
-            Iterator<IKnownWord> sub = thiset.tailSet(base).iterator();
-
-            if (max < 0) {
-                max = -max;
-            }
-            while (max > 0) {
-
-                if (sub.hasNext()) {
-                    IKnownWord re = sub.next();
-                    boolean add = false;
-
-                    if (!suggest) {
-                        if (exact) {
-                            add = re.getWord().equals(search);
-                        } else {
-                            add = re.getWord().startsWith(search, false);
-                        }
-                    } else {
-                        if (comparator == null) {
-                            throw new RuntimeException("Comp is null");
-                        }
-                        //   System.out.println("Candidate:" + re.getWord().toString());
-                        add = comparator.compare(re, base) >= 0;
-                    }
-                    if (add) {
-                        if (includeTypes == null || includeTypes.isEmpty() || isInIncludeTypes(includeTypes, re.getClass())) {
-                            max--;
-                            ret.add(re);
-                        }
-                    } else {
-
-                        break;
-                    }
-                } else {
-                    break;
-                }
-
-            }
-        }
-
-        return ret;
-    }
-
-    private static boolean isInIncludeTypes(List<Class<? extends IKnownWord>> list, Class<? extends IKnownWord> cls) {
-        for (Class kn : list) {
-            if (kn.isAssignableFrom(cls)) {
-                return true;
-            }
-        }
-        return false;
-
-    }
-
-    public static void addKnown(IKnownWord w) {
-
-
-        set.add(w);
-        consonantset.add(w);
-        hashset.add(w);
-
-        synchronized (suggestions) {
-            int code = w.getWord().suggestionHashCode();
-            List<IKnownWord> linked = suggestions.get(code);
-            if (linked == null) {
-                linked = new LinkedList<IKnownWord>();
-                suggestions.put(code, linked);
-
-            }
-            if (!linked.contains(w)) {
-                linked.add(w);
-            }
-        }
-
-
-
-
-        // vowelset.appendNodesToAllPaths(w);
-    }
-
-//    private static IKnownWord find(List<IKnownWord> list, IKnownWord find) {
-//        if (list == null) {
-//            return  null;
-//        }
-//        for (IKnownWord it : list) {
-//            if (it.equals(find)) {
-//
-//            }
-//        }
-//    }
-
-    public static void removeKnown(IKnownWord w) {
-
-        set.remove(w);
+    protected void removeKnown(IKnownWord w) {
         consonantset.remove(w);
         hashset.remove(w);
-
-        synchronized (suggestions) {
-            int code = w.getWord().suggestionHashCode();
-            List<IKnownWord> linked = suggestions.get(code);
-            if (linked != null) {
-                linked.remove(w);
-
-            }
-        }
-        //vowelset.remove(w);
+        super.removeKnown(w);
 
     }
 
+    protected void addKnown(IKnownWord w) {
+        consonantset.add(w);
+        hashset.add(w);
+        super.addKnown(w);
+    }
+
+
     public static void addOrUpdateKnown(IKnownWord w) {
-        removeKnown(w);
-        addKnown(w);
+        if (ME == null) {
+            ME = get();
+        }
+        ME.removeKnown(w);
+        ME.addKnown(w);
     }
 
 
@@ -402,7 +302,7 @@ public abstract class PersistenceInterface {
                 if (r.getPresent() != null) {
                     for (DerivedValue d : r.getPresent().getList()) {
                         DerivativeWithPaal vinai = cls.getConstructor(TamilWord.class, Vinaiyadi.class, PaalViguthi.class).newInstance(TamilWord.from(d.getValue()), vi, viguthi);
-                        addKnown(vinai);
+                        addOrUpdateKnown(vinai);
                     }
                 }
 
@@ -425,7 +325,7 @@ public abstract class PersistenceInterface {
                 if (r.getPresent() != null) {
                     for (DerivedValue d : r.getPresent().getList()) {
                         VinaiyadiDerivative vinai = cls.getConstructor(TamilWord.class, Vinaiyadi.class).newInstance(TamilWord.from(d.getValue()), vi);
-                        addKnown(vinai);
+                        addOrUpdateKnown(vinai);
                     }
                 }
 
@@ -955,7 +855,7 @@ public abstract class PersistenceInterface {
                 peyars.remove(desc);
                 TamilWord n = TamilWord.from(verb);
                 TamilWord n_rm_ak = TamilUtils.trimFinalAKOrReturn(n);
-                removeKnown(new Peyarchchol(n_rm_ak, n.size() - n_rm_ak.size(),false));
+                removeKnown(new Peyarchchol(n_rm_ak, n.size() - n_rm_ak.size(), false));
                 persist(verbs);
             }
 
@@ -1256,14 +1156,22 @@ public abstract class PersistenceInterface {
         }
     }
 
-    private static AppResource findAppResourceFromApp(AppDescription app, String resource) {
+    private static AppResource findAppResourceFromApp(TamilRootWords all, AppDescription app, String resource) {
         if (app == null || resource == null || resource.trim().equals("")) return null;
         if (app.getResources() == null) {
             app.setResources(new AppResources());
         }
-        for (AppResource r : app.getResources().getResources()) {
-            if (resource.equals(r.getName())) {
-                return r;
+        if (app.getCache() == null) {
+            app.setCache(new AppCache());
+        }
+        if (app.getCache().getInheritanceList().isEmpty()) {
+            app.getCache().buildInheritanceOrder(all, app);
+        }
+        for (AppDescription inherit : app.getCache().getInheritanceList()) {
+            for (AppResource r : inherit.getResources().getResources()) {
+                if (resource.equals(r.getName())) {
+                    return r;
+                }
             }
         }
         return null;
@@ -1306,30 +1214,8 @@ public abstract class PersistenceInterface {
         return ret;
     }
 
-    private static AppDescription findApp(String name, TamilRootWords file, boolean context) {
-        if (name == null || name.trim().equals("") || file == null) return null;
-
-        if (file.getApps() == null) {
-            file.setApps(new Apps());
-        }
-        if (file.getApps().getApps() == null) {
-            file.getApps().setApps(new AppsDescription());
-        }
-        if (file.getApps().getApps().getList() == null) {
-            file.getApps().getApps().setList(new AppsDescriptionList());
-        }
-        for (AppDescription a : file.getApps().getApps().getList().getApp()) {
-            if (context) {
-                if (name.equals(a.getRoot())) {
-                    return a;
-                }
-            } else {
-                if (name.equals(a.getName())) {
-                    return a;
-                }
-            }
-        }
-        return null;
+    public static AppDescription findApp(String name, TamilRootWords file, boolean context) {
+        return EzhuththuUtils.findApp(name, file, context);
     }
 
     public void createAppAs(String code, String name, String as) {
@@ -1350,6 +1236,8 @@ public abstract class PersistenceInterface {
             target.setPlatform("1.1");
             target.setName(as);
             target.setRoot(as);
+            target.setResourceInheritance(app.getResourceInheritance());
+            target.setDescription(app.getDescription());
             target.setCode(code == null ? target.getCode() : code);
             target.setResources(new AppResources());
             target.getResources().setWelcome(app.getResources().getWelcome());
@@ -1393,7 +1281,7 @@ public abstract class PersistenceInterface {
                 app.setResources(new AppResources());
                 file.getApps().getApps().getList().getApp().add(app);
                 createResourceToApp(code, name, "index.html");
-                updateApp(code, code, name, name, "index.html");
+                updateApp(code, name, "index.html", null, null, "New app (No description yet)");
                 addOrUpdateResourceToApp(code, name, "index.html", AppResourceType.HTML.toString(), ("<!DOCTYPE html>\n" +
                         "<html xmlns=\"http://www.w3.org/1999/html\">\n" +
                         "<head>\n" +
@@ -1485,10 +1373,12 @@ public abstract class PersistenceInterface {
             }
 
 
-            AppResource res = findAppResourceFromApp(app, resource);
+            AppResource res = findAppResourceFromApp(file, app, resource);
             if (res == null) {
                 res = new AppResource();
                 res.setName(resource);
+                res.setType(AppResourceType.UNKNOWN);
+                res.setContent(new byte[0]);
                 app.getResources().getResources().add(res);
                 persist(file);
 
@@ -1527,7 +1417,7 @@ public abstract class PersistenceInterface {
                 }
             }
 
-            AppResource res = findAppResourceFromApp(app, resource);
+            AppResource res = findAppResourceFromApp(file, app, resource);
             if (res == null) {
                 throw new RuntimeException("Resource not found!");
             }
@@ -1585,7 +1475,7 @@ public abstract class PersistenceInterface {
     }
 
 
-    public void updateApp(String code, String newCode, String name, String context, String welcome) {
+    public void updateApp(String code, String name, String welcome, String parents, String inheritanceSearchOrder, String desc) {
         lock();
 
         try {
@@ -1604,13 +1494,40 @@ public abstract class PersistenceInterface {
                     throw new RuntimeException("Security Code does not match: Access Denied.");
                 }
             }
-            app.setCode(newCode);
-            app.setRoot(context);
-            if (findAppResource(context, welcome) == null) {
-                throw new RuntimeException("Resource not found to be set as welcome page!");
+
+            app.setRoot(name);
+
+
+            if (parents != null) {
+                List<String> ps = EzhuththuUtils.parseString(parents);
+                for (String p : ps) {
+                    if (p.equals(name)) {
+                        throw new RuntimeException("Same application  can not be parent for itself.");
+                    }
+                    if (findApp(p) == null) {
+                        throw new RuntimeException("Application '" + p + "' does not exist to inherit anything from!");
+                    }
+                }
+                if (app.getResourceInheritance() == null) {
+                    app.setResourceInheritance(new ResourceInheritance());
+                }
+                app.getResourceInheritance().getParentApps().clear();
+                app.getResourceInheritance().getParentApps().addAll(ps);
+                app.setCache(new AppCache());
+            } else {
+                app.setResourceInheritance(null);
+                app.setCache(new AppCache());
+            }
+
+            if (inheritanceSearchOrder != null) {
+                if (app.getResourceInheritance() == null) {
+                    app.setResourceInheritance(new ResourceInheritance());
+                }
+                app.getResourceInheritance().setInheritanceOrder(ResourceInheritanceOrder.fromValue(inheritanceSearchOrder));
             }
 
             app.getResources().setWelcome(welcome);
+            app.setDescription(desc);
             persist(file);
 
 
@@ -1642,7 +1559,7 @@ public abstract class PersistenceInterface {
                 }
             }
 
-            AppResource res = findAppResourceFromApp(app, resource);
+            AppResource res = findAppResourceFromApp(file, app, resource);
             if (res == null) {
                 throw new RuntimeException("Resource not found!");
             }
@@ -1662,10 +1579,7 @@ public abstract class PersistenceInterface {
 
     }
 
-    public AppResource findAppResource(String name, String resource) {
-
-
-        TamilRootWords file = getAllRootWords();
+    public static AppResource findAppResource(TamilRootWords file, String name, String resource) {
         if (name == null || name.trim().equals("")) {
             throw new RuntimeException("App name is mandatory!");
         }
@@ -1677,8 +1591,14 @@ public abstract class PersistenceInterface {
         if (app == null) {
             throw new RuntimeException("App not found");
         }
-        AppResource res = findAppResourceFromApp(app, resource);
+        AppResource res = findAppResourceFromApp(file, app, resource);
         return res;
+    }
+
+    public AppResource findAppResource(String name, String resource) {
+
+        TamilRootWords file = getAllRootWords();
+        return findAppResource(file, name, resource);
 
 
     }
@@ -1753,6 +1673,42 @@ public abstract class PersistenceInterface {
         }
         return null;
 
+    }
+
+    @Override
+    public PeyarchcholDescription findNounDescription(String root) {
+        return findPeyarchcholDescription(root);
+    }
+
+    @Override
+    public ApplicationManager getApplicationManager() {
+        return this;
+    }
+
+    @Override
+    public RootVerbManager getRootVerbManager() {
+        return this;
+    }
+
+    @Override
+    public PrepositionManager getPrepositionManager() {
+        return this;
+    }
+
+    @Override
+    public NounManager getNounManager() {
+        return this;
+    }
+
+    @Override
+    public IdaichcholDescription findPrepositionDescription(String root) {
+        return findIdaichcholDescription(root);
+    }
+
+
+    @Override
+    public PersistenceManager create() {
+        return new FileBasedPersistence();
     }
 
 }

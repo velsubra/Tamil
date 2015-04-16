@@ -6,13 +6,16 @@
     <parent>
         <groupId>TamilPlatform</groupId>
         <artifactId>platform-parent</artifactId>
-        <version>1.0</version>
+        <version>1.1</version>
         <relativePath>..</relativePath>
     </parent>
 
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
 
     <artifactId>tamil-word</artifactId>
-    <version>1.0</version>
+    <version>1.1</version>
 
     <dependencies>
         <dependency>
@@ -28,12 +31,7 @@
             <version>2.1.6</version>
         </dependency>
 
-        <dependency>
-            <groupId>org.json</groupId>
-            <artifactId>json</artifactId>
-            <version>20090211</version>
-            <scope>test</scope>
-        </dependency>
+
         <dependency>
             <groupId>org.mobicents.external.freetts</groupId>
             <artifactId>freetts</artifactId>
@@ -71,26 +69,7 @@
     </reporting>
     <build>
         <plugins>
-            <plugin>
-                <groupId>org.jvnet.jaxb2.maven2</groupId>
-                <artifactId>maven-jaxb2-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>generate</goal>
-                        </goals>
-                        <configuration>
-                            <specVersion>2.1</specVersion>
-                        </configuration>
-                    </execution>
-                </executions>
-                <configuration>
-                    <extension>true</extension>
-                    <schemaDirectory>src/main/resources/schema</schemaDirectory>
-                    <generatePackage>my.interest.lang.tamil.generated.types</generatePackage>
-                    <generateDirectory>${project.build.directory}/generated-sources/jaxb</generateDirectory>
-                </configuration>
-            </plugin>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
@@ -111,7 +90,8 @@
                         <link>http://java.sun.com/j2se/1.7.0/docs/api/</link>
                     </links>
                     <source>1.7</source>
-                    <sourcepath>${basedir}/src/main/java/</sourcepath>
+                    <sourcepath>${basedir}/src/main/java/:${basedir}/../ezhuththu/src/main/java/</sourcepath>
+
                     <excludePackageNames>my.*</excludePackageNames>
                     <outputDirectory>target/site/apidocs</outputDirectory>
 

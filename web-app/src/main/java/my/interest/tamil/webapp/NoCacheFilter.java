@@ -28,9 +28,9 @@ public class NoCacheFilter implements ContainerResponseFilter {
     @Override
     public ContainerResponse filter(ContainerRequest request, ContainerResponse response) {
       //  System.out.println("Setting headers!");
-        response.getHttpHeaders().add("Cache-Control", "no-cache, no-store, must-revalidate");
-        response.getHttpHeaders().add("Pragma", "no-cache");
-        response.getHttpHeaders().add("Expires", "0");
+       // response.getHttpHeaders().add("Cache-Control", "no-cache, no-store, must-revalidate");
+      //  response.getHttpHeaders().add("Pragma", "no-cache");
+        //response.getHttpHeaders().add("Expires", "0");
         return response;
     }
 }

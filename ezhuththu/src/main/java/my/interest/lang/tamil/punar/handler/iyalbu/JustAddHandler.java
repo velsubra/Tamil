@@ -21,12 +21,13 @@ public class JustAddHandler extends AbstractPunarchiHandler {
     }
 
     public static final JustAddHandler HANDLER = new JustAddHandler();
+    static final TamilWord IKKU = TamilWord.from("க்கு");
 
 
     @Override
     public List<TamilWordSplitResult> split(TamilWordPartContainer nilai, TamilWordPartContainer varum) {
         if (nilai.isEndingWithMei() && varum.isStartingWithUyir()) return null;
-        if (!varum.isStartingFine()) return null;
+        if (!varum.isStartingFine() && !IKKU.equals(varum.getWord())) return null;
         List<TamilWordSplitResult> list = new ArrayList<TamilWordSplitResult>();
         //Split the one that ends in Nilai.
         TamilWordSplitResult split = new TamilWordSplitResult();

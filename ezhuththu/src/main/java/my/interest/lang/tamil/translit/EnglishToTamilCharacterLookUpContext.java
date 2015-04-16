@@ -11,6 +11,7 @@ import tamil.lang.TamilCompoundCharacter;
 import tamil.lang.TamilFactory;
 import tamil.lang.TamilSimpleCharacter;
 import tamil.lang.TamilWord;
+import tamil.lang.api.feature.FeatureConstants;
 import tamil.lang.api.join.WordsJoiner;
 import tamil.lang.api.trans.JoinFeature;
 import tamil.lang.api.trans.NounLookupFeature;
@@ -18,11 +19,15 @@ import tamil.lang.api.trans.TranslitFeature;
 import tamil.lang.api.trans.Transliterator;
 import tamil.lang.known.IKnownWord;
 
+import java.io.Serializable;
 import java.lang.ref.SoftReference;
 import java.util.*;
 
 /**
  * <p>
+ *     WARNING: Applications should not directly use any class under my.interest.** packages.
+ *     These are subject to change. Applications should only use tamil.** packages. The entry point for the application is
+ *     {@link tamil.lang.TamilFactory}
  * </p>
  *
  * @author velsubra
@@ -61,7 +66,6 @@ public final class EnglishToTamilCharacterLookUpContext implements Transliterato
     static {
         preprocess.put('A', "aa");
         preprocess.put('E', "ea");
-        preprocess.put('I', "ee");
         preprocess.put('I', "ee");
         preprocess.put('O', "oa");
         preprocess.put('U', "oo");
@@ -123,15 +127,18 @@ public final class EnglishToTamilCharacterLookUpContext implements Transliterato
         map.put("llll", new TamilWord(TamilCompoundCharacter.ILL, TamilCompoundCharacter.ILL));
         map.put("lllll", new TamilWord(TamilCompoundCharacter.ILL, TamilCompoundCharacter.ILL));
         map.put("lh", new TamilWord(TamilCompoundCharacter.ILL));
+        map.put("lhh", new TamilWord(TamilCompoundCharacter.ILLL));
         map.put("llh", new TamilWord(TamilCompoundCharacter.ILL, TamilCompoundCharacter.ILL));
         map.put("lhl", new TamilWord(TamilCompoundCharacter.ILL, TamilCompoundCharacter.ILL));
         map.put("lhlh", new TamilWord(TamilCompoundCharacter.ILL, TamilCompoundCharacter.ILL));
         map.put("ln", new TamilWord(TamilCompoundCharacter.ILLL));
         map.put("lnt", new TamilWord(TamilCompoundCharacter.IL, TamilCompoundCharacter.INTH));
         map.put("m", new TamilWord(TamilCompoundCharacter.IM));
+        map.put("mz", new TamilWord(TamilCompoundCharacter.IM));
         map.put(" n", new TamilWord(TamilCompoundCharacter.INTH));
         map.put(" nt", new TamilWord(TamilCompoundCharacter.INTH));
         map.put("n", new TamilWord(TamilCompoundCharacter.IN));
+        map.put("nz", new TamilWord(TamilCompoundCharacter.IN));
         map.put("ny ", new TamilWord(TamilCompoundCharacter.IN_I));
         map.put("nn", new TamilWord(TamilCompoundCharacter.IN, TamilCompoundCharacter.IN));
         map.put("nnn", new TamilWord(TamilCompoundCharacter.INNN));
@@ -164,6 +171,7 @@ public final class EnglishToTamilCharacterLookUpContext implements Transliterato
         map.put("ntt", new TamilWord(TamilCompoundCharacter.INTH, TamilCompoundCharacter.ITH));
         map.put("ntth", new TamilWord(TamilCompoundCharacter.INTH, TamilCompoundCharacter.ITH));
         map.put("nh", new TamilWord(TamilCompoundCharacter.INNN));
+        map.put("nhh", new TamilWord(TamilCompoundCharacter.INTH));
         map.put("nht", new TamilWord(TamilCompoundCharacter.IN, TamilCompoundCharacter.IRR));
         map.put("nhth", new TamilWord(TamilCompoundCharacter.INNN, TamilCompoundCharacter.ITH));
         map.put("nhr", new TamilWord(TamilCompoundCharacter.IN, TamilCompoundCharacter.IRR));
@@ -185,9 +193,11 @@ public final class EnglishToTamilCharacterLookUpContext implements Transliterato
         map.put("ry ", new TamilWord(TamilCompoundCharacter.IR_I));
         map.put(" r", new TamilWord(TamilSimpleCharacter.E, TamilCompoundCharacter.IR));
         map.put("rr", new TamilWord(TamilCompoundCharacter.IRR));
+        map.put("rh", new TamilWord(TamilCompoundCharacter.IRR));
         map.put("rrr", new TamilWord(TamilCompoundCharacter.IRR, TamilCompoundCharacter.IRR));
         map.put("rrrr", new TamilWord(TamilCompoundCharacter.IRR, TamilCompoundCharacter.IRR));
         map.put("s", new TamilWord(TamilCompoundCharacter.ICH));
+        map.put("ss", new TamilWord(TamilCompoundCharacter.ISS_));
         map.put("sy ", new TamilWord(TamilCompoundCharacter.ICH_I));
         map.put("sh", new TamilWord(TamilCompoundCharacter.ISH_));
         map.put("t", new TamilWord(TamilCompoundCharacter.IRR));
@@ -242,7 +252,7 @@ public final class EnglishToTamilCharacterLookUpContext implements Transliterato
     @Override
     public TamilWord transliterate(String word, boolean join) {
 
-        return transliterate(word, join ? new TranslitFeature[]{TranslitFeature.TRANSLIT_JOIN_FEATURE_VAL_110} : null);
+        return transliterate(word, join ? new TranslitFeature[]{FeatureConstants.TRANSLIT_JOIN_FEATURE_VAL_110} : null);
     }
 
 
@@ -251,6 +261,7 @@ public final class EnglishToTamilCharacterLookUpContext implements Transliterato
 
         boolean cacheable = true;
         boolean join = false;
+        boolean atleastOneTranslit = false;
         NounLookupFeature nounlookup = null;
 
         if (features != null) {
@@ -273,7 +284,7 @@ public final class EnglishToTamilCharacterLookUpContext implements Transliterato
             if (ref != null) {
                 word = ref.get();
                 if (word != null) {
-                    return word;
+                    return word.duplicate();
                 }
             }
         }
@@ -303,7 +314,7 @@ public final class EnglishToTamilCharacterLookUpContext implements Transliterato
                     }
                     if (looked == null) {
                         looked = new TamilWord();
-                        looked.add ( UnknownCharacter.getFor('\\'));
+                        //looked.add ( UnknownCharacter.getFor('\\'));
                         for (int j = 0; j < english.length(); j++) {
                             looked.add( UnknownCharacter.getFor(english.charAt(j)));
                         }
@@ -346,6 +357,7 @@ public final class EnglishToTamilCharacterLookUpContext implements Transliterato
                 if (buffer.length() > 0) {
                     //All English
                     TamilWord allEnglish = getBestMatchNoNonChar(buffer.toString(), starting, true);
+                    atleastOneTranslit = true;
                     if (join) {
                         handler.addVaruMozhi(allEnglish);
                     } else {
@@ -373,6 +385,7 @@ public final class EnglishToTamilCharacterLookUpContext implements Transliterato
 
         if (buffer.length() > 0) {
             TamilWord allEnglish = getBestMatchNoNonChar(buffer.toString(), starting, true);
+            atleastOneTranslit = true;
             if (join) {
                 handler.addVaruMozhi(allEnglish);
             } else {
@@ -393,13 +406,13 @@ public final class EnglishToTamilCharacterLookUpContext implements Transliterato
         if (join) {
             word = handler.getSum();
         }
-        if (cacheable) {
-            cache.put(englishoriginal, new SoftReference<TamilWord>(word));
+        if (cacheable && atleastOneTranslit) {
+           cache.put(englishoriginal, new SoftReference<TamilWord>(word.duplicate()));
         }
         return word;
     }
 
-    static class TamilWordComparator implements Comparator<TamilWord> {
+    static class TamilWordComparator implements Comparator<TamilWord>, Serializable {
 
 
         @Override
@@ -415,9 +428,9 @@ public final class EnglishToTamilCharacterLookUpContext implements Transliterato
     }
 
 
-    private static TamilWord getBestMatchNoNonChar(String english) {
-        return getBestMatchNoNonChar(english, true, true);
-    }
+//    private static TamilWord getBestMatchNoNonChar(String english) {
+//        return getBestMatchNoNonChar(english, true, true);
+//    }
 
     //Eats max of four five characters
     private static TamilWord getBestMatchNoNonChar(String english, boolean starting, boolean ending) {
@@ -513,106 +526,6 @@ public final class EnglishToTamilCharacterLookUpContext implements Transliterato
 
     }
 
-
-//    public static TamilWord getBestMatch(String englishoriginal, boolean join) {
-//        TamilWord word = null;
-//        Map<String, SoftReference<TamilWord>> cache = join ? TRANSLIT_CACHE_JOIN : TRANSLIT_CACHE;
-//        SoftReference<TamilWord> ref = cache.get(englishoriginal);
-//        if (ref != null) {
-//            word = ref.get();
-//            if (word != null) {
-//                return word;
-//            }
-//        }
-//
-//        StringBuffer buffer = new StringBuffer();
-//        StringBuffer nonresolved = new StringBuffer();
-//
-//        WordsJoinHandler handler = null;
-//        if (join) {
-//            handler = new WordsJoinHandler();
-//        } else {
-//            word = new TamilWord();
-//        }
-//        if (englishoriginal == null) return word;
-//        StringBuffer english = new StringBuffer();
-//        for (int i = 0; i < englishoriginal.length(); i++) {
-//            char ch = englishoriginal.charAt(i);
-//            if (ch >= 'A' && ch <= 'Z') {
-//                String pref = preprocess.get(ch);
-//                if (pref != null) {
-//                    english.append(pref);
-//                } else {
-//                    //To lower case.
-//                    english.append((char) (ch + 32));
-//                }
-//
-//            } else {
-//                english.append(ch);
-//            }
-//
-//        }
-//
-//
-//        boolean starting = true;
-//        for (int i = 0; i < english.length(); i++) {
-//            TamilWord single = map.get(String.valueOf(english.charAt(i)));
-//            if (single == null) {
-//                if (buffer.length() > 0) {
-//                    //All English
-//                    TamilWord allEnglish = getBestMatchNoNonChar(buffer.toString(), starting, true);
-//                    if (join) {
-//                        handler.addVaruMozhi(allEnglish);
-//                    } else {
-//                        word.addAll(allEnglish);
-//                    }
-//                    buffer.setLength(0);
-//
-//                }
-//                starting = false;
-//                nonresolved.append(english.charAt(i));
-//            } else {
-//                if (nonresolved.length() > 0) {
-//                    TamilWord non = TamilWordListener.readUTF8(nonresolved.toString(), true);
-//                    if (join) {
-//                        handler.addVaruMozhi(non);
-//                    } else {
-//                        word.addAll(non);
-//                    }
-//                    nonresolved.setLength(0);
-//                }
-//
-//                buffer.append(english.charAt(i));
-//            }
-//        }
-//
-//        if (buffer.length() > 0) {
-//            TamilWord allEnglish = getBestMatchNoNonChar(buffer.toString(), starting, true);
-//            if (join) {
-//                handler.addVaruMozhi(allEnglish);
-//            } else {
-//                word.addAll(allEnglish);
-//            }
-//            buffer.setLength(0);
-//        }
-//        if (nonresolved.length() > 0) {
-//            TamilWord non = TamilWordListener.readUTF8(nonresolved.toString(), true);
-//            if (join) {
-//                handler.addVaruMozhi(non);
-//            } else {
-//                word.addAll(non);
-//            }
-//
-//            nonresolved.setLength(0);
-//        }
-//        if (join) {
-//            word = handler.getVinaiMutru();
-//        }
-//        cache.put(englishoriginal, new SoftReference<TamilWord>(word));
-//        return word;
-//
-//
-//    }
 
     private static TamilWord iyalbuadd(TamilWord w, TamilWord ch, IyalbuPunarchiHandler handler) {
         TamilWord one = new TamilWord();

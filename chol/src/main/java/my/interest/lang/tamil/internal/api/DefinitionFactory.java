@@ -3,12 +3,15 @@ package my.interest.lang.tamil.internal.api;
 import groovy.lang.Binding;
 import groovy.lang.GroovyShell;
 import groovy.lang.Script;
+import my.interest.lang.tamil.EzhuththuUtils;
 import my.interest.lang.tamil.StringUtils;
 import my.interest.lang.tamil.TamilUtils;
+import tamil.lang.TamilFactory;
 import tamil.lang.TamilWord;
 import my.interest.lang.tamil.generated.types.*;
 import my.interest.lang.tamil.punar.PropertyDescriptionContainer;
 import my.interest.lang.tamil.punar.handler.VinaiMutruCreationHandler;
+import tamil.lang.api.persist.manager.PersistenceManager;
 
 import java.lang.ref.SoftReference;
 import java.util.ArrayList;
@@ -23,13 +26,10 @@ import java.util.logging.Logger;
  *
  * @author velsubra
  */
-public class DefinitionFactory {
+public class DefinitionFactory extends EzhuththuUtils {
     static final Logger logger = Logger.getLogger(DefinitionFactory.class.getName());
 
-    public static final String NS_TAMIL = "http://my.interest.common.lang.lang.tamil";
-    public static final String NS_XML = "http://www.w3.org/2001/XMLSchema";
-    public static final String VINAIMUTRU_BASE = "vinaimuttu.transitive";
-    public static final String VINAIMUTRU_BASE_INTRANSITIVE = "vinaimuttu.intransitive";
+
 
     static final GroovyShell shell = new GroovyShell();
     static final Map<String, SoftReference<Script>> compiledScripts = new HashMap<String, SoftReference<Script>>();
@@ -49,13 +49,22 @@ public class DefinitionFactory {
 
 
     public static GenericTenseTable generateThozhirPeyar(String v, boolean fortransitive) {
+        PersistenceManager per = TamilFactory.getPersistenceManager();
+        RootVerbDescription verb = per.getRootVerbManager().findRootVerbDescription(v);
+        if (verb == null) {
+            throw new RuntimeException("No verb:" + v);
+        }
+        return generateThozhirPeyar(verb,fortransitive);
+    }
+
+    public static GenericTenseTable generateThozhirPeyar(RootVerbDescription verb, boolean fortransitive) {
         GenericTenseTable table = new GenericTenseTable();
-        table.setRoot(v);
+        table.setRoot(verb.getRoot());
 
-        PersistenceInterface per = PersistenceInterface.get();
-        RootVerbDescription verb = per.findRootVerbDescription(v);
+        PersistenceManager per = TamilFactory.getPersistenceManager();
+       // RootVerbDescription verb = per.findRootVerbDescription(v);
 
-        PropertyDescriptionContainer container = per.getConsolidatedPropertyContainerFor(verb);
+        PropertyDescriptionContainer container = per.getRootVerbManager().getConsolidatedPropertyContainerFor(verb);
         if (fortransitive && !container.isTransitive()) return table;
         if (!fortransitive && !container.isInTransitive()) return table;
         if (container.isVerbAsNoun(fortransitive)) {
@@ -63,8 +72,8 @@ public class DefinitionFactory {
             row.setRowname("முதனிலைத்தொழிற்பெயர் ");
             DerivedValues val = new DerivedValues();
             val.getList().add(new DerivedValue());
-            val.getList().get(0).setEquation(v);
-            val.getList().get(0).setValue(v);
+            val.getList().get(0).setEquation(verb.getRoot());
+            val.getList().get(0).setValue(verb.getRoot());
             row.setPresent(val);
             table.getRows().add(row);
         }
@@ -313,7 +322,7 @@ public class DefinitionFactory {
 
                                 commavalues = " ";
                             }
-                            commavalueslist = TamilUtils.parseString(commavalues, ",", false);
+                            commavalueslist = TamilUtils.parseString(commavalues, ",", false,true);
 
                         } else if (item.getDerivedValues() != null) {
                             DefinedValues sub = new DefinedValues();
@@ -352,7 +361,9 @@ public class DefinitionFactory {
 
                                     }
                                     if (derived != null) {
-                                        commavalueslist.add(derived);
+                                        if (!commavalueslist.contains(derived)) {
+                                            commavalueslist.add(derived);
+                                        }
                                     }
                                 }
                             }
@@ -375,7 +386,7 @@ public class DefinitionFactory {
                             }
 
                             if (val != null) {
-                                commavalueslist = TamilUtils.parseString(val.toString(), ",", false);
+                                commavalueslist = TamilUtils.parseString(val.toString(), ",", false, true);
                             }
 
                         } else {
