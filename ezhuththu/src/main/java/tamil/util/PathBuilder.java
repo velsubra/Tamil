@@ -16,8 +16,8 @@ import java.util.List;
  *    [a, b, e], [c, d, e], [a, b, f], [c, d, f], [a, b, g], [c, d, g]
  * </pre>
  * Please note that the number of nodes in each path may not be same as the method {@link #includeNewPathFromRoot(java.util.List)}  can add a new path with different size.
- *
- *
+ * <p/>
+ * <p/>
  * </p>
  *
  * @param <T> the node type
@@ -41,14 +41,14 @@ public class PathBuilder<T> {
     }
 
     /**
-     * Appends a new node. Adding one node will not change the number of paths.
+     * Appends a new node.  Number of paths wont be changed as one node is added.
      *
      * @param t the node
      */
     public void appendNodeToAllPaths(T t) {
         List<T> list = new ArrayList<T>();
         list.add(t);
-        appendNodesToAllPaths(list);
+        multiplyPathsWithNodes(list);
     }
 
     /**
@@ -61,13 +61,25 @@ public class PathBuilder<T> {
         paths.add(new ArrayList<T>(aPath));
     }
 
+
+    /**
+     * This will just lengthen each path with nodes. Number of paths wont changes
+     * @param nodes  the series of nodes that will go onto the existing paths.
+     */
+    public void addIntoExistingPaths(final List<T> nodes) {
+        for (T t : nodes) {
+            appendNodeToAllPaths(t);
+        }
+    }
+
+
     /**
      * Appends each node from nodes to all the existing paths.
      * The number of paths in the path builder following this method call will be previous number of paths * size of nodes.
      *
-     * @param nodes the set of nodes each of which has to be added to the existing path.
+     * @param nodes the set of nodes each of which has to be added to the existing path.  The list should typically contain   unique number of nodes.
      */
-    public void appendNodesToAllPaths(final List<T> nodes) {
+    public void multiplyPathsWithNodes(final List<T> nodes) {
         if (nodes.size() == 0) return;
         if (paths.isEmpty()) {
             for (T node : nodes) {
@@ -95,13 +107,23 @@ public class PathBuilder<T> {
             T atChunk = nodes.get(chunk);
             paths.get(i).add(atChunk);
         }
+    }
 
+    @Deprecated
+    /**
+     * This name of the method confuses.!
+     * Please use {@link #multiplyPathsWithNodes}
+     */
+    public void appendNodesToAllPaths(final List<T> nodes) {
+
+         multiplyPathsWithNodes(nodes);
     }
 
 
     /**
      * Returns the list of paths.
-     * @return  the list
+     *
+     * @return the list
      */
     public List<List<T>> getPaths() {
         return paths;

@@ -2360,7 +2360,7 @@ define("ace/mode/javascript/jshint",["require","exports","module"], function(req
                         moz         : true, // if mozilla specific syntax should be allowed
                         evil        : true, // if eval should be allowed
                         expr        : true, // if ExpressionStatement should be allowed as Programs
-                        forin       : true, // if for in statements must filter
+                        forin       : true, // if for in statements must filterUnknown
                         funcscope   : true, // if only function scope should be used for scope tests
                         globalstrict: true, // if global "use strict"; should be allowed (also enables 'strict')
                         immed       : true, // if immediate invocations must be wrapped in parens
@@ -5626,7 +5626,7 @@ define("ace/mode/javascript/jshint",["require","exports","module"], function(req
 
                         if (state.tokens.next.value === "if") {
                             if (!state.option.inMoz(true)) {
-                                warning("W118", state.tokens.curr, "catch filter");
+                                warning("W118", state.tokens.curr, "catch filterUnknown");
                             }
                             advance("if");
                             expression(0);
@@ -8440,7 +8440,7 @@ define("ace/mode/javascript/jshint",["require","exports","module"], function(req
                 W086: "Expected a 'break' statement before '{a}'.",
                 W087: "Forgotten 'debugger' statement?",
                 W088: "Creating global 'for' variable. Should be 'for (var {a} ...'.",
-                W089: "The body of a for in should be wrapped in an if statement to filter " +
+                W089: "The body of a for in should be wrapped in an if statement to filterUnknown " +
                     "unwanted properties from the prototype.",
                 W090: "'{a}' is not a statement label.",
                 W091: "'{a}' is out of scope.",

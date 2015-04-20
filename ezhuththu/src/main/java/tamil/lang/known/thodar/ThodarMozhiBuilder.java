@@ -77,8 +77,8 @@ public final class ThodarMozhiBuilder extends PathBuilder<IKnownWord> {
     }
 
     @Override
-    public void appendNodesToAllPaths(List<IKnownWord> nodes) {
-        super.appendNodesToAllPaths(nodes);
+    public void multiplyPathsWithNodes(List<IKnownWord> nodes) {
+        super.multiplyPathsWithNodes(nodes);
         List<List<IKnownWord>> newpaths = new ArrayList<List<IKnownWord>>();
         List<List<IKnownWord>> outerlist = getPaths();
 

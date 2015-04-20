@@ -105,7 +105,7 @@ public class SimpleSplitResult implements Comparable {
 
             List<IKnownWord> knowns = cache.get(w);
             if (knowns == null) {
-                knowns = unknowns.contains(w) ? null :  dictionary.search(TamilWord.from(w),true,1, null);
+                knowns = unknowns.contains(w) ? null :  dictionary.search(TamilWord.from(w),true,10, null);
             }
             if (knowns == null || knowns.isEmpty()) {
                 unknowns.add(w);

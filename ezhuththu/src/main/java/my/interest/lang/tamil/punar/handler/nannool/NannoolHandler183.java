@@ -22,8 +22,13 @@ import java.util.List;
  */
 public class NannoolHandler183 extends AbstractPunarchiHandler {
 
-    static final TamilWord ntoorru = TamilWord.from("நூறு");
+    //should handle ntoorru and noorru
+    static final TamilWord ntoorru = TamilWord.from("ஊறு");
+
+    static final TamilWord aarru = TamilWord.from("ஆறு");
     static final TamilWord koadi = TamilWord.from("கோடி");
+
+    static final TamilWord iladcha = TamilWord.from("இலட்ச");
 
     static final TamilWord aayira = TamilWord.from("ஆயிர");
 
@@ -79,8 +84,9 @@ public class NannoolHandler183 extends AbstractPunarchiHandler {
 
     @Override
     public TamilWordPartContainer join(TamilWordPartContainer nilai, TamilWordPartContainer varum) {
+        if (!varum.getWord().get(0).isTamilLetter()) return  null;
         if (nilai.isKutriyaLugaram()) {
-            if (nilai.getWord().equals(ntoorru) && (varum.getWord().startsWith(koadi) || varum.getWord().startsWith(aayira))) {
+            if ((nilai.getWord().endsWith(ntoorru, false) || nilai.getWord().endsWith(aarru)) && (varum.getWord().startsWith(koadi) || varum.getWord().startsWith(aayira) || varum.getWord().startsWith(iladcha))) {
                 return null;
             }
             TamilCharacter lastbutone = nilai.getWord().get(nilai.size() - 2).asTamilCharacter();

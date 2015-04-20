@@ -42,6 +42,9 @@ public class UadambaduMeiHandler extends AbstractPunarchiHandler {
 
     @Override
     public TamilWordPartContainer join(TamilWordPartContainer nilai, TamilWordPartContainer varum) {
+//        if (nilai.isEndingWithUyir()) {
+//            return  null;
+//        }
         if (nilai.isKutriyaLugaram() && varum.isStartingWithUyir()) {
             return null;
         }

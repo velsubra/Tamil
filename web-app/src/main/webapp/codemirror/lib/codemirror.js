@@ -1424,7 +1424,7 @@
             te.style.cssText = "position: fixed; width: 30px; height: 30px; top: " + (e.clientY - 5) +
             "px; left: " + (e.clientX - 5) + "px; z-index: 1000; background: " +
             (ie ? "rgba(255, 255, 255, .05)" : "transparent") +
-            "; outline: none; border-width: 0; outline: none; overflow: hidden; opacity: .05; filter: alpha(opacity=5);";
+            "; outline: none; border-width: 0; outline: none; overflow: hidden; opacity: .05; filterUnknown: alpha(opacity=5);";
             if (webkit) var oldScrollY = window.scrollY; // Work around Chrome issue (#2712)
             display.input.focus();
             if (webkit) window.scrollTo(null, oldScrollY);
@@ -7802,7 +7802,7 @@
         return !out ? spans : out.length ? out : null;
     }
 
-    // Retrieve and filter the old marked spans stored in a change event.
+    // Retrieve and filterUnknown the old marked spans stored in a change event.
     function getOldSpans(doc, change) {
         var found = change["spans_" + doc.id];
         if (!found) return null;
