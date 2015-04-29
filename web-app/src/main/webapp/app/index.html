@@ -1,0 +1,41 @@
+<!doctype html>
+<html ng-app="tamilapp">
+<head>
+<link rel="stylesheet" type="text/css" href="../app/lib/bootstrap/dist/css/bootstrap.css" />
+<link rel="stylesheet" type="text/css" href="../app/lib/angular-ui-select/dist/select.css">
+<link rel="stylesheet" type="text/css" href="../app/css/site.css" />
+</head>
+<body>
+    <div ui-view></div>
+	<a ui-sref="state1">State 1</a>
+    <a ui-sref="state2">State 2</a>
+	<a ui-sref="state3">State 3</a>
+	<a ui-sref="state4">State 4</a>
+<!--core lib files -->	
+<script type="text/javascript" src="../app/lib/jquery/dist/jquery.js"></script>
+<script type="text/javascript" src="../app/lib/bootstrap/dist/js/bootstrap.js"></script>
+<script type="text/javascript" src="../app/lib/angular/angular.js"></script>
+<script type="text/javascript" src="../app/lib/angular-sanitize/angular-sanitize.js"></script>
+<script type="text/javascript" src="../app/lib/angular-cookies/angular-cookies.js"></script>
+<script type="text/javascript" src="../app/lib/angular-resource/angular-resource.js"></script>
+<script type="text/javascript" src="../app/lib/angular-ui-router/release/angular-ui-router.js"></script>
+<script type="text/javascript" src="../app/lib/angular-ui-select/dist/select.js"></script>
+<script type="text/javascript" src="../app/lib/angular-bootstrap/ui-bootstrap.js"></script>
+<script type="text/javascript" src="../app/lib/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+<script type="text/javascript" src="../app/lib/underscore/underscore.js"></script>
+<!--core app files -->  
+<script type="text/javascript" src="../app/app.js"></script>
+<script type="text/javascript" src="../app/routing.js"></script>
+<script type="text/javascript" src="../app/constants/splitRulesTypes.js"></script>
+<script type="text/javascript" src="../app/constants/wordTypes.js"></script>
+<script type="text/javascript" src="../app/lookup/lookup.js"></script>
+<script type="text/javascript" src="../app/directives/transliterationInput.js"></script>
+<script type="text/javascript" src="../app/directives/vinaiMuttru.js"></script>
+<script type="text/javascript" src="../app/lookup/lookUpController.js"></script>
+<script type="text/javascript" src="../app/split/tamilWordSplit.js"></script>
+<script type="text/javascript" src="../app/split/tamilWordSplitController.js"></script>
+<script type="text/javascript" src="../app/describe/tamilWordDescribe.js"></script>
+<script type="text/javascript" src="../app/describe/tamilWordDescribeController.js"></script>
+<script type="text/javascript" src="../app/muttru/vinaiMuttruController.js"></script>
+</body>
+</html>

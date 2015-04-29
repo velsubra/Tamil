@@ -1,0 +1,14 @@
+﻿<div ng-controller="lookUpController">
+<h2>தமிழ்ச்சொல்தேடல்</h2>
+<div>
+<input type="text"  width ="150" ng-model="selectedWord" placeholder="இங்கே தட்டுங்கள்(தமிழ் அல்லது ஆங்கிலம்)" 
+typeahead="x for x in loadAsync()"
+typeahead-loading="loadingResults" class="form-control">
+
+<div ng-show="loadingResults" class="form-group">
+    <div class="col-md-12 text-center">
+        <span class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span>
+    </div>
+</div>
+</div>
+</div>

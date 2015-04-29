@@ -1,0 +1,45 @@
+﻿<div class="container">
+  <div class="row">
+     <div class="col-md-4">
+		<span ng-repeat="word in category.past.list">
+			<div class="vinaimuttru" ng-class="{selectedWord: word == selectedWord}"
+      			ng-click="setSelectedWord(word)">
+				<div class="input-group">
+				 <span class="input-group-addon">
+				 <span class="glyphicon glyphicon-chevron-left"></span>
+				 </span>
+				 <span class="form-control ">{{word.value}}</span>
+				</div>
+			</div>
+		</span>	 
+	    <span class="form-group" ng-repeat="word in category.present.list">
+			<div class="vinaimuttru" ng-class="{selectedWord: word == selectedWord}"
+      			ng-click="setSelectedWord(word)">
+				<div class="input-group has-success">
+				 <span class="input-group-addon">
+				 <span class="glyphicon glyphicon-chevron-down"></span>
+				 </span>
+				 <span class="form-control ">{{word.value}}</span>
+				</div>
+			</div>
+		</span>
+		<span class="form-group" ng-repeat="word in category.future.list">			
+			<div class="vinaimuttru" ng-class="{selectedWord: word == selectedWord}"
+      			ng-click="setSelectedWord(word)">
+				<div class="input-group has-warning">
+				 <span class="input-group-addon">
+				 <span class="glyphicon glyphicon-chevron-right"></span>
+				 </span>
+				 <span class="form-control ">{{word.value}}</span>
+				</div>
+			</div>
+		</span>		
+	</div>
+	 <div class="col-md-4">
+	 			<span ng-repeat="equationSymbol in selectedWord.equation.split('+')">
+				<span class="lead text-center">{{equationSymbol}}</span>
+				<span class="glyphicon glyphicon-plus" ng-show="!$last"></span>
+			 <span>
+	 </div>
+  </div>
+</div>

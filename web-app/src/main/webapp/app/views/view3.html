@@ -1,0 +1,116 @@
+<div ng-controller="tamilWordDescribeController">
+<h2>சொல்லின் இலக்கணமறிக. </h2>
+<div>
+<d-transliteration-input selected-word='wordToDescribe'></d-transliteration-input>
+<div>
+<button type="button" class="btn btn-primary" ng-click="describeWord()">இலக்கணமறிக</button>
+<div ng-repeat="describeResult in describeResults.words">
+<div class="panel panel-info">
+  <div class="panel-heading">
+    <h3 class="panel-title">விளக்கம் # {{$index+1}} : {{describeResult.type}}</h3>
+  </div>
+  <div class="panel-body">
+    <span ng-repeat="property in describeResult.properties.property">
+	<h4>
+<span class="label label-success" ng-if='!isPropertyBoolean(property)'>
+{{wordTypes.toTamil(property.name)}} : {{property.value}} </span>
+<span class="label label-success" ng-if='isPropertyBoolean(property) && getPropertyValue(property)'> {{wordTypes.toTamil(property.name)}}</span>
+</h4>
+</span>
+  </div>
+</div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

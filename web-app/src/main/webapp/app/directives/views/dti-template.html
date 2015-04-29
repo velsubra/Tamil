@@ -1,0 +1,22 @@
+﻿<form>
+   <div class='form-group'>
+		Search for : {{searchText}} 		
+		<div class="input-group">
+		<span class="input-group-addon">
+			<span class="glyphicon glyphicon-refresh glyphicon-refresh-animate" ng-if="isLoading"></span>
+			<span class="glyphicon glyphicon-pencil" ng-if="!isLoading"></span>
+		</span>		
+		<input type="text"  ng-model="selectedWord" 
+		       placeholder="இங்கே தட்டுங்கள்( தமிழ் அல்லது ஆங்கிலம்)" 
+			   popover-placement="bottom" 
+			   popover-trigger="focus" 
+			   Popover-animation="true" 
+			   popover-title="குறிப்பு:"
+			   popover="aa=ஆ, ea=ஏ, f=ஃ, lh=ள், nt=ந், nh=ண், oa=ஓ, ou=ஔ, rr=ற், zh=ழ்"            	   
+               typeahead="transileratedWords for transileratedWords in doTransliteration($viewValue)"
+               typeahead-loading="isLoading" 
+			   typeahead-wait-ms ="500" 
+			   class="form-control"/>	   
+		</div>	
+   </div>	  
+<form>

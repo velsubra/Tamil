@@ -1,0 +1,53 @@
+﻿( function() {
+  'use strict';
+  
+angular.module( 'tamilapp.services' )
+.factory('describer', ['$resource', function($resource) {
+return $resource('/xyz/lookup/words/describe/', null,
+    {
+        'update': {
+					method:'PUT',
+					headers:{'Content-Type':'text/plain;charset=UTF-8', 'Accept':'*/*'} 		
+				   }
+    });
+}]);
+
+  
+angular.module( 'tamilapp.services' )
+  .factory( 'tamilWordDescribe', ['$http','$q','$resource','describer', function( $http, $q,$resource,describer ) {
+	// Return public API.
+	return({		
+		tamilWordDescribeAsync: tamilWordDescribeAsync
+	});
+		
+	// Any function returning a promise object can be used to load values asynchronously
+	function tamilWordDescribeAsync(wordToDescribe) {
+	var deferred = $q.defer();
+	
+	describer.update('சொல்',function(result){
+		console.log(result);
+	});
+	
+	var CreditCard = $resource('/user/:userId/card/:cardId',
+ {userId:123, cardId:'@id'}, {
+  charge: {method:'POST', params:{charge:true}}
+ });
+
+	
+	
+	
+	
+	
+	
+	
+	setTimeout(function() {
+    var results ={"words":[{"value":"சொல்","type":"பெயர்ச்சொல்","properties":{"property":[{"name":"peyarchchol","value":"true"},{"name":"uyarthinhai","value":"false"}],"name":null}},{"value":"சொல்","type":"தொழிற்பெயர்","properties":{"property":[{"name":"root","value":"சொல்"}],"name":null}},{"value":"சொல்","type":"வினையடி","properties":{"property":[{"name":"kaddalhai","value":"true"},{"name":"transitive","value":"false"}],"name":null}},{"value":"சொல்","type":"வினையடி","properties":{"property":[{"name":"kaddalhai","value":"true"},{"name":"transitive","value":"true"}],"name":null}}]};
+    deferred.resolve(results); 	
+  }, 3000);
+  return deferred.promise;
+    }
+  	
+  }] );
+  
+} )( window.angular );
+
