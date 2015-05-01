@@ -7,6 +7,18 @@
       // For any unmatched url, redirect to home page
       $urlRouterProvider.otherwise( '/' );      
       $stateProvider
+	  .state( 'home', {
+          url: '/home',
+          templateUrl: '../app/views/home.html'
+        } )
+	  .state( 'contribute', {
+          url: '/contribute',
+          templateUrl: '../app/views/contribute.html'
+        } )
+	  .state( 'features', {
+          url: '/features',
+          templateUrl: '../app/views/features.html'
+        } )
         .state( 'state1', {
           url: '/state1',
           templateUrl: '../app/views/view1.html'
