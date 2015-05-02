@@ -2,6 +2,7 @@ package test.sound;
 
 import junit.framework.Assert;
 import org.junit.Test;
+import tamil.lang.TamilCompoundCharacter;
 import tamil.lang.TamilFactory;
 import tamil.lang.TamilSimpleCharacter;
 import tamil.lang.TamilWord;
@@ -52,6 +53,25 @@ public class TextTest {
         System.out.println(f +":" +s);
         Assert.assertEquals(f.suggestionHashCode(), s.suggestionHashCode());
 
+
+    }
+
+    @Test
+    public void testkalappadam() {
+         StringBuffer buffer = new StringBuffer();
+//        buffer.append((char)TamilSimpleCharacter.KA.getValue());
+//        buffer.append((char)'\u0B82');
+//       buffer.append((char) TamilSimpleCharacter.KA.getValue());
+        buffer.append((char)'\u0B82');
+//        buffer.append((char)TamilSimpleCharacter.KA.getValue());
+//        buffer.append((char)'\u0B82');
+//
+//        buffer.append("=");
+//        buffer.append(TamilCompoundCharacter.IK);
+//        buffer.append((char)TamilSimpleCharacter.KA.getValue());
+//        buffer.append((char)'\u0008' );
+        buffer.append((char)TamilCompoundCharacter.PULLI);
+        System.out.println(buffer.toString());
 
     }
 }

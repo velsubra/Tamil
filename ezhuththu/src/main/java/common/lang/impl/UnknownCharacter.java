@@ -4,6 +4,7 @@ import common.lang.SimpleCharacter;
 
 /**
  * <p>
+ *     Represents non-tamil characters.
  * </p>
  *
  * @author velsubra

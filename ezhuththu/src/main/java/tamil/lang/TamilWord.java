@@ -17,11 +17,12 @@ import java.util.Collection;
  * So, the word represented by this object may not be a tamil word (சொல் ) at all. See {@link tamil.lang.api.dictionary.TamilDictionary#lookup(TamilWord)}
  * <p/>
  * <p>
- * This should be treated as Tamil Sting equivalent of  java.common.lang.lang.String. ie) it can potentially contain spaces and non tamil characters
+ * This should be treated as Tamil String equivalent of  java.lang.String. ie) it can potentially contain spaces and non tamil characters
  * </p>
  *
  * @author velsubra
  * @see #from(String)
+ * @see #from(java.lang.String,boolean)
  * @see #isPure()
  */
 public final class TamilWord extends AbstractWord<AbstractCharacter> implements Comparable {

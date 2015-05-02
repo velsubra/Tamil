@@ -5,7 +5,7 @@ import java.util.*;
 /**
  * <p>
  *     The class that registers all the tamil characters as defined by the Unicode consortium.
- *     End users typically would not need to use this class. If you need to read a tamil word from a UTF-8 String, please use
+ *     End users typically would not need to use this class. If you need to read a tamil word from a  String, please use
  *     {@link TamilWord#from(String)}
  * </p>
  *
