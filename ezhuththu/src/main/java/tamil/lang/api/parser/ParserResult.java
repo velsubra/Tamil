@@ -8,12 +8,12 @@ import java.util.List;
 
 /**
  * <p>
- *     Represents the results of parsing done by {@link tamil.lang.api.parser.CompoundWordParser}
+ * Represents the results of parsing done by {@link tamil.lang.api.parser.CompoundWordParser}
  * </p>
  *
  * @author velsubra
  */
-public class ParserResult {
+public class ParserResult implements Comparable {
 
     private TamilWord compoundTamilWord;
     private boolean parsed;
@@ -26,8 +26,7 @@ public class ParserResult {
         this.parsed = parsed;
     }
 
-    private   PARSE_HINT parseHint;
-
+    private PARSE_HINT parseHint;
 
 
     public ParserResult(IKnownWord direct, boolean parsed, PARSE_HINT hint) {
@@ -37,11 +36,12 @@ public class ParserResult {
         splitWords.add(direct);
 
     }
-    public ParserResult(TamilWord compound, List<IKnownWord> splits,  PARSE_HINT hint) {
-        this.parsed = splits!= null && splits.size() > 0;
+
+    public ParserResult(TamilWord compound, List<IKnownWord> splits, PARSE_HINT hint) {
+        this.parsed = splits != null && splits.size() > 0;
         this.parseHint = hint;
         this.compoundTamilWord = compound;
-        if (splits!= null) {
+        if (splits != null) {
             this.splitWords.addAll(splits);
         }
     }
@@ -49,7 +49,8 @@ public class ParserResult {
 
     /**
      * Tells if the system could parse the word
-     * @return  true, when successfully parsed based on the features passed, false otherwise.
+     *
+     * @return true, when successfully parsed based on the features passed, false otherwise.
      */
     public boolean isParsed() {
         return parsed;
@@ -58,14 +59,13 @@ public class ParserResult {
 
     /**
      * Returns parsing hints that have been encountered during parsing.
-     * @return  the parse hint object, null when no parse hint was available
      *
+     * @return the parse hint object, null when no parse hint was available
      * @see tamil.lang.api.feature.FeatureConstants#PARSE_FIND_FAILURE_INDEX_VAL_175
      */
     public PARSE_HINT getParseHint() {
         return parseHint;
     }
-
 
 
     private final List<IKnownWord> splitWords = new ArrayList<IKnownWord>();
@@ -79,18 +79,40 @@ public class ParserResult {
     }
 
 
+    @Override
+    public boolean equals(Object o) {
+        return compareTo(o) == 0;
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        ParserResult v = (ParserResult) o;
+        int dif = splitWords.size() - v.splitWords.size();
+        if (dif == 0) {
+            for (int i = 0; i < splitWords.size(); i++) {
+                dif = splitWords.get(i).compareTo(v.splitWords.get(i));
+                if (dif == 0) continue;
+                return dif;
+            }
+            return dif;
+        } else {
+            return dif;
+        }
+    }
+
+
     /**
      * The class containing details for parse hints.
      */
-    public static final  class  PARSE_HINT {
+    public static final class PARSE_HINT {
         private int tamilStartIndex;
         private int tamilEndIndex;
         private int unicodeStartIndex;
-        private  int unicodeEndIndex;
+        private int unicodeEndIndex;
 
         public PARSE_HINT(int tamilStart, int tamilEnd, int unistart, int uniend, String message) {
             this.tamilEndIndex = tamilEnd;
-            this.tamilStartIndex =tamilStart;
+            this.tamilStartIndex = tamilStart;
             this.unicodeEndIndex = uniend;
             this.unicodeStartIndex = unistart;
             this.message = message;
@@ -101,7 +123,8 @@ public class ParserResult {
 
         /**
          * Gets the starting index of given Tamil word that has some hint
-         * @return  index of the character from which the hint is applicable.
+         *
+         * @return index of the character from which the hint is applicable.
          */
         public int getTamilStartIndex() {
             return tamilStartIndex;
@@ -109,7 +132,8 @@ public class ParserResult {
 
         /**
          * Gets the end index    of given Tamil word that has some hint
-         * @return  index of the character up to which the hint is applicable.
+         *
+         * @return index of the character up to which the hint is applicable.
          */
         public int getTamilEndIndex() {
             return tamilEndIndex;
@@ -117,14 +141,17 @@ public class ParserResult {
 
         /**
          * Gets the starting index of given Tamil word that has some hint
-         * @return  index of the unicode character from which the hint is applicable.
-         */public int getUnicodeStartIndex() {
+         *
+         * @return index of the unicode character from which the hint is applicable.
+         */
+        public int getUnicodeStartIndex() {
             return unicodeStartIndex;
         }
 
         /**
          * Gets the end index    of given Tamil word that has some hint
-         * @return  index of the unicode character up to which the hint is applicable.
+         *
+         * @return index of the unicode character up to which the hint is applicable.
          */
         public int getUnicodeEndIndex() {
             return unicodeEndIndex;
@@ -133,7 +160,8 @@ public class ParserResult {
 
         /**
          * Gets the hint message
-         * @return  message if there is some useful hint, null otherwise.
+         *
+         * @return message if there is some useful hint, null otherwise.
          */
         public String getMessage() {
             return message;

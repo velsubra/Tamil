@@ -1,6 +1,7 @@
 package my.interest.tamil.rest.resources;
 
 import common.lang.impl.AbstractCharacter;
+import my.interest.lang.tamil.parser.impl.sax.SaxParser;
 import tamil.lang.TamilCompoundCharacter;
 import tamil.lang.TamilFactory;
 import tamil.lang.TamilWord;
@@ -13,6 +14,7 @@ import my.interest.lang.tamil.punar.handler.AbstractPunarchiHandler;
 import my.interest.lang.tamil.translit.EnglishToTamilCharacterLookUpContext;
 import tamil.lang.api.feature.Feature;
 import tamil.lang.api.feature.FeatureConstants;
+import tamil.lang.api.parser.ParserResult;
 import tamil.lang.api.trans.TranslitFeature;
 
 import javax.ws.rs.*;
@@ -87,6 +89,14 @@ public class PunarchiResource {
             }
         }
         String purestr = pure.toString();
+
+//        SaxParser parser = new SaxParser();
+//        List<ParserResult> list = parser.parse(TamilWord.from(purestr), 10, null);
+//        System.out.println(list.size());
+
+
+
+
         FullSplitResult ret = new FullSplitResult();
         List<SimpleSplitResult> res = null;
 
@@ -131,7 +141,7 @@ public class PunarchiResource {
 
 
     @PUT
-    @Path("/filter/nouns/")
+    @Path("/filterUnknown/nouns/")
     @Produces("application/json; charset=UTF-8")
     public List<SingleWordSplit> findUnknownFirstWord(String english) throws Exception {
         if (english == null || english.trim().equals("")) {

@@ -126,7 +126,7 @@ public abstract class DefaultPlatformDictionaryBase implements TamilDictionary {
 
     @Override
     public List<IKnownWord> lookup(TamilWord word) {
-        return findMatchingDerivedWords(word, true, 1, null);
+        return findMatchingDerivedWords(word, true, 10, null);
     }
 
     @Override

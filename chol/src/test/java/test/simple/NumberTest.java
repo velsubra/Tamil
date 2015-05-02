@@ -313,5 +313,22 @@ public class NumberTest {
         Assert.assertEquals("ஒன்று புள்ளி ஒன்று சுழி ஒன்று", word.toString());
 
 
+        word = reader.readNumber("102003000400005000006000000700000008000000009000000000");
+        System.out.println(word);
+        Assert.assertEquals("பத்தாயிரத்து இருநூறுகோடியே முப்பதிலட்சத்து நானூறுகோடியே ஐம்பதாயிரங்கோடியே ஆறிலட்சங்கோடியே ஏழிலட்சங்கோடியே எண்பதாயிரங்கோடியே தொள்ளாயிரங்கோடி", word.toString());
+
+
+
+        word = reader.readNumber("106",PunharchiFeature.INSTANCE_FULL);
+        System.out.println(word);
+        Assert.assertEquals("நூற்றாறு", word.toString());
+
+
+        word = reader.readNumber("606",PunharchiFeature.INSTANCE_FULL);
+        System.out.println(word);
+        Assert.assertEquals("அறுநூற்றாறு", word.toString());
+
+
+
     }
 }

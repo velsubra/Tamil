@@ -138,7 +138,7 @@ public class CompoundWordParserProviderImpl implements CompoundWordParserProvide
                     } else {
                         ThodarMozhiBuilder builder = new ThodarMozhiBuilder();
                         for (String s : splits) {
-                            builder.appendNodesToAllPaths(result.getGivenWord().getMapContext().get(s));
+                            builder.multiplyPathsWithNodes(result.getGivenWord().getMapContext().get(s));
                         }
 
                         List<List<IKnownWord>> paths = builder.getPaths();

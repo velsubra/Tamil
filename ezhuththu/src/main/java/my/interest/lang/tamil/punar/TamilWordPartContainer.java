@@ -1,10 +1,6 @@
 package my.interest.lang.tamil.punar;
 
-import tamil.lang.TamilCharacter;
-import tamil.lang.TamilSimpleCharacter;
-import tamil.lang.TamilWord;
-import tamil.lang.TamilCompoundCharacter;
-import tamil.lang.CharacterDigest;
+import tamil.lang.*;
 
 /**
  * <p>
@@ -66,8 +62,8 @@ public class TamilWordPartContainer {
         this.word = word;
 
 
-
     }
+
     private boolean digested = false;
 
     private void digest() {
@@ -350,7 +346,7 @@ public class TamilWordPartContainer {
         digest();
 
         return isEndingWithTwoConsonantsOfType(TamilCompoundCharacter.ITH) ||
-                isEndingWithTwoConsonantsOfType(TamilCompoundCharacter.IRR) ;
+                isEndingWithTwoConsonantsOfType(TamilCompoundCharacter.IRR);
 
 
     }
@@ -358,7 +354,7 @@ public class TamilWordPartContainer {
     public boolean isEndingWithSomethingWhichCanBeFollowedByOttu() {
         digest();
         return isEndingWithMei() && (
-         isEndingWithOneConsonantOfType(TamilCompoundCharacter.IM) );
+                isEndingWithOneConsonantOfType(TamilCompoundCharacter.IM));
 
     }
 
@@ -387,6 +383,12 @@ public class TamilWordPartContainer {
         return DIGEST_CONSONANT_STR.startsWith(c.getConsonantDigest() + c.getConsonantDigest());
     }
 
+    public boolean isEndingWithTwoConsonantsOfAnyType() {
+        digest();
+        if (word.size() < 2) return false;
+        return word.getLast().asTamilCharacter().isMeyyezhuththu() && word.get(size() - 2).asTamilCharacter().isMeyyezhuththu();
+    }
+
     public boolean isStartingWithTwoConsonantsOfType(TamilCompoundCharacter c, TamilCompoundCharacter c1) {
         digest();
         if (word.size() < 2) return false;
@@ -400,26 +402,26 @@ public class TamilWordPartContainer {
     }
 
 
-//    public boolean isStartingWithYagaraUdambadumeiYuir() {
-            //digest();
-//        return DIGEST_VOWEL.get(0).equals(TamilSimpleCharacter.DIGEST_VOWEL._I_.toString()) ||
-//                DIGEST_VOWEL.get(0).equals(TamilSimpleCharacter.DIGEST_VOWEL._AA_.toString()) ||
-//                DIGEST_VOWEL.get(0).equals(TamilSimpleCharacter.DIGEST_VOWEL._E_.toString()) ||
-//                DIGEST_VOWEL.get(0).equals(TamilSimpleCharacter.DIGEST_VOWEL._EE_.toString());
-//    }
-//
-//    public boolean isStartingWithVagaraUdambadumeiYuir() {
-//digest();
-//        return DIGEST_VOWEL.get(0).equals(TamilSimpleCharacter.DIGEST_VOWEL._a_.toString()) ||
-//                DIGEST_VOWEL.get(0).equals(TamilSimpleCharacter.DIGEST_VOWEL._AA_.toString()) ||
-//                DIGEST_VOWEL.get(0).equals(TamilSimpleCharacter.DIGEST_VOWEL._aa_.toString()) ||
-//                DIGEST_VOWEL.get(0).equals(TamilSimpleCharacter.DIGEST_VOWEL._U_.toString()) ||
-//                DIGEST_VOWEL.get(0).equals(TamilSimpleCharacter.DIGEST_VOWEL._UU_.toString()) ||
-//                DIGEST_VOWEL.get(0).equals(TamilSimpleCharacter.DIGEST_VOWEL._A_.toString()) ||
-//                DIGEST_VOWEL.get(0).equals(TamilSimpleCharacter.DIGEST_VOWEL._O_.toString()) ||
-//                DIGEST_VOWEL.get(0).equals(TamilSimpleCharacter.DIGEST_VOWEL._OO_.toString()) ||
-//                DIGEST_VOWEL.get(0).equals(TamilSimpleCharacter.DIGEST_VOWEL._OU_.toString());
-//    }
+    public boolean isStartingWithYagaraUdambadumeiYuir() {
+        digest();
+        return DIGEST_VOWEL.get(0).equals(TamilSimpleCharacter.DIGEST_VOWEL._I_.toString()) ||
+                DIGEST_VOWEL.get(0).equals(TamilSimpleCharacter.DIGEST_VOWEL._AA_.toString()) ||
+                DIGEST_VOWEL.get(0).equals(TamilSimpleCharacter.DIGEST_VOWEL._E_.toString()) ||
+                DIGEST_VOWEL.get(0).equals(TamilSimpleCharacter.DIGEST_VOWEL._EE_.toString());
+    }
+
+    public boolean isStartingWithVagaraUdambadumeiYuir() {
+        digest();
+        return DIGEST_VOWEL.get(0).equals(TamilSimpleCharacter.DIGEST_VOWEL._a_.toString()) ||
+                DIGEST_VOWEL.get(0).equals(TamilSimpleCharacter.DIGEST_VOWEL._AA_.toString()) ||
+                DIGEST_VOWEL.get(0).equals(TamilSimpleCharacter.DIGEST_VOWEL._aa_.toString()) ||
+                DIGEST_VOWEL.get(0).equals(TamilSimpleCharacter.DIGEST_VOWEL._U_.toString()) ||
+                DIGEST_VOWEL.get(0).equals(TamilSimpleCharacter.DIGEST_VOWEL._UU_.toString()) ||
+                DIGEST_VOWEL.get(0).equals(TamilSimpleCharacter.DIGEST_VOWEL._A_.toString()) ||
+                DIGEST_VOWEL.get(0).equals(TamilSimpleCharacter.DIGEST_VOWEL._O_.toString()) ||
+                DIGEST_VOWEL.get(0).equals(TamilSimpleCharacter.DIGEST_VOWEL._OO_.toString()) ||
+                DIGEST_VOWEL.get(0).equals(TamilSimpleCharacter.DIGEST_VOWEL._OU_.toString());
+    }
 
     public boolean isEndingWithYagaraUdambadumeiYuir() {
         digest();
@@ -510,8 +512,6 @@ public class TamilWordPartContainer {
         return false;
 
     }
-
-
 
 
 }

@@ -1352,7 +1352,7 @@
             hrefNormalized: a.getAttribute("href") === "/a",
 
             // Make sure that element opacity exists
-            // (IE uses filter instead)
+            // (IE uses filterUnknown instead)
             // Use a regex to work around a WebKit issue. See #5145
             opacity: /^0.5/.test( a.style.opacity ),
 
@@ -4094,7 +4094,7 @@
                 }
             };
 
-            // ID find and filter
+            // ID find and filterUnknown
             if ( support.getIdNotName ) {
                 Expr.find["ID"] = function( id, context ) {
                     if ( typeof context.getElementById !== strundefined && !documentIsXML ) {
@@ -4588,7 +4588,7 @@
                             Sizzle.error( match[0] );
                         }
 
-                        // numeric x and y parameters for Expr.filter.CHILD
+                        // numeric x and y parameters for Expr.filterUnknown.CHILD
                         // remember that false/true cast respectively to 0/1
                         match[4] = +( match[4] ? match[5] + (match[6] || 1) : 2 * ( match[3] === "even" || match[3] === "odd" ) );
                         match[5] = +( ( match[7] + match[8] ) || match[3] === "odd" );
@@ -4625,7 +4625,7 @@
                         match[2] = unquoted.slice( 0, excess );
                     }
 
-                    // Return only captures needed by the pseudo filter method (type and argument)
+                    // Return only captures needed by the pseudo filterUnknown method (type and argument)
                     return match.slice( 0, 3 );
                 }
             },
@@ -4776,7 +4776,7 @@
                             Sizzle.error( "unsupported pseudo: " + pseudo );
 
                     // The user may use createPseudo to indicate that
-                    // arguments are needed to create the filter function
+                    // arguments are needed to create the filterUnknown function
                     // just as Sizzle does
                     if ( fn[ expando ] ) {
                         return fn( argument );
@@ -5784,7 +5784,7 @@
         }
     });
 
-// Implement the identical functionality for filter and not
+// Implement the identical functionality for filterUnknown and not
     function winnow( elements, qualifier, keep ) {
 
         // Can't pass null or undefined to indexOf in Firefox 4
@@ -6660,7 +6660,7 @@
     }
 
     function isHidden( elem, el ) {
-        // isHidden might be called from jQuery#filter function;
+        // isHidden might be called from jQuery#filterUnknown function;
         // in that case, element will be second argument
         elem = el || elem;
         return jQuery.css( elem, "display" ) === "none" || !jQuery.contains( elem.ownerDocument, elem );
@@ -6930,7 +6930,7 @@
             var width, minWidth, maxWidth,
                 computed = _computed || getStyles( elem ),
 
-            // getPropertyValue is only needed for .css('filter') in IE9, see #12537
+            // getPropertyValue is only needed for .css('filterUnknown') in IE9, see #12537
                 ret = computed ? computed.getPropertyValue( name ) || computed[ name ] : undefined,
                 style = elem.style;
 
@@ -7191,24 +7191,24 @@
                 // Force it by setting the zoom level
                 style.zoom = 1;
 
-                // if setting opacity to 1, and no other filters exist - attempt to remove filter attribute #6652
+                // if setting opacity to 1, and no other filters exist - attempt to remove filterUnknown attribute #6652
                 // if value === "", then remove inline opacity #12685
                 if ( ( value >= 1 || value === "" ) &&
                     jQuery.trim( filter.replace( ralpha, "" ) ) === "" &&
                     style.removeAttribute ) {
 
-                    // Setting style.filter to null, "" & " " still leave "filter:" in the cssText
-                    // if "filter:" is present at all, clearType is disabled, we want to avoid this
+                    // Setting style.filterUnknown to null, "" & " " still leave "filterUnknown:" in the cssText
+                    // if "filterUnknown:" is present at all, clearType is disabled, we want to avoid this
                     // style.removeAttribute is IE Only, but so apparently is this code path...
                     style.removeAttribute( "filter" );
 
-                    // if there is no filter style applied in a css rule or unset inline opacity, we are done
+                    // if there is no filterUnknown style applied in a css rule or unset inline opacity, we are done
                     if ( value === "" || currentStyle && !currentStyle.filter ) {
                         return;
                     }
                 }
 
-                // otherwise, set new filter values
+                // otherwise, set new filterUnknown values
                 style.filter = ralpha.test( filter ) ?
                     filter.replace( ralpha, opacity ) :
                     filter + " " + opacity;
@@ -7305,7 +7305,7 @@
         },
         serializeArray: function() {
             return this.map(function(){
-                // Can appendNodesToAllPaths propHook for "elements" to filter or appendNodesToAllPaths form elements
+                // Can appendNodesToAllPaths propHook for "elements" to filterUnknown or appendNodesToAllPaths form elements
                 var elements = jQuery.prop( this, "elements" );
                 return elements ? jQuery.makeArray( elements ) : this;
             })

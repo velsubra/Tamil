@@ -2320,7 +2320,7 @@ var menu = $.widget( "ui.menu", {
 				this.active.nextAll( ".ui-menu-item" ) :
 				match;
 
-			// If no matches on the current filter, reset to the last character pressed
+			// If no matches on the current filterUnknown, reset to the last character pressed
 			// to move down the menu to the first item that starts with that character
 			if ( !match.length ) {
 				character = String.fromCharCode( event.keyCode );
@@ -3071,7 +3071,7 @@ $.widget( "ui.autocomplete", {
 			this.source = function( request, response ) {
                 //console.log(request.term);
                 response( $.ui.autocomplete.filter( array, "" ) );
-				//response( $.ui.autocomplete.filter( array, request.term ) );
+				//response( $.ui.autocomplete.filterUnknown( array, request.term ) );
 			};
 		} else if ( typeof this.options.source === "string" ) {
 			url = this.options.source;
@@ -11820,7 +11820,7 @@ var selectable = $.widget("ui.selectable", $.ui.mouse, {
 
 		this.dragged = false;
 
-		// cache selectee children based on filter
+		// cache selectee children based on filterUnknown
 		this.refresh = function() {
 			selectees = $(that.options.filter, that.element[0]);
 			selectees.addClass("ui-selectee");
