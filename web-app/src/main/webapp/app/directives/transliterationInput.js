@@ -1,7 +1,7 @@
 ( function( angular ) {
   'use strict';
   var module = angular.module( 'tamilapp.directives' );
-  module.directive( 'dTransliterationInput', [ 'lookup', function(lookup) {
+  module.directive( 'dTransliterationInput', [ 'wordSuggestor', function(wordSuggestor) {
     return {
       restrict: 'E',
 	  replace:false,	 
@@ -13,7 +13,7 @@
 		scope.searchText = "";
 		scope.doTransliteration = function(searchText) {
 		    scope.searchText = searchText;			
-			return lookup.lookUpWordAsync(searchText);
+			return wordSuggestor.getWordSuggestion(searchText);
 		}
 		scope.resetSearchText = function() {
 			scope.selectedWord = scope.searchText;

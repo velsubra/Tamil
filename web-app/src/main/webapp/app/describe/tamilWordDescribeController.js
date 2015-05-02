@@ -23,10 +23,19 @@
 		}	
 		return propertyToCheck.value;
 	}	
-	
+	$scope.hasResults  =  function() {
+	console.log(angular.isDefined($scope.describeResults && $scope.describeResults.word));
+	return angular.isDefined(
+	$scope.describeResults && $scope.describeResults.words
+	&& $scope.describeResults.words.length > 0
+	);
+	}
 	$scope.describeWord = function() {
+		$scope.isLoading = true;
+		$scope.describeResults=[];
 		var deferred = tamilWordDescribe.tamilWordDescribeAsync($scope.wordToDescribe);
 		deferred.then(function(data) {	
+		$scope.isLoading = false;
 		$scope.describeResults = data;
 	});
 	};

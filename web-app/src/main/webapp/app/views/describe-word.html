@@ -1,17 +1,20 @@
 <div ng-controller="tamilWordDescribeController">
 <h2>சொல்லின் இலக்கணமறிக. </h2>
 <div class="container">
-
 <d-transliteration-input selected-word='wordToDescribe'></d-transliteration-input>
 <div>
 <button type="button" class="btn btn-primary" ng-click="describeWord()">
 <strong>இலக்கணமறிக</strong>
 </button>
-</div>
 <div class="describe-results">
-<strong>முடிவுகள் :</strong>
-<div  ng-repeat="describeResult in describeResults.words">
-<div class="panel panel-info">
+<div><strong>முடிவுகள் :</strong>
+<span ng-show="isLoading">காத்திருங்கள் தேடுதல் நடக்கிறது !
+<!-- <span class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span> -->
+</span>
+</div>
+<div class="row">
+<div class="col-md-4">
+<div class="panel panel-info" ng-repeat="describeResult in describeResults.words">
   <div class="panel-heading">
     <h3 class="panel-title">விளக்கம் # {{$index+1}} : 
 	<strong>{{describeResult.type}}</strong>
@@ -26,6 +29,9 @@
 </h4>
 </span>
   </div>
+</div>
+<!--Endof Repeat-->
+</div>
 </div>
 </div>
 </div>
