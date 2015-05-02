@@ -19,9 +19,9 @@
           url: '/features',
           templateUrl: '../app/views/features.html'
         } )
-        .state( 'state1', {
-          url: '/state1',
-          templateUrl: '../app/views/view1.html'
+        .state( 'describeword', {
+          url: '/describeword',
+          templateUrl: '../app/views/describe-word.html'
         } )
         .state( 'state2', {
           url: '/state2',          

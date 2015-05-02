@@ -33,3 +33,9 @@
   border: 2px solid cyan;
   border-radius: 4px;
 }
+.describe-results,
+.features .btn-group-vertical .btn {
+ margin-top: 20px; 
+}
+
+ 
