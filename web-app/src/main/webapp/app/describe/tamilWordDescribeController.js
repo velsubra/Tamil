@@ -25,7 +25,7 @@
 	}	
 	
 	$scope.describeWord = function() {
-		var deferred = tamilWordDescribe.tamilWordDescribeAsync('Test');
+		var deferred = tamilWordDescribe.tamilWordDescribeAsync($scope.wordToDescribe);
 		deferred.then(function(data) {	
 		$scope.describeResults = data;
 	});
