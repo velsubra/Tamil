@@ -8,8 +8,9 @@
 	$scope.selectedRule ={};
 	$scope.wordToSplitRule ="";
 	$scope.splitRulesTypesCache = splitRulesTypes;
+	
 	$scope.splitIntoWords = function() {
-	var deferred = tamilWordSplit.tamilWordSplitAsync($scope.wordToSplitRule);
+	var deferred = tamilWordSplit.tamilWordSplitAsync($scope.wordToSplitRule, $scope.selectedRule.selected);
 	deferred.then(function(data) {	
 	$scope.splitResults = data;
 	});

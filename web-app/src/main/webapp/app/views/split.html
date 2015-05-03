@@ -1,7 +1,6 @@
 <div ng-controller="tamilWordSplitController">
-<h2>தமிழ்ச்சொல்பிரித்தல்</h2>
-<div>
-<h4>Test {{wordTypes.toTamil('KADDALHAI')}}</h4>
+<h2>தமிழ்ச்சொல்பிரித்தல் </h2>
+<div class="container">
 <d-transliteration-input selected-word='wordToSplitRule'></d-transliteration-input>
 <p>Selected: {{selectedRule.selected}}</p>
 <ui-select ng-model="selectedRule.selected"
@@ -12,11 +11,21 @@
       <div ng-bind-html="splitRulesType.description | highlight: $select.search"></div>
     </ui-select-choices>
 </ui-select>
-<div>
-<button type="button" class="btn btn-primary" ng-click="splitIntoWords()">Split</button>
+
+<div style="margin-top:20px;">
+<button type="button" class="btn btn-primary" ng-click="splitIntoWords()" ng-disabled="!selectedRule.selected">
+பிரிக்க
+</button>
+
+<div  class="alert alert-warning" role="alert">
+<p class="text-warning">
+<strong>குறிப்பு: பிரித்தல் பொருளையறிந்து செயற்படவில்லை.
+</strong>
+</p>
+</div>
+
 <div ng-repeat="handlerResult in splitResults">
-<h4>
-<span class="label label-info">{{handlerResult.handlerDescription}}</span></h4>
+<h3><span class="label label-info">{{handlerResult.handlerDescription}}</span></h3>
 <div ng-repeat="splitList in handlerResult.splitLists">
 <div style="padding:5px; margin:10px" ng-repeat="words in splitList">
 <span ng-repeat="word in words">
