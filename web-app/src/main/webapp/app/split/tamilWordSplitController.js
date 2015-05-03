@@ -6,10 +6,10 @@
 	$scope.wordTypes = wordTypes; //Is this a better way?
     $scope.splitResults = []; 
 	$scope.selectedRule ={};
-	$scope.wordToSplitRule ={};
+	$scope.wordToSplitRule ="";
 	$scope.splitRulesTypesCache = splitRulesTypes;
 	$scope.splitIntoWords = function() {
-	var deferred = tamilWordSplit.tamilWordSplitAsync('Test');
+	var deferred = tamilWordSplit.tamilWordSplitAsync($scope.wordToSplitRule);
 	deferred.then(function(data) {	
 	$scope.splitResults = data;
 	});

@@ -2,16 +2,8 @@
 <h2>தமிழ்ச்சொல்பிரித்தல்</h2>
 <div>
 <h4>Test {{wordTypes.toTamil('KADDALHAI')}}</h4>
-<d-transliteration-input></d-transliteration-input>
-<h4>Test</h4>
-<!--<input type="text"  width ="150" ng-model="selectedWord" placeholder="இங்கே தட்டுங்கள்(தமிழ் அல்லது ஆங்கிலம்)"
- typeahead="x for x in loadAsync()" typeahead-loading="loadingResults" class="form-control
-<div ng-show="loadingResults" class="form-group">
-    <div class="col-md-12 text-center">
-        <span class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span>
-    </div>
-</div> -->
- <p>Selected: {{selectedRule.selected}}</p>
+<d-transliteration-input selected-word='wordToSplitRule'></d-transliteration-input>
+<p>Selected: {{selectedRule.selected}}</p>
 <ui-select ng-model="selectedRule.selected"
            theme="bootstrap"
            style="width: 600px;">

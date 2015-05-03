@@ -23,9 +23,9 @@
           url: '/describeword',
           templateUrl: '../app/views/describe-word.html'
         } )
-        .state( 'state2', {
-          url: '/state2',          
-          templateUrl: '../app/views/view2.html'
+        .state( 'split', {
+          url: '/split',          
+          templateUrl: '../app/views/split.html'
         } )       
 		.state( 'state3', {
           url: '/state3',          

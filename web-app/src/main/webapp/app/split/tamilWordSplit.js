@@ -1,6 +1,18 @@
 ﻿( function() {
   'use strict';
-  
+
+ angular.module( 'tamilapp.services' )
+.factory('spliter', ['$resource','serverPath', function($resource,serverPath) {
+return $resource(serverPath.RESTLocation + 'lookup/words/describe/', null,
+    {
+        'update': {
+					method:'PUT',
+					headers:{'Content-Type':'text/plain;charset=UTF-8', 'Accept':'*/*'} 		
+				   }
+    });
+}]);
+
+
 angular.module( 'tamilapp.services' )
   .factory( 'tamilWordSplit', ['$http','$q', function( $http, $q  ) {
 	// Return public API.
