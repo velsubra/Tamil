@@ -2,8 +2,8 @@
   'use strict';
   
 angular.module( 'tamilapp.services' )
-.factory('describer', ['$resource', function($resource) {
-return $resource('/xyz/lookup/words/describe/', null,
+.factory('describer', ['$resource','serverPath', function($resource,serverPath) {
+return $resource(serverPath.RESTLocation + 'lookup/words/describe/', null,
     {
         'update': {
 					method:'PUT',

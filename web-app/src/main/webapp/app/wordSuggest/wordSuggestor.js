@@ -3,8 +3,8 @@
   
   
  angular.module( 'tamilapp.services' )
-.factory('lookup', ['$resource', function($resource) {
-return $resource('/xyz/lookup/words/', {maxcount:10},
+.factory('lookup', ['$resource','serverPath', function($resource, serverPath) {
+return $resource(serverPath.RESTLocation + 'lookup/words/', {maxcount:10},
     {
         'getSuggestion': {
 					method:'PUT',
