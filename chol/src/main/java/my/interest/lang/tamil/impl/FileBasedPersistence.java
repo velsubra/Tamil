@@ -32,6 +32,7 @@ public class FileBasedPersistence extends PersistenceInterface   {
     static final Logger logger = Logger.getLogger(FileBasedPersistence.class.getName());
     private String path = null;
 
+    public static PersistenceInterface ME_SINGLETON = new FileBasedPersistence();
 
 
     static TamilRootWords cached = null;
@@ -165,7 +166,7 @@ public class FileBasedPersistence extends PersistenceInterface   {
         }
     }
 
-    public FileBasedPersistence() {
+    private FileBasedPersistence() {
         this.path = new File(getWorkDir(), "i18n.xml").getAbsolutePath();
         if (lastloaded == null) {
             lastloaded = getLastModified();

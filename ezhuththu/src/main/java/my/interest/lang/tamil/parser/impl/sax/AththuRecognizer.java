@@ -1,10 +1,13 @@
 package my.interest.lang.tamil.parser.impl.sax;
 
+import my.interest.lang.tamil.impl.FeatureSet;
 import my.interest.lang.tamil.punar.TamilWordPartContainer;
 import tamil.lang.TamilCharacter;
 import tamil.lang.TamilCompoundCharacter;
 import tamil.lang.TamilSimpleCharacter;
 import tamil.lang.TamilWord;
+import tamil.lang.api.dictionary.TamilDictionary;
+import tamil.lang.api.parser.ParseAsNumberFeature;
 import tamil.lang.known.IKnownWord;
 import tamil.lang.known.non.derived.IPeyarchchol;
 
@@ -22,10 +25,11 @@ public class AththuRecognizer extends SpecificTokenRecognizer {
     }
 
     @Override
-    public TokenMatcherResult match(TamilWordPartContainer nilaimozhi, TamilWordPartContainer varumozhi, List<IKnownWord> tail) {
-        TokenMatcherResult result = super.match(nilaimozhi, varumozhi, tail);
+    public TokenMatcherResult match(TamilWordPartContainer nilaimozhi, TamilWordPartContainer varumozhi, List<IKnownWord> tail, TamilDictionary dictionary, FeatureSet set) {
+        TokenMatcherResult result = super.match(nilaimozhi, varumozhi, tail,dictionary,set);
         if (result.isMatching()) {
-            if (tail.isEmpty()) {
+
+            if (tail.isEmpty() || set.isFeatureEnabled(ParseAsNumberFeature.class)) {
                 return  TokenMatcherResult.DisContinue();
             }
             IKnownWord next = tail.get(0);

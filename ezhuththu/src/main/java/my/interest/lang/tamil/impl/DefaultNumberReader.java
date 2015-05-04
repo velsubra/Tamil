@@ -1,15 +1,21 @@
 package my.interest.lang.tamil.impl;
 
 import common.lang.impl.UnknownCharacter;
-
 import my.interest.lang.tamil.impl.number.*;
+import my.interest.lang.tamil.impl.number.known.KnownNumberComponent;
+import my.interest.lang.tamil.parser.impl.sax.SaxParser;
 import my.interest.lang.tamil.punar.TamilWordPartContainer;
 import tamil.lang.TamilFactory;
 import tamil.lang.TamilWord;
+import tamil.lang.api.feature.FeatureConstants;
 import tamil.lang.api.join.WordsJoiner;
 import tamil.lang.api.number.NotANumberException;
 import tamil.lang.api.number.NumberReader;
 import tamil.lang.api.number.ReaderFeature;
+import tamil.lang.api.parser.CompoundWordParser;
+import tamil.lang.api.parser.ParserResult;
+import tamil.lang.known.IKnownWord;
+import tamil.lang.known.non.derived.Theriyaachchol;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -28,6 +34,7 @@ public final class DefaultNumberReader implements NumberReader {
     }
 
     public static final DefaultNumberReader reader = new DefaultNumberReader();
+
     private static class FloatingPoint {
         private String base;
         private String fraction;
@@ -109,8 +116,6 @@ public final class DefaultNumberReader implements NumberReader {
                 continue;
             }
         }
-
-
 
 
         if (base.length() == 0) {
@@ -225,6 +230,201 @@ public final class DefaultNumberReader implements NumberReader {
             full.addAll(fword);
         }
         return full;
+
+    }
+
+    public long readAsNumberInternal(List<KnownNumberComponent> undercrore, int fromIndex) throws NotANumberException {
+        long ret = 0;
+        KnownNumberComponent last = null;
+        for (int i = fromIndex; i < undercrore.size(); i++) {
+            KnownNumberComponent know = undercrore.get(i);
+            if (last == null) {
+                ret += know.getPosition() * know.getUnit();
+            } else {
+                if (last.getPosition() == know.getPosition()) {
+                    throw new NotANumberException(last.getWord() + " and " + know.getWord() + " can not be together");
+                }
+                if (last.getPosition() < know.getPosition()) {
+
+                    ret = ret * know.getPosition();
+                    ret += readAsNumberInternal(undercrore, i + 1);
+                    break;
+                } else {
+                    if (know.getUnit() == 0) {
+                        ret = 0;
+                    } else {
+                        ret += know.getPosition() * know.getUnit();
+                    }
+                }
+            }
+            last = know;
+        }
+        return ret;
+    }
+
+    @Override
+    public String readAsNumber(String numbertext, ReaderFeature... features) throws NotANumberException {
+        if (numbertext == null) {
+            return "0";
+        } else {
+            numbertext = numbertext.replaceAll("\n", " ");
+            int pulli = numbertext.indexOf("புள்ளி");
+            if (pulli < 0) {
+                return readAsNumberWholePart(numbertext, features);
+            } else {
+                String whole = numbertext.substring(0, pulli);
+                String fractional = numbertext.substring(pulli + 6, numbertext.length());
+                String ret = readAsNumberWholePart(whole, features) + ".";
+                ret += readAsNumberFractionalPart(fractional, features);
+                return ret;
+
+            }
+        }
+    }
+
+    private String readAsNumberFractionalPart(String numbertext, ReaderFeature... features) throws NotANumberException {
+        if (numbertext == null || numbertext.trim().equals("")) {
+            return "0";
+        } else {
+            numbertext = numbertext.replaceAll("\n", " ");
+            String[] all = numbertext.trim().split(" ");
+            if (all.length == 0) {
+                return "0";
+            } else {
+                List<KnownNumberComponent> series = new ArrayList<KnownNumberComponent>();
+                CompoundWordParser parser = new SaxParser();// TamilFactory.getCompoundWordParser();
+                for (String s : all) {
+                    if (s.trim().equals("")) continue;
+                    TamilWord tamilWord = TamilWord.from(s, true);
+                    List<ParserResult> singleresult = parser.parse(tamilWord, 1, FeatureConstants.PARSE_FOR_NUMBER_VAL_172);
+                    if (singleresult.isEmpty()) {
+                        singleresult = parser.parse(tamilWord, 1, FeatureConstants.PARSE_FOR_NUMBER_VAL_172, FeatureConstants.PARSE_WITH_UNKNOWN_VAL_170);
+                        if (singleresult.isEmpty()) {
+                            throw new NotANumberException("Could not parse part:" + s);
+                        } else {
+                            ParserResult result = singleresult.get(0);
+                            if (result.isParsed()) {
+                                Theriyaachchol unknown = result.findUnknownPart();
+                                if (unknown != null) {
+                                    throw new NotANumberException("Could not parse part:" + unknown.getWord().toString());
+                                } else {
+                                    throw new NotANumberException("Could not parse part:" + s);
+                                }
+                            } else {
+                                throw new NotANumberException("Could not parse part:" + s);
+                            }
+                        }
+
+                    }
+                    for (IKnownWord d : singleresult.get(0).getSplitWords()) {
+                        if (!KnownNumberComponent.class.isAssignableFrom(d.getClass())) {
+                            throw new NotANumberException("Could not recognize part:" + s);
+                        }
+                        series.add((KnownNumberComponent) d);
+                    }
+                }
+                // Got a full series.
+                StringBuffer buffer = new StringBuffer();
+                for (KnownNumberComponent d : series) {
+                    buffer.append(d.getUnit());
+                }
+                if (buffer.length() == 0) {
+                    buffer.append("0");
+                }
+                return buffer.toString();
+
+            }
+        }
+
+    }
+
+
+    private String readAsNumberWholePart(String numbertext, ReaderFeature... features) throws NotANumberException {
+        if (numbertext == null || numbertext.trim().equals("")) {
+            return "0";
+        } else {
+            numbertext = numbertext.replaceAll("\n", " ");
+            String[] all = numbertext.trim().split(" ");
+            if (all.length == 0) {
+                return "0";
+            } else {
+                List<KnownNumberComponent> series = new ArrayList<KnownNumberComponent>();
+                CompoundWordParser parser = new SaxParser();// TamilFactory.getCompoundWordParser();
+                for (String s : all) {
+                    if (s.trim().equals("")) continue;
+                    TamilWord tamilWord = TamilWord.from(s, true);
+                    List<ParserResult> singleresult = parser.parse(tamilWord, 1, FeatureConstants.PARSE_FOR_NUMBER_VAL_172);
+                    if (singleresult.isEmpty()) {
+                        singleresult = parser.parse(tamilWord, 1, FeatureConstants.PARSE_FOR_NUMBER_VAL_172, FeatureConstants.PARSE_WITH_UNKNOWN_VAL_170);
+                        if (singleresult.isEmpty()) {
+                            throw new NotANumberException("Could not parse part:" + s);
+                        } else {
+                            ParserResult result = singleresult.get(0);
+                            if (result.isParsed()) {
+                                Theriyaachchol unknown = result.findUnknownPart();
+                                if (unknown != null) {
+                                    throw new NotANumberException("Could not parse part:" + unknown.getWord().toString());
+                                } else {
+                                    throw new NotANumberException("Could not parse part:" + s);
+                                }
+                            } else {
+                                throw new NotANumberException("Could not parse part:" + s);
+                            }
+                        }
+                    }
+                    for (IKnownWord d : singleresult.get(0).getSplitWords()) {
+                        if (!KnownNumberComponent.class.isAssignableFrom(d.getClass())) {
+                           continue;
+                           // throw new NotANumberException("Could not recognize part:" + s + ". Resolved to a wrong type:" + d.getClass().getName() + ":" + d.getWord());
+                        }
+                        series.add((KnownNumberComponent) d);
+                    }
+
+                }
+                // Got a full series.
+                List<List<KnownNumberComponent>> coresseries = new ArrayList<List<KnownNumberComponent>>();
+                List<KnownNumberComponent> undercrore = new ArrayList<KnownNumberComponent>();
+                boolean firstcrore = true;
+                for (KnownNumberComponent d : series) {
+                    if (d.isCrore()) {
+                        if (undercrore.isEmpty() && firstcrore) {
+                            undercrore.add(NumberDictionary.ORU);
+
+                        }
+                        coresseries.add(undercrore);
+                        undercrore = new ArrayList<KnownNumberComponent>();
+                    } else {
+                        undercrore.add(d);
+                    }
+                    firstcrore = false;
+                }
+                coresseries.add(undercrore);
+
+                // Folded under crores
+                boolean first = true;
+                StringBuffer buffer = new StringBuffer();
+                for (List<KnownNumberComponent> lessthancore : coresseries) {
+                    long val = readAsNumberInternal(lessthancore, 0);
+                    if (first) {
+                        buffer.append(String.valueOf(val));
+                    } else {
+                        String _7digit = String.valueOf(val);
+                        if (_7digit.length() > 7) {
+                            throw new NotANumberException("Recognized over flow!:" + _7digit + ". Please make sure you break at hundreds, thousands, lakhs and crores. The usage such as நூறாயிரம் should be avoided. Use இலட்சம்  instead.");
+                        }
+                        while (_7digit.length() < 7) {
+                            _7digit = "0" + _7digit;
+                        }
+                        buffer.append(_7digit);
+                    }
+                    first = false;
+                }
+                if (buffer.length() == 0) {
+                    buffer.append("0");
+                }
+                return buffer.toString();
+            }
+        }
 
     }
 

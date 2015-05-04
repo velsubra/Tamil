@@ -46,11 +46,10 @@ import java.util.*;
  *
  * @author velsubra
  */
-public abstract class PersistenceInterface extends DefaultPlatformDictionaryBase implements PersistenceManagerProvider, PersistenceManager, RootVerbManager, PrepositionManager, NounManager, ApplicationManager {
+public abstract class PersistenceInterface extends DefaultPlatformDictionaryBase implements  PersistenceManager, RootVerbManager, PrepositionManager, NounManager, ApplicationManager {
 
     protected static final TamilWord iduword = TamilWord.from("இடு");
 
-    private static PersistenceInterface ME = null;
 
     public void setAutoLoad(boolean autoLoad) {
         this.autoLoad = autoLoad;
@@ -136,7 +135,7 @@ public abstract class PersistenceInterface extends DefaultPlatformDictionaryBase
      */
     public static PersistenceInterface get() {
 
-        return new FileBasedPersistence();
+        return FileBasedPersistence.ME_SINGLETON;
 
     }
 
@@ -201,7 +200,7 @@ public abstract class PersistenceInterface extends DefaultPlatformDictionaryBase
         }
     }));
 
-    public static boolean isEmptyKnown() {
+    public  boolean isEmptyKnown() {
         return set.isEmpty();
     }
 
@@ -209,7 +208,7 @@ public abstract class PersistenceInterface extends DefaultPlatformDictionaryBase
     protected static TreeSet<PeyarchcholDescription> peyars = null;
     protected static TreeSet<IdaichcholDescription> idais = null;
 
-    public static int totalWordsSize() {
+    public  int totalWordsSize() {
         return set.size();
     }
 
@@ -252,11 +251,9 @@ public abstract class PersistenceInterface extends DefaultPlatformDictionaryBase
 
 
     public static void addOrUpdateKnown(IKnownWord w) {
-        if (ME == null) {
-            ME = get();
-        }
-        ME.removeKnown(w);
-        ME.addKnown(w);
+
+        FileBasedPersistence.ME_SINGLETON.removeKnown(w);
+        FileBasedPersistence.ME_SINGLETON.addKnown(w);
     }
 
 
@@ -1706,9 +1703,5 @@ public abstract class PersistenceInterface extends DefaultPlatformDictionaryBase
     }
 
 
-    @Override
-    public PersistenceManager create() {
-        return new FileBasedPersistence();
-    }
 
 }

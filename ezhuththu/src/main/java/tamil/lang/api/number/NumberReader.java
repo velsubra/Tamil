@@ -4,9 +4,16 @@ import tamil.lang.TamilWord;
 
 /**
  * <p>
- * Converts a absolute number into Tamil text.
- * <pre>
+ * Converts a decimal  number into Tamil text.
+ *   <pre>
  *         12011 - பன்னிரண்டாயிரத்து பதினொன்று
+ *     </pre>
+ * </p>
+ *
+ * <p>
+ * It can also convert text into the decimal number
+ *   <pre>
+ *        ஒரு கோடியே கோடி - 100000000000000
  *     </pre>
  * </p>
  *
@@ -16,7 +23,7 @@ import tamil.lang.TamilWord;
 public interface NumberReader {
 
     /**
-     * Reads a number in string form with features.
+     * Reads a number into text form with features.
      *
      * @param number   number that can contain digits and a dot. All other characters will be ignored.
      * @param features features that controls how the  text should be generated.
@@ -27,7 +34,7 @@ public interface NumberReader {
 
 
     /**
-     * Reads a number in string form.
+     * Reads a number into text
      *
      * @param number number that can contain digits and a dot. All other characters will be ignored.
      * @return the Tamil text form of that number.
@@ -51,5 +58,37 @@ public interface NumberReader {
      * @return the string form of the number
      */
     public TamilWord readNumber(double number);
+
+
+
+    /**
+     * Reads number text into a numeric value.
+     * @param numbertext   (E.g ஒரு கோடியே கோடி)
+     * @param features
+     * @return   number in decimal form .(Eg. 100000000000000)
+     * @throws NotANumberException
+     */
+    public String readAsNumber(String numbertext, ReaderFeature... features) throws NotANumberException;
+
+//
+//    /**
+//     * Reads number text into a numeric value.
+//     * @param numbertext
+//     * @param features
+//     * @return
+//     * @throws NotANumberException
+//     */
+//    public double readAsDouble(TamilWord numbertext, ReaderFeature... features) throws NotANumberException;
+//
+//
+//
+//    /**
+//     * Reads number text into a numeric value.
+//     * @param numbertext
+//     * @param features
+//     * @return
+//     * @throws NotANumberException
+//     */
+//    public double readAsLong(TamilWord numbertext, ReaderFeature... features) throws NotANumberException;
 
 }

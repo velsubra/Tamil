@@ -1,10 +1,12 @@
 package my.interest.lang.tamil.parser.impl.sax.filter;
 
+import my.interest.lang.tamil.impl.FeatureSet;
 import my.interest.lang.tamil.punar.TamilWordPartContainer;
 import tamil.lang.TamilCharacter;
 import tamil.lang.TamilCompoundCharacter;
 import tamil.lang.TamilFactory;
 import tamil.lang.TamilWord;
+import tamil.lang.api.dictionary.TamilDictionary;
 import tamil.lang.known.IKnownWord;
 
 import java.util.Collections;
@@ -17,7 +19,7 @@ import java.util.List;
  * @author velsubra
  */
 public class UdambaduMeiFilter implements UnknownWordFilter {
-    public List<IKnownWord> filterUnknown(TamilWordPartContainer nilaimozhi, TamilWordPartContainer varumozhiCandidate, List<IKnownWord> tail) {
+    public List<IKnownWord> filterUnknown(TamilWordPartContainer nilaimozhi, TamilWordPartContainer varumozhiCandidate, List<IKnownWord> tail, TamilDictionary dictionary, FeatureSet set) {
         if (tail.isEmpty()) {
             return Collections.emptyList();
         }
@@ -42,12 +44,12 @@ public class UdambaduMeiFilter implements UnknownWordFilter {
                  if (!container.isEndingWithVagaraUdambadumeiYuir()) {
                      return Collections.emptyList();
                  }
-                return TamilFactory.getSystemDictionary().lookup(lastbutone);
+                return dictionary.lookup(lastbutone);
             } else {
                 if (!container.isEndingWithYagaraUdambadumeiYuir()) {
                     return Collections.emptyList();
                 }
-                return TamilFactory.getSystemDictionary().lookup(lastbutone);
+                return dictionary.lookup(lastbutone);
 
             }
         } else {

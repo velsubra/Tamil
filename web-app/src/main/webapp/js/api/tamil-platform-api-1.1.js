@@ -431,6 +431,8 @@ var TamilFactory = new function () {
                                     return json;
                                 }
                                 ret += json.tamil;
+                            } else {
+                                ret += w;
                             }
                         }
 
@@ -444,7 +446,7 @@ var TamilFactory = new function () {
                         w += ch;
                     }
                 }
-                //console.log("input:" + word + " output:" + ret);
+//                console.log("input:" + word + " output:" + ret);
                 var retjson = {
                     "tamil": ret ? ret : word,
                     "given": word
@@ -589,7 +591,24 @@ var TamilFactory = new function () {
         this.createNumberReader = function () {
             //private properties
             var cachedNumbers = new Object();
-            this.getnumberurl = this.context + "/api/number/reader/one/?number=";
+            this.getnumberurl = this.context + "/api/number/reader/tonumber/one/?number=";
+            this.gettexturl = this.context + "/api/number/reader/totext/one/?number=";
+
+
+            /**
+             * Method to read tamil number text as number
+             * @param word  the number in text form.
+             * @param features  the comma separated list of features to be used.
+             * {json} - the Tamil text as the number is read.
+             *        <b> json.number </b> gives the actual number read
+             *        <b> json.error </b> will be true if there is an error.
+             *        {"error":"true","emessage":"Index:9 Invalid character:w"}
+             */
+            this.readAsNumber = function (word, features) {
+                return readNumberCallApi(this.getnumberurl, word,features, true);
+            }
+
+
 
             /**
              * Method to read the number as tamil text
@@ -601,6 +620,11 @@ var TamilFactory = new function () {
              *        {"error":"true","emessage":"Index:9 Invalid character:w"}
              */
             this.readNumber = function (word, features) {
+                return readNumberCallApi(this.gettexturl, word,features,false);
+            }
+
+
+            readNumberCallApi = function (apiurl,word, features, texttonumber) {
                 if (word == "") {
                     return word;
                 }
@@ -621,9 +645,17 @@ var TamilFactory = new function () {
                 var url = null;
 
                 if (typeof TAMIL_APPLET_INJECTED !== 'undefined') {
-                    // console.log(word);
-                    var js = TAMIL_APPLET_INJECTED.readNumber(word, features);
-                    //console.log(js);
+
+                    var js = null;
+
+                       if (texttonumber) {
+                           console.log("read as number:" + word + ":" + features+ ":" + apiurl);
+                           js = TAMIL_APPLET_INJECTED.readAsNumber(word, features);
+
+                       } else {
+                           js = TAMIL_APPLET_INJECTED.readNumber(word, features);
+                       }
+                    console.log(js);
                     result = $.parseJSON(js);
                    // console.log("Using applet......");
                     //    console.log(result);
@@ -631,7 +663,7 @@ var TamilFactory = new function () {
 
 
                     method = "GET";
-                    url = this.getnumberurl + encodeURI(word);
+                    url = apiurl + encodeURI(word);
                     if (features && features != "0") {
                         url += "&features=" + features;
                     }
@@ -733,7 +765,9 @@ $(document).ready(function () {
     // Binds events for   tamil-text
 
     $(".tamil-text").on('focus', function () {
+       // console.log($(this).val());
         tamil = SYS_TRANSLIT.transliterate($(this).val(), "110").tamil;
+       // console.log(tamil);
         $(this).val(tamil);
         $(this).$popupDiv("#tamil_text");
         if (tamil) {

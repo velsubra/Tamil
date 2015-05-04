@@ -1,7 +1,9 @@
 package my.interest.lang.tamil.parser.impl.sax;
 
+import my.interest.lang.tamil.impl.FeatureSet;
 import my.interest.lang.tamil.punar.TamilWordPartContainer;
 import tamil.lang.TamilWord;
+import tamil.lang.api.dictionary.TamilDictionary;
 import tamil.lang.known.IKnownWord;
 import tamil.lang.known.non.derived.IIdaichchol;
 import tamil.lang.known.non.derived.IKaddalhai;
@@ -20,10 +22,10 @@ public class OttuRecognizer extends SpecificTokenRecognizer {
     }
 
     @Override
-    public TokenMatcherResult match(TamilWordPartContainer nilaimozhi, TamilWordPartContainer varumozhi, List<IKnownWord> tail) {
+    public TokenMatcherResult match(TamilWordPartContainer nilaimozhi, TamilWordPartContainer varumozhi, List<IKnownWord> tail , TamilDictionary dictionary, FeatureSet set) {
         if (tail.isEmpty()) return TokenMatcherResult.DisContinue();
 
-        TokenMatcherResult matching = super.match(nilaimozhi, varumozhi, tail);
+        TokenMatcherResult matching = super.match(nilaimozhi, varumozhi, tail, dictionary, set);
         if (matching.isMatching()) {
              if (tail.isEmpty())  {
                  return TokenMatcherResult.DisContinue();

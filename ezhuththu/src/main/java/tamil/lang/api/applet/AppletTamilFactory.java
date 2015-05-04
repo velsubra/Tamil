@@ -93,9 +93,9 @@ public class AppletTamilFactory extends JApplet {
     /**
      * Reads a number into Tamil text
      *
-     * @param number   the number to be read
+     * @param number   the number to be read    in decimal form (Eg. 100000000000000)
      * @param features the comma separated set of features expressed in comma separated set of integers.
-     * @return {json} - the Tamil transliterated object as JSON string or any error.
+     * @return {json} - the number text (E.g ஒரு கோடியே கோடி)
      * <b> json.tamil </b> gives the transliterated string. No English letters will be present in it.
      * <b> json.error </b> gives true if there is an error.
      * <b> json.emessage </b> gives the error message.
@@ -112,6 +112,34 @@ public class AppletTamilFactory extends JApplet {
             obj.put("tamil", w.toString());
             return obj.toString();
         } catch (Exception e) {
+            return handle(e).toString();
+        }
+
+    }
+
+    /**
+     * Reads text and convert that into a number
+     * @param number  the number text to be read.    (E.g ஒரு கோடியே கோடி)
+     * @param features the features lists
+     * @return   {json} - the Tamil transliterated object as JSON string or any error.
+     * <b> json.number </b> gives the number in decimal form .(Eg. 100000000000000)
+     * <b> json.error </b> gives true if there is an error.
+     * <b> json.emessage </b> gives the error message.
+     * @throws org.json.JSONException
+     * @throws org.json.JSONException
+     */
+    public String readAsNumber(String number, String features) throws org.json.JSONException {
+
+        try {
+
+            String w = reader.readAsNumber(number, FeatureSet.findFeatures(ReaderFeature.class, features).toArray(new ReaderFeature[]{}));
+            // System.out.println("Number:" + w.toString());
+            // System.out.println("file.encoding:" +System.getProperty("file.encoding"));
+            JSONObject obj = new JSONObject();
+            obj.put("number", w);
+            return obj.toString();
+        } catch (Exception e) {
+            e.printStackTrace();
             return handle(e).toString();
         }
 

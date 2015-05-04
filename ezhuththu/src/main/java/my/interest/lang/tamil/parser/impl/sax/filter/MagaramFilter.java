@@ -1,10 +1,12 @@
 package my.interest.lang.tamil.parser.impl.sax.filter;
 
+import my.interest.lang.tamil.impl.FeatureSet;
 import my.interest.lang.tamil.punar.TamilWordPartContainer;
 import tamil.lang.TamilCharacter;
 import tamil.lang.TamilCompoundCharacter;
 import tamil.lang.TamilFactory;
 import tamil.lang.TamilWord;
+import tamil.lang.api.dictionary.TamilDictionary;
 import tamil.lang.known.IKnownWord;
 import tamil.lang.known.non.derived.Ottu;
 
@@ -19,7 +21,7 @@ import java.util.*;
 public class MagaramFilter implements KnowWordFilter , UnknownWordFilter{
     private static Map<TamilWord, List<IKnownWord>> magaramCache = new HashMap<TamilWord, List<IKnownWord>>();
 
-    public List<IKnownWord> filter(IKnownWord recognized, TamilWordPartContainer nilaimozhi, TamilWordPartContainer varumozhi, List<IKnownWord> tail) {
+    public List<IKnownWord> filter(IKnownWord recognized, TamilWordPartContainer nilaimozhi, TamilWordPartContainer varumozhi, List<IKnownWord> tail, TamilDictionary dictionary, FeatureSet set) {
         if (tail.isEmpty() || recognized.getWord().size() < 2 || !recognized.getWord().getLast().asTamilCharacter().isUyirMeyyezhuththu()) {
             return returnThis(recognized);
         } else {
@@ -35,7 +37,7 @@ public class MagaramFilter implements KnowWordFilter , UnknownWordFilter{
             magaram.add(TamilCompoundCharacter.IM);
             List<IKnownWord> knowns = magaramCache.get(magaram);
             if (knowns == null) {
-                knowns = TamilFactory.getSystemDictionary().lookup(magaram);
+                knowns = dictionary.lookup(magaram);
                 if (!knowns.isEmpty()) {
                     knowns.add(recognized);
                     magaramCache.put(magaram, knowns);
@@ -57,7 +59,7 @@ public class MagaramFilter implements KnowWordFilter , UnknownWordFilter{
         return list;
     }
 
-    public List<IKnownWord> filterUnknown(TamilWordPartContainer nilaimozhi, TamilWordPartContainer varumozhiCandidate, List<IKnownWord> tail) {
+    public List<IKnownWord> filterUnknown(TamilWordPartContainer nilaimozhi, TamilWordPartContainer varumozhiCandidate, List<IKnownWord> tail, TamilDictionary dictionary, FeatureSet set) {
         if (tail.isEmpty() || varumozhiCandidate.size() < 2 ) { //|| !varumozhiCandidate.getWord().getLast().asTamilCharacter().isUyirMeyyezhuththu()) {
             return Collections.emptyList();
         } else {
@@ -94,7 +96,7 @@ public class MagaramFilter implements KnowWordFilter , UnknownWordFilter{
             magaram.add(TamilCompoundCharacter.IM);
             List<IKnownWord> knowns = magaramCache.get(magaram);
             if (knowns == null) {
-                knowns = TamilFactory.getSystemDictionary().lookup(magaram);
+                knowns = dictionary.lookup(magaram);
                 if (!knowns.isEmpty()) {
                     magaramCache.put(magaram, knowns);
                     return knowns;

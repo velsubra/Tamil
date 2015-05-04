@@ -4,6 +4,7 @@ import common.lang.impl.AbstractCharacter;
 import my.interest.lang.tamil.bean.MultipleWordSplitResult;
 import my.interest.lang.tamil.bean.SimpleSplitResult;
 import my.interest.lang.tamil.internal.api.HandlerFactory;
+import my.interest.lang.tamil.parser.impl.sax.SaxParser;
 import tamil.lang.TamilFactory;
 import tamil.lang.TamilWord;
 import tamil.lang.api.parser.*;
@@ -44,6 +45,7 @@ public class CompoundWordParserProviderImpl implements CompoundWordParserProvide
     @Override
     public CompoundWordParser crate() {
         return imp;
+       // return new SaxParser();
     }
 
     static final class CompoundWordParserImpl implements CompoundWordParser {

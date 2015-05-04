@@ -1,9 +1,11 @@
 package my.interest.lang.tamil.parser.impl.sax;
 
+import my.interest.lang.tamil.impl.FeatureSet;
 import my.interest.lang.tamil.punar.TamilWordPartContainer;
 import tamil.lang.TamilCharacter;
 import tamil.lang.TamilSimpleCharacter;
 import tamil.lang.TamilWord;
+import tamil.lang.api.dictionary.TamilDictionary;
 import tamil.lang.known.IKnownWord;
 
 import java.util.ArrayList;
@@ -18,12 +20,12 @@ import java.util.List;
 public abstract  class TokenRecognizer {
 
 
-    public  TokenMatcherResult matchRoot(TamilWordPartContainer nilaimozhi, TamilWordPartContainer varumozhi , List<IKnownWord> tail) {
-        return match(nilaimozhi, varumozhi, tail);
+    public  TokenMatcherResult matchRoot(TamilWordPartContainer nilaimozhi, TamilWordPartContainer varumozhi , List<IKnownWord> tail, TamilDictionary dictionary, FeatureSet set) {
+        return match(nilaimozhi, varumozhi, tail,dictionary,set);
     }
 
 
-    public abstract TokenMatcherResult match(TamilWordPartContainer nilaimozhi, TamilWordPartContainer varumozhi , List<IKnownWord> tail);
+    public abstract TokenMatcherResult match(TamilWordPartContainer nilaimozhi, TamilWordPartContainer varumozhi , List<IKnownWord> tail, TamilDictionary dictionary, FeatureSet set);
 
 
 

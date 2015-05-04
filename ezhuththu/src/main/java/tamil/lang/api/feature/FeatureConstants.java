@@ -5,6 +5,7 @@ import tamil.lang.api.dictionary.DictionaryFeature;
 import tamil.lang.api.dictionary.ExactMatchSearch;
 import tamil.lang.api.number.IgnoreNonDigitFeature;
 import tamil.lang.api.number.PunharchiFeature;
+import tamil.lang.api.parser.ParseAsNumberFeature;
 import tamil.lang.api.parser.ParseFailureFindIndexFeature;
 import tamil.lang.api.parser.ParseWithUnknownFeature;
 import tamil.lang.api.trans.JoinFeature;
@@ -55,6 +56,7 @@ public final class FeatureConstants {
     public static final DictionaryFeature DICTIONARY_AUTO_SUGGEST_VAL_165 = new AutoSuggestFeature();
 
     public static final ParseWithUnknownFeature PARSE_WITH_UNKNOWN_VAL_170 = new ParseWithUnknownFeature();
+    public static final ParseAsNumberFeature PARSE_FOR_NUMBER_VAL_172 = new ParseAsNumberFeature();
 
     public static final ParseFailureFindIndexFeature PARSE_FIND_FAILURE_INDEX_VAL_175 = new ParseFailureFindIndexFeature();
 

@@ -1,8 +1,10 @@
 package my.interest.lang.tamil.parser.impl.sax;
 
+import my.interest.lang.tamil.impl.FeatureSet;
 import my.interest.lang.tamil.parser.impl.sax.filter.*;
 import my.interest.lang.tamil.punar.TamilWordPartContainer;
 import tamil.lang.TamilFactory;
+import tamil.lang.api.dictionary.TamilDictionary;
 import tamil.lang.known.IKnownWord;
 import tamil.lang.known.non.derived.*;
 
@@ -45,19 +47,20 @@ public class AnyKnownWordMatcher extends TokenRecognizer {
             add(new MagaramFilter());
             add(new UdambaduMeiFilter());
             add(new ThanikkurrilOttuFilter());
+            add(new NannoolHandler183Filter());
         }
     };
 
     @Override
-    public TokenMatcherResult match(TamilWordPartContainer nilaimozhi, TamilWordPartContainer varumozhi, List<IKnownWord> tail) {
-        List<IKnownWord> list = TamilFactory.getSystemDictionary().lookup(varumozhi.getWord());
+    public TokenMatcherResult match(TamilWordPartContainer nilaimozhi, TamilWordPartContainer varumozhi, List<IKnownWord> tail, TamilDictionary dictionary, FeatureSet set) {
+        List<IKnownWord> list = dictionary.lookup(varumozhi.getWord());
 
 
         if (list.isEmpty()) {
             Set<IKnownWord> filteredList = new java.util.HashSet<IKnownWord>();
             if (!noNonWordLookup) {
                 for (UnknownWordFilter unKnownWordFilter : filtersUnknown) {
-                    List<IKnownWord> knownWords = unKnownWordFilter.filterUnknown(nilaimozhi, varumozhi, tail);
+                    List<IKnownWord> knownWords = unKnownWordFilter.filterUnknown(nilaimozhi, varumozhi, tail,dictionary, set);
                     if (!knownWords.isEmpty()) {
                         filteredList.addAll(knownWords);
                     }
@@ -99,7 +102,7 @@ public class AnyKnownWordMatcher extends TokenRecognizer {
 
                 Set<IKnownWord> filteredListForThisKnow = new java.util.HashSet<IKnownWord>();
                 for (KnowWordFilter KnownWordFilter : filters) {
-                    List<IKnownWord> knownWords = KnownWordFilter.filter(known, nilaimozhi, varumozhi, tail);
+                    List<IKnownWord> knownWords = KnownWordFilter.filter(known, nilaimozhi, varumozhi, tail,dictionary,set);
                     if (knownWords.isEmpty()) {
                         filteredListForThisKnow.clear();
                         break;

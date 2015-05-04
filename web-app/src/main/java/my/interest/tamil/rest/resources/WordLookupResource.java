@@ -35,7 +35,7 @@ public class WordLookupResource {
     @Path("/words/count")
     @Produces({MediaType.TEXT_PLAIN})
     public String getSize() {
-        return String.valueOf(PersistenceInterface.totalWordsSize());
+        return String.valueOf(PersistenceInterface.get().totalWordsSize());
     }
 
     @GET
