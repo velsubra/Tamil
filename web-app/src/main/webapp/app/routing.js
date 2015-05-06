@@ -26,7 +26,11 @@
         .state( 'split', {
           url: '/split',          
           templateUrl: '../app/views/split.html'
-        } )       
+        } )  
+		.state( 'parse', {
+          url: '/parse',          
+          templateUrl: '../app/views/parse-word.html'
+        } ) 		
 		.state( 'state3', {
           url: '/state3',          
           templateUrl: '../app/views/view3.html'
