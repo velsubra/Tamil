@@ -1,4 +1,4 @@
-package my.interest.lang.tamil.punar.handler.magaraveeru;
+package my.interest.lang.tamil.punar.handler.lagaraveeru;
 
 import tamil.lang.TamilCompoundCharacter;
 import tamil.lang.TamilWord;

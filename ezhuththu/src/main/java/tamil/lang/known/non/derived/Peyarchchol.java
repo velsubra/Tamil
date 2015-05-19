@@ -14,9 +14,8 @@ public final class Peyarchchol extends AbstractKnownWord implements  IPeyarchcho
     private int  overloadCount = 0;
     private boolean uyarThinhai;
 
-    public boolean isPronoun() {
-        return pronoun;
-    }
+
+
 
     private boolean pronoun;
 
@@ -49,7 +48,7 @@ public final class Peyarchchol extends AbstractKnownWord implements  IPeyarchcho
         int ret = super.compareTo(o);
         if (ret == 0) {
             if (Peyarchchol.class.isAssignableFrom(o.getClass())) {
-            return new Integer(overloadCount).compareTo(new Integer(((Peyarchchol)o).overloadCount));
+                return new Integer(overloadCount).compareTo(new Integer(((Peyarchchol)o).overloadCount));
             } else {
                 return ret;
             }

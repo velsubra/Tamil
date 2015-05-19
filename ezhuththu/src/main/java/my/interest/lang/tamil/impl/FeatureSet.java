@@ -1,7 +1,6 @@
 package my.interest.lang.tamil.impl;
 
 import my.interest.lang.tamil.EzhuththuUtils;
-
 import tamil.lang.api.feature.Feature;
 import tamil.lang.api.feature.FeatureConstants;
 import tamil.lang.api.number.IgnoreNonDigitFeature;
@@ -22,7 +21,7 @@ import java.util.Map;
  */
 public final class FeatureSet {
 
-    private static Map<String, Feature > registeredFeatures = new HashMap<String, Feature>();
+    private static Map<String, Feature> registeredFeatures = new HashMap<String, Feature>();
 
     static {
         Field[] fields = FeatureConstants.class.getFields();
@@ -55,61 +54,86 @@ public final class FeatureSet {
 
     /**
      * Finds features
-     * @param type   the tye of the feature to find
-     * @param list   the comma separated list of feature ids.
-     * @param <T>   the feature type
+     *
+     * @param type the tye of the feature to find
+     * @param list the comma separated list of feature ids.
+     * @param <T>  the feature type
      * @return the array of features found.
      */
-    public static  <T extends Feature>  List<T> findFeatures(Class<T> type, String list) {
-        if (list == null) return  null;
+    public static <T extends Feature> List<T> findFeatures(Class<T> type, String list) {
+        if (list == null) return null;
         List<T> featureList = new ArrayList<T>();
         List<String> listStr = EzhuththuUtils.parseString(list);
-        for (String s: listStr) {
-            s= s.trim();
+        for (String s : listStr) {
+            s = s.trim();
             Feature f = registeredFeatures.get(s);
-            if (f != null ) {
-                 if (type == null || type.isAssignableFrom(f.getClass())) {
-                     featureList.add((T)f);
-                 }
+            if (f != null) {
+                if (type == null || type.isAssignableFrom(f.getClass())) {
+                    featureList.add((T) f);
+                }
             }
         }
-      return featureList;
+        return featureList;
 
     }
 
     public static final FeatureSet EMPTY = new FeatureSet(null);
-    Feature[] features = null;
+    // Feature[] features = null;
     Map<Class<? extends Feature>, Feature> quickmap = null;
+    Map<Class<? extends Feature>, Feature> removedFeatures = null;
 
     public FeatureSet(Feature... features) {
-        this.features = features;
+        // this.features = features;
         if (features != null && features.length > 0) {
             quickmap = new HashMap<Class<? extends Feature>, Feature>();
             for (Feature f : features) {
                 quickmap.put(f.getClass(), f);
             }
         } else {
-            this.features = null;
+            //  this.features = null;
         }
     }
 
+    public synchronized <T extends Feature> T removeFeature(Class<? extends Feature> feature) {
+        if (feature == null) return null;
+        if (EMPTY == this) return null;
+        if (this.quickmap == null) return null;
+        T t = (T) quickmap.remove(feature);
+        if (t != null) {
+            if (removedFeatures == null) {
+                removedFeatures = new HashMap<Class<? extends Feature>, Feature>();
+                removedFeatures.put(feature, t);
+            }
+        }
+        return t;
+
+    }
+
+    public <T extends Feature> T getRemovedFeature(Class<T> feature) {
+        if (feature == null) return null;
+        if (EMPTY == this) return null;
+        if (this.removedFeatures == null) return null;
+        Feature fq = removedFeatures.get(feature);
+        if (fq != null) return (T) fq;
+        return null;
+    }
 
     public <T extends Feature> T getFeature(Class<T> feature) {
         if (feature == null) return null;
         if (EMPTY == this) return null;
-        if (this.features == null) return null;
+        if (this.quickmap == null) return null;
         Feature fq = quickmap.get(feature);
         if (fq != null) return (T) fq;
-        for (Feature f : features) {
-            if (feature.isAssignableFrom(f.getClass())) {
-                return (T) f;
-            }
-        }
+//        for (Feature f : features) {
+//            if (feature.isAssignableFrom(f.getClass())) {
+//                return (T) f;
+//            }
+//        }
         return null;
     }
 
 
-    public<T extends Feature>  boolean isFeatureEnabled (Class<T> feature) {
+    public <T extends Feature> boolean isFeatureEnabled(Class<T> feature) {
         return getFeature(feature) != null;
     }
 
@@ -121,23 +145,21 @@ public final class FeatureSet {
 
     public boolean isToTreatNonDigitAsNumber() {
         IgnoreNonDigitFeature f = getFeature(IgnoreNonDigitFeature.class);
-        if ( f == null) return false;
+        if (f == null) return false;
         return f.isConsiderNonDigitAs0();
     }
 
     public boolean isNumberPurchchiFeaturePosition() {
         PunharchiFeature f = getFeature(PunharchiFeature.class);
-        if ( f == null) return false;
+        if (f == null) return false;
         return true;
     }
 
     public boolean isNumberPurchchiFeatureFull() {
         PunharchiFeature f = getFeature(PunharchiFeature.class);
-        if ( f == null) return false;
+        if (f == null) return false;
         return f.isFull();
     }
-
-
 
 
 }

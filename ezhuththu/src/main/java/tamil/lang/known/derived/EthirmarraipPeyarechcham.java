@@ -20,11 +20,15 @@ import tamil.lang.known.non.derived.Vinaiyadi;
  * @author velsubra
  */
 public final class EthirmarraipPeyarechcham extends AbstractVinaiyadiPeyarechcham implements IEthirmarrai {
-
+     final TamilWord IRU = TamilWord.from("இரு");
 
     public EthirmarraipPeyarechcham(TamilWord word, Vinaiyadi vinaiyadi) {
+          this(word, vinaiyadi, true);
+    }
+
+    public EthirmarraipPeyarechcham(TamilWord word, Vinaiyadi vinaiyadi,  boolean processIru) {
         super(word, vinaiyadi);
-        if (word.endsWith(TamilSimpleCharacter.THA) && word.size() > 2) {
+        if ( word.endsWith(TamilSimpleCharacter.THA) && word.size() > 2) {
             TamilWord withoutLast = word.subWord(0, word.size() - 1);
             EthirmarraipPeyarechcham kedda = new EthirmarraipPeyarechcham(withoutLast, vinaiyadi);
             kedda.addProperty("EERRUKEDDATHU", "true");
@@ -65,6 +69,13 @@ public final class EthirmarraipPeyarechcham extends AbstractVinaiyadiPeyarechcha
             t.addLast(TamilCompoundCharacter.ITH_AA);
             EthirmarraikKaddalhai kaddalhai = new EthirmarraikKaddalhai(t, vinaiyadi);
             TamilFactory.getSystemDictionary().add(kaddalhai);
+
+            if (processIru && vinaiyadi.getWord().equals(IRU)) {
+                EthirmarraipPeyarechcham illaatha =  new EthirmarraipPeyarechcham(TamilWord.from("இல்லாத"), vinaiyadi, false);
+                TamilFactory.getSystemDictionary().add(illaatha);
+
+            }
+
 
 
         }

@@ -23,7 +23,7 @@ public class DictionaryCollection implements TamilDictionary {
     public DictionaryCollection(Iterator<TamilDictionaryProvider> iterator) {
         list = new ArrayList<TamilDictionary>();
         while (iterator.hasNext()) {
-            TamilDictionary d =iterator.next().create();
+            TamilDictionary d = iterator.next().create();
             if (d != null) {
                 list.add(d);
             }
@@ -164,5 +164,30 @@ public class DictionaryCollection implements TamilDictionary {
             d.add(word);
         }
 
+    }
+
+    /**
+     * Returns the size of the dictionary
+     *
+     * @return the size >=0
+     */
+    public int size() {
+        int size = 0;
+        for (TamilDictionary d : this.list) {
+            if (d == this) continue;
+            size += d.size();
+        }
+        return size;
+    }
+
+    public IKnownWord peek(IKnownWord known) {
+        for (TamilDictionary d : this.list) {
+            if (d == this) continue;
+            IKnownWord k = d.peek(known);
+            if (k != null) {
+                return k;
+            }
+        }
+        return null;
     }
 }

@@ -1,5 +1,6 @@
 package tamil.lang.known.non.derived;
 
+import tamil.lang.TamilCompoundCharacter;
 import tamil.lang.TamilWord;
 
 /**
@@ -12,7 +13,12 @@ import tamil.lang.TamilWord;
  * @author velsubra
  */
 public final class Ottu extends NonStartingIdaichchol implements INonEndingIdaichchol {
-    public Ottu(String val) {
-        super(TamilWord.from(val), true);
+    public static final Ottu IK = new Ottu( new TamilWord(TamilCompoundCharacter.IK));
+    public static final Ottu ICH = new Ottu( new TamilWord(TamilCompoundCharacter.ICH));
+    public static final Ottu ITH = new Ottu( new TamilWord(TamilCompoundCharacter.ITH));
+    public static final Ottu IP = new Ottu( new TamilWord(TamilCompoundCharacter.IP));
+
+    private Ottu(TamilWord val) {
+        super(val, true);
     }
 }

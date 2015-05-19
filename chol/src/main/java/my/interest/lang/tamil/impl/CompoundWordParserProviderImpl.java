@@ -29,13 +29,8 @@ public class CompoundWordParserProviderImpl implements CompoundWordParserProvide
 
     static final CompoundWordParserImpl imp = new CompoundWordParserImpl();
 
-    private static List<Class<? extends IKnownWord>> search = new ArrayList<Class<? extends IKnownWord>>() {
-        {
-            add(IBasePeyar.class);
-            add(IBaseVinai.class);
-        }
 
-    };
+
 
     /**
      * Creates a new parser.
@@ -44,8 +39,8 @@ public class CompoundWordParserProviderImpl implements CompoundWordParserProvide
      */
     @Override
     public CompoundWordParser crate() {
-        return imp;
-       // return new SaxParser();
+       // return imp;
+        return new SaxParser();
     }
 
     static final class CompoundWordParserImpl implements CompoundWordParser {
@@ -53,22 +48,23 @@ public class CompoundWordParserProviderImpl implements CompoundWordParserProvide
 
         @Override
         public ParserResult quickParse(TamilWord singleWord) {
-            List<ParserResult> list = parse(singleWord, 1, null);
+            ParserResultCollection list = parse(singleWord, 1, null);
             if (list == null || list.isEmpty()) {
                 return null;
             }
-            return list.get(0);
+            return list.getList().get(0);
         }
 
         @Override
-        public List<ParserResult> parse(TamilWord singleWord, int maxReturn, ParseFeature... features) {
-            if (singleWord == null) return Collections.emptyList();
+        public ParserResultCollection parse(TamilWord singleWord, int maxReturn, ParseFeature... features) {
+            ParserResultCollection retcollection = new  ParserResultCollection();
+            if (singleWord == null) return retcollection;
 
             if (maxReturn <= 0) {
-                return Collections.emptyList();
+                return retcollection;
             }
             FeatureSet set = new FeatureSet(features);
-            List<ParserResult> ret = parsePrivate(singleWord, maxReturn, set);
+            ParserResultCollection ret = parsePrivate(singleWord, maxReturn, set);
 
             if (ret.isEmpty()) {
                 if (!singleWord.isEmpty() && set.isFeatureEnabled(ParseFailureFindIndexFeature.class)) {
@@ -92,7 +88,7 @@ public class CompoundWordParserProviderImpl implements CompoundWordParserProvide
 
 
                         } else {
-                            for (ParserResult re : ret) {
+                            for (ParserResult re : ret.getList()) {
                                 re.setParsed(false);
                                 re.setParseHint(new ParserResult.PARSE_HINT(trial.size(), trial.size() + 1, codepointssize, codepointssize + last.getCodePointsCount(), null));
 
@@ -102,7 +98,7 @@ public class CompoundWordParserProviderImpl implements CompoundWordParserProvide
                         }
                     }
                     if (ret == null) {
-                        ret = new ArrayList<ParserResult>();
+                        ret = new  ParserResultCollection();
                         hint = new ParserResult.PARSE_HINT(trial.size(), trial.size() + 1, codepointssize, codepointssize + last.getCodePointsCount(), null);
                         ret.add(new ParserResult(trial, null, hint));
 
@@ -117,16 +113,16 @@ public class CompoundWordParserProviderImpl implements CompoundWordParserProvide
         }
 
 
-        private List<ParserResult> parsePrivate(TamilWord singleWord, int maxReturn, FeatureSet set) {
+        private ParserResultCollection parsePrivate(TamilWord singleWord, int maxReturn, FeatureSet set) {
 
 
-            List<ParserResult> ret = null;
+            ParserResultCollection ret = new ParserResultCollection();
             TamilWord pure = singleWord.filterToPure();
 
             MultipleWordSplitResult result = HandlerFactory.parse(pure.toString(), false, set.isFeatureEnabled(ParseWithUnknownFeature.class), maxReturn);
             List<SimpleSplitResult> list = result.getSplit();
 
-            ret = new ArrayList<ParserResult>();
+
             if (list != null) {
                 for (SimpleSplitResult r : list) {
                     List<String> splits = r.getSplitList();

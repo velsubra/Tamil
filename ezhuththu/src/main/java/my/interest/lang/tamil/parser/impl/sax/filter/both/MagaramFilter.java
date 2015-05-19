@@ -1,12 +1,12 @@
-package my.interest.lang.tamil.parser.impl.sax.filter;
+package my.interest.lang.tamil.parser.impl.sax.filter.both;
 
-import my.interest.lang.tamil.impl.FeatureSet;
+import my.interest.lang.tamil.parser.impl.sax.context.ParsingContext;
+import my.interest.lang.tamil.parser.impl.sax.filter.unknown.UnknownWordFilter;
+import my.interest.lang.tamil.parser.impl.sax.filter.known.KnowWordFilter;
 import my.interest.lang.tamil.punar.TamilWordPartContainer;
 import tamil.lang.TamilCharacter;
 import tamil.lang.TamilCompoundCharacter;
-import tamil.lang.TamilFactory;
 import tamil.lang.TamilWord;
-import tamil.lang.api.dictionary.TamilDictionary;
 import tamil.lang.known.IKnownWord;
 import tamil.lang.known.non.derived.Ottu;
 
@@ -18,14 +18,14 @@ import java.util.*;
  *
  * @author velsubra
  */
-public class MagaramFilter implements KnowWordFilter , UnknownWordFilter{
+public class MagaramFilter implements KnowWordFilter, UnknownWordFilter {
     private static Map<TamilWord, List<IKnownWord>> magaramCache = new HashMap<TamilWord, List<IKnownWord>>();
 
-    public List<IKnownWord> filter(IKnownWord recognized, TamilWordPartContainer nilaimozhi, TamilWordPartContainer varumozhi, List<IKnownWord> tail, TamilDictionary dictionary, FeatureSet set) {
-        if (tail.isEmpty() || recognized.getWord().size() < 2 || !recognized.getWord().getLast().asTamilCharacter().isUyirMeyyezhuththu()) {
+    public List<IKnownWord> filter(IKnownWord recognized, ParsingContext context) {
+        if (context.tail.isEmpty() || recognized.getWord().size() < 2 || !recognized.getWord().getLast().asTamilCharacter().isUyirMeyyezhuththu()) {
             return returnThis(recognized);
         } else {
-            IKnownWord next = tail.get(0);
+            IKnownWord next = context.tail.get(0);
             if (!Ottu.class.isAssignableFrom(next.getClass())) {
                 TamilCharacter first = next.getWord().getFirst().asTamilCharacter();
                 if (!first.isUyirMeyyezhuththu() || first.isVallinam()) {
@@ -37,7 +37,7 @@ public class MagaramFilter implements KnowWordFilter , UnknownWordFilter{
             magaram.add(TamilCompoundCharacter.IM);
             List<IKnownWord> knowns = magaramCache.get(magaram);
             if (knowns == null) {
-                knowns = dictionary.lookup(magaram);
+                knowns = context.dictionary.lookup(magaram);
                 if (!knowns.isEmpty()) {
                     knowns.add(recognized);
                     magaramCache.put(magaram, knowns);
@@ -59,11 +59,12 @@ public class MagaramFilter implements KnowWordFilter , UnknownWordFilter{
         return list;
     }
 
-    public List<IKnownWord> filterUnknown(TamilWordPartContainer nilaimozhi, TamilWordPartContainer varumozhiCandidate, List<IKnownWord> tail, TamilDictionary dictionary, FeatureSet set) {
-        if (tail.isEmpty() || varumozhiCandidate.size() < 2 ) { //|| !varumozhiCandidate.getWord().getLast().asTamilCharacter().isUyirMeyyezhuththu()) {
+    public List<IKnownWord> filterUnknown(ParsingContext context) {
+        TamilWordPartContainer varumozhiCandidate = context.varumozhi;
+        if (context.tail.isEmpty() || varumozhiCandidate.size() < 2 ) { //|| !varumozhiCandidate.getWord().getLast().asTamilCharacter().isUyirMeyyezhuththu()) {
             return Collections.emptyList();
         } else {
-            IKnownWord next = tail.get(0);
+            IKnownWord next = context.tail.get(0);
             //வெல்ல த் தாழி
             if (!Ottu.class.isAssignableFrom(next.getClass())) {
                  boolean vallinam_Without_Ottu = false;
@@ -96,7 +97,7 @@ public class MagaramFilter implements KnowWordFilter , UnknownWordFilter{
             magaram.add(TamilCompoundCharacter.IM);
             List<IKnownWord> knowns = magaramCache.get(magaram);
             if (knowns == null) {
-                knowns = dictionary.lookup(magaram);
+                knowns = context.dictionary.lookup(magaram);
                 if (!knowns.isEmpty()) {
                     magaramCache.put(magaram, knowns);
                     return knowns;

@@ -1,9 +1,9 @@
-package my.interest.lang.tamil.parser.impl.sax.filter;
+package my.interest.lang.tamil.parser.impl.sax.filter.known;
 
-import my.interest.lang.tamil.punar.TamilWordPartContainer;
+import my.interest.lang.tamil.parser.impl.sax.context.ParsingContext;
+import my.interest.lang.tamil.parser.impl.sax.filter.known.AbstractKnownWordFilter;
 import tamil.lang.known.IKnownWord;
 import tamil.lang.known.non.derived.Chuttuppeyar;
-import tamil.lang.known.non.derived.IBasePeyar;
 import tamil.lang.known.non.derived.IPeyarchchol;
 import tamil.lang.known.non.derived.Ottu;
 
@@ -20,13 +20,16 @@ public class ChuttuppeyarFilter extends AbstractKnownWordFilter {
         super(Chuttuppeyar.class);
     }
 
-    public List<IKnownWord> filterMatched(IKnownWord recognized, TamilWordPartContainer nilaimozhi, TamilWordPartContainer varumozhi, List<IKnownWord> tail) {
-        if (tail.size() < 2) {
+    public List<IKnownWord> filterMatched(IKnownWord recognized, ParsingContext context) {
+        if (context.nilaimozhi.size() > 0) {
+            return ignore();
+        }
+        if (context.tail.size() < 2) {
 
             return ignore();
         }
-        IKnownWord next = tail.get(0);
-        IKnownWord nextnext = tail.get(1);
+        IKnownWord next = context.tail.get(0);
+        IKnownWord nextnext = context.tail.get(1);
 
         if (!Ottu.class.isAssignableFrom(next.getClass())) {
            return  ignore();

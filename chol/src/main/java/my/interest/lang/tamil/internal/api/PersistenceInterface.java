@@ -5,6 +5,7 @@ import my.interest.lang.tamil.StringUtils;
 import my.interest.lang.tamil.TamilUtils;
 import my.interest.lang.tamil.generated.types.*;
 import my.interest.lang.tamil.generated.types.Properties;
+import my.interest.lang.tamil.impl.FeatureSet;
 import my.interest.lang.tamil.impl.FileBasedPersistence;
 import my.interest.lang.tamil.impl.PropertyFinderForResource;
 import my.interest.lang.tamil.impl.dictionary.DefaultPlatformDictionaryBase;
@@ -19,6 +20,7 @@ import org.codehaus.groovy.jsr223.GroovyScriptEngineImpl;
 import tamil.lang.TamilCompoundCharacter;
 import tamil.lang.TamilFactory;
 import tamil.lang.TamilWord;
+import tamil.lang.api.feature.FeatureConstants;
 import tamil.lang.api.persist.manager.*;
 import tamil.lang.api.persist.matcher.DescriptionMatcher;
 import tamil.lang.api.persist.matcher.IdaichcholDescriptionMatcher;
@@ -225,8 +227,8 @@ public abstract class PersistenceInterface extends DefaultPlatformDictionaryBase
                     list.addAll(sug);
                 }
             }
-            list.addAll(findMatchingDerivedWords(consonantset, search, false, max - list.size() - 1, includeTypes, true));
-            list.addAll(findMatchingDerivedWords(hashset, search, false, max - list.size(), includeTypes, true));
+            list.addAll(findMatchingDerivedWords(consonantset, search, max - list.size() - 1, includeTypes, new FeatureSet(FeatureConstants.DICTIONARY_AUTO_SUGGEST_VAL_165)));
+            list.addAll(findMatchingDerivedWords(hashset, search, max - list.size(), includeTypes,  new FeatureSet(FeatureConstants.DICTIONARY_AUTO_SUGGEST_VAL_165)));
 
 
         }
@@ -250,6 +252,11 @@ public abstract class PersistenceInterface extends DefaultPlatformDictionaryBase
     }
 
 
+    public static void addIfNotFound(IKnownWord w) {
+         if (FileBasedPersistence.ME_SINGLETON.peek(w) == null) {
+             FileBasedPersistence.ME_SINGLETON.addKnown(w);
+         }
+    }
     public static void addOrUpdateKnown(IKnownWord w) {
 
         FileBasedPersistence.ME_SINGLETON.removeKnown(w);
@@ -259,7 +266,7 @@ public abstract class PersistenceInterface extends DefaultPlatformDictionaryBase
 
     public static void addDerivativeWithTense(PropertyDescriptionContainer container, boolean transitive, GenericTenseTable table, Class<? extends VinaiyadiDerivative> cls) {
         try {
-            Vinaiyadi vi = new Vinaiyadi(TamilWord.from(table.getRoot()), container, transitive);
+            Vinaiyadi vi =  Vinaiyadi.get(TamilWord.from(table.getRoot()), container, transitive);
             //if (set.contains(vi)) return;
             addOrUpdateKnown(vi);
             for (TableRow r : table.getRows()) {
@@ -290,7 +297,7 @@ public abstract class PersistenceInterface extends DefaultPlatformDictionaryBase
 
     public static void addDerivativeWithPaal(PropertyDescriptionContainer container, boolean transitive, GenericTenseTable table, Class<? extends DerivativeWithPaal> cls) {
         try {
-            Vinaiyadi vi = new Vinaiyadi(TamilWord.from(table.getRoot()), container, transitive);
+            Vinaiyadi vi =  Vinaiyadi.get(TamilWord.from(table.getRoot()), container, transitive);
             // if (set.contains(vi)) return;
             addOrUpdateKnown(vi);
 
@@ -313,7 +320,7 @@ public abstract class PersistenceInterface extends DefaultPlatformDictionaryBase
 
     public static void addDerivative(PropertyDescriptionContainer container, boolean transitive, GenericTenseTable table, Class<? extends VinaiyadiDerivative> cls) {
         try {
-            Vinaiyadi vi = new Vinaiyadi(TamilWord.from(table.getRoot()), container, transitive);
+            Vinaiyadi vi = Vinaiyadi.get(TamilWord.from(table.getRoot()), container, transitive);
             // if (set.contains(vi)) return;
             addOrUpdateKnown(vi);
 
@@ -336,7 +343,7 @@ public abstract class PersistenceInterface extends DefaultPlatformDictionaryBase
 
     public static void addDerivativeWithTenseAndPaal(PropertyDescriptionContainer container, boolean transitive, GenericTenseTable table, boolean thodar, boolean muutu, Class<? extends DerivativeWithTenseAndPaal> cls) {
         try {
-            Vinaiyadi vi = new Vinaiyadi(TamilWord.from(table.getRoot()), container, transitive);
+            Vinaiyadi vi =  Vinaiyadi.get(TamilWord.from(table.getRoot()), container, transitive);
             // if (set.contains(vi)) return;
             addOrUpdateKnown(vi);
 
@@ -821,8 +828,8 @@ public abstract class PersistenceInterface extends DefaultPlatformDictionaryBase
                 if (!verbs.getVinai().getVerbs().getList().getVerb().remove(desc)) {
                     throw new RuntimeException("Could not be found:" + desc.getRoot());
                 }
-                removeKnown(new Vinaiyadi(TamilWord.from(verb), null, true));
-                removeKnown(new Vinaiyadi(TamilWord.from(verb), null, false));
+                removeKnown(Vinaiyadi.get(TamilWord.from(verb), null, true));
+                removeKnown(Vinaiyadi.get(TamilWord.from(verb), null, false));
                 roots.remove(desc);
                 persist(verbs);
             }

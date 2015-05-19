@@ -304,8 +304,53 @@ public abstract class TamilCharacter extends AbstractCharacter {
         if (!TamilCharacter.class.isAssignableFrom(o.getClass())) {
             return -1;
         }
-        return Integer.valueOf(getNumericStrength()).compareTo(((TamilCharacter) o).getNumericStrength());
+        TamilCharacter tamil = (TamilCharacter) o;
+        if (this == tamil) {
+            return 0;
+        } else {
+            if (isAaythavezhuththu()) {
+                return -1;
+            } else if (tamil.isAaythavezhuththu()) {
+                return 1;
+            }
+
+            if (isUyirezhuththu() || isUyirMeyyezhuththu()) {
+                if (tamil.isUyirezhuththu() || tamil.isUyirMeyyezhuththu()) {
+                    int uyri = new Integer(getUyirPart().getNumericStrength()).compareTo(tamil.getUyirPart().getNumericStrength());
+                    if (uyri == 0) {
+                        if (isUyirMeyyezhuththu()) {
+                            if (tamil.isUyirMeyyezhuththu()) {
+                                return new Integer(getMeiPart().getNumericStrength()).compareTo(tamil.getMeiPart().getNumericStrength());
+                            } else {
+                                return 1;
+                            }
+                        } else {
+                            if (tamil.isUyirMeyyezhuththu()) {
+                                return -1;
+                            } else {
+                                return 0;
+                            }
+                        }
+                    } else {
+                        return uyri;
+                    }
+                } else {
+                    return 1;
+                }
+            } else {
+                // this is mei
+
+                if (tamil.isMeyyezhuththu()) {
+                    return getNumericStrength() - tamil.getNumericStrength();
+                } else {
+                    // tamil has uyir
+                    return -1;
+                }
+            }
+
+        }
     }
+    // return Integer.valueOf(getNumericStrength()).compareTo(((TamilCharacter) o).getNumericStrength());
 
 
     public boolean equals(TamilCharacter ch, boolean full) {
@@ -429,8 +474,6 @@ public abstract class TamilCharacter extends AbstractCharacter {
         }
         return vallinam;
     }
-
-
 
 
 }

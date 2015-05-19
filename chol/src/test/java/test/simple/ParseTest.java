@@ -40,11 +40,11 @@ public class ParseTest {
         TamilFactory.getSystemDictionary().add(new Peyarchchol(EnglishToTamilCharacterLookUpContext.getBestMatch("thamizh"), 0));
         TamilFactory.getSystemDictionary().add(new Peyarchchol(EnglishToTamilCharacterLookUpContext.getBestMatch("vellam"),0));
         TamilFactory.getSystemDictionary().add(new Peyarchchol(EnglishToTamilCharacterLookUpContext.getBestMatch("thaazhi"),0));
-        TamilFactory.getSystemDictionary().add(new Aththu());
-        TamilFactory.getSystemDictionary().add(new Ottu("க்"));
-        TamilFactory.getSystemDictionary().add(new Ottu("ச்"));
-        TamilFactory.getSystemDictionary().add(new Ottu("த்"));
-        TamilFactory.getSystemDictionary().add(new Ottu("ப்"));
+        TamilFactory.getSystemDictionary().add(Aththu.ATHTHU);
+        TamilFactory.getSystemDictionary().add(Ottu.IK);
+        TamilFactory.getSystemDictionary().add(Ottu.ICH);
+        TamilFactory.getSystemDictionary().add(Ottu.ITH);
+        TamilFactory.getSystemDictionary().add(Ottu.IP);
 
 
 

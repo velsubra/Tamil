@@ -1,8 +1,7 @@
-package my.interest.lang.tamil.parser.impl.sax.filter;
+package my.interest.lang.tamil.parser.impl.sax.filter.known;
 
-import my.interest.lang.tamil.impl.FeatureSet;
-import my.interest.lang.tamil.punar.TamilWordPartContainer;
-import tamil.lang.api.dictionary.TamilDictionary;
+import my.interest.lang.tamil.parser.impl.sax.context.ParsingContext;
+import my.interest.lang.tamil.parser.impl.sax.filter.known.KnowWordFilter;
 import tamil.lang.known.IKnownWord;
 
 import java.util.ArrayList;
@@ -24,11 +23,11 @@ public abstract class AbstractKnownWordFilter implements KnowWordFilter {
     }
 
 
-    public abstract List<IKnownWord> filterMatched(IKnownWord recognized, TamilWordPartContainer nilaimozhi, TamilWordPartContainer varumozhi, List<IKnownWord> tail);
+    public abstract List<IKnownWord> filterMatched(IKnownWord recognized, ParsingContext context);
 
-    public List<IKnownWord> filter(IKnownWord recognized, TamilWordPartContainer nilaimozhi, TamilWordPartContainer varumozhi, List<IKnownWord> tail, TamilDictionary dictionary, FeatureSet set) {
+    public List<IKnownWord> filter(IKnownWord recognized, ParsingContext context) {
         if (type.isAssignableFrom(recognized.getClass())) {
-            return filterMatched(recognized, nilaimozhi, varumozhi, tail);
+            return filterMatched(recognized,  context);
 
         } else {
             return returnSingle(recognized);

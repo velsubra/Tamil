@@ -43,7 +43,7 @@ public abstract class DerivativeWithTenseAndPaal extends VinaiyadiDerivative imp
     public int compareTo(Object o) {
         int ret = super.compareTo(o);
         if (ret == 0) {
-            if (DerivativeWithTenseAndPaal.class.isAssignableFrom(o.getClass())) {
+            if ( DerivativeWithTenseAndPaal.class.isAssignableFrom(o.getClass())) {
                 return viguthi.compareTo(((DerivativeWithTenseAndPaal) o).getPaalViguthi());
             } else {
                 return ret;

@@ -11,7 +11,7 @@ import tamil.lang.TamilWord;
  *
  * @author velsubra
  */
-public final class Theriyaachchol  extends AbstractKnownWord {
+public final class Theriyaachchol  extends AbstractKnownWord implements ITheriyaachchol {
 
     public Theriyaachchol(TamilWord word) {
         super(word);

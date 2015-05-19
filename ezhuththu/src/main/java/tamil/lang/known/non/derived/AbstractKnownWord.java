@@ -82,7 +82,11 @@ public abstract class AbstractKnownWord implements IKnownWord {
     public int compareTo(Object o) {
         int ret = this.getWord().compareTo(((AbstractKnownWord) o).getWord());
         if (ret == 0) {
-            return getClass().getSimpleName().compareTo(o.getClass().getSimpleName());
+            if (ITheriyaachchol.class.isAssignableFrom(o.getClass()) || ITheriyaachchol.class.isAssignableFrom( getClass())) {
+                return 0;
+            } else {
+                return getClass().getSimpleName().compareTo(o.getClass().getSimpleName());
+            }
         } else {
             return ret;
         }

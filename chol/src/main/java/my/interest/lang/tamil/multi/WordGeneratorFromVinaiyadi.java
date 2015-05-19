@@ -75,6 +75,14 @@ public class WordGeneratorFromVinaiyadi extends WordsGenerator {
             //thodar ends
 
 
+            table = DefinitionFactory.generatePeyarechcham(root.getRoot(), true);
+            PersistenceInterface.addDerivativeWithTense(container, true, table, Peyarechcham.class);
+
+            table = DefinitionFactory.generatePeyarechcham(root.getRoot(), false);
+            PersistenceInterface.addDerivativeWithTense(container, false, table, Peyarechcham.class);
+
+
+
             table = DefinitionFactory.generateVinaiyecham(root.getRoot(), true);
             PersistenceInterface.addDerivativeWithTense(container, true, table, Vinaiyechcham.class);
 
@@ -114,12 +122,6 @@ public class WordGeneratorFromVinaiyadi extends WordsGenerator {
             table = DefinitionFactory.generateKaddalhai(root.getRoot(), false, "kaddalhai_ungalh");
             PersistenceInterface.addDerivative(container, false, table, Kaddalhai.class);
 
-
-            table = DefinitionFactory.generatePeyarechcham(root.getRoot(), true);
-            PersistenceInterface.addDerivativeWithTense(container, true, table, Peyarechcham.class);
-
-            table = DefinitionFactory.generatePeyarechcham(root.getRoot(), false);
-            PersistenceInterface.addDerivativeWithTense(container, false, table, Peyarechcham.class);
 
 
             table = DefinitionFactory.generateVinaiyaalanaiyumPeyar(root.getRoot(), true, false);
@@ -162,7 +164,7 @@ public class WordGeneratorFromVinaiyadi extends WordsGenerator {
                 WordsJoiner joiner = TamilFactory.createWordJoiner(currentRoot);
                 joiner.addVaruMozhi(iduword);
                 currentRoot = joiner.getSum();
-                Vinaiyadi vi = new Vinaiyadi(currentRoot, container, true);
+                Vinaiyadi vi =  Vinaiyadi.get(currentRoot, container, true);
                 PersistenceInterface.addOrUpdateKnown(vi);
 
                // System.out.println("IDU:" + currentRoot);

@@ -29,7 +29,10 @@ public class ParserResource extends BaseResource {
     public String parseGet(@QueryParam("word") String word, @DefaultValue("1") @QueryParam("max") int max, @DefaultValue("") @QueryParam("features") String features) throws Exception {
         JSONObject obj = new JSONObject();
         CompoundWordParser parser = TamilFactory.getCompoundWordParser();
-        List<ParserResult> list = parser.parse(TamilWord.from(word), max, FeatureSet.findFeatures(ParseFeature.class, features).toArray(new ParseFeature[]{}));
+        List<ParserResult> list = parser.parse(TamilWord.from(word), max, FeatureSet.findFeatures(ParseFeature.class, features).toArray(new ParseFeature[]{})).getList();
+//        while (list.size() > max) {
+//            list.remove(0);
+//        }
         populate(word, obj, list);
         return obj.toString();
 
@@ -45,7 +48,7 @@ public class ParserResource extends BaseResource {
             } else {
 
                 JSONArray array = new JSONArray();
-                for (int i = with.size() - 1; i >= 0; i--) {
+                for (int i = 0 ; i < with.size() ; i++) {
                     ParserResult r = with.get(i);
                     if (r.getSplitWords() == null || r.getSplitWords().isEmpty()) continue;
                     JSONObject arrayobj = new JSONObject();

@@ -7,11 +7,14 @@ import my.interest.lang.tamil.punar.PropertyDescriptionContainer;
 import my.interest.lang.tamil.punar.handler.verrrrumai.AbstractVearrrrumaiHandler;
 import my.interest.lang.tamil.punar.handler.verrrrumai.VAllHandler;
 import tamil.lang.TamilCompoundCharacter;
+import tamil.lang.TamilFactory;
 import tamil.lang.TamilWord;
+import tamil.lang.api.join.WordsJoiner;
 import tamil.lang.known.derived.KurrippuVinaiyechcham;
 import tamil.lang.known.derived.KurrippupPeyarechcham;
 import tamil.lang.known.derived.PanhpupPeyarththiribu;
 import tamil.lang.known.derived.PeyarchCholThiribu;
+import tamil.lang.known.non.derived.Kalh;
 import tamil.lang.known.non.derived.Peyarchchol;
 
 import java.util.List;
@@ -26,10 +29,17 @@ public class WordGeneratorFromPeyar extends WordsGenerator {
 
     PeyarchcholDescription peyar = null;
     PersistenceInterface per = null;
+    boolean derived = false;
 
     public WordGeneratorFromPeyar(PeyarchcholDescription peyar, PersistenceInterface per) {
         this.peyar = peyar;
         this.per = per;
+    }
+
+    public WordGeneratorFromPeyar(PeyarchcholDescription peyar, PersistenceInterface per, boolean derived) {
+        this.peyar = peyar;
+        this.per = per;
+        this.derived = true;
     }
 
     @Override
@@ -100,6 +110,18 @@ public class WordGeneratorFromPeyar extends WordsGenerator {
                     PeyarchCholThiribu pro = new PeyarchCholThiribu(TamilWord.from(m), p);
                     AbstractVearrrrumaiHandler.addPeyarchCholThiribu(pro);
                     PersistenceInterface.addOrUpdateKnown(pro);
+                }
+            } else {
+                if (!p.isUyarThinhai()) {
+                    if (!this.derived) {
+                        WordsJoiner joiner = TamilFactory.createWordJoiner(p.getWord());
+                        joiner.addVaruMozhi(Kalh.KALH.getWord());
+                        PeyarchcholDescription kalh = new PeyarchcholDescription();
+                        kalh.setRoot(joiner.getSum().toString());
+                        kalh.setDescription(peyar.getDescription());
+                        ExecuteManager.fire(new WordGeneratorFromPeyar(kalh, per, true));
+                    }
+
                 }
             }
 

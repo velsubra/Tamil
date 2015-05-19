@@ -9,7 +9,8 @@ import tamil.lang.TamilWord;
  * @author velsubra
  */
 public final class Kalh extends AtomicIsolatedIdai implements INonStartingIdaichchol{
-    public Kalh() {
+    public static final Kalh KALH = new Kalh();
+    private Kalh() {
         super(TamilWord.from("கள்"));
     }
 

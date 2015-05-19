@@ -21,7 +21,9 @@ public class TokenMatcherResult {
         this.nilaiMozhis = nilaiMozhi;
         this.status = status;
         this.matchedWords = matchedWords;
-
+//        if (this.matchedWords!=null && this.matchedWords.isEmpty()) {
+//            throw  new RuntimeException("Matched words are empty");
+//        }
     }
 
     public static  TokenMatcherResult Continue() {

@@ -268,14 +268,14 @@ public class FileBasedPersistence extends PersistenceInterface   {
                 }
 
 
-                addKnown(new Kalh());
-                addKnown(new AtomicIsolatedIdai(TamilWord.from("தான்")));
-                addKnown(new AtomicIsolatedIdai(TamilWord.from("உம்")));
-                addKnown(new Aththu());
-                addKnown(new Ottu("க்"));
-                addKnown(new Ottu("ச்"));
-                addKnown(new Ottu("த்"));
-                addKnown(new Ottu("ப்"));
+                addKnown( Kalh.KALH);
+                addKnown(Thaan.THAAN);
+                addKnown(Um.UM);
+                addKnown(Aththu.ATHTHU);
+                addKnown(Ottu.IK);
+                addKnown(Ottu.ICH);
+                addKnown(Ottu.ITH);
+                addKnown(Ottu.IP);
 
 //                addKnown(new Ottu("ந்"));
 //                addKnown(new Ottu("ஞ்"));

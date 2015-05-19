@@ -420,7 +420,7 @@ public final class TamilWord extends AbstractWord<AbstractCharacter> implements 
      * Exception will be raised if start and end indices are not in the valid bound.
      *
      * @param start the start index, inclusive
-     * @param end   the end index inclusive
+     * @param end   the end index exclusive
      * @return the sub word. Empty word when the indices are valid and  start=end
      */
     public TamilWord subWord(int start, int end) {

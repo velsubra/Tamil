@@ -27,12 +27,20 @@ public class NumberTest {
     @Test
     public void testRead1() throws Exception {
         NumberReader reader = TamilFactory.getNumberReader();
+        testReadWrite(reader, "53001");
+
+        TamilWord word = reader.readNumber(String.valueOf(12),FeatureConstants.READ_NUMBER_PUNHARCHCHI_KEEP_ONLY_POSITION_VAL_135);
+        String ret =  reader.readAsNumber(word.toString());
+        System.out.println("Number Back\t:" + ret);
+        Assert.assertEquals(Long.parseLong(ret), 12);
+
+
          for (int i = 0 ; i < 100; i++) {
-             TamilWord word = reader.readNumber(String.valueOf(i),FeatureConstants.READ_NUMBER_PUNHARCHCHI_KEEP_ONLY_POSITION_VAL_135);
+             word = reader.readNumber(String.valueOf(i),FeatureConstants.READ_NUMBER_PUNHARCHCHI_KEEP_ONLY_POSITION_VAL_135);
 
              System.out.println("Number Given\t:" + i);
              System.out.println("Text:" + word.toString());
-             String ret =  reader.readAsNumber(word.toString());
+              ret =  reader.readAsNumber(word.toString());
              System.out.println("Number Back\t:" + ret);
              Assert.assertEquals(Long.parseLong(ret), i);
 
@@ -65,6 +73,8 @@ public class NumberTest {
         testReadWrite(reader, "0000001000000100001000010101","1000000100001000010101");
         testReadWrite(reader, "6000000000000002");
         testReadWrite(reader, "7527203843535636364646000000000000002343242");
+        testReadWrite(reader, "35000");
+        testReadWrite(reader, "3002427350850188288");
 
         testReadWrite(reader,384);
         testReadWrite(reader,20384);
@@ -72,7 +82,7 @@ public class NumberTest {
         testReadWrite(reader,752720384);
         testReadWrite(reader,752720384);
 
-        for (int j = 0 ; j < 100; j++) {
+        for (int j = 0 ; j < 1000; j++) {
             Random random = new Random();
             long randomValue =
                     (long)(random.nextDouble()*(Long.MAX_VALUE - 0));

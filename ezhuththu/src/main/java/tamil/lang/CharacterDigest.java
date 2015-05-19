@@ -8,7 +8,7 @@ import java.util.List;
  * Gets different character digest for a Word.  This provides a different view of a word through
  * <ol>
  * <li>Character type (ஆய்தம் = 1, உயிர் = 2, மெய் = 3, உயிர்மெய் = 4 )</li>
- * <li>Constants(மெய்யெழுத்துகள் க் = 1, ங் = 2  ,ச் = 3 ...  ன் = 18 )  </li>
+ * <li>Consonants(மெய்யெழுத்துகள் க் = 1, ங் = 2  ,ச் = 3 ...  ன் = 18 )  </li>
  * <li>Sound size (மாத்திரை =>  மெய், ஆயுதம் = 0.5, குறில் = 1 , நெடில் = 2.0 )</li>
  * <li>Sound strength (வல்லினம் = 3, மெல்லினம் = 1 , இடையினம் = 2 )</li>
  * <li>Vowels(உயிரெழுத்துகள் அ = 1, ஆ = 2 .... ஔ = 12 ) </li>

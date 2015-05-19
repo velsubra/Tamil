@@ -7,7 +7,7 @@ import tamil.lang.known.non.derived.Vinaiyadi;
 
 /**
  * <p>
- *     வினையை அடிப்படையாகக்கொண்ட சொற்கள்
+ * வினையை அடிப்படையாகக்கொண்ட சொற்கள்
  * </p>
  *
  * @author velsubra
@@ -17,12 +17,9 @@ public abstract class VinaiyadiDerivative extends AbstractKnownWord implements I
     private Vinaiyadi vinaiyadi;
 
 
-
     public VinaiyadiDerivative(TamilWord word, Vinaiyadi vinaiyadi) {
         super(word);
         this.vinaiyadi = vinaiyadi;
-
-
 
     }
 

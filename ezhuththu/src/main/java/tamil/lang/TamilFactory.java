@@ -38,7 +38,7 @@ public final class TamilFactory {
 
 
     private static TamilDictionary systemDictionary = null;
-    private static CompoundWordParser systemParser = null;
+    private static CompoundWordParserProvider parserprovider = null;
     private static PersistenceManager persistenceManager = null;
 
     private TamilFactory() {
@@ -56,7 +56,7 @@ public final class TamilFactory {
             loader.reload();
             Iterator<CompoundWordParserProvider> it = loader.iterator();
             if (it.hasNext()) {
-                systemParser = it.next().crate();
+                parserprovider = it.next();
             }
 
             loader = ServiceLoader.load(PersistenceManagerProvider.class);
@@ -120,10 +120,10 @@ public final class TamilFactory {
 
 
     public static CompoundWordParser getCompoundWordParser() throws ServiceException {
-        if (systemParser == null) {
+        if (parserprovider == null) {
             throw new ServiceException("Unimplemented!");
         } else {
-            return systemParser;
+            return parserprovider.crate();
         }
     }
 

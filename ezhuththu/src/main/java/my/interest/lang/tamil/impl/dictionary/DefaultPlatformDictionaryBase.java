@@ -1,18 +1,16 @@
 package my.interest.lang.tamil.impl.dictionary;
 
 import my.interest.lang.tamil.impl.FeatureSet;
-import my.interest.lang.tamil.translit.EnglishToTamilCharacterLookUpContext;
 import tamil.lang.TamilFactory;
 import tamil.lang.TamilWord;
-import tamil.lang.api.dictionary.AutoSuggestFeature;
-import tamil.lang.api.dictionary.DictionaryFeature;
-import tamil.lang.api.dictionary.ExactMatchSearch;
-import tamil.lang.api.dictionary.TamilDictionary;
+import tamil.lang.api.dictionary.*;
 import tamil.lang.api.feature.FeatureConstants;
 import tamil.lang.api.join.WordsJoiner;
 import tamil.lang.api.parser.CompoundWordParser;
 import tamil.lang.api.parser.ParserResult;
+import tamil.lang.api.parser.ParserResultCollection;
 import tamil.lang.known.IKnownWord;
+import tamil.lang.known.derived.VinaiyadiDerivative;
 import tamil.lang.known.non.derived.*;
 
 import java.util.*;
@@ -27,13 +25,58 @@ import java.util.logging.Logger;
  */
 public abstract class DefaultPlatformDictionaryBase implements TamilDictionary {
 
-    static final Logger logger  = Logger.getLogger(DefaultPlatformDictionaryBase.class.getName());
+    static final Logger logger = Logger.getLogger(DefaultPlatformDictionaryBase.class.getName());
 
     public DefaultPlatformDictionaryBase() {
 
     }
 
-    protected  final SortedSet<IKnownWord> set = Collections.synchronizedSortedSet(new TreeSet<IKnownWord>());
+    public int size() {
+
+        return set.size();
+    }
+
+
+    public IKnownWord peek(IKnownWord known) {
+        SortedSet<IKnownWord> tail = set.tailSet(known);
+        if (tail.isEmpty()) {
+            return null;
+        }
+        synchronized (tail) {
+            IKnownWord knownWord = tail.first();
+            if (knownWord.getClass() == known.getClass() && knownWord.equals(known)) {
+                return knownWord;
+            }
+        }
+        return null;
+    }
+
+    private static final Comparator<IKnownWord> REVERSED = new Comparator<IKnownWord>() {
+
+        public int compare(IKnownWord o1, IKnownWord o2) {
+           return TamilWord.reverse(o1.getWord()).compareTo(TamilWord.reverse(o2.getWord()));
+//            int ret = o1.compareTo(o2);
+//            if (ret == 0) {
+//                return 0;
+//            } else {
+//                int sub = TamilWord.reverse(o1.getWord()).compareTo(TamilWord.reverse(o2.getWord()));
+//                if (sub == 0) {
+//                    return ret;
+//                } else {
+//                    return sub;
+//                }
+//            }
+        }
+    };
+
+    private static final Comparator<IKnownWord> DIRECT = new Comparator<IKnownWord>() {
+        public int compare(IKnownWord o1, IKnownWord o2) {
+            return o1.compareTo(o2);
+        }
+    };
+
+    protected final SortedSet<IKnownWord> set = Collections.synchronizedSortedSet(new TreeSet<IKnownWord>(DIRECT));
+    protected final SortedSet<IKnownWord> reversedset = Collections.synchronizedSortedSet(new TreeSet<IKnownWord>(REVERSED));
     protected static final Map<Integer, List<IKnownWord>> suggestions = new HashMap<Integer, List<IKnownWord>>();
     protected static final Map<String, List<IKnownWord>> english_mapping = Collections.synchronizedMap(new HashMap<String, List<IKnownWord>>());
 
@@ -50,26 +93,30 @@ public abstract class DefaultPlatformDictionaryBase implements TamilDictionary {
 //        return findMatchingDerivedWords(search, exact, max, includeTypes);
 //    }
 
-    protected List<IKnownWord> findMatchingDerivedWords(TamilWord search, boolean exact, int max, List<Class<? extends IKnownWord>> includeTypes) {
+    private List<IKnownWord> findMatchingDerivedWords(TamilWord search, boolean exact, int max, List<Class<? extends IKnownWord>> includeTypes) {
 
         return findMatchingDerivedWords(set, search, exact, max, includeTypes);
     }
 
-    protected static List<IKnownWord> findMatchingDerivedWords(SortedSet<IKnownWord> thisset, TamilWord start, boolean exact, int max, List<Class<? extends IKnownWord>> includeTypes) {
-        return findMatchingDerivedWords(thisset, start, exact, max, includeTypes, false);
+    private static List<IKnownWord> findMatchingDerivedWords(SortedSet<IKnownWord> thisset, TamilWord start, boolean exact, int max, List<Class<? extends IKnownWord>> includeTypes) {
+        FeatureSet set = exact ? new FeatureSet(FeatureConstants.DICTIONARY_EXACT_MATCH_VAL_160) : FeatureSet.EMPTY;
+        return findMatchingDerivedWords(thisset, start, max, includeTypes, set);
     }
 
 
-    protected static List<IKnownWord> findMatchingDerivedWords(SortedSet<IKnownWord> thiset, TamilWord search, boolean exact, int max, List<Class<? extends IKnownWord>> includeTypes, boolean suggest) {
+    protected static List<IKnownWord> findMatchingDerivedWords(SortedSet<IKnownWord> thiset, TamilWord search, int max, List<Class<? extends IKnownWord>> includeTypes, FeatureSet set) {
         // System.out.println(start);
+        boolean exact = set.isFeatureEnabled(ExactMatchSearch.class);
+        boolean startwithHigerlength = exact ? false : set.isFeatureEnabled(StartsWithHigherLengthSearch.class);
+        boolean suggest = set.isFeatureEnabled(AutoSuggestFeature.class);
+        boolean reversed = set.isFeatureEnabled(ReverseSearchFeature.class);
         List<IKnownWord> ret = new ArrayList<IKnownWord>();
         if (search == null || thiset.isEmpty() || max <= 0) return ret;
 
 
         Comparator<? super IKnownWord> comparator = thiset.comparator();
         synchronized (thiset) {
-            IKnownWord base = new AbstractKnownWord(search) {
-            };
+            IKnownWord base = new Theriyaachchol(search);
             Iterator<IKnownWord> sub = thiset.tailSet(base).iterator();
 
             if (max < 0) {
@@ -85,7 +132,12 @@ public abstract class DefaultPlatformDictionaryBase implements TamilDictionary {
                         if (exact) {
                             add = re.getWord().equals(search);
                         } else {
-                            add = re.getWord().startsWith(search, false);
+                            if (reversed) {
+                                add = re.getWord().endsWith(search, false);
+                            } else {
+                                add = re.getWord().startsWith(search, false);
+                            }
+
                         }
                     } else {
                         if (comparator == null) {
@@ -96,10 +148,13 @@ public abstract class DefaultPlatformDictionaryBase implements TamilDictionary {
                     }
                     if (add) {
                         if (includeTypes == null || includeTypes.isEmpty() || isInIncludeTypes(includeTypes, re.getClass())) {
-                            max--;
-                            ret.add(re);
+                            if (!startwithHigerlength || re.getWord().size() > search.size()) {
+                                max--;
+                                ret.add(re);
+                            }
                         }
                     } else {
+
 
                         break;
                     }
@@ -148,8 +203,8 @@ public abstract class DefaultPlatformDictionaryBase implements TamilDictionary {
     @Override
     public List<IKnownWord> search(final TamilWord word, int maxCount, List<Class<? extends IKnownWord>> includeTypes, DictionaryFeature... features) {
         FeatureSet set = new FeatureSet(features);
-        boolean exactMatch = set.isFeatureEnabled(ExactMatchSearch.class);
-        List<IKnownWord> list = search(word, exactMatch, maxCount, includeTypes);
+        boolean reversed = set.isFeatureEnabled(ReverseSearchFeature.class);
+        List<IKnownWord> list = findMatchingDerivedWords(reversed ? this.reversedset : this.set, word, maxCount, includeTypes, set);
 
 
         boolean suggest = set.isFeatureEnabled(AutoSuggestFeature.class);
@@ -172,12 +227,12 @@ public abstract class DefaultPlatformDictionaryBase implements TamilDictionary {
                 if (parser == null) {
                     parser = TamilFactory.getCompoundWordParser();
                 }
-                List<ParserResult> parsedlist = parser.parse(word, 3, FeatureConstants.PARSE_WITH_UNKNOWN_VAL_170);
+                ParserResultCollection parsedlist = parser.parse(word, 3, FeatureConstants.PARSE_WITH_UNKNOWN_VAL_170);
                 //Parse
                 if (parsedlist != null && !parsedlist.isEmpty()) {
                     for (int k = 0; k < parsedlist.size(); k++) {
                         if (ret.size() == maxCount) break;
-                        ParserResult parsed = parsedlist.get(k);
+                        ParserResult parsed = parsedlist.getList().get(k);
                         if (parsed.getSplitWords().size() > 1) {
                             IKnownWord first = parsed.getSplitWords().get(0);
                             IKnownWord last = parsed.getSplitWords().get(parsed.getSplitWords().size() - 1);
@@ -293,6 +348,7 @@ public abstract class DefaultPlatformDictionaryBase implements TamilDictionary {
 
         w.getWord().setLocked();
         set.add(w);
+        reversedset.add(w);
 
         synchronized (suggestions) {
             int code = w.getWord().suggestionHashCode();
@@ -307,15 +363,29 @@ public abstract class DefaultPlatformDictionaryBase implements TamilDictionary {
             }
         }
 
+        if (VinaiyadiDerivative.class.isAssignableFrom(w.getClass())) {
+            TamilDictionary related = ((VinaiyadiDerivative) w).getVinaiyadi().getRelatedDictionary();
+            if (related != this) {
+                related.add(w);
+            }
+        }
+
+        if (w.getWord().toString().equals("அத்து")) {
+            System.out.println("Added ------------------------------:" + w);
+        }
+
 
         // vowelset.appendNodesToAllPaths(w);
     }
 
 
-
-    protected  void removeKnown(IKnownWord w) {
-
+    protected void removeKnown(IKnownWord w) {
+        if (w.getWord().toString().equals("அத்து")) {
+            System.out.println("Removing ------------------------------:" + w);
+            new RuntimeException("removing ").printStackTrace(); ;
+        }
         set.remove(w);
+        reversedset.remove(w);
         synchronized (suggestions) {
             int code = w.getWord().suggestionHashCode();
             List<IKnownWord> linked = suggestions.get(code);

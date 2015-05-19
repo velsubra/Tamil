@@ -14,6 +14,7 @@ import tamil.lang.api.number.NumberReader;
 import tamil.lang.api.number.ReaderFeature;
 import tamil.lang.api.parser.CompoundWordParser;
 import tamil.lang.api.parser.ParserResult;
+import tamil.lang.api.parser.ParserResultCollection;
 import tamil.lang.known.IKnownWord;
 import tamil.lang.known.non.derived.Theriyaachchol;
 
@@ -296,13 +297,13 @@ public final class DefaultNumberReader implements NumberReader {
                 for (String s : all) {
                     if (s.trim().equals("")) continue;
                     TamilWord tamilWord = TamilWord.from(s, true);
-                    List<ParserResult> singleresult = parser.parse(tamilWord, 1, FeatureConstants.PARSE_FOR_NUMBER_VAL_172);
+                    ParserResultCollection singleresult = parser.parse(tamilWord, 1, FeatureConstants.PARSE_FOR_NUMBER_VAL_172);
                     if (singleresult.isEmpty()) {
                         singleresult = parser.parse(tamilWord, 1, FeatureConstants.PARSE_FOR_NUMBER_VAL_172, FeatureConstants.PARSE_WITH_UNKNOWN_VAL_170);
                         if (singleresult.isEmpty()) {
                             throw new NotANumberException("Could not parse part:" + s);
                         } else {
-                            ParserResult result = singleresult.get(0);
+                            ParserResult result = singleresult.getList().get(0);
                             if (result.isParsed()) {
                                 Theriyaachchol unknown = result.findUnknownPart();
                                 if (unknown != null) {
@@ -316,7 +317,7 @@ public final class DefaultNumberReader implements NumberReader {
                         }
 
                     }
-                    for (IKnownWord d : singleresult.get(0).getSplitWords()) {
+                    for (IKnownWord d : singleresult.getList().get(0).getSplitWords()) {
                         if (!KnownNumberComponent.class.isAssignableFrom(d.getClass())) {
                             throw new NotANumberException("Could not recognize part:" + s);
                         }
@@ -353,13 +354,13 @@ public final class DefaultNumberReader implements NumberReader {
                 for (String s : all) {
                     if (s.trim().equals("")) continue;
                     TamilWord tamilWord = TamilWord.from(s, true);
-                    List<ParserResult> singleresult = parser.parse(tamilWord, 1, FeatureConstants.PARSE_FOR_NUMBER_VAL_172);
+                    ParserResultCollection singleresult = parser.parse(tamilWord, 1, FeatureConstants.PARSE_FOR_NUMBER_VAL_172);
                     if (singleresult.isEmpty()) {
                         singleresult = parser.parse(tamilWord, 1, FeatureConstants.PARSE_FOR_NUMBER_VAL_172, FeatureConstants.PARSE_WITH_UNKNOWN_VAL_170);
                         if (singleresult.isEmpty()) {
                             throw new NotANumberException("Could not parse part:" + s);
                         } else {
-                            ParserResult result = singleresult.get(0);
+                            ParserResult result = singleresult.getList().get(0);
                             if (result.isParsed()) {
                                 Theriyaachchol unknown = result.findUnknownPart();
                                 if (unknown != null) {
@@ -372,7 +373,7 @@ public final class DefaultNumberReader implements NumberReader {
                             }
                         }
                     }
-                    for (IKnownWord d : singleresult.get(0).getSplitWords()) {
+                    for (IKnownWord d : singleresult.getList().get(0).getSplitWords()) {
                         if (!KnownNumberComponent.class.isAssignableFrom(d.getClass())) {
                            continue;
                            // throw new NotANumberException("Could not recognize part:" + s + ". Resolved to a wrong type:" + d.getClass().getName() + ":" + d.getWord());

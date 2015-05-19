@@ -19,6 +19,9 @@ public abstract class AbstractTokenRecognizer extends  TokenRecognizer {
     protected AbstractTokenRecognizer(TamilWord token)     {
         this.token = token;
         this.list = TamilFactory.getSystemDictionary().lookup(token);
+//        if (this.list.isEmpty()) {
+//            throw new RuntimeException("Token " + token + " not found:" + TamilFactory.getSystemDictionary().size());
+//        }
         this.tokenContainer = new TamilWordPartContainer(token);
     }
 
