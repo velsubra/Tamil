@@ -8,7 +8,7 @@ import tamil.lang.TamilSimpleCharacter;
 import tamil.lang.TamilWord;
 import tamil.lang.api.parser.ParseAsNumberFeature;
 import tamil.lang.known.IKnownWord;
-import tamil.lang.known.non.derived.Aththu;
+import tamil.lang.known.non.derived.idai.Aththu;
 import tamil.lang.known.non.derived.IPeyarchchol;
 
 /**

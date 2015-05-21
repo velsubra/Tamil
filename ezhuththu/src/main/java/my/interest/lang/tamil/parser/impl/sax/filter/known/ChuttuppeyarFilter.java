@@ -1,11 +1,10 @@
 package my.interest.lang.tamil.parser.impl.sax.filter.known;
 
 import my.interest.lang.tamil.parser.impl.sax.context.ParsingContext;
-import my.interest.lang.tamil.parser.impl.sax.filter.known.AbstractKnownWordFilter;
 import tamil.lang.known.IKnownWord;
 import tamil.lang.known.non.derived.Chuttuppeyar;
 import tamil.lang.known.non.derived.IPeyarchchol;
-import tamil.lang.known.non.derived.Ottu;
+import tamil.lang.known.non.derived.idai.Ottu;
 
 import java.util.List;
 

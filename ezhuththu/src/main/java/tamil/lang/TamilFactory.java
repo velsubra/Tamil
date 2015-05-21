@@ -2,15 +2,18 @@ package tamil.lang;
 
 import my.interest.lang.tamil.impl.DefaultNumberReader;
 import my.interest.lang.tamil.impl.dictionary.DictionaryCollection;
+import my.interest.lang.tamil.punar.handler.KnownWordsJoinerImpl;
 import my.interest.lang.tamil.punar.handler.WordsJoinHandler;
 import my.interest.lang.tamil.translit.EnglishToTamilCharacterLookUpContext;
 import tamil.lang.api.dictionary.TamilDictionary;
+import tamil.lang.api.join.KnownWordsJoiner;
 import tamil.lang.api.join.WordsJoiner;
 import tamil.lang.api.number.NumberReader;
 import tamil.lang.api.parser.CompoundWordParser;
 import tamil.lang.api.trans.Transliterator;
 import tamil.lang.exception.service.ServiceException;
 import tamil.lang.api.persist.manager.PersistenceManager;
+import tamil.lang.known.IKnownWord;
 import tamil.lang.spi.CompoundWordParserProvider;
 import tamil.lang.spi.PersistenceManagerProvider;
 import tamil.lang.spi.TamilDictionaryProvider;
@@ -95,7 +98,7 @@ public final class TamilFactory {
     }
 
     /**
-     * Gets the WordsJoiner that can be used to appendNodesToAllPaths multiple words using simple புணர்ச்சி laws.
+     * Gets the WordsJoiner that can be used multiple words using simple புணர்ச்சி laws.
      *
      * @param nilaiMozhi the initial word. (நிலைமொழி )
      * @return the WordsJoiner
@@ -106,6 +109,21 @@ public final class TamilFactory {
         handler.add(nilaiMozhi);
         return handler;
     }
+
+
+
+    /**
+     * Gets the WordsJoiner that can be used to add multiple known words using specific புணர்ச்சி laws.
+     *
+     * @param nilaiMozhi the initial word. (நிலைமொழி )
+     * @return the WordsJoiner
+     * @throws tamil.lang.exception.service.ServiceException when there is an issue while creating this service.
+     */
+    public static KnownWordsJoiner createKnownWordJoiner(IKnownWord nilaiMozhi) throws ServiceException {
+        KnownWordsJoiner handler = new KnownWordsJoinerImpl(nilaiMozhi);
+        return handler;
+    }
+
 
 
     /**

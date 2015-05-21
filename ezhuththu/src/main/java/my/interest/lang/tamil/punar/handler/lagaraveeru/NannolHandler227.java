@@ -1,10 +1,10 @@
 package my.interest.lang.tamil.punar.handler.lagaraveeru;
 
-import tamil.lang.TamilCompoundCharacter;
-import tamil.lang.TamilWord;
 import my.interest.lang.tamil.punar.TamilWordPartContainer;
 import my.interest.lang.tamil.punar.TamilWordSplitResult;
 import my.interest.lang.tamil.punar.handler.AbstractPunarchiHandler;
+import tamil.lang.TamilCompoundCharacter;
+import tamil.lang.TamilWord;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,7 +53,19 @@ public class NannolHandler227 extends AbstractPunarchiHandler {
 
     @Override
     public TamilWordPartContainer join(TamilWordPartContainer nilai, TamilWordPartContainer varum) {
-
+        if (nilai.getWord().endsWith(TamilCompoundCharacter.IL) && varum.isStartingWithOneConsonantsOfKASATHABA()) {
+            TamilWord n = nilai.getWord().duplicate();
+            n.removeLast();
+            n.add(TamilCompoundCharacter.IRR);
+            n.addAll(varum.getWord());
+            return new TamilWordPartContainer(n);
+        } else if (nilai.getWord().endsWith(TamilCompoundCharacter.ILL) && varum.isStartingWithOneConsonantsOfKASATHABA()) {
+            TamilWord n = nilai.getWord().duplicate();
+            n.removeLast();
+            n.add(TamilCompoundCharacter.IDD);
+            n.addAll(varum.getWord());
+            return new TamilWordPartContainer(n);
+        }
         return null;
     }
 }

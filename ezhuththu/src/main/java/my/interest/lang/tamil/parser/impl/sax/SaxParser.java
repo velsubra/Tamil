@@ -11,8 +11,8 @@ import tamil.lang.TamilWord;
 import tamil.lang.api.dictionary.TamilDictionary;
 import tamil.lang.api.parser.*;
 import tamil.lang.known.IKnownWord;
-import tamil.lang.known.non.derived.Ottu;
-import tamil.lang.known.non.derived.Um;
+import tamil.lang.known.non.derived.idai.Ottu;
+import tamil.lang.known.non.derived.idai.Um;
 import tamil.lang.known.thodar.ThodarMozhiBuilder;
 import tamil.lang.spi.CompoundWordParserProvider;
 

@@ -51,7 +51,7 @@ public class ScratchTest {
             count ++;
         }
         obj.put("list", array);
-        System.out.println( obj.toString(1));
+      //  System.out.println( obj.toString(1));
     }
 
 //    @Test

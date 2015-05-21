@@ -2,7 +2,7 @@ package my.interest.lang.tamil.parser.impl.sax.filter.known;
 
 import my.interest.lang.tamil.parser.impl.sax.context.ParsingContext;
 import tamil.lang.known.IKnownWord;
-import tamil.lang.known.non.derived.VUrubu;
+import tamil.lang.known.non.derived.idai.VUrubu;
 
 import java.util.List;
 

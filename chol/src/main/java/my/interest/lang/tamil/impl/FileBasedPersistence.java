@@ -9,8 +9,7 @@ import my.interest.lang.tamil.multi.WordGeneratorFromIdai;
 import my.interest.lang.tamil.multi.WordGeneratorFromPeyar;
 import my.interest.lang.tamil.multi.WordGeneratorFromVinaiyadi;
 import my.interest.lang.tamil.punar.handler.verrrrumai.VAllHandler;
-import tamil.lang.TamilWord;
-import tamil.lang.known.non.derived.*;
+import tamil.lang.known.non.derived.idai.*;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
@@ -276,6 +275,11 @@ public class FileBasedPersistence extends PersistenceInterface   {
                 addKnown(Ottu.ICH);
                 addKnown(Ottu.ITH);
                 addKnown(Ottu.IP);
+                addKnown(Aaga.AAGA);
+                addKnown(Aay.AAY);
+                addKnown(Aa.AA);
+                addKnown(Ea.EA);
+                addKnown(Oa.OA);
 
 //                addKnown(new Ottu("ந்"));
 //                addKnown(new Ottu("ஞ்"));

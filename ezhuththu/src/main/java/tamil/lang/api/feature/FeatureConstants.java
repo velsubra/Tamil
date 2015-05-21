@@ -57,10 +57,10 @@ public final class FeatureConstants {
 
 
 
-    public static final ParseWithUnknownFeature PARSE_WITH_UNKNOWN_VAL_170 = new ParseWithUnknownFeature();
-    public static final ParseAsNumberFeature PARSE_FOR_NUMBER_VAL_172 = new ParseAsNumberFeature();
+    public static final ParseWithUnknownFeature PARSE_WITH_UNKNOWN_VAL_170 =  ParseWithUnknownFeature.FEATURE;
+    public static final ParseAsNumberFeature PARSE_FOR_NUMBER_VAL_172 =  ParseAsNumberFeature.FEATURE;
 
-    public static final ParseFailureFindIndexFeature PARSE_FIND_FAILURE_INDEX_VAL_175 = new ParseFailureFindIndexFeature();
+    public static final ParseFailureFindIndexFeature PARSE_FIND_FAILURE_INDEX_VAL_175 = ParseFailureFindIndexFeature.FEATURE;
     public static final EagerlyParsingFeature PARSE_EAGER_FIND_LONG_WORDS_VAL_176 = EagerlyParsingFeature.FEATURE;
 
 

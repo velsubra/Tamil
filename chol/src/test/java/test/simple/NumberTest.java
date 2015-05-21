@@ -25,9 +25,11 @@ public class NumberTest {
     }
 
     @Test
-    public void testRead1() throws Exception {
+    public void testRead0() throws Exception {
         NumberReader reader = TamilFactory.getNumberReader();
+        testReadWrite(reader, "5796739736615636992");
         testReadWrite(reader, "53001");
+
 
         TamilWord word = reader.readNumber(String.valueOf(12),FeatureConstants.READ_NUMBER_PUNHARCHCHI_KEEP_ONLY_POSITION_VAL_135);
         String ret =  reader.readAsNumber(word.toString());
@@ -128,10 +130,11 @@ public class NumberTest {
         ret =  reader.readAsNumber(word.toString());
         System.out.println("Number  Back\t:" + ret);
         Assert.assertEquals(ret, expected);
+        System.out.println("------------------------");
     }
 
     @Test
-    public void testRead0() throws Exception {
+    public void testRead1() throws Exception {
 
         NumberReader reader = TamilFactory.getNumberReader();
         TamilWord word = reader.readNumber(null);

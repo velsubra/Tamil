@@ -516,6 +516,12 @@
             </global-description>
             <list>
                 <word>
+                    <root>பாதி</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                    </description>
+                </word>
+                <word>
                     <root>பாக்கு</root>
                     <description>
                         <property name=".deletable" value="true"/>
@@ -15250,6 +15256,13 @@
         <words>
             <list>
                 <word>
+                    <root>ஏயே</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                        <property name="definition.compound" value="true"/>
+                    </description>
+                </word>
+                <word>
                     <root>போல்தான்</root>
                     <description>
                         <property name=".deletable" value="true"/>
@@ -19120,6 +19133,7 @@
                     <description name="kutriyalugaram">
                         <property name="property.intransitive" value="true"/>
                         <property name="property.transitive" value="false"/>
+                        <property name="vinaiyechcham.intransitive.viguthi.past" value="i"/>
                     </description>
                 </verb>
                 <verb>
@@ -22015,6 +22029,7 @@
                         <property name="property.transitive" value="false"/>
                         <property name="property.intransitive" value="true"/>
                         <property name="vinaimuttu.locked" value="true"/>
+                        <property name="vinaiyechcham.intransitive.viguthi.past" value="i"/>
                     </description>
                 </verb>
                 <verb>
@@ -22116,6 +22131,7 @@
                     <description name="kutriyalugaram">
                         <property name="property.intransitive" value="true"/>
                         <property name="property.transitive" value="false"/>
+                        <property name="vinaiyechcham.intransitive.viguthi.past" value="i"/>
                     </description>
                 </verb>
                 <verb>

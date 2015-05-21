@@ -7,6 +7,7 @@ import tamil.lang.TamilFactory;
 import tamil.lang.TamilWord;
 import tamil.lang.known.IKnownWord;
 import tamil.lang.known.non.derived.*;
+import tamil.lang.known.non.derived.idai.*;
 
 import java.util.ArrayList;
 import java.util.Collections;

@@ -307,7 +307,7 @@ public final class DefaultNumberReader implements NumberReader {
                             if (result.isParsed()) {
                                 Theriyaachchol unknown = result.findUnknownPart();
                                 if (unknown != null) {
-                                    throw new NotANumberException("Could not parse part:" + unknown.getWord().toString());
+                                    throw new NotANumberException("Could not parse unknown part:" + unknown.getWord().toString());
                                 } else {
                                     throw new NotANumberException("Could not parse part:" + s);
                                 }
@@ -364,7 +364,7 @@ public final class DefaultNumberReader implements NumberReader {
                             if (result.isParsed()) {
                                 Theriyaachchol unknown = result.findUnknownPart();
                                 if (unknown != null) {
-                                    throw new NotANumberException("Could not parse part:" + unknown.getWord().toString());
+                                    throw new NotANumberException("Could not parse unknown part:" + unknown.getWord().toString());
                                 } else {
                                     throw new NotANumberException("Could not parse part:" + s);
                                 }

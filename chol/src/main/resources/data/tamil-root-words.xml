@@ -22959,7 +22959,6 @@
                     <description name="kutriyalugaram">
                         <property name="property.transitive" value="false"/>
                         <property name="property.intransitive" value="true"/>
-                        <property name="vinaiyechcham.intransitive.viguthi.past" value="இ"/>
                         <property name="vinaiyechcham.locked" value="false"/>
                         <property name="vinaimuttu.locked" value="true"/>
                         <property name="vinaimuttu.intransitive.vigaaram.present" value="ஆ,ஆகு"/>
@@ -22971,6 +22970,7 @@
                         <property name="vinaimuttu.intransitive.idainilai.past.thu" value=""/>
                         <property name="vinaimuttu.intransitive.vigaaram.past.a" value="ஆகின்,ஆனன்"/>
                         <property name="vinaiyechcham.intransitive.vigaaram.past" value="ஆகு,ஆய்"/>
+                        <property name="vinaiyechcham.intransitive.viguthi.past" value="i"/>
                     </description>
                 </verb>
                 <verb>

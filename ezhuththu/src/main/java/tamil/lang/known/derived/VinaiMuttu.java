@@ -7,6 +7,7 @@ import my.interest.lang.tamil.generated.types.SimpleTense;
 import my.interest.lang.tamil.punar.handler.VinaiMutruCreationHandler;
 import my.interest.lang.tamil.translit.EnglishToTamilCharacterLookUpContext;
 import tamil.lang.*;
+import tamil.lang.known.non.derived.idai.Kalh;
 import tamil.lang.known.non.derived.Vinaiyadi;
 
 /**
@@ -26,6 +27,14 @@ public final class VinaiMuttu extends VinaiMuttuBase {
         super(word, vinaiyadi, tense, viguthi, implicit);
 
          if (implicit) return;
+
+        if (viguthi == PaalViguthi.AAR || viguthi == PaalViguthi.EER) {
+            TamilWord withkalh = word.duplicate();
+            withkalh.addAll(Kalh.KALH.getWord());
+            VinaiMuttu kalh = new VinaiMuttu(withkalh, vinaiyadi, tense, viguthi, true);
+            TamilFactory.getSystemDictionary().add(kalh);
+        }
+
         //vinaiyaalanhayumpeyar
 
         if (TamilUtils.isVinaiMuttuAsNoun(tense, viguthi)) {

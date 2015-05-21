@@ -159,9 +159,9 @@ public final class Vinaiyechcham extends DerivativeWithTense implements IVinaiye
 
             if (tense == SimpleTense.PAST) {
 
-                if (aagu.equals(vinaiyadi.getWord())) {
-                    TamilFactory.getSystemDictionary().add( new Vinaiyechcham(TamilWord.from("ஆய்"),vinaiyadi, tense, true));
-                }
+//                if (aagu.equals(vinaiyadi.getWord())) {
+//                    TamilFactory.getSystemDictionary().add( new Vinaiyechcham(TamilWord.from("ஆய்"),vinaiyadi, tense, true));
+//                }
 
                 //வந்திற்று
                 TamilWord vm = null;

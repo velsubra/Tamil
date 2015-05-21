@@ -9,6 +9,7 @@ import tamil.lang.api.join.WordsJoiner;
 import tamil.lang.api.parser.CompoundWordParser;
 import tamil.lang.api.parser.ParserResult;
 import tamil.lang.api.parser.ParserResultCollection;
+import tamil.lang.exception.TamilPlatformException;
 import tamil.lang.known.IKnownWord;
 import tamil.lang.known.derived.VinaiyadiDerivative;
 import tamil.lang.known.non.derived.*;
@@ -38,23 +39,20 @@ public abstract class DefaultPlatformDictionaryBase implements TamilDictionary {
 
 
     public IKnownWord peek(IKnownWord known) {
-        SortedSet<IKnownWord> tail = set.tailSet(known);
-        if (tail.isEmpty()) {
+        List<Class<? extends IKnownWord>> list = new ArrayList<Class<? extends IKnownWord>>();
+        list.add(known.getClass());
+        List<IKnownWord> listRet = search(known.getWord(), true, 1, list);
+        if (listRet.isEmpty()) {
             return null;
+        } else {
+            return listRet.get(0);
         }
-        synchronized (tail) {
-            IKnownWord knownWord = tail.first();
-            if (knownWord.getClass() == known.getClass() && knownWord.equals(known)) {
-                return knownWord;
-            }
-        }
-        return null;
     }
 
     private static final Comparator<IKnownWord> REVERSED = new Comparator<IKnownWord>() {
 
         public int compare(IKnownWord o1, IKnownWord o2) {
-           return TamilWord.reverse(o1.getWord()).compareTo(TamilWord.reverse(o2.getWord()));
+            return TamilWord.reverse(o1.getWord()).compareTo(TamilWord.reverse(o2.getWord()));
 //            int ret = o1.compareTo(o2);
 //            if (ret == 0) {
 //                return 0;
@@ -344,7 +342,9 @@ public abstract class DefaultPlatformDictionaryBase implements TamilDictionary {
 
 
     protected void addKnown(IKnownWord w) {
-
+        if (ITheriyaachchol.class.isAssignableFrom(w.getClass())) {
+            throw new TamilPlatformException(w + ":" + w.getClass().getName() + " can not be added");
+        }
 
         w.getWord().setLocked();
         set.add(w);
@@ -382,7 +382,8 @@ public abstract class DefaultPlatformDictionaryBase implements TamilDictionary {
     protected void removeKnown(IKnownWord w) {
         if (w.getWord().toString().equals("அத்து")) {
             System.out.println("Removing ------------------------------:" + w);
-            new RuntimeException("removing ").printStackTrace(); ;
+            new RuntimeException("removing ").printStackTrace();
+            ;
         }
         set.remove(w);
         reversedset.remove(w);

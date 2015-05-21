@@ -8,4 +8,10 @@ package tamil.lang.api.parser;
  * @author velsubra
  */
 public final class ParseAsNumberFeature extends ParseFeature {
+    public  static  final   ParseAsNumberFeature FEATURE = new ParseAsNumberFeature();
+
+    private  ParseAsNumberFeature() {
+
+    }
+
 }

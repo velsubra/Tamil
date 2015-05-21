@@ -8,7 +8,7 @@ if (server) {
 
 
 var EDIT_TRANSLIT = TamilFactory.createTransliterator();
-var EDIT_PARSE = TamilFactory.createParser(1);
+var EDIT_PARSE = TamilFactory.createParser(10);
 var PARSE_FEATURES = "175";
 var EDIT_DICTIONARY = TamilFactory.createDictionary(20);
 

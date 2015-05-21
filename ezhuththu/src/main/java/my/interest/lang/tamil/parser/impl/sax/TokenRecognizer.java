@@ -38,6 +38,17 @@ public abstract class TokenRecognizer {
         return true;
     }
 
+
+    protected static boolean isAllJustOfExactKind(Class<? extends IKnownWord> clz, IKnownWord... all) {
+        if (all == null) return false;
+        for (IKnownWord w : all) {
+            if (clz != w.getClass()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     protected static boolean isAtleastKind(Class<? extends IKnownWord> clz, IKnownWord... all) {
         if (all == null) return false;
         for (IKnownWord w : all) {

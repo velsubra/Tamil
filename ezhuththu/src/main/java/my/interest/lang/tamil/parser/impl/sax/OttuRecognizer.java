@@ -6,6 +6,7 @@ import tamil.lang.TamilWord;
 import tamil.lang.known.IKnownWord;
 import tamil.lang.known.non.derived.IIdaichchol;
 import tamil.lang.known.non.derived.IKaddalhai;
+import tamil.lang.known.non.derived.idai.Thaan;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +24,9 @@ public class OttuRecognizer extends SpecificTokenRecognizer {
 
     @Override
     public TokenMatcherResult afterMatch(ParsingContext context) {
-
+        if (context.nilaimozhi.getWord().isEmpty()) {
+            return TokenMatcherResult.DisContinue();
+        }
 
         if (context.tail.isEmpty()) {
             return TokenMatcherResult.DisContinue();
@@ -33,7 +36,10 @@ public class OttuRecognizer extends SpecificTokenRecognizer {
             return TokenMatcherResult.DisContinue();
         }
         if (IIdaichchol.class.isAssignableFrom(next.getClass())) {
-            return TokenMatcherResult.DisContinue();
+            //சேர்வதைத்தான்
+            if (!Thaan.class.isAssignableFrom(next.getClass())) {
+                return TokenMatcherResult.DisContinue();
+            }
         }
         if (next.getWord().startsWith(token, false)) {
             List<TamilWordPartContainer> listnilaimozhi = getNilaiMozhi(context);

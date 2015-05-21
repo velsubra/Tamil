@@ -1,6 +1,7 @@
-package tamil.lang.known.non.derived;
+package tamil.lang.known.non.derived.idai;
 
 import tamil.lang.TamilWord;
+import tamil.lang.known.non.derived.NonStartingIdaichchol;
 
 /**
  * <p>

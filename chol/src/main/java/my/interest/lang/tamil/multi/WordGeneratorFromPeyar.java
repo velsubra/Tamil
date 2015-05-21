@@ -9,12 +9,12 @@ import my.interest.lang.tamil.punar.handler.verrrrumai.VAllHandler;
 import tamil.lang.TamilCompoundCharacter;
 import tamil.lang.TamilFactory;
 import tamil.lang.TamilWord;
-import tamil.lang.api.join.WordsJoiner;
+import tamil.lang.api.join.KnownWordsJoiner;
 import tamil.lang.known.derived.KurrippuVinaiyechcham;
 import tamil.lang.known.derived.KurrippupPeyarechcham;
 import tamil.lang.known.derived.PanhpupPeyarththiribu;
 import tamil.lang.known.derived.PeyarchCholThiribu;
-import tamil.lang.known.non.derived.Kalh;
+import tamil.lang.known.non.derived.idai.Kalh;
 import tamil.lang.known.non.derived.Peyarchchol;
 
 import java.util.List;
@@ -114,8 +114,8 @@ public class WordGeneratorFromPeyar extends WordsGenerator {
             } else {
                 if (!p.isUyarThinhai()) {
                     if (!this.derived) {
-                        WordsJoiner joiner = TamilFactory.createWordJoiner(p.getWord());
-                        joiner.addVaruMozhi(Kalh.KALH.getWord());
+                        KnownWordsJoiner joiner = TamilFactory.createKnownWordJoiner(p);
+                        joiner.addVaruMozhi(Kalh.KALH, KnownWordsJoiner.TYPE.ALVAZHI);
                         PeyarchcholDescription kalh = new PeyarchcholDescription();
                         kalh.setRoot(joiner.getSum().toString());
                         kalh.setDescription(peyar.getDescription());

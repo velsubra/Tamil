@@ -10,9 +10,9 @@ import tamil.lang.TamilWord;
 import tamil.lang.api.join.WordsJoiner;
 import tamil.lang.known.IKnownWord;
 import tamil.lang.known.non.derived.IBaseVinai;
-import tamil.lang.known.non.derived.Kalh;
-import tamil.lang.known.non.derived.Thaan;
-import tamil.lang.known.non.derived.Um;
+import tamil.lang.known.non.derived.idai.Kalh;
+import tamil.lang.known.non.derived.idai.Thaan;
+import tamil.lang.known.non.derived.idai.Um;
 
 import java.util.ArrayList;
 import java.util.List;

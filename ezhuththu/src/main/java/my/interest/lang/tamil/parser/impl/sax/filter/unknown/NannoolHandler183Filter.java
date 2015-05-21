@@ -6,7 +6,7 @@ import tamil.lang.TamilCompoundCharacter;
 import tamil.lang.TamilWord;
 import tamil.lang.known.IKnownWord;
 import tamil.lang.known.non.derived.IBasePeyar;
-import tamil.lang.known.non.derived.VUrubu;
+import tamil.lang.known.non.derived.idai.VUrubu;
 
 import java.util.Collections;
 import java.util.List;
