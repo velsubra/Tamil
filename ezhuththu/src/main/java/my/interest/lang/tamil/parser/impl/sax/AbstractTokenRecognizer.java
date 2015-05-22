@@ -33,6 +33,9 @@ public abstract class AbstractTokenRecognizer extends  TokenRecognizer {
     List<IKnownWord> list = null;
 
     protected List<IKnownWord> getKnowns() {
+        if (list == null || list.isEmpty()) {
+            this.list = TamilFactory.getSystemDictionary().lookup(token);
+        }
        return list;
     }
 

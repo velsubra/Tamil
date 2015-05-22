@@ -3,10 +3,7 @@ package tamil.lang.api.feature;
 import tamil.lang.api.dictionary.*;
 import tamil.lang.api.number.IgnoreNonDigitFeature;
 import tamil.lang.api.number.PunharchiFeature;
-import tamil.lang.api.parser.EagerlyParsingFeature;
-import tamil.lang.api.parser.ParseAsNumberFeature;
-import tamil.lang.api.parser.ParseFailureFindIndexFeature;
-import tamil.lang.api.parser.ParseWithUnknownFeature;
+import tamil.lang.api.parser.*;
 import tamil.lang.api.trans.JoinFeature;
 import tamil.lang.api.trans.NounLookupFeature;
 
@@ -62,6 +59,9 @@ public final class FeatureConstants {
 
     public static final ParseFailureFindIndexFeature PARSE_FIND_FAILURE_INDEX_VAL_175 = ParseFailureFindIndexFeature.FEATURE;
     public static final EagerlyParsingFeature PARSE_EAGER_FIND_LONG_WORDS_VAL_176 = EagerlyParsingFeature.FEATURE;
+    public static final VallinavottuEndingOk PARSE_EAGER_FIND_LONG_WORDS_VAL_177 = VallinavottuEndingOk.FEATURE;
+
+
 
 
 }

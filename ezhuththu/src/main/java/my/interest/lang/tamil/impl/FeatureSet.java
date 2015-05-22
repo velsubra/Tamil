@@ -83,15 +83,37 @@ public final class FeatureSet {
     Map<Class<? extends Feature>, Feature> removedFeatures = null;
 
     public FeatureSet(Feature... features) {
-        // this.features = features;
+
         if (features != null && features.length > 0) {
-            quickmap = new HashMap<Class<? extends Feature>, Feature>();
             for (Feature f : features) {
-                quickmap.put(f.getClass(), f);
+                addFeature(f);
             }
-        } else {
-            //  this.features = null;
         }
+    }
+
+    public void addFeature(Feature f) {
+        if (quickmap == null) {
+            quickmap = new HashMap<Class<? extends Feature>, Feature>();
+        }
+
+        quickmap.put(f.getClass(), f);
+
+
+    }
+
+    public <T extends Feature> List<T> getFeatures(Class<T> tClass) {
+
+        List<T> list = new ArrayList<T>();
+        if (quickmap != null) {
+            for (Feature f : quickmap.values()) {
+                if (tClass.isAssignableFrom(f.getClass())) {
+                    list.add((T) f);
+                }
+            }
+        }
+        return list;
+
+
     }
 
     public synchronized <T extends Feature> T removeFeature(Class<? extends Feature> feature) {
@@ -106,8 +128,8 @@ public final class FeatureSet {
             }
         }
         return t;
-
     }
+
 
     public <T extends Feature> T getRemovedFeature(Class<T> feature) {
         if (feature == null) return null;
