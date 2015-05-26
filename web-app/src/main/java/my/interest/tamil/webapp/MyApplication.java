@@ -38,7 +38,7 @@ public class MyApplication extends Application {
 
         set.add(AppsAccessResource.class);
         set.add(AppManagementResource.class);
-        set.add(DictionaryResource.class);
+        set.add(DictionaryLocatorResource.class);
         set.add(ParserResource.class);
         set.add(TranslitResource.class);
         set.add(NumberReaderResource.class);

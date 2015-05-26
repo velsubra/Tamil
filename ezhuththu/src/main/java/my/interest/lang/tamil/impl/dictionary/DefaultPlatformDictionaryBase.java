@@ -27,14 +27,33 @@ import java.util.logging.Logger;
 public abstract class DefaultPlatformDictionaryBase implements TamilDictionary {
 
     static final Logger logger = Logger.getLogger(DefaultPlatformDictionaryBase.class.getName());
+    Map<Class<? extends IKnownWord>, TamilDictionary> finalTypes = Collections.synchronizedMap(new HashMap<Class<? extends IKnownWord>, TamilDictionary>());
 
     public DefaultPlatformDictionaryBase() {
 
     }
 
+    private Class<? extends IKnownWord> type = null;
+
+    public DefaultPlatformDictionaryBase(Class<? extends IKnownWord> type) {
+        this.type = type;
+    }
+
+    @Override
+    public TamilDictionary getMiniDictionaryForWordType(Class<? extends IKnownWord> type) {
+        return finalTypes.get(type);
+    }
+
+
+    @Override
     public int size() {
 
         return set.size();
+    }
+
+    @Override
+    public Collection<Class<? extends IKnownWord>> getWordTypes() {
+        return finalTypes.keySet();
     }
 
 
@@ -338,6 +357,21 @@ public abstract class DefaultPlatformDictionaryBase implements TamilDictionary {
     @Override
     public void add(IKnownWord word) {
         addKnown(word);
+
+    }
+
+    private boolean inSysDictionary() {
+        TamilDictionary sys = TamilFactory.getSystemDictionary();
+        if (DictionaryCollection.class.isAssignableFrom(sys.getClass())) {
+            return ((DictionaryCollection) sys).contains(this);
+        } else {
+            return sys == this;
+        }
+    }
+
+    private boolean isFilteredFor(Class<? extends IKnownWord> t) {
+        if (type == null) return false;
+        return type == t;
     }
 
 
@@ -345,6 +379,32 @@ public abstract class DefaultPlatformDictionaryBase implements TamilDictionary {
         if (ITheriyaachchol.class.isAssignableFrom(w.getClass())) {
             throw new TamilPlatformException(w + ":" + w.getClass().getName() + " can not be added");
         }
+        if (type != null) {
+            if (!type.isAssignableFrom(w.getClass())) {
+                throw new TamilPlatformException(w + ":" + w.getClass().getName() + " can not be added. Dictionary is filtered for:" + type);
+            }
+        }
+
+        DefaultPlatformDictionaryBase sub = null;
+        if (!isFilteredFor(w.getClass())) {
+            synchronized (this) {
+                sub = (DefaultPlatformDictionaryBase) finalTypes.get(w.getClass());
+                if (sub == null) {
+                    sub = new DefaultPlatformDictionaryBase(w.getClass()) {
+
+                    };
+
+                    finalTypes.put(w.getClass(), sub);
+
+                }
+                sub.addKnown(w);
+            }
+        }  else {
+           if (finalTypes.isEmpty()) {
+               finalTypes.put(w.getClass(), this);
+           }
+        }
+
 
         w.getWord().setLocked();
         set.add(w);
@@ -363,15 +423,11 @@ public abstract class DefaultPlatformDictionaryBase implements TamilDictionary {
             }
         }
 
-        if (VinaiyadiDerivative.class.isAssignableFrom(w.getClass())) {
+        if (inSysDictionary() && VinaiyadiDerivative.class.isAssignableFrom(w.getClass())) {
             TamilDictionary related = ((VinaiyadiDerivative) w).getVinaiyadi().getRelatedDictionary();
             if (related != this) {
                 related.add(w);
             }
-        }
-
-        if (w.getWord().toString().equals("அத்து")) {
-            System.out.println("Added ------------------------------:" + w);
         }
 
 

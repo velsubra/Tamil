@@ -12,7 +12,7 @@ import tamil.lang.TamilWord;
 public class AtomicIsolatedIdai extends AbstractKnownWord implements IIdaichchol {
     public AtomicIsolatedIdai(TamilWord w) {
         super(w);
-        this.type = TamilWord.from("-இடைச்சொல்-");
+       // this.type = TamilWord.from("-இடைச்சொல்- ");
     }
 
     @Override

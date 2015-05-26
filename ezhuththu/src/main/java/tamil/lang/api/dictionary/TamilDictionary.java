@@ -3,6 +3,7 @@ package tamil.lang.api.dictionary;
 import tamil.lang.TamilWord;
 import tamil.lang.known.IKnownWord;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -103,5 +104,20 @@ public interface TamilDictionary {
      * @return the known word if found. else returns null.
      */
     public <T extends IKnownWord> T peek(T known);
+
+
+    /**
+     * Returns set of classes of words that are not extended.
+     * @return  set of classes that are marked final.
+     */
+    public Collection<Class<? extends IKnownWord>> getWordTypes();
+
+
+    /**
+     * Gets sub-dictionary whose words belong to the only given types
+     * @param type  the type. Please see {@link #getWordTypes()}  for all available known types.
+     * @return  returns null if there is no such mini dictionary.
+     */
+    public TamilDictionary getMiniDictionaryForWordType(Class<? extends IKnownWord> type);
 
 }

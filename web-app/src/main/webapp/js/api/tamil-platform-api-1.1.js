@@ -60,14 +60,27 @@ var TamilFactory = new function () {
          *
          */
 
-        this.createDictionary = function (max) {
+        this.createDictionary = function (max , path) {
             //private properties
             var cacheDictionary = new Object();
+
             if (!max) {
                 max = "1";
             }
+            this.dictionary_subpath = typeof path !== 'undefined' ? path.trim() : "";
+            if (this.dictionary_subpath) {
+                this.dictionary_subpath = "dictionary/" + this.dictionary_subpath;
+            }
+            if (this.dictionary_subpath && this.dictionary_subpath.length > 1 && this.dictionary_subpath.indexOf("/") != 0  ) {
+                this.dictionary_subpath = "/" + this.dictionary_subpath;
+            }
 
-            this.getdicturl = this.context + "/api/dictionary/search/?max=" + max + "&word=";
+            this.getdicturl = this.context + "/api" +  this.dictionary_subpath +"/dictionary/search/?max=" + max + "&word=";
+            this.get_base_types = this.context + "/api" +  this.dictionary_subpath +"/dictionary/base-types/";
+
+            this.get_word_types = this.context + "/api" +  this.dictionary_subpath +"/dictionary/word-types/";
+            this.size_of_words = this.context + "/api" +  this.dictionary_subpath +"/dictionary/size/";
+
             // this.putdicturl = this.context + "/api/parse/bulk/?max=" + max + "&word=";
 
 
@@ -179,25 +192,185 @@ var TamilFactory = new function () {
 
             }
 
-            //function filterDuplicateEntries(data) {
-            //    if (data.list) {
-            //        //  console.log( data.list);
-            //        var liststr = "";
-            //        for (var i = 0; i < data.list.length; i++) {
-            //            var key = data.list[i].tamil + ":" + data.list[i].type;
-            //            if (liststr.indexOf(key) > 0) {
-            //                data.list.splice(i, 1);
-            //            } else {
-            //                liststr += "," + key;
-            //
-            //            }
-            //        }
-            //
-            //
-            //    }
-            //
-            //
-            //}
+
+            /**
+             * Gets all parent types for a given type
+             * @param callback  the callback.
+             * @param type the fully qualified name of the type extending or implementing   tamil.lang.known.IKnownWord
+             *
+             */
+            this.getParentTypesAsync = function (callback, type) {
+
+                type = typeof type !== 'undefined' ? type.trim() : "tamil.lang.known.IKnownWord";
+                if (!type) {
+                    features = "tamil.lang.known.IKnownWord";
+                }
+                var thiscache_cacheDictionary = cacheDictionary["base-types"];
+                if (!thiscache_cacheDictionary) {
+                    cacheDictionary["base-types"] = new Object();
+                    thiscache_cacheDictionary = cacheDictionary["base-types"];
+                }
+
+                var existing = thiscache_cacheDictionary[type];
+                if (existing) {
+
+                    callback(existing);
+                    return;
+
+                }
+                var result = "";
+                var url = null;
+                var done = false;
+                //if (typeof TAMIL_APPLET_INJECTED !== 'undefined') {  //Applets is not yet supporting this.
+                //    //If applet is initialized.
+                //    // console.log(word);
+                //    try {
+                //        result = $.parseJSON(TAMIL_APPLET_INJECTED.parse(word, features));
+                //        // console.log(result);
+                //        thiscache_cacheDictionary[word] = result;
+                //        done = true;
+                //
+                //        if (callback) {
+                //            callback(result);
+                //        } else {
+                //            return result;
+                //        }
+                //    } catch (e) {
+                //        console.log(e);
+                //    }
+                //}
+                if (!done) { // say if there is an issue with applet.
+
+
+                    method = "GET";
+                    url = this.get_base_types + encodeURI(type) +"/";
+                    content = "";
+
+                    jQuery.ajax({
+                        type: method,
+                        url: url,
+                        data: content,
+                        contentType: "text/plain; charset=utf-8",
+                        async: true,
+                        success: function (data, status, jqXHR) {
+                            //  filterDuplicateEntries(data);
+                            thiscache_cacheDictionary[type] = data;
+                            callback(data);
+                        }
+                    });
+
+                }
+
+
+            }
+
+
+            /**
+             * Gets all word types that are available in the dictionary
+             * @param callback  the callback.
+             *
+             *
+             */
+            this.getWordTypesAsync = function (callback) {
+
+
+
+                var url = null;
+                var done = false;
+                //if (typeof TAMIL_APPLET_INJECTED !== 'undefined') {  //Applets is not yet supporting this.
+                //    //If applet is initialized.
+                //    // console.log(word);
+                //    try {
+                //        result = $.parseJSON(TAMIL_APPLET_INJECTED.parse(word, features));
+                //        // console.log(result);
+                //        thiscache_cacheDictionary[word] = result;
+                //        done = true;
+                //
+                //        if (callback) {
+                //            callback(result);
+                //        } else {
+                //            return result;
+                //        }
+                //    } catch (e) {
+                //        console.log(e);
+                //    }
+                //}
+                if (!done) { // say if there is an issue with applet.
+
+
+                    method = "GET";
+                    url = this.get_word_types;
+                    content = "";
+
+                    jQuery.ajax({
+                        type: method,
+                        url: url,
+                        data: content,
+                        contentType: "text/plain; charset=utf-8",
+                        async: true,
+                        success: function (data, status, jqXHR) {
+                            callback(data);
+                        }
+                    });
+
+                }
+
+
+            }
+
+
+            /**
+             * Gets the size of the dictionary
+             * @param callback  the callback.
+             *
+             *
+             */
+            this.sizeAsync = function (callback) {
+
+
+
+                var url = null;
+                var done = false;
+                //if (typeof TAMIL_APPLET_INJECTED !== 'undefined') {  //Applets is not yet supporting this.
+                //    //If applet is initialized.
+                //    // console.log(word);
+                //    try {
+                //        result = $.parseJSON(TAMIL_APPLET_INJECTED.parse(word, features));
+                //        // console.log(result);
+                //        thiscache_cacheDictionary[word] = result;
+                //        done = true;
+                //
+                //        if (callback) {
+                //            callback(result);
+                //        } else {
+                //            return result;
+                //        }
+                //    } catch (e) {
+                //        console.log(e);
+                //    }
+                //}
+                if (!done) { // say if there is an issue with applet.
+
+
+                    method = "GET";
+                    url = this.size_of_words;
+                    content = "";
+
+                    jQuery.ajax({
+                        type: method,
+                        url: url,
+                        data: content,
+                        contentType: "text/plain; charset=utf-8",
+                        async: true,
+                        success: function (data, status, jqXHR) {
+                            callback(data);
+                        }
+                    });
+
+                }
+
+
+            }
 
             return this;
         }

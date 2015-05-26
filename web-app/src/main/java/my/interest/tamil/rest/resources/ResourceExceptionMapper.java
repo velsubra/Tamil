@@ -1,6 +1,8 @@
 package my.interest.tamil.rest.resources;
 
+import my.interest.tamil.rest.resources.exception.DuplicateResourceException;
 import my.interest.tamil.rest.resources.exception.ResourceException;
+import my.interest.tamil.rest.resources.exception.ResourceNotFoundException;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -30,6 +32,13 @@ public class ResourceExceptionMapper implements ExceptionMapper<ResourceExceptio
         } catch (JSONException e) {
             throw new WebApplicationException(e, 500);
         }
-        return Response.status(500).type("application/json; charset=UTF-8").entity(obj.toString()).build();
+        int stats = 500;
+        if (ResourceNotFoundException.class.isAssignableFrom(serviceException.getClass())) {
+            stats = 404;
+        } else  if (DuplicateResourceException.class.isAssignableFrom(serviceException.getClass())) {
+            stats = 409;
+        }
+
+        return Response.status(stats).type("application/json; charset=UTF-8").entity(obj.toString()).build();
     }
 }

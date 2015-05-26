@@ -29,7 +29,7 @@ public final class NumberDictionary extends DefaultPlatformDictionaryBase {
 
 
     private NumberDictionary() {
-
+          super(KnownNumberComponent.class);
 
         addKnownPrivate(new KnownNumberComponent(0, 0, TamilWord.from("புள்ளி")));
         addKnownPrivate(new KnownNumberComponent(1, 0, TamilWord.from("சுழி")));
