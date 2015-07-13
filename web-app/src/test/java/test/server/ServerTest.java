@@ -90,7 +90,7 @@ public class ServerTest {
     public void testStartServer() throws Exception {
 
 
-    if (true) return;
+   // if (true) return;
         final String baseUri = "http://localhost:8080/xyz";
         final Map<String, String> initParams =
                 new HashMap<String, String>();

@@ -28,7 +28,7 @@ import java.util.List;
  */
 public class CompoundWordParserProviderImpl implements CompoundWordParserProvider {
 
-    static final CompoundWordParser imp =  new CompositeParser();
+    //static final CompoundWordParser imp =
 
 
 
@@ -40,7 +40,7 @@ public class CompoundWordParserProviderImpl implements CompoundWordParserProvide
      */
     @Override
     public CompoundWordParser crate() {
-        return imp;
+       return new CompositeParser();
 
     }
 

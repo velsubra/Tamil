@@ -105,15 +105,16 @@ public class DictionaryLocatorResource extends BaseResource {
             }
             PropertyDescriptionContainer container = new PropertyDescriptionContainer(description, null);
             List<TamilDictionary> list = new ArrayList<TamilDictionary>();
-            if (container.isTransitive()) {
-                Vinaiyadi vin = Vinaiyadi.get(TamilWord.from(root), container, true);
+
+
+            if (container.isInTransitive()) {
+                Vinaiyadi vin = Vinaiyadi.get(TamilWord.from(root), container, false);
                 if (vin.getRelatedDictionary().size() > 1) {
                     list.add(vin.getRelatedDictionary());
                 }
             }
-
-            if (container.isInTransitive()) {
-                Vinaiyadi vin = Vinaiyadi.get(TamilWord.from(root), container, false);
+            if (list.isEmpty() || container.isTransitive()) {
+                Vinaiyadi vin = Vinaiyadi.get(TamilWord.from(root), container, true);
                 if (vin.getRelatedDictionary().size() > 1) {
                     list.add(vin.getRelatedDictionary());
                 }

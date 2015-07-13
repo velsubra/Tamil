@@ -34,19 +34,29 @@ public final class TamilCompoundCharacter extends TamilCharacter implements Comp
     static List<TamilCompoundCharacter> characters = new ArrayList<TamilCompoundCharacter>();
 
     private TamilCompoundCharacter(int consonant, int vowel) {
-        this(new int[]{consonant}, vowel);
+        this(consonant, vowel, null);
 
     }
 
-    private TamilCompoundCharacter(int[] consonants, int vowel) {
-        this.consonants = consonants;
+    private TamilCompoundCharacter(int consonant, int vowel , int[]vd) {
+       // this(new int[]{consonant}, vowel);
+        this.consonants = new int[]{consonant};
         this.vowel = vowel;
         characters.add(this);
+        this.vowelDecomposed = vd;
+
     }
+//
+//    private TamilCompoundCharacter(int[] consonants, int vowel) {
+//        this.consonants = consonants;
+//        this.vowel = vowel;
+//        characters.add(this);
+//    }
 
 
-    int[] consonants;
+    int[] consonants = null;
     int vowel;
+    int[] vowelDecomposed =  null;
 
     void init() {
         //Order is important
@@ -430,12 +440,17 @@ public final class TamilCompoundCharacter extends TamilCharacter implements Comp
 
     public static final int O = '\u0BCA';
 
+    //0BCA;TAMIL VOWEL SIGN O;Mc;0;L;0BC6 0BBE;;;;N;;;;;
+    public static final int[] O__ = new int[]{A,aa};
+
     //10 o  ஒ
     public static boolean isO(int value) {
         return value == O;
     }
 
     public static final int OO = '\u0BCB';
+
+    public static final int[] OO__ = new int[]{AA,aa};
 
     //11  oo  ஓ
     public static boolean isOO(int value) {
@@ -444,10 +459,24 @@ public final class TamilCompoundCharacter extends TamilCharacter implements Comp
 
     public static final int OU = '\u0BCC';
 
+
+
     //12 OU  ஔ
     public static boolean isOU(int value) {
         return value == OU;
     }
+
+
+    public static final int OU_ = '\u0BD7';
+
+    //length mark for ஔ
+    public static boolean isOU_(int value) {
+        return value == OU_;
+    }
+    public static final int[] OU__ = new int[]{A,OU_};
+
+
+
 
     public static final TamilCompoundCharacter IK = new TamilCompoundCharacter(TamilSimpleCharacter.KA.getValue(), PULLI);
     public static final TamilCompoundCharacter ING = new TamilCompoundCharacter(TamilSimpleCharacter.NGA.getValue(), PULLI);
@@ -472,6 +501,7 @@ public final class TamilCompoundCharacter extends TamilCharacter implements Comp
     public static final TamilCompoundCharacter IH_ = new TamilCompoundCharacter(TamilSimpleCharacter.HA_.getValue(), PULLI);
     public static final TamilCompoundCharacter ISH_ = new TamilCompoundCharacter(TamilSimpleCharacter.SHA_.getValue(), PULLI);
     public static final TamilCompoundCharacter ISS_ = new TamilCompoundCharacter(TamilSimpleCharacter.SSA_.getValue(), PULLI);
+    public static final TamilCompoundCharacter ISSS_ = new TamilCompoundCharacter(TamilSimpleCharacter.SSSA_.getValue(), PULLI);
 
 
     public static final TamilCompoundCharacter IK_aa = new TamilCompoundCharacter(TamilSimpleCharacter.KA.getValue(), aa);
@@ -497,6 +527,7 @@ public final class TamilCompoundCharacter extends TamilCharacter implements Comp
     public static final TamilCompoundCharacter IH_aa = new TamilCompoundCharacter(TamilSimpleCharacter.HA_.getValue(), aa);
     public static final TamilCompoundCharacter ISH_aa = new TamilCompoundCharacter(TamilSimpleCharacter.SHA_.getValue(), aa);
     public static final TamilCompoundCharacter ISS_aa = new TamilCompoundCharacter(TamilSimpleCharacter.SSA_.getValue(), aa);
+    public static final TamilCompoundCharacter ISSS_aa = new TamilCompoundCharacter(TamilSimpleCharacter.SSSA_.getValue(), aa);
 
 
     public static final TamilCompoundCharacter IK_E = new TamilCompoundCharacter(TamilSimpleCharacter.KA.getValue(), E);
@@ -522,6 +553,7 @@ public final class TamilCompoundCharacter extends TamilCharacter implements Comp
     public static final TamilCompoundCharacter IH_E = new TamilCompoundCharacter(TamilSimpleCharacter.HA_.getValue(), E);
     public static final TamilCompoundCharacter ISH_E = new TamilCompoundCharacter(TamilSimpleCharacter.SHA_.getValue(), E);
     public static final TamilCompoundCharacter ISS_E = new TamilCompoundCharacter(TamilSimpleCharacter.SSA_.getValue(), E);
+    public static final TamilCompoundCharacter ISSS_E = new TamilCompoundCharacter(TamilSimpleCharacter.SSSA_.getValue(), E);
 
 
     public static final TamilCompoundCharacter IK_EE = new TamilCompoundCharacter(TamilSimpleCharacter.KA.getValue(), EE);
@@ -547,6 +579,7 @@ public final class TamilCompoundCharacter extends TamilCharacter implements Comp
     public static final TamilCompoundCharacter IH_EE = new TamilCompoundCharacter(TamilSimpleCharacter.HA_.getValue(), EE);
     public static final TamilCompoundCharacter ISH_EE = new TamilCompoundCharacter(TamilSimpleCharacter.SHA_.getValue(), EE);
     public static final TamilCompoundCharacter ISS_EE = new TamilCompoundCharacter(TamilSimpleCharacter.SSA_.getValue(), EE);
+    public static final TamilCompoundCharacter ISSS_EE = new TamilCompoundCharacter(TamilSimpleCharacter.SSSA_.getValue(), EE);
 
 
     public static final TamilCompoundCharacter IK_U = new TamilCompoundCharacter(TamilSimpleCharacter.KA.getValue(), U);
@@ -572,6 +605,7 @@ public final class TamilCompoundCharacter extends TamilCharacter implements Comp
     public static final TamilCompoundCharacter IH_U = new TamilCompoundCharacter(TamilSimpleCharacter.HA_.getValue(), U);
     public static final TamilCompoundCharacter ISH_U = new TamilCompoundCharacter(TamilSimpleCharacter.SHA_.getValue(), U);
     public static final TamilCompoundCharacter ISS_U = new TamilCompoundCharacter(TamilSimpleCharacter.SSA_.getValue(), U);
+    public static final TamilCompoundCharacter ISSS_U = new TamilCompoundCharacter(TamilSimpleCharacter.SSSA_.getValue(), U);
 
 
     public static final TamilCompoundCharacter IK_UU = new TamilCompoundCharacter(TamilSimpleCharacter.KA.getValue(), UU);
@@ -597,6 +631,7 @@ public final class TamilCompoundCharacter extends TamilCharacter implements Comp
     public static final TamilCompoundCharacter IH_UU = new TamilCompoundCharacter(TamilSimpleCharacter.HA_.getValue(), UU);
     public static final TamilCompoundCharacter ISH_UU = new TamilCompoundCharacter(TamilSimpleCharacter.SHA_.getValue(), UU);
     public static final TamilCompoundCharacter ISS_UU = new TamilCompoundCharacter(TamilSimpleCharacter.SSA_.getValue(), UU);
+    public static final TamilCompoundCharacter ISSS_UU = new TamilCompoundCharacter(TamilSimpleCharacter.SSSA_.getValue(), UU);
 
 
     public static final TamilCompoundCharacter IK_A = new TamilCompoundCharacter(TamilSimpleCharacter.KA.getValue(), A);
@@ -622,6 +657,7 @@ public final class TamilCompoundCharacter extends TamilCharacter implements Comp
     public static final TamilCompoundCharacter IH_A = new TamilCompoundCharacter(TamilSimpleCharacter.HA_.getValue(), A);
     public static final TamilCompoundCharacter ISH_A = new TamilCompoundCharacter(TamilSimpleCharacter.SHA_.getValue(), A);
     public static final TamilCompoundCharacter ISS_A = new TamilCompoundCharacter(TamilSimpleCharacter.SSA_.getValue(), A);
+    public static final TamilCompoundCharacter ISSS_A = new TamilCompoundCharacter(TamilSimpleCharacter.SSSA_.getValue(), A);
 
 
     public static final TamilCompoundCharacter IK_AA = new TamilCompoundCharacter(TamilSimpleCharacter.KA.getValue(), AA);
@@ -647,6 +683,7 @@ public final class TamilCompoundCharacter extends TamilCharacter implements Comp
     public static final TamilCompoundCharacter IH_AA = new TamilCompoundCharacter(TamilSimpleCharacter.HA_.getValue(), AA);
     public static final TamilCompoundCharacter ISH_AA = new TamilCompoundCharacter(TamilSimpleCharacter.SHA_.getValue(), AA);
     public static final TamilCompoundCharacter ISS_AA = new TamilCompoundCharacter(TamilSimpleCharacter.SSA_.getValue(), AA);
+    public static final TamilCompoundCharacter ISSS_AA = new TamilCompoundCharacter(TamilSimpleCharacter.SSSA_.getValue(), AA);
 
 
     public static final TamilCompoundCharacter IK_I = new TamilCompoundCharacter(TamilSimpleCharacter.KA.getValue(), I);
@@ -672,82 +709,86 @@ public final class TamilCompoundCharacter extends TamilCharacter implements Comp
     public static final TamilCompoundCharacter IH_I = new TamilCompoundCharacter(TamilSimpleCharacter.HA_.getValue(), I);
     public static final TamilCompoundCharacter ISH_I = new TamilCompoundCharacter(TamilSimpleCharacter.SHA_.getValue(), I);
     public static final TamilCompoundCharacter ISS_I = new TamilCompoundCharacter(TamilSimpleCharacter.SSA_.getValue(), I);
+    public static final TamilCompoundCharacter ISSS_I = new TamilCompoundCharacter(TamilSimpleCharacter.SSSA_.getValue(), I);
 
 
 
-    public static final TamilCompoundCharacter IK_O = new TamilCompoundCharacter(TamilSimpleCharacter.KA.getValue(), O);
-    public static final TamilCompoundCharacter ING_O = new TamilCompoundCharacter(TamilSimpleCharacter.NGA.getValue(), O);
-    public static final TamilCompoundCharacter ICH_O = new TamilCompoundCharacter(TamilSimpleCharacter.SA.getValue(), O);
-    public static final TamilCompoundCharacter INJ_O = new TamilCompoundCharacter(TamilSimpleCharacter.NYA.getValue(), O);
-    public static final TamilCompoundCharacter IDD_O = new TamilCompoundCharacter(TamilSimpleCharacter.DA.getValue(), O);
-    public static final TamilCompoundCharacter INNN_O = new TamilCompoundCharacter(TamilSimpleCharacter.NNNA.getValue(), O);
-    public static final TamilCompoundCharacter ITH_O = new TamilCompoundCharacter(TamilSimpleCharacter.THA.getValue(), O);
-    public static final TamilCompoundCharacter INTH_O = new TamilCompoundCharacter(TamilSimpleCharacter.NTHA.getValue(), O);
-    public static final TamilCompoundCharacter IP_O = new TamilCompoundCharacter(TamilSimpleCharacter.PA.getValue(), O);
-    public static final TamilCompoundCharacter IM_O = new TamilCompoundCharacter(TamilSimpleCharacter.MA.getValue(), O);
-    public static final TamilCompoundCharacter IY_O = new TamilCompoundCharacter(TamilSimpleCharacter.YA.getValue(), O);
-    public static final TamilCompoundCharacter IR_O = new TamilCompoundCharacter(TamilSimpleCharacter.RA.getValue(), O);
-    public static final TamilCompoundCharacter IL_O = new TamilCompoundCharacter(TamilSimpleCharacter.LA.getValue(), O);
-    public static final TamilCompoundCharacter IV_O = new TamilCompoundCharacter(TamilSimpleCharacter.VA.getValue(), O);
-    public static final TamilCompoundCharacter ILLL_O = new TamilCompoundCharacter(TamilSimpleCharacter.LLLA.getValue(), O);
-    public static final TamilCompoundCharacter ILL_O = new TamilCompoundCharacter(TamilSimpleCharacter.LLA.getValue(), O);
-    public static final TamilCompoundCharacter IRR_O = new TamilCompoundCharacter(TamilSimpleCharacter.RRA.getValue(), O);
-    public static final TamilCompoundCharacter IN_O = new TamilCompoundCharacter(TamilSimpleCharacter.NA.getValue(), O);
+    public static final TamilCompoundCharacter IK_O = new TamilCompoundCharacter(TamilSimpleCharacter.KA.getValue(), O,O__);
+    public static final TamilCompoundCharacter ING_O = new TamilCompoundCharacter(TamilSimpleCharacter.NGA.getValue(), O,O__);
+    public static final TamilCompoundCharacter ICH_O = new TamilCompoundCharacter(TamilSimpleCharacter.SA.getValue(), O,O__);
+    public static final TamilCompoundCharacter INJ_O = new TamilCompoundCharacter(TamilSimpleCharacter.NYA.getValue(), O,O__);
+    public static final TamilCompoundCharacter IDD_O = new TamilCompoundCharacter(TamilSimpleCharacter.DA.getValue(), O,O__);
+    public static final TamilCompoundCharacter INNN_O = new TamilCompoundCharacter(TamilSimpleCharacter.NNNA.getValue(), O,O__);
+    public static final TamilCompoundCharacter ITH_O = new TamilCompoundCharacter(TamilSimpleCharacter.THA.getValue(), O,O__);
+    public static final TamilCompoundCharacter INTH_O = new TamilCompoundCharacter(TamilSimpleCharacter.NTHA.getValue(), O,O__);
+    public static final TamilCompoundCharacter IP_O = new TamilCompoundCharacter(TamilSimpleCharacter.PA.getValue(), O,O__);
+    public static final TamilCompoundCharacter IM_O = new TamilCompoundCharacter(TamilSimpleCharacter.MA.getValue(), O,O__);
+    public static final TamilCompoundCharacter IY_O = new TamilCompoundCharacter(TamilSimpleCharacter.YA.getValue(), O,O__);
+    public static final TamilCompoundCharacter IR_O = new TamilCompoundCharacter(TamilSimpleCharacter.RA.getValue(), O,O__);
+    public static final TamilCompoundCharacter IL_O = new TamilCompoundCharacter(TamilSimpleCharacter.LA.getValue(), O,O__);
+    public static final TamilCompoundCharacter IV_O = new TamilCompoundCharacter(TamilSimpleCharacter.VA.getValue(), O,O__);
+    public static final TamilCompoundCharacter ILLL_O = new TamilCompoundCharacter(TamilSimpleCharacter.LLLA.getValue(), O,O__);
+    public static final TamilCompoundCharacter ILL_O = new TamilCompoundCharacter(TamilSimpleCharacter.LLA.getValue(), O,O__);
+    public static final TamilCompoundCharacter IRR_O = new TamilCompoundCharacter(TamilSimpleCharacter.RRA.getValue(), O,O__);
+    public static final TamilCompoundCharacter IN_O = new TamilCompoundCharacter(TamilSimpleCharacter.NA.getValue(), O,O__);
 
-    public static final TamilCompoundCharacter IJ_O = new TamilCompoundCharacter(TamilSimpleCharacter.JA_.getValue(), O);
-    public static final TamilCompoundCharacter IH_O = new TamilCompoundCharacter(TamilSimpleCharacter.HA_.getValue(), O);
-    public static final TamilCompoundCharacter ISH_O = new TamilCompoundCharacter(TamilSimpleCharacter.SHA_.getValue(), O);
-    public static final TamilCompoundCharacter ISS_O = new TamilCompoundCharacter(TamilSimpleCharacter.SSA_.getValue(), O);
-
-
-    public static final TamilCompoundCharacter IK_OO = new TamilCompoundCharacter(TamilSimpleCharacter.KA.getValue(), OO);
-    public static final TamilCompoundCharacter ING_OO = new TamilCompoundCharacter(TamilSimpleCharacter.NGA.getValue(), OO);
-    public static final TamilCompoundCharacter ICH_OO = new TamilCompoundCharacter(TamilSimpleCharacter.SA.getValue(), OO);
-    public static final TamilCompoundCharacter INJ_OO = new TamilCompoundCharacter(TamilSimpleCharacter.NYA.getValue(), OO);
-    public static final TamilCompoundCharacter IDD_OO = new TamilCompoundCharacter(TamilSimpleCharacter.DA.getValue(), OO);
-    public static final TamilCompoundCharacter INNN_OO = new TamilCompoundCharacter(TamilSimpleCharacter.NNNA.getValue(), OO);
-    public static final TamilCompoundCharacter ITH_OO = new TamilCompoundCharacter(TamilSimpleCharacter.THA.getValue(), OO);
-    public static final TamilCompoundCharacter INTH_OO = new TamilCompoundCharacter(TamilSimpleCharacter.NTHA.getValue(), OO);
-    public static final TamilCompoundCharacter IP_OO = new TamilCompoundCharacter(TamilSimpleCharacter.PA.getValue(), OO);
-    public static final TamilCompoundCharacter IM_OO = new TamilCompoundCharacter(TamilSimpleCharacter.MA.getValue(), OO);
-    public static final TamilCompoundCharacter IY_OO = new TamilCompoundCharacter(TamilSimpleCharacter.YA.getValue(), OO);
-    public static final TamilCompoundCharacter IR_OO = new TamilCompoundCharacter(TamilSimpleCharacter.RA.getValue(), OO);
-    public static final TamilCompoundCharacter IL_OO = new TamilCompoundCharacter(TamilSimpleCharacter.LA.getValue(), OO);
-    public static final TamilCompoundCharacter IV_OO = new TamilCompoundCharacter(TamilSimpleCharacter.VA.getValue(), OO);
-    public static final TamilCompoundCharacter ILLL_OO = new TamilCompoundCharacter(TamilSimpleCharacter.LLLA.getValue(), OO);
-    public static final TamilCompoundCharacter ILL_OO = new TamilCompoundCharacter(TamilSimpleCharacter.LLA.getValue(), OO);
-    public static final TamilCompoundCharacter IRR_OO = new TamilCompoundCharacter(TamilSimpleCharacter.RRA.getValue(), OO);
-    public static final TamilCompoundCharacter IN_OO = new TamilCompoundCharacter(TamilSimpleCharacter.NA.getValue(), OO);
-
-    public static final TamilCompoundCharacter IJ_OO = new TamilCompoundCharacter(TamilSimpleCharacter.JA_.getValue(), OO);
-    public static final TamilCompoundCharacter IH_OO = new TamilCompoundCharacter(TamilSimpleCharacter.HA_.getValue(), OO);
-    public static final TamilCompoundCharacter ISH_OO = new TamilCompoundCharacter(TamilSimpleCharacter.SHA_.getValue(), OO);
-    public static final TamilCompoundCharacter ISS_OO = new TamilCompoundCharacter(TamilSimpleCharacter.SSA_.getValue(), OO);
+    public static final TamilCompoundCharacter IJ_O = new TamilCompoundCharacter(TamilSimpleCharacter.JA_.getValue(), O,O__);
+    public static final TamilCompoundCharacter IH_O = new TamilCompoundCharacter(TamilSimpleCharacter.HA_.getValue(), O,O__);
+    public static final TamilCompoundCharacter ISH_O = new TamilCompoundCharacter(TamilSimpleCharacter.SHA_.getValue(), O,O__);
+    public static final TamilCompoundCharacter ISS_O = new TamilCompoundCharacter(TamilSimpleCharacter.SSA_.getValue(), O,O__);
+    public static final TamilCompoundCharacter ISSS_O = new TamilCompoundCharacter(TamilSimpleCharacter.SSSA_.getValue(), O,O__);
 
 
-    public static final TamilCompoundCharacter IK_OU = new TamilCompoundCharacter(TamilSimpleCharacter.KA.getValue(), OU);
-    public static final TamilCompoundCharacter ING_OU = new TamilCompoundCharacter(TamilSimpleCharacter.NGA.getValue(), OU);
-    public static final TamilCompoundCharacter ICH_OU = new TamilCompoundCharacter(TamilSimpleCharacter.SA.getValue(), OU);
-    public static final TamilCompoundCharacter INJ_OU = new TamilCompoundCharacter(TamilSimpleCharacter.NYA.getValue(), OU);
-    public static final TamilCompoundCharacter IDD_OU = new TamilCompoundCharacter(TamilSimpleCharacter.DA.getValue(), OU);
-    public static final TamilCompoundCharacter INNN_OU = new TamilCompoundCharacter(TamilSimpleCharacter.NNNA.getValue(), OU);
-    public static final TamilCompoundCharacter ITH_OU = new TamilCompoundCharacter(TamilSimpleCharacter.THA.getValue(), OU);
-    public static final TamilCompoundCharacter INTH_OU = new TamilCompoundCharacter(TamilSimpleCharacter.NTHA.getValue(), OU);
-    public static final TamilCompoundCharacter IP_OU = new TamilCompoundCharacter(TamilSimpleCharacter.PA.getValue(), OU);
-    public static final TamilCompoundCharacter IM_OU = new TamilCompoundCharacter(TamilSimpleCharacter.MA.getValue(), OU);
-    public static final TamilCompoundCharacter IY_OU = new TamilCompoundCharacter(TamilSimpleCharacter.YA.getValue(), OU);
-    public static final TamilCompoundCharacter IR_OU = new TamilCompoundCharacter(TamilSimpleCharacter.RA.getValue(), OU);
-    public static final TamilCompoundCharacter IL_OU = new TamilCompoundCharacter(TamilSimpleCharacter.LA.getValue(), OU);
-    public static final TamilCompoundCharacter IV_OU = new TamilCompoundCharacter(TamilSimpleCharacter.VA.getValue(), OU);
-    public static final TamilCompoundCharacter ILLL_OU = new TamilCompoundCharacter(TamilSimpleCharacter.LLLA.getValue(), OU);
-    public static final TamilCompoundCharacter ILL_OU = new TamilCompoundCharacter(TamilSimpleCharacter.LLA.getValue(), OU);
-    public static final TamilCompoundCharacter IRR_OU = new TamilCompoundCharacter(TamilSimpleCharacter.RRA.getValue(), OU);
-    public static final TamilCompoundCharacter IN_OU = new TamilCompoundCharacter(TamilSimpleCharacter.NA.getValue(), OU);
+    public static final TamilCompoundCharacter IK_OO = new TamilCompoundCharacter(TamilSimpleCharacter.KA.getValue(), OO,OO__);
+    public static final TamilCompoundCharacter ING_OO = new TamilCompoundCharacter(TamilSimpleCharacter.NGA.getValue(), OO,OO__);
+    public static final TamilCompoundCharacter ICH_OO = new TamilCompoundCharacter(TamilSimpleCharacter.SA.getValue(), OO,OO__);
+    public static final TamilCompoundCharacter INJ_OO = new TamilCompoundCharacter(TamilSimpleCharacter.NYA.getValue(), OO,OO__);
+    public static final TamilCompoundCharacter IDD_OO = new TamilCompoundCharacter(TamilSimpleCharacter.DA.getValue(), OO,OO__);
+    public static final TamilCompoundCharacter INNN_OO = new TamilCompoundCharacter(TamilSimpleCharacter.NNNA.getValue(), OO,OO__);
+    public static final TamilCompoundCharacter ITH_OO = new TamilCompoundCharacter(TamilSimpleCharacter.THA.getValue(), OO,OO__);
+    public static final TamilCompoundCharacter INTH_OO = new TamilCompoundCharacter(TamilSimpleCharacter.NTHA.getValue(), OO,OO__);
+    public static final TamilCompoundCharacter IP_OO = new TamilCompoundCharacter(TamilSimpleCharacter.PA.getValue(), OO,OO__);
+    public static final TamilCompoundCharacter IM_OO = new TamilCompoundCharacter(TamilSimpleCharacter.MA.getValue(), OO,OO__);
+    public static final TamilCompoundCharacter IY_OO = new TamilCompoundCharacter(TamilSimpleCharacter.YA.getValue(), OO,OO__);
+    public static final TamilCompoundCharacter IR_OO = new TamilCompoundCharacter(TamilSimpleCharacter.RA.getValue(), OO,OO__);
+    public static final TamilCompoundCharacter IL_OO = new TamilCompoundCharacter(TamilSimpleCharacter.LA.getValue(), OO,OO__);
+    public static final TamilCompoundCharacter IV_OO = new TamilCompoundCharacter(TamilSimpleCharacter.VA.getValue(), OO,OO__);
+    public static final TamilCompoundCharacter ILLL_OO = new TamilCompoundCharacter(TamilSimpleCharacter.LLLA.getValue(), OO,OO__);
+    public static final TamilCompoundCharacter ILL_OO = new TamilCompoundCharacter(TamilSimpleCharacter.LLA.getValue(), OO,OO__);
+    public static final TamilCompoundCharacter IRR_OO = new TamilCompoundCharacter(TamilSimpleCharacter.RRA.getValue(), OO,OO__);
+    public static final TamilCompoundCharacter IN_OO = new TamilCompoundCharacter(TamilSimpleCharacter.NA.getValue(), OO,OO__);
 
-    public static final TamilCompoundCharacter IJ_OU = new TamilCompoundCharacter(TamilSimpleCharacter.JA_.getValue(), OU);
-    public static final TamilCompoundCharacter IH_OU = new TamilCompoundCharacter(TamilSimpleCharacter.HA_.getValue(), OU);
-    public static final TamilCompoundCharacter ISH_OU = new TamilCompoundCharacter(TamilSimpleCharacter.SHA_.getValue(), OU);
-    public static final TamilCompoundCharacter ISS_OU = new TamilCompoundCharacter(TamilSimpleCharacter.SSA_.getValue(), OU);
+    public static final TamilCompoundCharacter IJ_OO = new TamilCompoundCharacter(TamilSimpleCharacter.JA_.getValue(), OO,OO__);
+    public static final TamilCompoundCharacter IH_OO = new TamilCompoundCharacter(TamilSimpleCharacter.HA_.getValue(), OO,OO__);
+    public static final TamilCompoundCharacter ISH_OO = new TamilCompoundCharacter(TamilSimpleCharacter.SHA_.getValue(), OO,OO__);
+    public static final TamilCompoundCharacter ISS_OO = new TamilCompoundCharacter(TamilSimpleCharacter.SSA_.getValue(), OO,OO__);
+    public static final TamilCompoundCharacter ISSS_OO = new TamilCompoundCharacter(TamilSimpleCharacter.SSSA_.getValue(), OO,OO__);
+
+
+    public static final TamilCompoundCharacter IK_OU = new TamilCompoundCharacter(TamilSimpleCharacter.KA.getValue(), OU,OU__);
+    public static final TamilCompoundCharacter ING_OU = new TamilCompoundCharacter(TamilSimpleCharacter.NGA.getValue(), OU,OU__);
+    public static final TamilCompoundCharacter ICH_OU = new TamilCompoundCharacter(TamilSimpleCharacter.SA.getValue(), OU,OU__);
+    public static final TamilCompoundCharacter INJ_OU = new TamilCompoundCharacter(TamilSimpleCharacter.NYA.getValue(), OU,OU__);
+    public static final TamilCompoundCharacter IDD_OU = new TamilCompoundCharacter(TamilSimpleCharacter.DA.getValue(), OU,OU__);
+    public static final TamilCompoundCharacter INNN_OU = new TamilCompoundCharacter(TamilSimpleCharacter.NNNA.getValue(), OU,OU__);
+    public static final TamilCompoundCharacter ITH_OU = new TamilCompoundCharacter(TamilSimpleCharacter.THA.getValue(), OU,OU__);
+    public static final TamilCompoundCharacter INTH_OU = new TamilCompoundCharacter(TamilSimpleCharacter.NTHA.getValue(), OU,OU__);
+    public static final TamilCompoundCharacter IP_OU = new TamilCompoundCharacter(TamilSimpleCharacter.PA.getValue(), OU,OU__);
+    public static final TamilCompoundCharacter IM_OU = new TamilCompoundCharacter(TamilSimpleCharacter.MA.getValue(), OU,OU__);
+    public static final TamilCompoundCharacter IY_OU = new TamilCompoundCharacter(TamilSimpleCharacter.YA.getValue(), OU,OU__);
+    public static final TamilCompoundCharacter IR_OU = new TamilCompoundCharacter(TamilSimpleCharacter.RA.getValue(), OU,OU__);
+    public static final TamilCompoundCharacter IL_OU = new TamilCompoundCharacter(TamilSimpleCharacter.LA.getValue(), OU,OU__);
+    public static final TamilCompoundCharacter IV_OU = new TamilCompoundCharacter(TamilSimpleCharacter.VA.getValue(), OU,OU__);
+    public static final TamilCompoundCharacter ILLL_OU = new TamilCompoundCharacter(TamilSimpleCharacter.LLLA.getValue(), OU,OU__);
+    public static final TamilCompoundCharacter ILL_OU = new TamilCompoundCharacter(TamilSimpleCharacter.LLA.getValue(), OU,OU__);
+    public static final TamilCompoundCharacter IRR_OU = new TamilCompoundCharacter(TamilSimpleCharacter.RRA.getValue(), OU,OU__);
+    public static final TamilCompoundCharacter IN_OU = new TamilCompoundCharacter(TamilSimpleCharacter.NA.getValue(), OU,OU__);
+
+    public static final TamilCompoundCharacter IJ_OU = new TamilCompoundCharacter(TamilSimpleCharacter.JA_.getValue(), OU,OU__);
+    public static final TamilCompoundCharacter IH_OU = new TamilCompoundCharacter(TamilSimpleCharacter.HA_.getValue(), OU,OU__);
+    public static final TamilCompoundCharacter ISH_OU = new TamilCompoundCharacter(TamilSimpleCharacter.SHA_.getValue(), OU,OU__);
+    public static final TamilCompoundCharacter ISS_OU = new TamilCompoundCharacter(TamilSimpleCharacter.SSA_.getValue(), OU,OU__);
+    public static final TamilCompoundCharacter ISSS_OU = new TamilCompoundCharacter(TamilSimpleCharacter.SSSA_.getValue(), OU,OU__);
 
 
     /**

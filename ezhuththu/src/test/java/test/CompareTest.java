@@ -3,7 +3,9 @@ package test;
 import junit.framework.Assert;
 import my.interest.lang.tamil.impl.dictionary.DefaultPlatformDictionaryBase;
 import org.junit.Test;
+import tamil.lang.TamilCompoundCharacter;
 import tamil.lang.TamilFactory;
+import tamil.lang.TamilSimpleCharacter;
 import tamil.lang.TamilWord;
 import tamil.lang.known.IKnownWord;
 import tamil.lang.known.non.derived.*;
@@ -24,6 +26,42 @@ public class CompareTest {
     static {
         TamilFactory.init();
     }
+
+
+     //ftp://ftp.unicode.org/Public/UNIDATA/UnicodeData.txt
+    @Test
+    public void testOrdering1() {
+        TamilWord w = TamilWord.from("\u0B92\u0BD7");
+        Assert.assertEquals(w.size(), 1);
+        Assert.assertEquals(TamilSimpleCharacter.OU, w.getFirst());
+
+    }
+
+
+    @Test
+    public void testOrdering2() {
+        TamilWord w = TamilWord.from("\u0B95\u0BC6\u0BBE");
+        System.out.println(w);
+        Assert.assertEquals(w.size(), 1);
+        Assert.assertEquals(TamilCompoundCharacter.IK_O, w.getFirst());
+
+
+        w = TamilWord.from("\u0B95\u0BC7\u0BBE");
+        System.out.println(w);
+        Assert.assertEquals(w.size(), 1);
+        Assert.assertEquals(TamilCompoundCharacter.IK_OO, w.getFirst());
+
+
+
+        w = TamilWord.from("\u0B95\u0BC6\u0BD7");
+        System.out.println(w);
+        Assert.assertEquals(w.size(), 1);
+        Assert.assertEquals(TamilCompoundCharacter.IK_OU, w.getFirst());
+        System.out.println("\u0B95\u0BC6\u0BD7");
+
+
+    }
+
 
 
     @Test

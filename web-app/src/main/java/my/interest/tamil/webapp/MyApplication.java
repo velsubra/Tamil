@@ -44,6 +44,7 @@ public class MyApplication extends Application {
         set.add(NumberReaderResource.class);
         set.add(FileAccessResource.class);
         set.add(PersistenceResource.class);
+        set.add(EzhuththuResource.class);
 
 
 

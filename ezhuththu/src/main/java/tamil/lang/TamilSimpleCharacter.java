@@ -529,6 +529,32 @@ public final class TamilSimpleCharacter extends TamilCharacter implements Simple
         return value == SSA_.value;
     }
 
+    public static final TamilSimpleCharacter SSSA_ = new TamilSimpleCharacter('\u0BB6');
+    // 22  ஶ
+    public static boolean isSSsa_(int value) {
+        return value == SSSA_.value;
+    }
+
+
+    public static final TamilSimpleCharacter OM = new TamilSimpleCharacter('\u0BD0');
+    public static final TamilSimpleCharacter ZERO = new TamilSimpleCharacter('\u0BE6');
+    public static final TamilSimpleCharacter ONE = new TamilSimpleCharacter('\u0BE7');
+    public static final TamilSimpleCharacter TWO = new TamilSimpleCharacter('\u0BE8');
+    public static final TamilSimpleCharacter THREE = new TamilSimpleCharacter('\u0BE9');
+    public static final TamilSimpleCharacter FOUR = new TamilSimpleCharacter('\u0BEA');
+    public static final TamilSimpleCharacter FIVE = new TamilSimpleCharacter('\u0BEB');
+    public static final TamilSimpleCharacter SIX = new TamilSimpleCharacter('\u0BEC');
+    public static final TamilSimpleCharacter SEVEN = new TamilSimpleCharacter('\u0BED');
+    public static final TamilSimpleCharacter EIGHT = new TamilSimpleCharacter('\u0BEE');
+    public static final TamilSimpleCharacter NINE = new TamilSimpleCharacter('\u0BEF');
+    public static final TamilSimpleCharacter TEN = new TamilSimpleCharacter('\u0BF0');
+    public static final TamilSimpleCharacter HUNDRED = new TamilSimpleCharacter('\u0BF1');
+    public static final TamilSimpleCharacter THOUSAND = new TamilSimpleCharacter('\u0BF2');
+    public static final TamilSimpleCharacter RS = new TamilSimpleCharacter('\u0BF9');
+
+
+
+
 
 
     private boolean _isVadaMozhiYezhuththu() {

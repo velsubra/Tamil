@@ -362,6 +362,7 @@ public abstract class DefaultPlatformDictionaryBase implements TamilDictionary {
 
     private boolean inSysDictionary() {
         TamilDictionary sys = TamilFactory.getSystemDictionary();
+        if (sys == null) return false;
         if (DictionaryCollection.class.isAssignableFrom(sys.getClass())) {
             return ((DictionaryCollection) sys).contains(this);
         } else {
