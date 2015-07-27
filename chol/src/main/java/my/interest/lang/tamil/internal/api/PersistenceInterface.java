@@ -33,13 +33,16 @@ import tamil.lang.known.derived.VinaiyadiDerivative;
 import tamil.lang.known.non.derived.NonStartingIdaichchol;
 import tamil.lang.known.non.derived.Peyarchchol;
 import tamil.lang.known.non.derived.Vinaiyadi;
-import tamil.lang.spi.PersistenceManagerProvider;
 
 import javax.script.CompiledScript;
 import javax.script.ScriptException;
 import java.io.File;
+import java.io.InputStream;
 import java.lang.ref.SoftReference;
+import java.net.InetSocketAddress;
+import java.net.Proxy;
 import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.*;
 
 /**
@@ -48,7 +51,7 @@ import java.util.*;
  *
  * @author velsubra
  */
-public abstract class PersistenceInterface extends DefaultPlatformDictionaryBase implements  PersistenceManager, RootVerbManager, PrepositionManager, NounManager, ApplicationManager {
+public abstract class PersistenceInterface extends DefaultPlatformDictionaryBase implements PersistenceManager, RootVerbManager, PrepositionManager, NounManager, ApplicationManager {
 
     protected static final TamilWord iduword = TamilWord.from("இடு");
 
@@ -202,7 +205,7 @@ public abstract class PersistenceInterface extends DefaultPlatformDictionaryBase
         }
     }));
 
-    public  boolean isEmptyKnown() {
+    public boolean isEmptyKnown() {
         return set.isEmpty();
     }
 
@@ -210,7 +213,7 @@ public abstract class PersistenceInterface extends DefaultPlatformDictionaryBase
     protected static TreeSet<PeyarchcholDescription> peyars = null;
     protected static TreeSet<IdaichcholDescription> idais = null;
 
-    public  int totalWordsSize() {
+    public int totalWordsSize() {
         return set.size();
     }
 
@@ -228,14 +231,13 @@ public abstract class PersistenceInterface extends DefaultPlatformDictionaryBase
                 }
             }
             list.addAll(findMatchingDerivedWords(consonantset, search, max - list.size() - 1, includeTypes, new FeatureSet(FeatureConstants.DICTIONARY_AUTO_SUGGEST_VAL_165)));
-            list.addAll(findMatchingDerivedWords(hashset, search, max - list.size(), includeTypes,  new FeatureSet(FeatureConstants.DICTIONARY_AUTO_SUGGEST_VAL_165)));
+            list.addAll(findMatchingDerivedWords(hashset, search, max - list.size(), includeTypes, new FeatureSet(FeatureConstants.DICTIONARY_AUTO_SUGGEST_VAL_165)));
 
 
         }
 
         return list;
     }
-
 
 
     protected void removeKnown(IKnownWord w) {
@@ -253,10 +255,11 @@ public abstract class PersistenceInterface extends DefaultPlatformDictionaryBase
 
 
     public static void addIfNotFound(IKnownWord w) {
-         if (FileBasedPersistence.ME_SINGLETON.peek(w) == null) {
-             FileBasedPersistence.ME_SINGLETON.addKnown(w);
-         }
+        if (FileBasedPersistence.ME_SINGLETON.peek(w) == null) {
+            FileBasedPersistence.ME_SINGLETON.addKnown(w);
+        }
     }
+
     public static void addOrUpdateKnown(IKnownWord w) {
 
         FileBasedPersistence.ME_SINGLETON.removeKnown(w);
@@ -266,7 +269,7 @@ public abstract class PersistenceInterface extends DefaultPlatformDictionaryBase
 
     public static void addDerivativeWithTense(PropertyDescriptionContainer container, boolean transitive, GenericTenseTable table, Class<? extends VinaiyadiDerivative> cls) {
         try {
-            Vinaiyadi vi =  Vinaiyadi.get(TamilWord.from(table.getRoot()), container, transitive);
+            Vinaiyadi vi = Vinaiyadi.get(TamilWord.from(table.getRoot()), container, transitive);
             //if (set.contains(vi)) return;
             addOrUpdateKnown(vi);
             for (TableRow r : table.getRows()) {
@@ -297,7 +300,7 @@ public abstract class PersistenceInterface extends DefaultPlatformDictionaryBase
 
     public static void addDerivativeWithPaal(PropertyDescriptionContainer container, boolean transitive, GenericTenseTable table, Class<? extends DerivativeWithPaal> cls) {
         try {
-            Vinaiyadi vi =  Vinaiyadi.get(TamilWord.from(table.getRoot()), container, transitive);
+            Vinaiyadi vi = Vinaiyadi.get(TamilWord.from(table.getRoot()), container, transitive);
             // if (set.contains(vi)) return;
             addOrUpdateKnown(vi);
 
@@ -343,7 +346,7 @@ public abstract class PersistenceInterface extends DefaultPlatformDictionaryBase
 
     public static void addDerivativeWithTenseAndPaal(PropertyDescriptionContainer container, boolean transitive, GenericTenseTable table, boolean thodar, boolean muutu, Class<? extends DerivativeWithTenseAndPaal> cls) {
         try {
-            Vinaiyadi vi =  Vinaiyadi.get(TamilWord.from(table.getRoot()), container, transitive);
+            Vinaiyadi vi = Vinaiyadi.get(TamilWord.from(table.getRoot()), container, transitive);
             // if (set.contains(vi)) return;
             addOrUpdateKnown(vi);
 
@@ -1160,7 +1163,7 @@ public abstract class PersistenceInterface extends DefaultPlatformDictionaryBase
         }
     }
 
-    private static AppResource findAppResourceFromApp(TamilRootWords all, AppDescription app, String resource) {
+    private static AppResource findAppResourceFromApp(TamilRootWords all, AppDescription app, String resource, boolean local) {
         if (app == null || resource == null || resource.trim().equals("")) return null;
         if (app.getResources() == null) {
             app.setResources(new AppResources());
@@ -1177,7 +1180,73 @@ public abstract class PersistenceInterface extends DefaultPlatformDictionaryBase
                     return r;
                 }
             }
+            if (!local && inherit.getCache() != null) {
+
+                AppResource extexisting = inherit.getCache().getExternalResource(resource);
+                if (extexisting != null) {
+                    return extexisting;
+                } else {
+                    int count = 0;
+                    for (ExternalResource ext : inherit.getExternalResources()) {
+                        count++;
+                        if (ext.getUrl() == null) continue;
+
+                        if (!ext.getUrl().endsWith("/")) {
+                            ext.setUrl(ext.getUrl() + "/");
+                        }
+                        try {
+                            java.net.URI url = new java.net.URI(ext.getUrl() + resource);
+                            InputStream in = null;
+                            String proxy = System.getProperty("http.proxyHost");
+                            int port = 80;
+                            if (proxy != null) {
+                                in = url.toURL().openConnection(new Proxy(Proxy.Type.HTTP, new InetSocketAddress(proxy, port))).getInputStream();
+                            } else {
+                                in = url.toURL().openConnection().getInputStream();
+                            }
+                            AppResource external = new AppResource();
+                            external.setContent(URLEncoder.encode(new String(TamilUtils.readAllFrom(in, false), EzhuththuUtils.ENCODING), EzhuththuUtils.ENCODING).getBytes(EzhuththuUtils.ENCODING));
+                            external.setName(resource);
+                            if (resource.toLowerCase().endsWith(".html") || resource.toLowerCase().endsWith(".htm")) {
+                                external.setType(AppResourceType.HTML);
+                            } else if (resource.toLowerCase().endsWith(".js") || resource.toLowerCase().endsWith(".javascript")) {
+                                external.setType(AppResourceType.JAVASCRIPT);
+                            } else if (resource.toLowerCase().endsWith(".css") || resource.toLowerCase().endsWith(".style")) {
+                                external.setType(AppResourceType.CSS);
+                            } else if (resource.toLowerCase().endsWith(".xsd") || resource.toLowerCase().endsWith(".xml") || resource.toLowerCase().endsWith(".xhtml")) {
+                                external.setType(AppResourceType.XML);
+                            } else if (resource.toLowerCase().endsWith(".txt") || resource.toLowerCase().endsWith(".text")) {
+                                external.setType(AppResourceType.TEXT);
+
+                            } else if (resource.toLowerCase().endsWith(".json")) {
+                                external.setType(AppResourceType.JSON);
+                            } else {
+                                external.setType(AppResourceType.UNKNOWN);
+                            }
+                            inherit.getCache().putExternalResource(external);
+                            return external;
+
+                        } catch (Exception e) {
+
+                            AppResource external = new AppResource();
+                            try {
+                                external.setContent(URLEncoder.encode(new String(TamilUtils.fromThrowable(e), EzhuththuUtils.ENCODING), EzhuththuUtils.ENCODING).getBytes(EzhuththuUtils.ENCODING));
+                            } catch (Exception e1) {
+                                e1.printStackTrace();
+                            }
+                            external.setName(resource);
+                            external.setType(AppResourceType.TEXT);
+                            e.printStackTrace();
+                            if (inherit.getExternalResources().size() == count) {
+                                return external;
+                            }
+                            //inherit.getCache().putExternalResource(external);
+                        }
+                    }
+                }
+            }
         }
+
         return null;
     }
 
@@ -1285,7 +1354,7 @@ public abstract class PersistenceInterface extends DefaultPlatformDictionaryBase
                 app.setResources(new AppResources());
                 file.getApps().getApps().getList().getApp().add(app);
                 createResourceToApp(code, name, "index.html");
-                updateApp(code, name, "index.html", null, null, "New app (No description yet)");
+                updateApp(code, name, "index.html", null, null, "New app (No description yet)", null);
                 addOrUpdateResourceToApp(code, name, "index.html", AppResourceType.HTML.toString(), ("<!DOCTYPE html>\n" +
                         "<html xmlns=\"http://www.w3.org/1999/html\">\n" +
                         "<head>\n" +
@@ -1377,7 +1446,7 @@ public abstract class PersistenceInterface extends DefaultPlatformDictionaryBase
             }
 
 
-            AppResource res = findAppResourceFromApp(file, app, resource);
+            AppResource res = findAppResourceFromApp(file, app, resource, true);
             if (res == null) {
                 res = new AppResource();
                 res.setName(resource);
@@ -1421,7 +1490,7 @@ public abstract class PersistenceInterface extends DefaultPlatformDictionaryBase
                 }
             }
 
-            AppResource res = findAppResourceFromApp(file, app, resource);
+            AppResource res = findAppResourceFromApp(file, app, resource, true);
             if (res == null) {
                 throw new RuntimeException("Resource not found!");
             }
@@ -1479,7 +1548,7 @@ public abstract class PersistenceInterface extends DefaultPlatformDictionaryBase
     }
 
 
-    public void updateApp(String code, String name, String welcome, String parents, String inheritanceSearchOrder, String desc) {
+    public void updateApp(String code, String name, String welcome, String parents, String inheritanceSearchOrder, String desc, String extrnalurls) {
         lock();
 
         try {
@@ -1532,6 +1601,15 @@ public abstract class PersistenceInterface extends DefaultPlatformDictionaryBase
 
             app.getResources().setWelcome(welcome);
             app.setDescription(desc);
+            app.getExternalResources().clear();
+            if (extrnalurls != null && !extrnalurls.trim().equals("")) {
+                List<String> urls = TamilUtils.parseString(extrnalurls);
+                for (String url : urls) {
+                    ExternalResource ext = new ExternalResource();
+                    ext.setUrl(url);
+                    app.getExternalResources().add(ext);
+                }
+            }
             persist(file);
 
 
@@ -1563,7 +1641,7 @@ public abstract class PersistenceInterface extends DefaultPlatformDictionaryBase
                 }
             }
 
-            AppResource res = findAppResourceFromApp(file, app, resource);
+            AppResource res = findAppResourceFromApp(file, app, resource, true);
             if (res == null) {
                 throw new RuntimeException("Resource not found!");
             }
@@ -1583,7 +1661,7 @@ public abstract class PersistenceInterface extends DefaultPlatformDictionaryBase
 
     }
 
-    public static AppResource findAppResource(TamilRootWords file, String name, String resource) {
+    public static AppResource findAppResource(TamilRootWords file, String name, String resource, boolean local) {
         if (name == null || name.trim().equals("")) {
             throw new RuntimeException("App name is mandatory!");
         }
@@ -1595,14 +1673,16 @@ public abstract class PersistenceInterface extends DefaultPlatformDictionaryBase
         if (app == null) {
             throw new RuntimeException("App not found");
         }
-        AppResource res = findAppResourceFromApp(file, app, resource);
+        AppResource res = findAppResourceFromApp(file, app, resource, local);
         return res;
     }
 
-    public AppResource findAppResource(String name, String resource) {
+
+
+    public AppResource findAppResource(String name, String resource, boolean local) {
 
         TamilRootWords file = getAllRootWords();
-        return findAppResource(file, name, resource);
+        return findAppResource(file, name, resource, local);
 
 
     }
@@ -1708,7 +1788,6 @@ public abstract class PersistenceInterface extends DefaultPlatformDictionaryBase
     public IdaichcholDescription findPrepositionDescription(String root) {
         return findIdaichcholDescription(root);
     }
-
 
 
 }

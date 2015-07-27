@@ -920,6 +920,57 @@ var TamilFactory = new function () {
         }
 
 
+
+        /**
+         * Creates  Persistence Manager  to all the persisted artifacts.
+         * <p>
+         * <b>Usage: {@link TamilFactory}.createPersistenceManager()</b>
+         * </p>
+         * @constructor
+         *
+         *
+         */
+        this.createPersistenceManager = function () {
+
+
+            this.createNounManager = function () {
+                this.get_noun_tree_url = this.context + "/api/noun/question-tree/describe/id/";
+
+
+                /**
+                 * Describe a branch path.
+                 * @param id the branch path E,g (i.i.definition.type.i.f.c)
+                 * @param callback the call-back to post the results
+                 *
+                 * The result looks as below.
+                 * {"list":[{"id":"i.i.definition.type.i.f.c.c","desc":"நாட்டின் பெயர்.","choices":[{"val":"இந்தியா","id":"in"},{"val":"--இதில் இல்லை--","id":"ot"}],"qytpe":"CHOICE"}]}
+                 */
+                this.describe = function(id, callback) {
+                    id = typeof id !== 'undefined' ? id.trim() : "definition.type";
+                    jQuery.ajax({
+                        type: method,
+                        get_noun_tree_url: url + id +"&async",
+                        data: content,
+                        contentType: "text/plain; charset=utf-8",
+                        async: true,
+                        success: function (data, status, jqXHR) {
+
+                            callback(data);
+                            // console.log("Passing async response ..---------*****---------." + data.splitways);
+                            return;
+                        }
+                    }, 100);
+                }
+
+                return this;
+            }
+
+
+            return this;
+        }
+
+
+
     }
     ;
 

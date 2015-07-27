@@ -83,7 +83,7 @@ public class AppAccessResource {
             if (app == null) {
                 return Response.status(404).build();
             }
-            final AppResource resource = PersistenceInterface.get().findAppResource(app.getName(), name);
+            final AppResource resource = PersistenceInterface.get().findAppResource(app.getName(), name,false);
             if (resource == null) {
                 return Response.status(404).build();
             }

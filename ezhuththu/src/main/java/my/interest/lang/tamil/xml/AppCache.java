@@ -2,15 +2,12 @@ package my.interest.lang.tamil.xml;
 
 import my.interest.lang.tamil.EzhuththuUtils;
 import my.interest.lang.tamil.generated.types.AppDescription;
+import my.interest.lang.tamil.generated.types.AppResource;
 import my.interest.lang.tamil.generated.types.ResourceInheritanceOrder;
 import my.interest.lang.tamil.generated.types.TamilRootWords;
-import tamil.lang.TamilFactory;
-import tamil.lang.api.persist.manager.ApplicationManager;
 
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Queue;
+import java.lang.ref.SoftReference;
+import java.util.*;
 import java.util.concurrent.LinkedBlockingQueue;
 
 /**
@@ -30,12 +27,28 @@ public class AppCache {
         return new AppCache();
     }
 
+    private final Map<String, SoftReference<AppResource>> externalResource = new HashMap<String, SoftReference<AppResource>>();
+
     public static String deserialize(AppCache s) {
         return "";
     }
 
+
+    public AppResource getExternalResource(String name) {
+        SoftReference<AppResource> ref = externalResource.get(name);
+        if (ref == null) {
+            return null;
+        } else {
+            return ref.get();
+        }
+    }
+
+    public void putExternalResource(AppResource resource) {
+        externalResource.put(resource.getName(), new SoftReference<AppResource>(resource));
+    }
+
     public void buildInheritanceOrder(TamilRootWords all, AppDescription current) {
-        ApplicationManager applicationManager =  TamilFactory.getPersistenceManager().getApplicationManager();
+        // ApplicationManager applicationManager =  TamilFactory.getPersistenceManager().getApplicationManager();
         inheritanceList.clear();
         inheritanceList.add(current);
         if (current.getResourceInheritance() == null || current.getResourceInheritance().getParentApps() == null) {
@@ -69,9 +82,9 @@ public class AppCache {
                 AppDescription parentapp = EzhuththuUtils.findApp(parent, all, false);
                 if (parentapp == null) continue;
                 if (inheritanceList.contains(parentapp)) continue;
-                 if (parentapp.getCache() == null) {
-                     parentapp.setCache(new AppCache());
-                 }
+                if (parentapp.getCache() == null) {
+                    parentapp.setCache(new AppCache());
+                }
                 parentapp.getCache().buildInheritanceOrder(all, parentapp);
                 for (AppDescription depth : parentapp.getCache().inheritanceList) {
                     if (!inheritanceList.contains(depth)) {

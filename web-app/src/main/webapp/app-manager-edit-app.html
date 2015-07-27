@@ -35,7 +35,7 @@
             return;
         }
 
-        $("#result_table tr:gt(10)").detach();
+        $("#result_table tr:gt(11)").detach();
         var table = $("#result_table tr:last");
         var apps = _describeApp(appname);
         console.log(JSON.stringify(apps));
@@ -60,6 +60,18 @@
         }
 
         $('#description').val(apps.description);
+
+        var extroots = "";
+        if (  apps.externalResources) {
+            for (var i = 0; i < apps.externalResources.length; i++) {
+                if (i > 0) {
+                    extroots += ",";
+                }
+                extroots += apps.externalResources[i].url;
+            }
+        }
+
+        $('#extroots').val(extroots);
 
         var resultrow = null;
         apps = apps.resources;
@@ -119,7 +131,8 @@
         var parentapps = $('#parentapps').val();
         var searchscheme = $('#inheritscheme').val();
         var desc = $('#description').val();
-        _saveAppDetails(seccode, appname, welcome, parentapps, searchscheme, desc);
+        var exturls = $('#extroots').val();
+        _saveAppDetails(seccode, appname, welcome, parentapps, searchscheme, desc,exturls);
 
 
     }
@@ -245,6 +258,12 @@
                         </option>
                     </select>
                     </td>
+                </tr>
+
+
+                <tr>
+                    <th>External URL roots</th>
+                    <td><textarea title="External URL roots (comma separated). Resources not found locally will be downloaded from external paths. It could be http or file locations." id="extroots" cols="40" rows="2"></textarea></td>
                 </tr>
 
                 <tr>

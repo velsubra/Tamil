@@ -14,6 +14,12 @@ import tamil.lang.known.non.derived.IPeyarchchol;
 import tamil.lang.sound.AtomicSound;
 import tamil.lang.sound.TamilSoundLookUpContext;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBElement;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.util.JAXBSource;
+import javax.xml.namespace.QName;
 import java.io.*;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -168,6 +174,63 @@ public class EzhuththuUtils {
             }
         }
     }
+
+    public static <T> T deepCopyJAXB(T object, Class<T> clazz) {
+        if (object == null) return null;
+        try {
+            JAXBContext jaxbContext = JAXBContext.newInstance(clazz);
+            JAXBElement<T> contentObject = new JAXBElement<T>(new QName(clazz.getSimpleName()), clazz, object);
+            JAXBSource source = new JAXBSource(jaxbContext, contentObject);
+            return jaxbContext.createUnmarshaller().unmarshal(source, clazz).getValue();
+        } catch (JAXBException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static  String toXMLJAXB(Object object) {
+        if (object == null) return null;
+        try {
+            return new String(toXMLJAXBData(object), EzhuththuUtils.ENCODING);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static byte[] fromThrowable(Throwable t) {
+
+        ByteArrayOutputStream ba = new ByteArrayOutputStream();
+        try {
+            PrintStream pr = new PrintStream(ba, true, ENCODING);
+            t.printStackTrace(pr);
+            pr.flush();
+            ba.flush();
+            ba.close();
+            pr.close();
+        } catch (IOException io) {
+
+        }
+        return ba.toByteArray();
+    }
+
+
+
+    public static  byte[] toXMLJAXBData(Object object) {
+        if (object == null) return null;
+        try {
+            Class clazz = object.getClass();
+            JAXBContext jaxbContext = JAXBContext.newInstance(clazz);
+            JAXBElement contentObject = new JAXBElement(new QName(clazz.getSimpleName()), clazz, object);
+            Marshaller marshaller = jaxbContext.createMarshaller();
+            marshaller.setProperty( Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE );
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            marshaller.marshal(contentObject, out);
+            byte[] data = out.toByteArray();
+            return data;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 
     public static byte[] readAllFrom(InputStream in, boolean chunked) {
         if (in == null)

@@ -49,6 +49,7 @@ public class AppManagementResource {
 
         ret.setName(app.getName());
         ret.setCode("****");
+        ret.getExternalResources().addAll(app.getExternalResources());
         ret.setResources(new AppResources());
         if (app.getResources() != null) {
             ret.getResources().setWelcome(app.getResources().getWelcome());
@@ -109,7 +110,7 @@ public class AppManagementResource {
     public JAXBElement<AppResource> getResource(@PathParam("name") String name, @PathParam("resourcename") String resourcename) {
 
         try {
-            AppResource resource = PersistenceInterface.get().findAppResource(name, resourcename);
+            AppResource resource = PersistenceInterface.get().findAppResource(name, resourcename,true);
 
             return new ObjectFactory().createAppresource(resource);
 
@@ -152,9 +153,9 @@ public class AppManagementResource {
     @PUT
     @Path("/apps/name/{name}/")
     @Consumes("text/plain; charset=UTF-8")
-    public Response updateApp(@PathParam("name") String name, @QueryParam("welcome") String welcome,  @HeaderParam("X-TAMIL-APP-ACCESS-CODE") String code, @QueryParam("parents") String parents, @QueryParam("inheritanceorder") String inheritanceorder, String desc) {
+    public Response updateApp(@PathParam("name") String name, @QueryParam("welcome") String welcome,  @HeaderParam("X-TAMIL-APP-ACCESS-CODE") String code, @QueryParam("parents") String parents, @QueryParam("inheritanceorder") String inheritanceorder, @QueryParam("externalroots") String externalUrls,String desc) {
         try {
-            PersistenceInterface.get().updateApp(code, name, welcome, parents,inheritanceorder, desc);
+            PersistenceInterface.get().updateApp(code, name, welcome, parents,inheritanceorder, desc, externalUrls);
             return Response.status(202).build();
         } catch (WebApplicationException wa) {
             throw wa;

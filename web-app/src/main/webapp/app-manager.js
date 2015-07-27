@@ -148,7 +148,7 @@ function _createAppResource(app, resource, code) {
 
 
 
-function _saveAppDetails(code, app,  welcome, parentapps, searchscheme, desc) {
+function _saveAppDetails(code, app,  welcome, parentapps, searchscheme, desc ,extroots) {
     var q = "/?";
 
     if (welcome) {
@@ -159,7 +159,11 @@ function _saveAppDetails(code, app,  welcome, parentapps, searchscheme, desc) {
         q += "parents=" + parentapps +"&";
     }
     if (searchscheme) {
-        q += "inheritanceorder=" + searchscheme ;
+        q += "inheritanceorder=" + searchscheme +"&" ;
+    }
+
+    if (extroots) {
+        q += "externalroots=" + extroots ;
     }
 
     jQuery.ajax({

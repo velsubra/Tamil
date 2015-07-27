@@ -424,5 +424,8 @@ public class FileBasedPersistence extends PersistenceInterface   {
     }
 
 
-
+    @Override
+    public GlobalTypes getNounGlobalTypes() {
+        return getAllRootWords().getPeyar().getGlobalTypes();
+    }
 }

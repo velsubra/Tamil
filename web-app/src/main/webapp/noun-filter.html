@@ -121,7 +121,7 @@
         jQuery.ajax({
             type:"PUT",
             data:english + "",
-            url:server + "punarchi/filter/nouns/",
+            url:server + "punarchi/filterUnknown/nouns/",
             contentType:"text/plain; charset=utf-8",
             success:function (data, status, jqXHR) {
                 _createGrid(data, tableid, idbase, msg_divid);
