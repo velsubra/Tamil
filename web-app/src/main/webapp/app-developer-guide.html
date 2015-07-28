@@ -107,6 +107,8 @@ You can also consider joining the  <a href="https://www.facebook.com/groups/6317
     We will be able to write more complicated applications (say reading Tamil text) in the future.
 
 </p>
+
+<a id="access-api"></a>
 <h4>Where are the available platform APIs?</h4>
 
 <p>
@@ -135,6 +137,8 @@ You can also consider joining the  <a href="https://www.facebook.com/groups/6317
 
 </p>
 <hr/>
+
+<a id="create-app"></a>
 <h4>How to create my first application?</h4>
 
 <p>It will be very straight forward to create a simple application and get a taste of it.
@@ -155,6 +159,8 @@ You can also consider joining the  <a href="https://www.facebook.com/groups/6317
 
 
 </p>
+
+<a id="app-inheritance"></a>
 <h5>Application Resource Inheritance</h5>
 
 <p>
@@ -191,6 +197,30 @@ Inherited resources can be accessed through all the applications that had inheri
 resolved against the application(base) that had defined that resource than the one(child) that inherited. However, all
 the dynamic
 variables (e.g query params) are passed to the base resource.
+</p>
+<a id="external-link"></a>
+<h5>External Resource Access Links</h5>
+<p>
+    External resource (say a javascript framework) does not need to be uploaded here. Instead, the base url of the
+    project can be entered. Now, when a resource for an app is accessed and <b>if the resource is not locally found</b>, the
+    resource will be resolved against the base url. The resource can be returned through the application access url.
+
+    All the external resources are considered to be local. So they all comply with the application inheritance orders.
+
+
+</p>
+Example:
+<p>
+    <ul>
+    <li>set <a href="https://raw.githubusercontent.com/NorthwoodsSoftware/GoJS/master">https://raw.githubusercontent.com/NorthwoodsSoftware/GoJS/master</a>  as one of the the External url roots
+        for your app.</li>
+    <li>Create a simple html page say test.html</li>
+    <li>You can now  import  the javascript <b>samples/go.js</b> in the test.html as the url <a href="https://raw.githubusercontent.com/NorthwoodsSoftware/GoJS/master/samples/go.js">https://raw.githubusercontent.com/NorthwoodsSoftware/GoJS/master/<b>samples/go.js</b></a> exists remotely.</li>
+    <li>Yes. You would not need to localize any resources to the app. The resource <b>samples/go.js</b> can be treated as though it is an internal resource.</li>
+    <li>ie), This resource can be accessed using the following url pattern ${Your app root in the Tamil platform}/<b>samples/go.js</b> will successfully resolve to the remote source. </li>
+
+</ul>
+ The url could be file:// path as well. That will be useful when you run the Tamil platform locally.
 </p>
 <hr/>
 
@@ -232,6 +262,8 @@ variables (e.g query params) are passed to the base resource.
 </p>
 
 <hr/>
+
+<a id="create-resource"></a>
 <h4>How to create resources within an application?</h4>
 
 <p>Application resources can be created just after the application is created.</p>
@@ -256,6 +288,8 @@ variables (e.g query params) are passed to the base resource.
     scripts.
 </p>
 <hr/>
+
+<a id="groovy-guidelines"></a>
 <h4>Guidelines for writing Groovy scripts</h4>
 
 <p>Groovy scripts typically will use the Java APIs provided by this platform to perform certain action and return a
@@ -363,6 +397,8 @@ can be imported and used in the script.
     line number of the script that ran into exception.
 </p>
 <hr/>
+
+<a id="pre-processing"></a>
 <h4>Pre-processing of a resource</h4>
 
 <p>Resources are pre-processed while being accessed or pre-hand. The following patterns are recognized by this platform

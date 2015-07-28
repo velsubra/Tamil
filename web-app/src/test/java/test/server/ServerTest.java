@@ -3,6 +3,7 @@ package test.server;
 
 import com.sun.jersey.api.container.grizzly2.servlet.GrizzlyWebContainerFactory;
 import com.sun.jersey.api.json.JSONConfiguration;
+import my.interest.lang.tamil.TamilUtils;
 import tamil.lang.*;
 import my.interest.lang.tamil.multi.ExecuteManager;
 import my.interest.lang.tamil.translit.EnglishToTamilCharacterLookUpContext;
@@ -10,6 +11,7 @@ import org.glassfish.grizzly.http.server.HttpServer;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -90,7 +92,7 @@ public class ServerTest {
     public void testStartServer() throws Exception {
 
 
-     if (true) return;
+    // if (true) return;
 
         System.setProperty("http.proxyHost", "www-proxy.us.oracle.com");
         System.setProperty("http.proxyPort", "80");
@@ -106,7 +108,12 @@ public class ServerTest {
         HttpServer threadSelector =
                 GrizzlyWebContainerFactory.create(baseUri, initParams);
         threadSelector.start();
-
+        //This work-around is required for running the server locally on grizzly.
+        File service_consumer = new File("src/main/webapp/service-consumer.js");
+        String text = new String ( TamilUtils.readAllFromFile(service_consumer.getAbsolutePath()), TamilUtils.ENCODING);
+        text = text.replaceAll("//server = \"\";", "server = \"\";");
+        TamilUtils.writeToFile(service_consumer, text.getBytes(TamilUtils.ENCODING));
+      //  System.out.println(text);
         System.in.read();
         ExecuteManager.stop();
         threadSelector.stop();

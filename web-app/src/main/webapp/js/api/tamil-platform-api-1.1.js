@@ -60,7 +60,7 @@ var TamilFactory = new function () {
          *
          */
 
-        this.createDictionary = function (max , path) {
+        this.createDictionary = function (max, path) {
             //private properties
             var cacheDictionary = new Object();
 
@@ -71,15 +71,15 @@ var TamilFactory = new function () {
             if (this.dictionary_subpath) {
                 this.dictionary_subpath = "dictionary/" + this.dictionary_subpath;
             }
-            if (this.dictionary_subpath && this.dictionary_subpath.length > 1 && this.dictionary_subpath.indexOf("/") != 0  ) {
+            if (this.dictionary_subpath && this.dictionary_subpath.length > 1 && this.dictionary_subpath.indexOf("/") != 0) {
                 this.dictionary_subpath = "/" + this.dictionary_subpath;
             }
 
-            this.getdicturl = this.context + "/api" +  this.dictionary_subpath +"/dictionary/search/?max=" + max + "&word=";
-            this.get_base_types = this.context + "/api" +  this.dictionary_subpath +"/dictionary/base-types/";
+            this.getdicturl = this.context + "/api" + this.dictionary_subpath + "/dictionary/search/?max=" + max + "&word=";
+            this.get_base_types = this.context + "/api" + this.dictionary_subpath + "/dictionary/base-types/";
 
-            this.get_word_types = this.context + "/api" +  this.dictionary_subpath +"/dictionary/word-types/";
-            this.size_of_words = this.context + "/api" +  this.dictionary_subpath +"/dictionary/size/";
+            this.get_word_types = this.context + "/api" + this.dictionary_subpath + "/dictionary/word-types/";
+            this.size_of_words = this.context + "/api" + this.dictionary_subpath + "/dictionary/size/";
 
             // this.putdicturl = this.context + "/api/parse/bulk/?max=" + max + "&word=";
 
@@ -243,7 +243,7 @@ var TamilFactory = new function () {
 
 
                     method = "GET";
-                    url = this.get_base_types + encodeURI(type) +"/";
+                    url = this.get_base_types + encodeURI(type) + "/";
                     content = "";
 
                     jQuery.ajax({
@@ -272,7 +272,6 @@ var TamilFactory = new function () {
              *
              */
             this.getWordTypesAsync = function (callback) {
-
 
 
                 var url = null;
@@ -326,7 +325,6 @@ var TamilFactory = new function () {
              *
              */
             this.sizeAsync = function (callback) {
-
 
 
                 var url = null;
@@ -485,7 +483,7 @@ var TamilFactory = new function () {
 
 
                     method = "GET";
-                     url = this.getparserurl + encodeURI(word) + (features && features != "0" ? "&features=" + features : "");
+                    url = this.getparserurl + encodeURI(word) + (features && features != "0" ? "&features=" + features : "");
                     content = "";
 
                     jQuery.ajax({
@@ -682,8 +680,8 @@ var TamilFactory = new function () {
                         // console.log(result);
                         thiscache_cache[word] = result;
                         done = true;
-                      //  console.log("Using applet......");
-                       // console.log(result);
+                        //  console.log("Using applet......");
+                        // console.log(result);
                         if (callback) {
                             callback(result);
                             return;
@@ -694,7 +692,7 @@ var TamilFactory = new function () {
                         console.log(e);
                     }
                 } else {
-                  //  console.log("Applet not found ... " + TAMIL_APPLET_INJECTED);
+                    //  console.log("Applet not found ... " + TAMIL_APPLET_INJECTED);
                 }
                 if (!done) { // say if there is an issue with applet.
 
@@ -710,7 +708,7 @@ var TamilFactory = new function () {
                     if (!callback) {
                         result = $.parseJSON(jQuery.ajax({
                             type: method,
-                            url: url +"&sync",
+                            url: url + "&sync",
                             data: content,
                             contentType: "text/plain; charset=utf-8",
                             async: false
@@ -720,9 +718,9 @@ var TamilFactory = new function () {
                     } else {
                         if (BG_HANDLE) {
                             clearTimeout(BG_HANDLE);
-                          //  console.log("Clearing async call ...");
+                            //  console.log("Clearing async call ...");
                         }
-                        BG_HANDLE = setTimeout(function() {
+                        BG_HANDLE = setTimeout(function () {
                             existing = thiscache_cache[word];
                             if (existing) {
                                 callback(existing);
@@ -733,17 +731,18 @@ var TamilFactory = new function () {
 
                             jQuery.ajax({
                                 type: method,
-                                url: url+"&async",
+                                url: url + "&async",
                                 data: content,
                                 contentType: "text/plain; charset=utf-8",
                                 async: true,
                                 success: function (data, status, jqXHR) {
                                     thiscache_cache[word] = data;
                                     callback(data);
-                                   // console.log("Passing async response ..---------*****---------." + data.splitways);
+                                    // console.log("Passing async response ..---------*****---------." + data.splitways);
                                     return;
                                 }
-                            })}, 100);
+                            })
+                        }, 100);
                     }
                 }
 
@@ -772,32 +771,31 @@ var TamilFactory = new function () {
              * Method to read tamil number text as number
              * @param word  the number in text form.
              * @param features  the comma separated list of features to be used.
-             * {json} - the Tamil text as the number is read.
+             *  @return  {json} - the Tamil text as the number is read.
              *        <b> json.number </b> gives the actual number read
              *        <b> json.error </b> will be true if there is an error.
              *        {"error":"true","emessage":"Index:9 Invalid character:w"}
              */
             this.readAsNumber = function (word, features) {
-                return readNumberCallApi(this.getnumberurl, word,features, true);
+                return readNumberCallApi(this.getnumberurl, word, features, true);
             }
-
 
 
             /**
              * Method to read the number as tamil text
              * @param word  the number as a string
              * @param features  the comma separated list of features to be used.
-             * {json} - the Tamil text as the number is read.
+             * @return  {json} - the Tamil text as the number is read.
              *        <b> json.tamil </b> gives the actual string. No digits  will be present in it.
              *        <b> json.error </b> will be true if there is an error.
              *        {"error":"true","emessage":"Index:9 Invalid character:w"}
              */
             this.readNumber = function (word, features) {
-                return readNumberCallApi(this.gettexturl, word,features,false);
+                return readNumberCallApi(this.gettexturl, word, features, false);
             }
 
 
-            readNumberCallApi = function (apiurl,word, features, texttonumber) {
+            readNumberCallApi = function (apiurl, word, features, texttonumber) {
                 if (word == "") {
                     return word;
                 }
@@ -821,16 +819,16 @@ var TamilFactory = new function () {
 
                     var js = null;
 
-                       if (texttonumber) {
-                           console.log("read as number:" + word + ":" + features+ ":" + apiurl);
-                           js = TAMIL_APPLET_INJECTED.readAsNumber(word, features);
+                    if (texttonumber) {
+                        console.log("read as number:" + word + ":" + features + ":" + apiurl);
+                        js = TAMIL_APPLET_INJECTED.readAsNumber(word, features);
 
-                       } else {
-                           js = TAMIL_APPLET_INJECTED.readNumber(word, features);
-                       }
+                    } else {
+                        js = TAMIL_APPLET_INJECTED.readNumber(word, features);
+                    }
                     console.log(js);
                     result = $.parseJSON(js);
-                   // console.log("Using applet......");
+                    // console.log("Using applet......");
                     //    console.log(result);
                 } else {
 
@@ -920,7 +918,6 @@ var TamilFactory = new function () {
         }
 
 
-
         /**
          * Creates  Persistence Manager  to all the persisted artifacts.
          * <p>
@@ -941,15 +938,14 @@ var TamilFactory = new function () {
                  * Describe a branch path.
                  * @param id the branch path E,g (i.i.definition.type.i.f.c)
                  * @param callback the call-back to post the results
-                 *
-                 * The result looks as below.
-                 * {"list":[{"id":"i.i.definition.type.i.f.c.c","desc":"நாட்டின் பெயர்.","choices":[{"val":"இந்தியா","id":"in"},{"val":"--இதில் இல்லை--","id":"ot"}],"qytpe":"CHOICE"}]}
+                 * @return  {json} - The result looks as below.
+                 * {"list":[{"id":"i.i.definition.type.i.f.c.c","desc":"Country name?","choices":[{"val":"India","id":"in"},{"val":"--None of these--","id":"ot"}],"qytpe":"CHOICE"}]}
                  */
-                this.describe = function(id, callback) {
+                this.describe = function (id, callback) {
                     id = typeof id !== 'undefined' ? id.trim() : "definition.type";
                     jQuery.ajax({
                         type: method,
-                        get_noun_tree_url: url + id +"&async",
+                        get_noun_tree_url: url + id + "&async",
                         data: content,
                         contentType: "text/plain; charset=utf-8",
                         async: true,
@@ -970,7 +966,6 @@ var TamilFactory = new function () {
         }
 
 
-
     }
     ;
 
@@ -989,9 +984,9 @@ $(document).ready(function () {
     // Binds events for   tamil-text
 
     $(".tamil-text").on('focus', function () {
-       // console.log($(this).val());
+        // console.log($(this).val());
         tamil = SYS_TRANSLIT.transliterate($(this).val(), "110").tamil;
-       // console.log(tamil);
+        // console.log(tamil);
         $(this).val(tamil);
         $(this).$popupDiv("#tamil_text");
         if (tamil) {
@@ -1020,13 +1015,13 @@ $(document).ready(function () {
 
     $(".tamil-text").on('enter', function () {
         $(this).val(SYS_TRANSLIT.transliterate($(this).val(), "110").tamil);
-       // $('#tamil_text').hide();
+        // $('#tamil_text').hide();
         $('#tamil_text').html("");
     });
 
     $(".tamil-text").on('blur', function () {
         $(this).val(SYS_TRANSLIT.transliterate($(this).val(), "110").tamil);
-       // $('#tamil_text').hide();
+        // $('#tamil_text').hide();
         $('#tamil_text').html("");
     });
 

@@ -1190,7 +1190,7 @@ public abstract class PersistenceInterface extends DefaultPlatformDictionaryBase
                     for (ExternalResource ext : inherit.getExternalResources()) {
                         count++;
                         if (ext.getUrl() == null) continue;
-
+                        ext.setUrl(ext.getUrl().trim());
                         if (!ext.getUrl().endsWith("/")) {
                             ext.setUrl(ext.getUrl() + "/");
                         }
@@ -1199,7 +1199,7 @@ public abstract class PersistenceInterface extends DefaultPlatformDictionaryBase
                             InputStream in = null;
                             String proxy = System.getProperty("http.proxyHost");
                             int port = 80;
-                            if (proxy != null) {
+                            if (proxy != null && ext.getUrl().toLowerCase().startsWith("http")) {
                                 in = url.toURL().openConnection(new Proxy(Proxy.Type.HTTP, new InetSocketAddress(proxy, port))).getInputStream();
                             } else {
                                 in = url.toURL().openConnection().getInputStream();
