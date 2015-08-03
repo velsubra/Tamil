@@ -31,6 +31,7 @@ import java.util.List;
  * System.out.println("getSoundSizeDigest\t\t: " + w.getSoundSizeDigest().toString());
  * System.out.println("getSoundStrengthDigest\t: " + w.getSoundStrengthDigest().toString());
  * System.out.println("getVowelDigest\t\t\t: " + w.getVowelDigest().toString());
+ * System.out.println("getPositionDigest\t\t\t: " + w.getPositionDigest().toString());
  *
  *     The above code prints
  *
@@ -38,7 +39,8 @@ import java.util.List;
  * getConsonantDigest       : _03__08__07__10__15_
  * getSoundSizeDigest       : _1.0__0.5__1.0__1.0__0.5_
  * getSoundStrengthDigest   : _3__1__3__1__2_
- * getVowelDigest           : _07__0.0__01__03__0.0_
+ * getVowelDigest           : _07__00__01__03__00_
+ * getPositionDigest        :
  * </pre>
  *
  * @author velsubra
@@ -47,8 +49,17 @@ import java.util.List;
  * @see TamilWord#getSoundSizeDigest()
  * @see TamilWord#getSoundStrengthDigest()
  * @see TamilWord#getVowelDigest()
+ * @see TamilWord#getPositionDigest() ()
  */
 public final class CharacterDigest extends ArrayList<String> implements Comparable {
+
+
+    /**
+     * Enumeration of types.
+     */
+    public static enum CHAR_DIGEST {
+        VOWEL, CONSONANT, CHAR_TYPE, SOUND_SIZE, SOUND_STRENGTH, POSITION
+    }
 
     @Override
     public String toString() {

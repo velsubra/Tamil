@@ -1,10 +1,12 @@
 package common.lang.impl;
 
+import tamil.lang.CharacterDigest;
 import tamil.lang.TamilCharacter;
+import tamil.lang.exception.TamilPlatformException;
 
 /**
  * <p>
- *     Represents an Unicode character.
+ * Represents an abstract character.  It could be Unicode character.
  * </p>
  *
  * @author velsubra
@@ -49,13 +51,23 @@ public abstract class AbstractCharacter implements common.lang.Character, Compar
     }
 
     public boolean isPureTamilLetter() {
-        if (isTamilLetter()) {
-            return ((TamilCharacter) this).isPureTamilLetter();
-        }
+
         return false;
     }
 
-    public  int getNumericStrength() {
+    public boolean isWordToStartWith() {
+        return false;
+    }
+
+    public boolean isWordToEndWith() {
+        return false;
+    }
+
+    public boolean isWordToContain() {
+        return false;
+    }
+
+    public int getNumericStrength() {
         return 0;
     }
 
@@ -74,6 +86,42 @@ public abstract class AbstractCharacter implements common.lang.Character, Compar
 
     public String getCharacterTypeDigest() {
         return "_00_";
+    }
+
+    public String getPositionDigest() {
+        return "_00_";
+    }
+
+
+
+
+    /**
+     * Generic method to get the value of a digest
+     *
+     * @param digest_for the type of digest
+     * @return the value
+     */
+    public String getDigest(CharacterDigest.CHAR_DIGEST digest_for) {
+        if (digest_for == null) {
+            throw new TamilPlatformException("Digest type can not be null");
+        }
+        switch (digest_for) {
+            case VOWEL:
+                return getVowelDigest();
+            case CONSONANT:
+                return getConsonantDigest();
+            case CHAR_TYPE:
+                return getCharacterTypeDigest();
+            case SOUND_SIZE:
+                return getSoundSizeDigest();
+            case SOUND_STRENGTH:
+                return getSoundStrengthDigest();
+            case POSITION:
+                return getPositionDigest();
+            default:
+                throw new TamilPlatformException("Undefined:" + digest_for);
+
+        }
     }
 
     public String getSoundSizeDigest() {

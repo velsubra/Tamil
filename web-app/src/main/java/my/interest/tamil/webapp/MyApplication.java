@@ -2,6 +2,7 @@ package my.interest.tamil.webapp;
 
 import my.interest.tamil.rest.resources.*;
 import my.interest.tamil.rest.resources.api.*;
+import my.interest.tamil.rest.resources.api.defn.NounQuestionTreeResource;
 import my.interest.tamil.rest.resources.apps.AppManagementResource;
 import my.interest.tamil.rest.resources.apps.AppsAccessResource;
 import my.interest.tamil.rest.resources.filters.TamilContainerFilter;
@@ -45,6 +46,7 @@ public class MyApplication extends Application {
         set.add(FileAccessResource.class);
         set.add(PersistenceResource.class);
         set.add(EzhuththuResource.class);
+        set.add(NounQuestionTreeResource.class);
 
 
 

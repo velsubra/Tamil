@@ -531,7 +531,7 @@ public final class TamilSimpleCharacter extends TamilCharacter implements Simple
 
     public static final TamilSimpleCharacter SSSA_ = new TamilSimpleCharacter('\u0BB6');
     // 22  ஶ
-    public static boolean isSSsa_(int value) {
+    public static boolean isSSSa_(int value) {
         return value == SSSA_.value;
     }
 
@@ -569,12 +569,12 @@ public final class TamilSimpleCharacter extends TamilCharacter implements Simple
 
 
     public static boolean isUyirMeyyezhuththu(int value) {
-        return isJa_(value) || isSHa_(value) || isHa_(value) ||  isSSa_(value)|| isKa(value) || isNga(value) || isSa(value) || isNya(value) || isDa(value) || isNNNa(value) || isTha(value) || isNtha(value) || isPa(value) || isMa(value) || isYa(value) || isRa(value) || isLa(value) || isVa(value) || isLLLa(value) || isLLa(value) || isRRa(value) || isNa(value);
+        return isJa_(value) || isSHa_(value) || isHa_(value) ||  isSSa_(value) ||   isSSSa_(value) || isKa(value) || isNga(value) || isSa(value) || isNya(value) || isDa(value) || isNNNa(value) || isTha(value) || isNtha(value) || isPa(value) || isMa(value) || isYa(value) || isRa(value) || isLa(value) || isVa(value) || isLLLa(value) || isLLa(value) || isRRa(value) || isNa(value);
 
     }
 
     public static boolean isVadaMozhiYezhuththu(int value) {
-        return isJa_(value) || isSHa_(value) || isHa_(value) ||  isSSa_(value);
+        return isJa_(value) || isSHa_(value) || isHa_(value) ||  isSSa_(value)  ||   isSSSa_(value);
     }
 
 

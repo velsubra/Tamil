@@ -31,12 +31,13 @@ public class ServerTest {
     @Test
     public void testStartServe0() throws Exception {
 
-        TamilWord w = TamilWord.from("செந்தமிழ்ஃ");
+        TamilWord w = TamilWord.from("செந்தமிழ்");
         System.out.println("getCharacterTypeDigest\t: " + w.getCharacterTypeDigest().toString());
         System.out.println("getConsonantDigest\t\t: " + w.getConsonantDigest().toString());
         System.out.println("getSoundSizeDigest\t\t: " + w.getSoundSizeDigest().toString());
         System.out.println("getSoundStrengthDigest\t: " + w.getSoundStrengthDigest().toString());
         System.out.println("getVowelDigest\t\t\t: " + w.getVowelDigest().toString());
+        System.out.println("getPositionDigest\t\t: " + w.getPositionDigest().toString());
 
 
       w = TamilWord.from("தமிழ்");
@@ -94,8 +95,8 @@ public class ServerTest {
 
     // if (true) return;
 
-        System.setProperty("http.proxyHost", "www-proxy.us.oracle.com");
-        System.setProperty("http.proxyPort", "80");
+       // System.setProperty("http.proxyHost", "www-proxy.us.oracle.com");
+       // System.setProperty("http.proxyPort", "80");
         final String baseUri = "http://localhost:8080/xyz";
         final Map<String, String> initParams =
                 new HashMap<String, String>();
