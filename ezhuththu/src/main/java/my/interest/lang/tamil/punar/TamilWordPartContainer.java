@@ -211,44 +211,20 @@ public class TamilWordPartContainer {
 //
 //            மொத்தம் = 24.
     public boolean isEndingFine() {
-        digest();
-        if (isEndingWithUyir()) return false;
-
-        if (DIGEST_CONSONANT_STR.endsWith(TamilSimpleCharacter.DIGEST_CONSONANT_TYPE._NGA_.toString())) {
-            return false;
-        }
-
-
-        //Nothing ends in vallinam
-        if (isEndingWithMei()) {
-            if (DIGEST_CONSONANT_STR.endsWith(TamilSimpleCharacter.DIGEST_CONSONANT_TYPE._NTHA_.toString())) {
-                return false;
-            }
-            return !DIGEST_SOUND_STRENGTH_STR.endsWith(TamilSimpleCharacter.DIGEST_SOUND_STRENGTH._V_.toString());
-        }
-        return true;
+       if (size() ==0 ) {
+           return  false;
+       } else {
+           return getWord().getLast().isWordToEndWith();
+       }
     }
 
 
     public boolean isStartingFine() {
-        digest();
-        if (isStartingWithMei()) return false;
-        if (isStartingWithOneConsonantOfType(TamilCompoundCharacter.IDD)) return false;
-        if (isStartingWithOneConsonantOfType(TamilCompoundCharacter.IRR)) return false;
-        if (isStartingWithOneConsonantOfType(TamilCompoundCharacter.ING)) return false;
-        if (isStartingWithOneConsonantOfType(TamilCompoundCharacter.INNN)) return false;
-        if (isStartingWithOneConsonantOfType(TamilCompoundCharacter.IN)) return false;
-        if (isStartingWithOneConsonantOfType(TamilCompoundCharacter.IR)) return false;
-        if (isStartingWithOneConsonantOfType(TamilCompoundCharacter.IL)) return false;
-        if (isStartingWithOneConsonantOfType(TamilCompoundCharacter.ILL)) return false;
-        if (isStartingWithOneConsonantOfType(TamilCompoundCharacter.ILLL)) return false;
-        if (isStartingWithOneConsonantOfType(TamilCompoundCharacter.IV)) {
-            if (isStartingWithUgaaram()) {
-                return false;
-
-            }
+        if (size() == 0 ) {
+            return  false;
+        } else {
+            return getWord().getFirst().isWordToStartWith();
         }
-        return true;
     }
 
     public boolean isStartingWithNannool158_1() {

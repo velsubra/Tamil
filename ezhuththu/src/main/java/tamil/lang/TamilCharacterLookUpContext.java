@@ -52,19 +52,31 @@ public final class TamilCharacterLookUpContext {
 
 
     /**
-     * Lists all tamil characters registered.
+     * Returns set of all Tamil characters registered.
+     * @return  the map
+     */
+    public static Set<TamilCharacter> getAllTamilCharacters() {
+        Set<TamilCharacter> list = new HashSet<TamilCharacter>();
+         for (TamilCharacterLookUpContext context : getMap().values())  {
+             list.addAll(context.getTamilCharacters());
+         }
+        return list;
+    }
+
+    /**
+     * Lists all tamil characters registered from this context.
      *
      * @return the set of all known tamil characters
      */
 
-    public Set<TamilCharacter> getAllTamilCharacters() {
+    private Set<TamilCharacter> getTamilCharacters() {
         Set<TamilCharacter> list = new HashSet<TamilCharacter>();
         if (this.currentChar != null) {
             list.add(this.currentChar);
         }
         if (continuations != null) {
             for (TamilCharacterLookUpContext context : this.continuations.values()) {
-                list.addAll(context.getAllTamilCharacters());
+                list.addAll(context.getTamilCharacters());
             }
         }
         return list;
@@ -579,6 +591,11 @@ public final class TamilCharacterLookUpContext {
         }
         TamilSuperCompoundCharacter.supercompound.clear();
         TamilSuperCompoundCharacter.supercompound = null;
+
+
+        for (TamilCharacter t : getAllTamilCharacters()) {
+            t.postInit();
+        }
 
 
     }

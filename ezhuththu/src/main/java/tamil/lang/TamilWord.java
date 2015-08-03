@@ -22,7 +22,7 @@ import java.util.Collection;
  *
  * @author velsubra
  * @see #from(String)
- * @see #from(java.lang.String,boolean)
+ * @see #from(java.lang.String, boolean)
  * @see #isPure()
  */
 public final class TamilWord extends AbstractWord<AbstractCharacter> implements Comparable {
@@ -53,16 +53,16 @@ public final class TamilWord extends AbstractWord<AbstractCharacter> implements 
      * @return the number of replacements done.
      */
     public int replaceAll(TamilWord what, TamilWord with, boolean fullmatch) {
-        return replaceAll(0, what, with, fullmatch,false);
+        return replaceAll(0, what, with, fullmatch, false);
     }
 
     /**
      * Replaces all the occurrences of a text with another text
      *
-     * @param searchIndex the index to start searching from
-     * @param what        the text to be found
-     * @param with        the text to be replaced with
-     * @param fullmatch   flag to indicate if the exact match has to be done.
+     * @param searchIndex           the index to start searching from
+     * @param what                  the text to be found
+     * @param with                  the text to be replaced with
+     * @param fullmatch             flag to indicate if the exact match has to be done.
      * @param mergeLastOnSingleChar When fulmatch is false , the text which is replacing is merged (இயல்புபுணர்ச்சியுடன்  ) in both the ends
      *                              However when a single character is replacing, this value indicates where that should get merged. When true, the character is merged last, otherwise at the start of the index where the initial text to be found was found..
      * @return the number of replacements done.
@@ -72,7 +72,7 @@ public final class TamilWord extends AbstractWord<AbstractCharacter> implements 
         int index = replace(searchIndex, what, with, fullmatch, mergeLastOnSingleChar);
         while (index >= 0) {
             count++;
-            index = replace(index + with.size(), what, with, fullmatch,mergeLastOnSingleChar);
+            index = replace(index + with.size(), what, with, fullmatch, mergeLastOnSingleChar);
         }
         return count;
 
@@ -107,7 +107,7 @@ public final class TamilWord extends AbstractWord<AbstractCharacter> implements 
                 with = with.duplicate();
                 AbstractCharacter whatFirst = sub.getFirst();
                 if (!with.isEmpty()) {
-                    if (with.size() != 1 || !mergeLastOnSingleChar ) {
+                    if (with.size() != 1 || !mergeLastOnSingleChar) {
                         AbstractCharacter withFirst = with.getFirst();
                         if (whatFirst != withFirst && whatFirst.isTamilLetter()) {
                             with.removeFirst();
@@ -125,7 +125,7 @@ public final class TamilWord extends AbstractWord<AbstractCharacter> implements 
                 if (withoriginal.size() != 1 || mergeLastOnSingleChar) {
                     AbstractCharacter whatLast = sub.getLast();
                     if (!withoriginal.isEmpty()) {
-                        if (with.size() != 1 || mergeLastOnSingleChar ) {
+                        if (with.size() != 1 || mergeLastOnSingleChar) {
                             AbstractCharacter withLast = with.getLast();
                             if (whatLast != withLast && whatLast.isTamilLetter()) {
                                 with.removeLast();
@@ -501,6 +501,20 @@ public final class TamilWord extends AbstractWord<AbstractCharacter> implements 
         }
     }
 
+    /**
+     * Gets the digest for specified type
+     *
+     * @param digest_for the type asked for
+     * @return string representing the digest
+     */
+    public CharacterDigest getDigest(CharacterDigest.CHAR_DIGEST digest_for) {
+        CharacterDigest buffer = new CharacterDigest();
+        for (AbstractCharacter c : this) {
+            buffer.add(c.getDigest(digest_for));
+        }
+        return buffer;
+    }
+
 
     public CharacterDigest getConsonantDigest() {
         CharacterDigest buffer = new CharacterDigest();
@@ -510,6 +524,13 @@ public final class TamilWord extends AbstractWord<AbstractCharacter> implements 
         return buffer;
     }
 
+    public CharacterDigest getPositionDigest() {
+        CharacterDigest buffer = new CharacterDigest();
+        for (AbstractCharacter c : this) {
+            buffer.add(c.getPositionDigest());
+        }
+        return buffer;
+    }
 
     /**
      * Returns all the consonants (மெய்யெழுத்துகள் )

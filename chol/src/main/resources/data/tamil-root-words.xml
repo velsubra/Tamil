@@ -175,7 +175,7 @@
                         <resources>
                             <name>tamil.txt</name>
                             <type>TAMIL</type>
-                            <content>JUUwJUFFJTg1JUUwJUFFJUFFJUUwJUFGJThEJUUwJUFFJUFFJTIwJUUwJUFFJUJFJTBBJTBBJTBBJUUwJUFFJTg1JUUwJUFFJUFBJUUwJUFGJThEJUUwJUFFJUFBJUUwJUFFJUJFJTBBJTBBJTBBJUUwJUFFJUE0JUUwJUFFJUFFJUUwJUFFJUJGJUUwJUFFJUI0JUUwJUFGJThEJTBBJTBBJUUwJUFFJTg1JUUwJUFFJUFFJUUwJUFGJThEJUUwJUFFJUFFJUUwJUFFJUJFJTIwJTIwJUUwJUFFJUI1JUUwJUFGJTgwJUUwJUFFJTlGJUUwJUFGJThEJUUwJUFFJTlGJUUwJUFFJUJGJUUwJUFFJUIxJUUwJUFGJThEJUUwJUFFJTk1JUUwJUFGJTgxJTIwJUUwJUFFJTlBJUUwJUFGJTg2JUUwJUFFJUE5JUUwJUFGJThEJUUwJUFFJUIxJUUwJUFGJTgxJUUwJUFFJUI1JUUwJUFFJUIwJUUwJUFGJTgxJUUwJUFFJTk1JUUwJUFFJUJGJUUwJUFFJUIxJUUwJUFGJTg3JUUwJUFFJUE5JUUwJUFGJThELiUwQSUwQSUyRiUyRiUyMHNhcml0aGFhbiUwQSVFMCVBRSU4NyVFMCVBRSVCMiVFMCVBRiU4RCVFMCVBRSVCMiVFMCVBRiU4OCVFMCVBRSVBRiVFMCVBRSVCRSUwQSUwQSVFMCVBRSU4NyVFMCVBRSVCMiVFMCVBRiU4RCVFMCVBRSVCMiVFMCVBRiU4OCVFMCVBRSVBRiVFMCVBRSVCRQ==</content>
+                            <content>JUUwJUFFJTg1JUUwJUFFJUFFJUUwJUFGJThEJUUwJUFFJUFFJTIwJUUwJUFFJUJFJTBBJTBBJTBBJUUwJUFFJTg1JUUwJUFFJUFBJUUwJUFGJThEJUUwJUFFJUFBJUUwJUFFJUJFJTBBJTBBJUUwJUFFJTg1JUUwJUFFJUE0JUUwJUFFJUJGJUUwJUFFJUIyJUUwJUFGJThEJTIwJUUwJUFFJThFJUUwJUFFJUE5JUUwJUFGJThEJUUwJUFFJUE5JUUwJUFGJThEJTIwJTBBJUUwJUFFJUE0JUUwJUFFJUFFJUUwJUFFJUJGJUUwJUFFJUI0JUUwJUFGJThEJTBBJTBBJUUwJUFFJTg1JUUwJUFFJUFFJUUwJUFGJThEJUUwJUFFJUFFJUUwJUFFJUJFJTIwJTIwJUUwJUFFJUI1JUUwJUFGJTgwJUUwJUFFJTlGJUUwJUFGJThEJUUwJUFFJTlGJUUwJUFFJUJGJUUwJUFFJUIxJUUwJUFGJThEJUUwJUFFJTk1JUUwJUFGJTgxJTIwJUUwJUFFJTlBJUUwJUFGJTg2JUUwJUFFJUE5JUUwJUFGJThEJUUwJUFFJUIxJUUwJUFGJTgxJUUwJUFFJUI1JUUwJUFFJUIwJUUwJUFGJTgxJUUwJUFFJTk1JUUwJUFFJUJGJUUwJUFFJUIxJUUwJUFGJTg3JUUwJUFFJUE5JUUwJUFGJThELiUwQSUwQSUyRiUyRiUyMHNhcml0aGFhbiUwQSVFMCVBRSU4NyVFMCVBRSVCMiVFMCVBRiU4RCVFMCVBRSVCMiVFMCVBRiU4OCVFMCVBRSVBRiVFMCVBRSVCRSUwQSUwQSVFMCVBRSU4NyVFMCVBRSVCMiVFMCVBRiU4RCVFMCVBRSVCMiVFMCVBRiU4OCVFMCVBRSVBRiVFMCVBRSVCRQ==</content>
                         </resources>
                     </resources>
                     <resourceInheritance>
@@ -427,6 +427,23 @@
                     </resourceInheritance>
                     <cache></cache>
                 </app>
+                <app>
+                    <root>dummy</root>
+                    <name>dummy</name>
+                    <description>New app (No description yet)</description>
+                    <resources>
+                        <welcome>index.html</welcome>
+                        <resources>
+                            <name>index.html</name>
+                            <type>HTML</type>
+                            <content>PCFET0NUWVBFIGh0bWw+CjxodG1sIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L2h0bWwiPgo8aGVhZD4KICAgIDxtZXRhIGNoYXJzZXQ9IlVURi04Ij4KICAgIDx0aXRsZT4gTmV3IEFwcGxpY2F0aW9uOmR1bW15ICAgIDwvdGl0bGU+IDwvaGVhZD4gPGJvZHk+PGgxPiBJdCBpcyBhIG5ldyBUYW1pbCBhcHBsaWNhdGlvbiAoIlR7dGhhbWl6aHBwYXlhbm1pfSIpIG5hbWVkIGFzICR7Ul9BUFBfTkFNRX0gY3JlYXRlZCBhdDpXZWQgSnVsIDI5IDExOjIxOjEwIEdNVCAyMDE1ICA8L2gxPiA8L2JvZHk+CjwvaHRtbD4=</content>
+                        </resources>
+                    </resources>
+                    <resourceInheritance>
+                        <inheritanceOrder>DEPTH_FIRST_PRE_ORDER</inheritanceOrder>
+                    </resourceInheritance>
+                    <cache></cache>
+                </app>
             </list>
         </apps>
     </apps>
@@ -469,12 +486,17 @@
                     i=idam,k=kaalam,s=sinai,pa=panhpu,t=thozhil,o=--vearru--]</type>
             </declare>
             <declare>
+                <name>definition.root_analysis</name>
+                <description>வேர்ச்சொல்லாய்வு செய்யப்பட்டிருக்கிறதா?</description>
+                <type xmlns:xs="http://www.w3.org/2001/XMLSchema">xs:boolean</type>
+            </declare>
+            <declare>
                 <name>i.definition.type.t.verb</name>
                 <description>வினையடி?</description>
                 <type xmlns:xs="http://www.w3.org/2001/XMLSchema">xs:string</type>
             </declare>
             <declare>
-                <name>i.definition.type.t.verb.transitive</name>
+                <name>i.definition.type.t.verb_transitive</name>
                 <description>வினையடி செயப்படுபொருளைக்கொண்டு வருமா?</description>
                 <type xmlns:xs="http://www.w3.org/2001/XMLSchema">xs:boolean</type>
             </declare>
@@ -896,6 +918,7 @@
                     <root>வைக்கம்</root>
                     <description>
                         <property name=".deletable" value="true"/>
+                        <property name="definition.type" value="i"/>
                     </description>
                 </word>
                 <word>
@@ -970,7 +993,7 @@
                         <property name=".deletable" value="true"/>
                         <property name="definition.type" value="t"/>
                         <property name="i.definition.type.t.verb" value="பெறு"/>
-                        <property name="i.definition.type.t.verb.transitive" value="true"/>
+                        <property name="i.definition.type.t.verb_transitive" value="true"/>
                     </description>
                 </word>
                 <word>
@@ -1112,6 +1135,7 @@
                     <root>வேலி</root>
                     <description>
                         <property name=".deletable" value="true"/>
+                        <property name="definition.type" value="p"/>
                     </description>
                 </word>
                 <word>
@@ -1591,6 +1615,8 @@
                         <property name=".deletable" value="true"/>
                         <property name="meaning.english.words" value="post"/>
                         <property name="meaning.english.locked" value="true"/>
+                        <property name="issue.meaning.english" value="true"/>
+                        <property name="description" value="ammaa"/>
                     </description>
                 </word>
                 <word>
@@ -3531,6 +3557,7 @@
                     <root>அகலம்</root>
                     <description>
                         <property name="meaning.english.words" value="width"/>
+                        <property name="definition.type" value="pa"/>
                     </description>
                 </word>
                 <word>
@@ -4056,7 +4083,7 @@
                     <description>
                         <property name="definition.type" value="t"/>
                         <property name="i.definition.type.t.verb" value="எழுது"/>
-                        <property name="i.definition.type.t.verb.transitive" value="true"/>
+                        <property name="i.definition.type.t.verb_transitive" value="true"/>
                     </description>
                 </word>
                 <word>
@@ -4360,7 +4387,7 @@
                     <root>விருப்பம்</root>
                     <description>
                         <property name="definition.type" value="t"/>
-                        <property name="i.definition.type.t.verb.transitive" value="true"/>
+                        <property name="i.definition.type.t.verb_transitive" value="true"/>
                         <property name="i.definition.type.t.verb" value="விரும்பு"/>
                     </description>
                 </word>
@@ -6498,7 +6525,10 @@
                 </word>
                 <word>
                     <root>அசடு</root>
-                    <description/>
+                    <description>
+                        <property name="definition.type" value="p"/>
+                        <property name="i.definition.type.p.it" value="vir"/>
+                    </description>
                 </word>
                 <word>
                     <root>எளிது</root>
@@ -8374,7 +8404,7 @@
                     <description>
                         <property name="definition.type" value="t"/>
                         <property name="i.definition.type.t.verb" value="அசை"/>
-                        <property name="i.definition.type.t.verb.transitive" value="true"/>
+                        <property name="i.definition.type.t.verb_transitive" value="true"/>
                         <property name="meaning.english.words" value="movement"/>
                     </description>
                 </word>
@@ -9609,7 +9639,7 @@
                     <root>அழிப்பு</root>
                     <description>
                         <property name="definition.type" value="t"/>
-                        <property name="i.definition.type.t.verb.transitive" value="true"/>
+                        <property name="i.definition.type.t.verb_transitive" value="true"/>
                         <property name="i.definition.type.t.verb" value="அழி"/>
                     </description>
                 </word>
@@ -9925,7 +9955,9 @@
                 </word>
                 <word>
                     <root>வேல்</root>
-                    <description/>
+                    <description>
+                        <property name="definition.type" value="p"/>
+                    </description>
                 </word>
                 <word>
                     <root>நாய்</root>
@@ -12547,7 +12579,7 @@
                     <root>பழக்கம்</root>
                     <description>
                         <property name="definition.type" value="t"/>
-                        <property name="i.definition.type.t.verb.transitive" value="true"/>
+                        <property name="i.definition.type.t.verb_transitive" value="true"/>
                         <property name="i.definition.type.t.verb" value="பழக்கு"/>
                     </description>
                 </word>
@@ -14222,7 +14254,7 @@
                     <description>
                         <property name="definition.type" value="t"/>
                         <property name="i.definition.type.t.verb" value="கல்"/>
-                        <property name="i.definition.type.t.verb.transitive" value="true"/>
+                        <property name="i.definition.type.t.verb_transitive" value="true"/>
                     </description>
                 </word>
                 <word>
@@ -17036,6 +17068,30 @@
                 <property name="vinaimuttu.transitive.idainilai.past" value="ற்"/>
             </named-description>
             <list>
+                <verb>
+                    <root>நொகு</root>
+                    <description>
+                        <property name=".deletable" value="true"/>
+                        <property name="property.intransitive" value="true"/>
+                        <property name="property.transitive" value="false"/>
+                        <property name="vinaimuttu.intransitive.viguthi.future.thu" value="ம்"/>
+                    </description>
+                </verb>
+                <verb>
+                    <root>பல்கு</root>
+                    <description name="kutriyalugaram">
+                        <property name=".deletable" value="true"/>
+                        <property name="property.intransitive" value="true"/>
+                        <property name="property.transitive" value="false"/>
+                        <property name="vinaiyechcham.transitive.viguthi.past" value="i"/>
+                        <property name="vinaiyechcham.intransitive.viguthi.past" value="i"/>
+                        <property name="vinaimuttu.locked" value="true"/>
+                        <property name="peyarechcham.locked" value="true"/>
+                        <property name="vinaiyechcham.locked" value="true"/>
+                        <property name="ethirmarrai-peyarechcham.locked" value="true"/>
+                        <property name="thodar-muttu-vinaimuttu.locked" value="true"/>
+                    </description>
+                </verb>
                 <verb>
                     <root>கொடு </root>
                     <description>

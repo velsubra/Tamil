@@ -801,7 +801,7 @@ public final class TamilCompoundCharacter extends TamilCharacter implements Comp
         if (val >= TamilSimpleCharacter.aa.getValue() && val <= TamilSimpleCharacter.OU.getValue()) {
             return val;
         } else {
-            throw new RuntimeException(getVowel() + ":" + Integer.toHexString(getVowel()) + " is not  valid continuation vowel.");
+            throw new RuntimeException(getVowel() + ":" + Integer.toHexString(getVowel()) + " is not  valid continuation vowel. char:" + toString());
         }
     }
 
