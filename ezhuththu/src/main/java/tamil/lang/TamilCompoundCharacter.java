@@ -5,6 +5,7 @@ import common.lang.CompoundCharacter;
 import tamil.lang.exception.NoUyirPartException;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -66,6 +67,7 @@ public final class TamilCompoundCharacter extends TamilCharacter implements Comp
         this.typeSpecification |= _isAaythavezhuththu() ? AAYTHAM : 0;
         this.typeSpecification |= _isVadaMozhiYezhuththu() ? VADA_MOZHI : 0;
         this.typeSpecification |= _isKurilezhuththu() ? KURIL : 0;
+        this.typeSpecification |= _isNtedizhuththu() ? NEDIL : 0;
         this.typeSpecification |= _isVallinam() ? VALLINAM : 0;
         this.typeSpecification |= _isMellinam() ? MELLINAM : 0;
         this.typeSpecification |= _isIdaiyinam() ? IDAIYINAM : 0;
@@ -92,7 +94,7 @@ public final class TamilCompoundCharacter extends TamilCharacter implements Comp
     }
 
     private boolean _isVadaMozhiYezhuththu() {
-        return consonants.length == 1 && vowel == PULLI && TamilSimpleCharacter.isVadaMozhiYezhuththu(consonants[0]);
+        return consonants.length == 1 && TamilSimpleCharacter.isVadaMozhiYezhuththu(consonants[0]);
     }
 
     private boolean _isAaythavezhuththu() {
@@ -109,7 +111,12 @@ public final class TamilCompoundCharacter extends TamilCharacter implements Comp
 
     private boolean _isKurilezhuththu() {
         //அ and its series is part of TamilSimpleCharacter ; so it wont be here.
-        return isMeyyezhuththu() || isE() || isU() || isA() || isO();
+        return  isE() || isU() || isA() || isO();
+    }
+
+    private boolean _isNtedizhuththu() {
+        //அ and its series is part of TamilSimpleCharacter ; so it wont be here.
+        return !_isMeyyezhuththu() && !_isKurilezhuththu();
     }
 
     /**
@@ -845,6 +852,13 @@ public final class TamilCompoundCharacter extends TamilCharacter implements Comp
     @Override
     public String getSoundStrengthDigest() {
         return asSimpleTamilCharacter().getSoundStrengthDigest();
+    }
+
+    @Override
+    public int[] getCodePoints() {
+        int[] ret = Arrays.copyOf(this.consonants, this.consonants.length + 1);
+        ret[this.consonants.length] = getVowel();
+        return ret;
     }
 
     @Override

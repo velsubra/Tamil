@@ -33,7 +33,7 @@ public abstract class TamilCharacter extends AbstractCharacter {
     protected static final int VADA_MOZHI = 16;
 
     protected static final int KURIL = 32;
-    //protected static final int NEDIL = 64;
+    protected static final int NEDIL = 64;
 
 
     protected static final int VALLINAM = 128;
@@ -211,6 +211,16 @@ public abstract class TamilCharacter extends AbstractCharacter {
      */
     public final boolean isKurilezhuththu() {
         return (typeSpecification & KURIL) != 0;
+    }
+
+
+    /**
+     * Returns if the character is  நெடில்
+     *
+     * @return true for நெடில் , false otherwise
+     */
+    public final boolean isNtedilezhuththu() {
+        return (typeSpecification & NEDIL) != 0;
     }
 
     /**

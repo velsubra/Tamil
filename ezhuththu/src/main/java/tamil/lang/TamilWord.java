@@ -8,6 +8,7 @@ import my.interest.lang.tamil.parser.impl.TamilWordListener;
 import tamil.lang.exception.TamilPlatformException;
 
 import java.util.Collection;
+import java.util.Iterator;
 
 /**
  * <p>
@@ -737,10 +738,34 @@ public final class TamilWord extends AbstractWord<AbstractCharacter> implements 
     public int getCodePointsTotalCount() {
 
         int count = 0;
-        for (AbstractCharacter c : this.toArray(new AbstractCharacter[0])) {
-            count += c.getCodePointsCount();
+        Iterator<AbstractCharacter> it =  this.listIterator();
+        while(it.hasNext()) {
+            count += it.next().getCodePointsCount();
         }
+
         return count;
+    }
+
+    /**
+     * This method returns unicode string representation.
+     * @return
+     */
+    //todo:needs revisit.
+    public  String toUnicodeStringRepresentation() {
+        StringBuffer buffer = new StringBuffer();
+        Iterator<AbstractCharacter> it =  this.listIterator();
+        while(it.hasNext()) {
+           buffer.append(it.next().toUnicodeStringRepresentation());
+        }
+        return buffer.toString();
+    }
+
+    public int length() {
+        return size();
+    }
+
+    public AbstractCharacter charAt(int index) {
+        return get(index);
     }
 
 

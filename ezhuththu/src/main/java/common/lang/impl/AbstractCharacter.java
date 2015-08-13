@@ -132,7 +132,21 @@ public abstract class AbstractCharacter implements common.lang.Character, Compar
         return "_00_";
     }
 
-    public abstract int getCodePointsCount();
+   public abstract int getCodePointsCount();
+
+    public abstract int[] getCodePoints();
+
+    public  String toUnicodeStringRepresentation() {
+        StringBuffer buffer = new StringBuffer();
+        for (int code : getCodePoints()) {
+            String val =   Integer.toHexString(code);
+            while (val.length()< 4) {
+                val = "0" +val ;
+            }
+            buffer.append("\\u" + val);
+        }
+        return buffer.toString();
+    }
 
 
 }

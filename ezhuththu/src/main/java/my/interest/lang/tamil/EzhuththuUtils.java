@@ -4,6 +4,7 @@ import common.lang.impl.AbstractCharacter;
 import my.interest.lang.tamil.generated.types.*;
 import my.interest.lang.tamil.generated.types.Properties;
 import my.interest.lang.tamil.internal.api.TamilCharacterParserListener;
+import my.interest.lang.tamil.internal.api.TamilLetterFilter;
 import my.interest.lang.tamil.internal.api.TamilSoundParserListener;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -120,7 +121,7 @@ public class EzhuththuUtils {
         Property property = new Property();
         property.setName(obj.getString("name"));
         property.setValue(obj.getString("value"));
-        return  property;
+        return property;
 
     }
 
@@ -187,7 +188,7 @@ public class EzhuththuUtils {
         }
     }
 
-    public static  String toXMLJAXB(Object object) {
+    public static String toXMLJAXB(Object object) {
         if (object == null) return null;
         try {
             return new String(toXMLJAXBData(object), EzhuththuUtils.ENCODING);
@@ -213,15 +214,14 @@ public class EzhuththuUtils {
     }
 
 
-
-    public static  byte[] toXMLJAXBData(Object object) {
+    public static byte[] toXMLJAXBData(Object object) {
         if (object == null) return null;
         try {
             Class clazz = object.getClass();
             JAXBContext jaxbContext = JAXBContext.newInstance(clazz);
             JAXBElement contentObject = new JAXBElement(new QName(clazz.getSimpleName()), clazz, object);
             Marshaller marshaller = jaxbContext.createMarshaller();
-            marshaller.setProperty( Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE );
+            marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
             ByteArrayOutputStream out = new ByteArrayOutputStream();
             marshaller.marshal(contentObject, out);
             byte[] data = out.toByteArray();
@@ -440,6 +440,150 @@ public class EzhuththuUtils {
         return hash;
     }
 
+    public static Set<TamilCharacter> filterTamilCharacters(TamilLetterFilter filter) {
+
+        Set<TamilCharacter> set = new LinkedHashSet<TamilCharacter>();
+        Set<TamilCharacter> all = TamilCharacterLookUpContext.getAllTamilCharacters();
+        Iterator<TamilCharacter> it = all.iterator();
+        while (it.hasNext()) {
+            TamilCharacter ch = it.next();
+            if (filter.filter(ch)) {
+                set.add(ch);
+            }
+        }
+        return set;
+    }
+
+    public static Set<TamilCharacter> filterKuRil() {
+        return filterTamilCharacters(new TamilLetterFilter() {
+            public boolean filter(TamilCharacter tamil) {
+                return tamil.isPureTamilLetter() && tamil.isKurilezhuththu();
+            }
+        });
+    }
+
+    public static Set<TamilCharacter> filterNedil() {
+        return filterTamilCharacters(new TamilLetterFilter() {
+            public boolean filter(TamilCharacter tamil) {
+                return tamil.isPureTamilLetter() && tamil.isNtedilezhuththu();
+            }
+        });
+    }
+
+    public static Set<TamilCharacter> filterUyir() {
+        return filterTamilCharacters(new TamilLetterFilter() {
+            public boolean filter(TamilCharacter tamil) {
+                return tamil.isPureTamilLetter() && tamil.isUyirezhuththu();
+            }
+        });
+    }
+
+    public static Set<TamilCharacter> filterAaytham() {
+        return filterTamilCharacters(new TamilLetterFilter() {
+            public boolean filter(TamilCharacter tamil) {
+                return tamil.isPureTamilLetter() && tamil.isAaythavezhuththu();
+            }
+        });
+    }
+
+
+    public static Set<TamilCharacter> filterVali() {
+        return filterTamilCharacters(new TamilLetterFilter() {
+            public boolean filter(TamilCharacter tamil) {
+                return tamil.isPureTamilLetter() && tamil.isVallinam();
+            }
+        });
+    }
+
+    public static Set<TamilCharacter> filterVadaMozhi() {
+        return filterTamilCharacters(new TamilLetterFilter() {
+            public boolean filter(TamilCharacter tamil) {
+                return tamil.isVadaMozhiYezhuththu();
+            }
+        });
+    }
+
+
+    public static Set<TamilCharacter> filterIdai() {
+        return filterTamilCharacters(new TamilLetterFilter() {
+            public boolean filter(TamilCharacter tamil) {
+                return tamil.isPureTamilLetter() && tamil.isIdaiyinam();
+            }
+        });
+    }
+
+    public static Set<TamilCharacter> filterMeli() {
+        return filterTamilCharacters(new TamilLetterFilter() {
+            public boolean filter(TamilCharacter tamil) {
+                return tamil.isPureTamilLetter() && tamil.isMellinam();
+            }
+        });
+    }
+
+    public static Set<TamilCharacter> filterUyirMei() {
+        return filterTamilCharacters(new TamilLetterFilter() {
+            public boolean filter(TamilCharacter tamil) {
+                return tamil.isPureTamilLetter() && tamil.isUyirMeyyezhuththu();
+            }
+        });
+    }
+
+    public static Set<TamilCharacter> filterMei() {
+        return filterTamilCharacters(new TamilLetterFilter() {
+            public boolean filter(TamilCharacter tamil) {
+                return tamil.isPureTamilLetter() && tamil.isMeyyezhuththu();
+            }
+        });
+    }
+
+
+    public static Set<TamilCharacter> filterOarezhutthuMozhi() {
+        return filterTamilCharacters(new TamilLetterFilter() {
+            public boolean filter(TamilCharacter tamil) {
+                return tamil.isPureTamilLetter() && tamil.isWordToStartWith() &&  tamil.isWordToStartWith() &&  !tamil.isKurilezhuththu();
+            }
+        });
+    }
+
+    public static Set<TamilCharacter> filterMozhiMuthal() {
+        return filterTamilCharacters(new TamilLetterFilter() {
+            public boolean filter(TamilCharacter tamil) {
+                return tamil.isPureTamilLetter() && tamil.isWordToStartWith();
+            }
+        });
+    }
+
+    public static Set<TamilCharacter> filterMozhiLast() {
+        return filterTamilCharacters(new TamilLetterFilter() {
+            public boolean filter(TamilCharacter tamil) {
+                return tamil.isPureTamilLetter() && tamil.isWordToEndWith();
+            }
+        });
+    }
+
+
+    public static Set<TamilCharacter> filterMozhiYidai() {
+        return filterTamilCharacters(new TamilLetterFilter() {
+            public boolean filter(TamilCharacter tamil) {
+                return tamil.isPureTamilLetter() && tamil.isWordToContain();
+            }
+        });
+    }
+    public static Set<TamilCharacter> filterOut(final Set<TamilCharacter> set) {
+        return filterTamilCharacters(new TamilLetterFilter() {
+            public boolean filter(TamilCharacter tamil) {
+                return tamil.isPureTamilLetter() && !set.contains(tamil);
+            }
+        });
+    }
+
+    public static Set<TamilCharacter> filterKuttiyalugaram() {
+        return filterTamilCharacters(new TamilLetterFilter() {
+            public boolean filter(TamilCharacter tamil) {
+                return tamil.isPureTamilLetter() && tamil.isUyirMeyyezhuththu() && tamil.isVallinam() && tamil.getUyirPart() == TamilSimpleCharacter.U;
+            }
+        });
+    }
 
     public static void writeToFile(File file, InputStream in) throws Exception {
         FileOutputStream out = new FileOutputStream(validateOutputFile(file.getAbsolutePath(), true));
