@@ -1,0 +1,65 @@
+package my.interest.lang.tamil.impl.rx;
+
+import my.interest.lang.tamil.internal.api.UnicodePatternGenerator;
+import tamil.lang.TamilCharacter;
+
+import java.util.Iterator;
+import java.util.LinkedHashSet;
+import java.util.Set;
+
+/**
+ * <p>
+ * </p>
+ *
+ * @author velsubra
+ */
+public class AnyOneInTamilLetterSetRx implements UnicodePatternGenerator {
+    public Set<TamilCharacter> getSet() {
+        return set;
+    }
+
+    Set<TamilCharacter> set = null;
+    String generated = null;
+    private String name = null;
+
+
+    public AnyOneInTamilLetterSetRx(String name, Set<TamilCharacter>... sets) {
+        this.set = new LinkedHashSet<TamilCharacter>();
+        for (Set<TamilCharacter> set : sets) {
+            this.set.addAll(set);
+        }
+        this.name = name;
+
+        System.out.println(this.name + ":" + set.size() + ":" + set);
+    }
+
+    public String generate() {
+        if (generated == null) {
+            StringBuffer buffer = null;
+
+            buffer = new StringBuffer("(?:");
+
+            Iterator<TamilCharacter> it = set.iterator();
+            boolean first = true;
+            while (it.hasNext()) {
+                TamilCharacter ch = it.next();
+
+                if (!first) {
+                    buffer.append("|");
+                }
+                buffer.append("(?:");
+                buffer.append(ch.toUnicodeStringRepresentation());
+                buffer.append(")");
+
+                first = false;
+            }
+
+            buffer.append(")");
+
+
+            generated = buffer.toString();
+        }
+        return generated;
+
+    }
+}

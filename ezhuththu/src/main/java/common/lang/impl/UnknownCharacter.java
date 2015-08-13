@@ -50,6 +50,13 @@ public class UnknownCharacter extends AbstractCharacter implements SimpleCharact
 
 
     @Override
+    public int[] getCodePoints() {
+        int[] ret = new int[1];
+        ret[0] = getValue();
+        return ret;
+    }
+
+    @Override
     public int getCodePointsCount() {
         return 1;
     }

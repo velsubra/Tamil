@@ -6,6 +6,7 @@ import tamil.lang.exception.NoMeiPartException;
 import tamil.lang.exception.NoUyirPartException;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -46,6 +47,7 @@ public final class TamilSimpleCharacter extends TamilCharacter implements Simple
         this.typeSpecification |= _isAaythavezhuththu() ? AAYTHAM : 0;
         this.typeSpecification |= _isVadaMozhiYezhuththu() ? VADA_MOZHI : 0;
         this.typeSpecification |= _isKurilezhuththu() ? KURIL : 0;
+        this.typeSpecification |= !_isKurilezhuththu() && !_isAaythavezhuththu() ? NEDIL : 0;
         this.typeSpecification |= _isVallinam() ? VALLINAM : 0;
         this.typeSpecification |= _isMellinam() ? MELLINAM : 0;
         this.typeSpecification |= _isIdaiyanam() ? IDAIYINAM : 0;
@@ -371,6 +373,12 @@ public final class TamilSimpleCharacter extends TamilCharacter implements Simple
     }
 
 
+    // 23  ஶ
+    public boolean isSSSa_() {
+        return isSSSa_(getValue());
+    }
+
+
     public static final TamilSimpleCharacter KA = new TamilSimpleCharacter('\u0B95');
 
 
@@ -530,7 +538,7 @@ public final class TamilSimpleCharacter extends TamilCharacter implements Simple
     }
 
     public static final TamilSimpleCharacter SSSA_ = new TamilSimpleCharacter('\u0BB6');
-    // 22  ஶ
+    // 23  ஶ
     public static boolean isSSSa_(int value) {
         return value == SSSA_.value;
     }
@@ -558,7 +566,7 @@ public final class TamilSimpleCharacter extends TamilCharacter implements Simple
 
 
     private boolean _isVadaMozhiYezhuththu() {
-        return isJa_() || isSHa_() || isHa_() ||isSSa_();
+        return isJa_() || isSHa_() || isHa_() ||isSSa_() || isSSSa_();
     }
 
 
@@ -579,7 +587,7 @@ public final class TamilSimpleCharacter extends TamilCharacter implements Simple
 
 
     private boolean _isKurilezhuththu() {
-        return isUyirMeyyezhuththu() || isa() || isE() || isU() || isA() || isO();
+        return  isUyirMeyyezhuththu() || isa() || isE() || isU() || isA() || isO();
     }
 
 
@@ -662,6 +670,14 @@ public final class TamilSimpleCharacter extends TamilCharacter implements Simple
         }
         return soundStrength;
 
+    }
+
+
+    @Override
+    public int[] getCodePoints() {
+        int[] ret = new int[1];
+        ret[0] = getValue();
+        return ret;
     }
 
     @Override

@@ -42,6 +42,7 @@ public class TamilSuperCompoundCharacter extends TamilCharacter implements Chara
         this.typeSpecification |= 0;
         this.typeSpecification |= VADA_MOZHI;
         this.typeSpecification |= _isKurilezhuththu() ? KURIL : 0;
+        this.typeSpecification |= !_isKurilezhuththu() && !isMeyyezhuththu() ? NEDIL : 0;
         this.typeSpecification |= 0;
         this.typeSpecification |= 0;
         this.typeSpecification |= 0;
@@ -81,7 +82,23 @@ public class TamilSuperCompoundCharacter extends TamilCharacter implements Chara
 
     @Override
     public int getCodePointsCount() {
-        return 0;
+        int count = 0;
+        for (TamilCharacter t : sequence) {
+            count += t.getCodePointsCount();
+        }
+        return count;
+    }
+
+    @Override
+    public int[] getCodePoints() {
+        int[] ret = new int[getCodePointsCount()];
+        int i = 0;
+        for (TamilCharacter t : sequence) {
+            for (int c : t.getCodePoints()) {
+                ret[i++] = c;
+            }
+        }
+        return ret;
     }
 
     public TamilCharacter[] getSequence() {
