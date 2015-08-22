@@ -2,6 +2,7 @@ package tamil.util.regx;
 
 import my.interest.lang.tamil.StringUtils;
 import my.interest.lang.tamil.impl.rx.RxRegistry;
+import my.interest.lang.tamil.internal.api.IPropertyFinder;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -28,12 +29,12 @@ public final class TamilPattern {
          }
 
     }
-    public static  TamilPattern compile(String pattern) {
-        return  compile(pattern, 0);
+    public static  TamilPattern compile(String pattern,  IPropertyFinder aliasFinder) {
+        return  compile(pattern, 0, aliasFinder);
 
     }
-    public static  TamilPattern compile(String pattern, int flags) {
-        StringUtils.IndexContext context = StringUtils.replaceWithContext("${", "}", pattern, new RxRegistry(), true, true, true);
+    public static  TamilPattern compile(String pattern, int flags, IPropertyFinder aliasFinder) {
+        StringUtils.IndexContext context = StringUtils.replaceWithContext("${", "}", pattern, new RxRegistry(aliasFinder), true, true, true);
         System.out.println("pattern:" + pattern + " =>Real RX:" + context.finalString);
         return new TamilPattern(pattern, context, flags);
 

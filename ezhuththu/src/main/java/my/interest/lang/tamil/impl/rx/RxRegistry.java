@@ -1,6 +1,8 @@
 package my.interest.lang.tamil.impl.rx;
 
+import common.lang.impl.AbstractCharacter;
 import my.interest.lang.tamil.EzhuththuUtils;
+import my.interest.lang.tamil.impl.dictionary.DefaultPlatformDictionaryBase;
 import my.interest.lang.tamil.impl.rx.asai1.NtearRx;
 import my.interest.lang.tamil.impl.rx.asai1.NtearbuRx;
 import my.interest.lang.tamil.impl.rx.asai1.NtiraiRx;
@@ -9,13 +11,20 @@ import my.interest.lang.tamil.impl.rx.asai2.Karuvilham;
 import my.interest.lang.tamil.impl.rx.asai2.KoovilhamRx;
 import my.interest.lang.tamil.impl.rx.asai2.PulhimaRx;
 import my.interest.lang.tamil.impl.rx.asai2.TheamaRx;
-import my.interest.lang.tamil.impl.rx.asai3.Theamaangaay;
+import my.interest.lang.tamil.impl.rx.asai3.*;
+import my.interest.lang.tamil.impl.yaappu.SeerIterator;
 import my.interest.lang.tamil.internal.api.IPropertyFinder;
-import my.interest.lang.tamil.internal.api.UnicodePatternGenerator;
+import my.interest.lang.tamil.internal.api.PatternGenerator;
+import tamil.lang.TamilCharacter;
 import tamil.lang.TamilFactory;
 
-import java.util.HashMap;
-import java.util.Map;
+import tamil.lang.TamilWord;
+
+import tamil.lang.api.ezhuththu.EzhuththuDescription;
+import tamil.lang.exception.TamilPlatformException;
+import tamil.yaappu.seer.AbstractSeer;
+
+import java.util.*;
 
 /**
  * <p>
@@ -25,67 +34,34 @@ import java.util.Map;
  */
 public class RxRegistry implements IPropertyFinder {
 
-    static final Map<String, UnicodePatternGenerator> map = new HashMap<String, UnicodePatternGenerator>();
+    static final Map<String, PatternGenerator> map = new HashMap<String, PatternGenerator>();
+
+    IPropertyFinder parent = null;
+
+    public RxRegistry(IPropertyFinder parent) {
+        this.parent = parent;
+    }
+
+
+
 
     static {
+
+
         map.put("எழுத்துவடிவம்", new TamilSymbolRx());
         map.put("!எழுத்துவடிவம்", new NonTamilSymbolRx());
-        map.put("எழுத்து", new AnyOneInTamilLetterSetRx("எழுத்து", EzhuththuUtils.filterAaytham(), EzhuththuUtils.filterUyir(), EzhuththuUtils.filterMei(), EzhuththuUtils.filterUyirMei()));
+        map.put("எழுத்து", new AnyOneInTamilLetterSetRx("எழுத்து", "தமிழெழுத்தைக்குறிக்கிறது. எ.கா: ப ", EzhuththuUtils.filterAaytham(), EzhuththuUtils.filterUyir(), EzhuththuUtils.filterMei(), EzhuththuUtils.filterUyirMei()));
         map.put("!எழுத்து", new NonTamilSymbolRx());
 
-        map.put("குறில்", new AnyOneInTamilLetterSetRx("குறில்", EzhuththuUtils.filterKuRil()));
-        map.put("!குறில்", new AnyOneInTamilLetterSetRx("!குறில்", EzhuththuUtils.filterOut(EzhuththuUtils.filterKuRil())));
+        Set<EzhuththuDescription> sets = TamilFactory.getTamilCharacterSetCalculator().getEzhuththuDescriptions();
+        for (EzhuththuDescription set : sets) {
+            if (PatternGenerator.class.isAssignableFrom(set.getClass())) {
+                map.put(set.getName(), (PatternGenerator) set);
+            } else {
+                map.put(set.getName(), new AnyOneInTamilLetterSetRx(set.getName(), set.getDescription(), set.getCharacterSet()));
+            }
+        }
 
-        map.put("நெடில்", new AnyOneInTamilLetterSetRx("நெடில்", EzhuththuUtils.filterNedil()));
-        map.put("!நெடில்", new AnyOneInTamilLetterSetRx("!நெடில்", EzhuththuUtils.filterOut(EzhuththuUtils.filterNedil())));
-
-        map.put("உயிர்", new AnyOneInTamilLetterSetRx("உயிர்", EzhuththuUtils.filterUyir()));
-        map.put("!உயிர்", new AnyOneInTamilLetterSetRx("!உயிர்", EzhuththuUtils.filterOut(EzhuththuUtils.filterUyir())));
-
-        map.put("மெய்", new AnyOneInTamilLetterSetRx("மெய்", EzhuththuUtils.filterMei()));
-        map.put("!மெய்", new AnyOneInTamilLetterSetRx("!மெய்", EzhuththuUtils.filterOut(EzhuththuUtils.filterMei())));
-
-        map.put("ஒற்று", new AnyOneInTamilLetterSetRx("ஒற்று", EzhuththuUtils.filterMei()));
-        map.put("!ஒற்று", new AnyOneInTamilLetterSetRx("!ஒற்று", EzhuththuUtils.filterOut(EzhuththuUtils.filterMei())));
-
-        map.put("!உயிர்மெய்", new AnyOneInTamilLetterSetRx("!உயிர்மெய்", EzhuththuUtils.filterOut(EzhuththuUtils.filterUyirMei())));
-        map.put("உயிர்மெய்", new AnyOneInTamilLetterSetRx("உயிர்மெய்", EzhuththuUtils.filterUyirMei()));
-
-        map.put("ஆய்தம்", new AnyOneInTamilLetterSetRx("ஆய்தம்", EzhuththuUtils.filterAaytham()));
-        map.put("!ஆய்தம்", new AnyOneInTamilLetterSetRx("!ஆய்தம்", EzhuththuUtils.filterOut(EzhuththuUtils.filterAaytham())));
-        map.put("முதல்", new AnyOneInTamilLetterSetRx("முதல்", EzhuththuUtils.filterUyir(), EzhuththuUtils.filterMei()));
-        map.put("!முதல்", new AnyOneInTamilLetterSetRx("!முதல்", EzhuththuUtils.filterAaytham(), EzhuththuUtils.filterUyirMei()));
-
-        map.put("!வலி", new AnyOneInTamilLetterSetRx("!வலி", EzhuththuUtils.filterOut(EzhuththuUtils.filterVali())));
-        map.put("வலி", new AnyOneInTamilLetterSetRx("வலி", EzhuththuUtils.filterVali()));
-        map.put("!வலி", new AnyOneInTamilLetterSetRx("!வலி", EzhuththuUtils.filterOut(EzhuththuUtils.filterVali())));
-        map.put("வலி", new AnyOneInTamilLetterSetRx("வலி", EzhuththuUtils.filterVali()));
-        map.put("!மெலி", new AnyOneInTamilLetterSetRx("!மெலி", EzhuththuUtils.filterOut(EzhuththuUtils.filterMeli())));
-        map.put("மெலி", new AnyOneInTamilLetterSetRx("மெலி", EzhuththuUtils.filterMeli()));
-        map.put("!இடை", new AnyOneInTamilLetterSetRx("!இடை", EzhuththuUtils.filterOut(EzhuththuUtils.filterIdai())));
-        map.put("இடை", new AnyOneInTamilLetterSetRx("இடை", EzhuththuUtils.filterIdai()));
-
-
-        map.put("!மொழிமுதல்", new AnyOneInTamilLetterSetRx("!மொழிமுதல்", EzhuththuUtils.filterOut(EzhuththuUtils.filterMozhiMuthal())));
-        map.put("மொழிமுதல்", new AnyOneInTamilLetterSetRx("மொழிமுதல்", EzhuththuUtils.filterMozhiMuthal()));
-
-        map.put("!மொழிக்கடை", new AnyOneInTamilLetterSetRx("!மொழிக்கடை", EzhuththuUtils.filterOut(EzhuththuUtils.filterMozhiLast())));
-        map.put("மொழிக்கடை", new AnyOneInTamilLetterSetRx("மொழிக்கடை", EzhuththuUtils.filterMozhiLast()));
-
-
-        map.put("!மொழியிடை", new AnyOneInTamilLetterSetRx("!மொழியிடை", EzhuththuUtils.filterOut(EzhuththuUtils.filterMozhiYidai())));
-        map.put("மொழியிடை", new AnyOneInTamilLetterSetRx("மொழியிடை", EzhuththuUtils.filterMozhiYidai()));
-
-
-        map.put("!வடமொழியெழுத்து", new AnyOneInTamilLetterSetRx("!வடமொழியெழுத்து", EzhuththuUtils.filterOut(EzhuththuUtils.filterVadaMozhi())));
-        map.put("வடமொழியெழுத்து", new AnyOneInTamilLetterSetRx("வடமொழியெழுத்து", EzhuththuUtils.filterVadaMozhi()));
-
-
-        map.put("!குற்றியலுகரம்", new AnyOneInTamilLetterSetRx("!குற்றியலுகரம்", EzhuththuUtils.filterOut(EzhuththuUtils.filterKuttiyalugaram())));
-        map.put("குற்றியலுகரம்", new AnyOneInTamilLetterSetRx("குற்றியலுகரம்", EzhuththuUtils.filterKuttiyalugaram()));
-
-        map.put("!ஓரெழுத்துமொழி", new AnyOneInTamilLetterSetRx("!ஓரெழுத்துமொழி", EzhuththuUtils.filterOut(EzhuththuUtils.filterOarezhutthuMozhi())));
-        map.put("ஓரெழுத்துமொழி", new AnyOneInTamilLetterSetRx("ஓரெழுத்துமொழி", EzhuththuUtils.filterOarezhutthuMozhi()));
 
         map.put("மொழி", new MozhiRx());
 
@@ -105,14 +81,21 @@ public class RxRegistry implements IPropertyFinder {
         map.put("கூவிளம்", new KoovilhamRx());
         map.put("கருவிளம்", new Karuvilham());
 
-        map.put("தேமாங்காய்", new Theamaangaay());
+        map.put("தேமாங்காய்", new TheamaangaayRx());
+        map.put("புளிமாங்காய்", new PulhimaangaayRx());
+        map.put("கூவிளங்காய்", new KoovilhangaayRx());
+        map.put("கருவிளங்காய்", new KaruvilhangaayRx());
+        map.put("தேமாங்கனி", new TheamaanganiRx());
+        map.put("புளிமாங்கனி", new PulhimaanganiRx());
+        map.put("கூவிளங்கனி", new KoovilhanganiRx());
+        map.put("கருவிளங்கனி", new KaruvilhanganiRx());
 
 
 
     }
 
     public String findProperty(String p1) {
-        UnicodePatternGenerator gen = map.get(p1);
+        PatternGenerator gen = map.get(p1);
         if (gen == null) {
             p1 = TamilFactory.getTransliterator(null).transliterate(p1).toString();
             gen = map.get(p1);
@@ -121,16 +104,132 @@ public class RxRegistry implements IPropertyFinder {
 
             if (p1.startsWith("(") && p1.endsWith(")")) {
                 String inner = p1.substring(1, p1.length() - 1);
-                gen = map.get(inner);
-                if (gen != null) {
-                    return "\\b${" + inner + "}\\b";
-                }  else {
-                    return null;
+
+                return "\\b${" + inner + "}\\b";
+
+            }
+            if (p1.startsWith("அசை[") && p1.endsWith("]")) {
+                String inner = p1.substring(4, p1.length() - 1);
+                Iterator<AbstractSeer> it = new SeerIterator(TamilWord.from(inner, true));
+                StringBuffer buffer = new StringBuffer();
+                while (it.hasNext()) {
+                    AbstractSeer s = it.next();
+                    if (s.isNtear()) {
+                        buffer.append("${ntear}");
+                    } else {
+                        buffer.append("${ntirai}");
+                    }
+                }
+                return buffer.toString();
+
+            }
+            if (p1.startsWith("மாத்திரை[") && p1.endsWith("]")) {
+                String inner = p1.substring(9, p1.length() - 1);
+                StringBuffer buffer = new StringBuffer();
+                TamilWord w = TamilWord.from(inner, true);
+                for (int i = 0; i < w.length(); i++) {
+                    AbstractCharacter ch = w.charAt(i);
+                    if (ch.isPureTamilLetter()) {
+                        TamilCharacter p = ch.asTamilCharacter();
+                        if (p.isKurilezhuththu()) {
+                            buffer.append("${kurril}");
+                        } else if (p.isNtedilezhuththu()) {
+                            buffer.append("${ntedil}");
+                        } else if (p.isMeyyezhuththu()) {
+                            buffer.append("(${ottu}|${aaytham})");
+                        } else {
+                            buffer.append("(${ottu}|${aaytham})");
+                        }
+
+                    } else {
+                        for (int j = 0; j < ch.getCodePointsCount(); j++) {
+                            buffer.append(".");
+                        }
+                    }
+
+                }
+                return buffer.toString();
+
+            }
+            if (p1.startsWith("வகை[") && p1.endsWith("]")) {
+                String inner = p1.substring(4, p1.length() - 1);
+                StringBuffer buffer = new StringBuffer();
+                TamilWord w = TamilWord.from(inner, true);
+                for (int i = 0; i < w.length(); i++) {
+                    AbstractCharacter ch = w.charAt(i);
+                    if (ch.isPureTamilLetter()) {
+                        TamilCharacter p = ch.asTamilCharacter();
+                        if (p.isUyirezhuththu()) {
+                            buffer.append("${uyir}");
+                        } else if (p.isMeyyezhuththu()) {
+                            buffer.append("${ottu}");
+                        } else if (p.isUyirMeyyezhuththu()) {
+                            buffer.append("${uyirmey}");
+                        } else {
+                            buffer.append("${aaytham}");
+                        }
+
+                    } else {
+                        for (int j = 0; j < ch.getCodePointsCount(); j++) {
+                            buffer.append(".");
+                        }
+                    }
+
+                }
+                return buffer.toString();
+
+            }
+
+            if (p1.startsWith("மெய்வகை[") && p1.endsWith("]")) {
+                String inner = p1.substring(8, p1.length() - 1);
+                StringBuffer buffer = new StringBuffer();
+                TamilWord w = TamilWord.from(inner, true);
+                for (int i = 0; i < w.length(); i++) {
+                    AbstractCharacter ch = w.charAt(i);
+                    if (ch.isPureTamilLetter()) {
+                        TamilCharacter p = ch.asTamilCharacter();
+                        if (p.isUyirezhuththu()) {
+                            buffer.append("${uyir}");
+                        } else if (p.isAaythavezhuththu()) {
+                            buffer.append("${aaytham}");
+                        } else if (p.isVallinam()) {
+                            buffer.append("${vali}");
+                        } else if (p.isMellinam()) {
+                            buffer.append("${meli}");
+                        } else if (p.isIdaiyinam()) {
+                            buffer.append("${idai}");
+                        } else {
+                            throw new TamilPlatformException("Unexpected char:" + p.toString());
+                        }
+
+                    } else {
+                        for (int j = 0; j < ch.getCodePointsCount(); j++) {
+                            buffer.append(".");
+                        }
+                    }
+
+                }
+                return buffer.toString();
+
+            }
+
+            if (parent != null) {
+                String alias = parent.findProperty(p1);
+                if (alias != null) {
+                    return alias;
                 }
             }
-            return null;
+            //Do split and figure out
+            Set<TamilCharacter> chars = TamilFactory.getTamilCharacterSetCalculator().find(p1);
+            if (chars == null) {
+
+                return null;
+            }
+            return new AnyOneInTamilLetterSetRx(p1, chars).generate();
         } else {
             return gen.generate();
         }
     }
+
+
 }

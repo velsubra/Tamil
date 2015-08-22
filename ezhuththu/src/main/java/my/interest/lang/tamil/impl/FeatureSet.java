@@ -1,10 +1,13 @@
 package my.interest.lang.tamil.impl;
 
 import my.interest.lang.tamil.EzhuththuUtils;
+import my.interest.lang.tamil.impl.dictionary.DictionaryCollection;
+import tamil.lang.api.dictionary.TamilDictionary;
 import tamil.lang.api.feature.Feature;
 import tamil.lang.api.feature.FeatureConstants;
 import tamil.lang.api.number.IgnoreNonDigitFeature;
 import tamil.lang.api.number.PunharchiFeature;
+import tamil.lang.api.parser.ParseWithDictionary;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -101,6 +104,30 @@ public final class FeatureSet {
 
     }
 
+    public TamilDictionary getDictionary() {
+        List<ParseWithDictionary> features = getFeatures(ParseWithDictionary.class);
+        if (features == null || features.isEmpty()) {
+            return null;
+        } else {
+            List<TamilDictionary> list = new ArrayList<TamilDictionary>();
+            for (ParseWithDictionary d: features) {
+                list.add(d.getDictionary());
+            }
+            return new DictionaryCollection(list);
+        }
+
+    }
+
+    public <T extends Feature> T getFeatureByType(Class<T> feature) {
+        List<T> features = getFeatures(feature);
+        if (features.isEmpty()) {
+            return null;
+        } else {
+            return features.get(0);
+        }
+    }
+
+
     public <T extends Feature> List<T> getFeatures(Class<T> tClass) {
 
         List<T> list = new ArrayList<T>();
@@ -146,11 +173,7 @@ public final class FeatureSet {
         if (this.quickmap == null) return null;
         Feature fq = quickmap.get(feature);
         if (fq != null) return (T) fq;
-//        for (Feature f : features) {
-//            if (feature.isAssignableFrom(f.getClass())) {
-//                return (T) f;
-//            }
-//        }
+
         return null;
     }
 
