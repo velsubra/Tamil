@@ -5,14 +5,13 @@ import my.interest.lang.tamil.StringUtils;
 import my.interest.lang.tamil.internal.api.IPropertyFinder;
 import org.junit.Assert;
 import org.junit.Test;
-import tamil.lang.TamilCompoundCharacter;
-import tamil.lang.TamilFactory;
-import tamil.lang.TamilSimpleCharacter;
-import tamil.lang.TamilWord;
+import tamil.lang.*;
+import tamil.lang.api.ezhuththu.TamilCharacterSetCalculator;
 import tamil.util.regx.TamilPattern;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -41,6 +40,57 @@ public class EzhuththuTest {
         Assert.assertEquals(7 * 18 + 7, EzhuththuUtils.filterNedil().size());
         Assert.assertEquals(12, EzhuththuUtils.filterUyir().size());
     }
+
+
+    @Test
+    public void testNoCalculations() {
+        TamilCharacterSetCalculator calc = TamilFactory.getTamilCharacterSetCalculator();
+
+        System.out.println("Size:"+ calc.getEzhuththuDescriptions().size());
+        Assert.assertTrue(90==calc.getEzhuththuDescriptions().size());
+        Set<TamilCharacter> set = calc.find("யகரவரிசை");
+        Assert.assertEquals(set.size(), 13);
+
+        set = calc.find("யகரவரிசை");
+        Assert.assertEquals(set.size(), 13);
+
+        set = calc.find("உயிர்மெய்");
+        Assert.assertEquals(set.size(), 216);
+
+        set = calc.find("!வடமொழியெழுத்து");
+        Assert.assertEquals(set.size(), 247);
+
+        set = calc.find("!இளகரவரிசை");
+        Assert.assertEquals(set.size(), 234);
+
+        set = calc.find("!நெடில்");
+        Assert.assertEquals(set.size(), 114);
+    }
+
+
+    @Test
+    public void testPatterns1() {
+        TamilPattern pattern = TamilPattern.compile("${வகை[ka]}");
+        Matcher matcher = pattern.matcher(TamilFactory.getTransliterator(null).transliterate("sai").toString());
+        Assert.assertTrue(matcher.matches());
+
+        pattern = TamilPattern.compile("${(வகை[kadal])}");
+        matcher = pattern.matcher(TamilFactory.getTransliterator(null).transliterate("thamizh").toString());
+        Assert.assertTrue(matcher.matches());
+
+        pattern = TamilPattern.compile("${(வகை[f f])}");
+        matcher = pattern.matcher(TamilFactory.getTransliterator(null).transliterate("f f").toString());
+        Assert.assertTrue(matcher.matches());
+
+        pattern = TamilPattern.compile("${(வகை[qwrwrwrwtetertetet y ryrtytryrtytrfhfghgfh])}");
+        matcher = pattern.matcher(TamilFactory.getTransliterator(null).transliterate("qwrwrwrwtetertetet y ryrtytryrtytrfhfghgfh").toString());
+        Assert.assertTrue(matcher.matches());
+
+        pattern = TamilPattern.compile("${(வகை[f f])}");
+        matcher = pattern.matcher(TamilFactory.getTransliterator(null).transliterate("f f").toString());
+        Assert.assertTrue(matcher.matches());
+    }
+
 
     @Test
     public void testPatterns() {
@@ -151,6 +201,14 @@ public class EzhuththuTest {
 
         pattern = TamilPattern.compile("${ntear}");
         matcher = pattern.matcher("அம்");
+        Assert.assertTrue(matcher.matches());
+
+        pattern = TamilPattern.compile("${ntirai}");
+        matcher = pattern.matcher("நடா");
+        Assert.assertTrue(matcher.matches());
+
+        pattern = TamilPattern.compile("${ntirai}");
+        matcher = pattern.matcher("னடா");
         Assert.assertTrue(matcher.matches());
 
 
@@ -290,6 +348,10 @@ public class EzhuththuTest {
         Assert.assertTrue(matcher.matches());
 
         pattern = TamilPattern.compile("${koovilham}");
+        matcher = pattern.matcher("அம்மடு");
+        Assert.assertTrue(matcher.matches());
+
+        pattern = TamilPattern.compile("${koovilham}");
         matcher = pattern.matcher("கருவி");
         Assert.assertFalse(matcher.matches());
 
@@ -372,15 +434,100 @@ public class EzhuththuTest {
 
         pattern = TamilPattern.compile("${theamaa}");
         matcher = pattern.matcher("பக்கா");
-     //   Assert.assertTrue(matcher.matches());
+        Assert.assertTrue(matcher.matches());
+        pattern = TamilPattern.compile("${theamaa}");
+        matcher = pattern.matcher("பக்காடு");
+        Assert.assertFalse(matcher.matches());
+
+        matcher = pattern.matcher("பக்காட்");
+        Assert.assertTrue(matcher.matches());
 
         pattern = TamilPattern.compile("${theamaa}");
         matcher = pattern.matcher("சுக்க");
-//        Assert.assertTrue(matcher.matches());
+        Assert.assertTrue(matcher.matches());
 
         pattern = TamilPattern.compile("${theamaa}");
         matcher = pattern.matcher("சுக்கன்");
-//        Assert.assertTrue(matcher.matches());
+        Assert.assertTrue(matcher.matches());
+
+        pattern = TamilPattern.compile("${theamaangani}");
+        matcher = pattern.matcher(TamilFactory.getTransliterator(null).transliterate("theamaangani").toString());
+        Assert.assertTrue(matcher.matches());
+
+
+        pattern = TamilPattern.compile("${theamaangani}");
+        matcher = pattern.matcher(TamilFactory.getTransliterator(null).transliterate("தெம்மாங்கனி").toString());
+        Assert.assertTrue(matcher.matches());
+
+
+        pattern = TamilPattern.compile("${theamaangaay}");
+        matcher = pattern.matcher(TamilFactory.getTransliterator(null).transliterate("தெம்மாங்க").toString());
+        Assert.assertTrue(matcher.matches());
+
+
+
+        pattern = TamilPattern.compile("${pulhimaangaay}");
+        matcher = pattern.matcher(TamilFactory.getTransliterator(null).transliterate("புளிமங்காய்").toString());
+        Assert.assertTrue(matcher.matches());
+
+
+        pattern = TamilPattern.compile("${pulhimaangaay}");
+        matcher = pattern.matcher(TamilFactory.getTransliterator(null).transliterate("pulhimaangaay").toString());
+        Assert.assertTrue(matcher.matches());
+
+        pattern = TamilPattern.compile("${pulhimaangani}");
+        matcher = pattern.matcher(TamilFactory.getTransliterator(null).transliterate("pulhimaangani").toString());
+        Assert.assertTrue(matcher.matches());
+
+        pattern = TamilPattern.compile("${koovilhangaay}");
+        matcher = pattern.matcher(TamilFactory.getTransliterator(null).transliterate("koovilhangaay").toString());
+        Assert.assertTrue(matcher.matches());
+
+        pattern = TamilPattern.compile("${koovilhangani}");
+        matcher = pattern.matcher(TamilFactory.getTransliterator(null).transliterate("koovilhangani").toString());
+        Assert.assertTrue(matcher.matches());
+
+
+        pattern = TamilPattern.compile("${koovilhangani}");
+        matcher = pattern.matcher(TamilFactory.getTransliterator(null).transliterate("அக்கடல்டான").toString());
+        Assert.assertFalse(matcher.matches());
+        pattern = TamilPattern.compile("${koovilhangani}");
+        matcher = pattern.matcher(TamilFactory.getTransliterator(null).transliterate("அக்கடல்டா").toString());
+        Assert.assertFalse(matcher.matches());
+
+        pattern = TamilPattern.compile("${koovilhangani}");
+        matcher = pattern.matcher(TamilFactory.getTransliterator(null).transliterate("அக்கடல்னடா").toString());
+        Assert.assertTrue(matcher.matches());
+
+        pattern = TamilPattern.compile("${koovilhangaay}");
+        matcher = pattern.matcher(TamilFactory.getTransliterator(null).transliterate("அக்கடல்ன").toString());
+        Assert.assertTrue(matcher.matches());
+
+        pattern = TamilPattern.compile("${koovilhangaay}");
+        matcher = pattern.matcher(TamilFactory.getTransliterator(null).transliterate("அக்கடல்டா").toString());
+        Assert.assertTrue(matcher.matches());
+
+        pattern = TamilPattern.compile("${koovilhangaay}");
+        matcher = pattern.matcher(TamilFactory.getTransliterator(null).transliterate("அக்கடல்டால்").toString());
+        Assert.assertTrue(matcher.matches());
+
+        pattern = TamilPattern.compile("${karuvilhangaay}");
+        matcher = pattern.matcher(TamilFactory.getTransliterator(null).transliterate("karuvilhangaay").toString());
+        Assert.assertTrue(matcher.matches());
+        pattern = TamilPattern.compile("${karuvilhangani}");
+        matcher = pattern.matcher(TamilFactory.getTransliterator(null).transliterate("karuvilhangani").toString());
+        Assert.assertTrue(matcher.matches());
+
+
+
+        pattern = TamilPattern.compile("${theamaangaay}");
+        matcher = pattern.matcher(TamilFactory.getTransliterator(null).transliterate("pulhimaangaay").toString());
+        Assert.assertFalse(matcher.matches());
+
+
+
+
+
     }
 
 

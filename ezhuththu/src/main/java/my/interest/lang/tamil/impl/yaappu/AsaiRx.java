@@ -1,4 +1,4 @@
-package my.interest.lang.tamil.impl.rx;
+package my.interest.lang.tamil.impl.yaappu;
 
 import my.interest.lang.tamil.internal.api.PatternGenerator;
 import tamil.lang.TamilCharacter;
@@ -11,17 +11,20 @@ import java.util.Set;
  *
  * @author velsubra
  */
-public class NonTamilSymbolRx implements PatternGenerator {
-    public String generate() {
-        return  "[\\u0000-\\u0B01\\u0BCC-\\uFFFF]";
-    }
+public abstract  class AsaiRx implements PatternGenerator {
 
     public String getName() {
-        return "!எழுத்துவடிவம்";
+        return name;
+    }
+
+    String name = null;
+
+    public AsaiRx(String name) {
+       this.name = name;
     }
 
     public String getDescription() {
-        return "Characters outside Tamil block";
+        return name;
     }
 
     public boolean isCharacterSet() {

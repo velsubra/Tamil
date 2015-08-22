@@ -454,6 +454,19 @@ public class EzhuththuUtils {
         return set;
     }
 
+    public static Set<TamilCharacter> filterIntersection(Set<TamilCharacter> one, Set<TamilCharacter> two) {
+        Set<TamilCharacter> inter = new LinkedHashSet<TamilCharacter>();
+        Iterator<TamilCharacter> it = one.iterator();
+        while (it.hasNext()) {
+            TamilCharacter ch = it.next();
+            if (two.contains(ch)) {
+                inter.add(ch);
+            }
+        }
+        return inter;
+
+    }
+
     public static Set<TamilCharacter> filterKuRil() {
         return filterTamilCharacters(new TamilLetterFilter() {
             public boolean filter(TamilCharacter tamil) {
@@ -524,6 +537,22 @@ public class EzhuththuUtils {
         return filterTamilCharacters(new TamilLetterFilter() {
             public boolean filter(TamilCharacter tamil) {
                 return tamil.isPureTamilLetter() && tamil.isUyirMeyyezhuththu();
+            }
+        });
+    }
+
+    public static Set<TamilCharacter> filterUyirMeiWithUyir(final TamilCharacter uyir) {
+        return filterTamilCharacters(new TamilLetterFilter() {
+            public boolean filter(TamilCharacter tamil) {
+                return tamil.isPureTamilLetter() && tamil.isUyirMeyyezhuththu() && uyir == tamil.getUyirPart();
+            }
+        });
+    }
+
+    public static Set<TamilCharacter> filterUyirMeiWithMei(final TamilCharacter mei) {
+        return filterTamilCharacters(new TamilLetterFilter() {
+            public boolean filter(TamilCharacter tamil) {
+                return tamil.isPureTamilLetter() && tamil.isUyirMeyyezhuththu() && mei == tamil.getMeiPart();
             }
         });
     }

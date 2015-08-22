@@ -1,6 +1,6 @@
 package my.interest.lang.tamil.impl.rx.asai1;
 
-import my.interest.lang.tamil.internal.api.UnicodePatternGenerator;
+import my.interest.lang.tamil.impl.yaappu.AsaiRx;
 
 /**
  * <p>
@@ -8,8 +8,13 @@ import my.interest.lang.tamil.internal.api.UnicodePatternGenerator;
  *
  * @author velsubra
  */
-public class NtearRx implements UnicodePatternGenerator {
+public final class NtearRx extends AsaiRx {
+
+    public NtearRx() {
+        super("நேர்");
+    }
+
     public String generate() {
-        return  "((${ntedil}${ottu})|(${kurril}${ottu})|(${ntedil})|(${kurril}))";
+        return "((${ntedil}${ottu})|(${kurril}${ottu})|(${ntedil})|(${kurril}))";
     }
 }

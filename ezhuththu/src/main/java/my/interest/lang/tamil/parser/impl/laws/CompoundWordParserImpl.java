@@ -7,6 +7,7 @@ import my.interest.lang.tamil.impl.FeatureSet;
 import my.interest.lang.tamil.internal.api.HandlerFactory;
 import tamil.lang.TamilFactory;
 import tamil.lang.TamilWord;
+import tamil.lang.api.dictionary.TamilDictionary;
 import tamil.lang.api.parser.*;
 import tamil.lang.known.IKnownWord;
 import tamil.lang.known.thodar.ThodarMozhiBuilder;
@@ -42,6 +43,10 @@ public class CompoundWordParserImpl implements CompoundWordParser {
         }
         FeatureSet set = new FeatureSet(features);
         ParserResultCollection ret = parsePrivate(singleWord, maxReturn, set);
+        TamilDictionary dictionary = set.getDictionary();
+        if (dictionary == null) {
+            dictionary = TamilFactory.getSystemDictionary();
+        }
 
         if (ret.isEmpty()) {
             if (!singleWord.isEmpty() && set.isFeatureEnabled(ParseFailureFindIndexFeature.class)) {
@@ -54,7 +59,8 @@ public class CompoundWordParserImpl implements CompoundWordParser {
                     ret = parsePrivate(trial, 1, set);
                     if (ret.isEmpty()) {
                         ret = null;
-                        List<IKnownWord> knownWords = TamilFactory.getSystemDictionary().search(trial, false, 1, CompoundWordParserProvider.search);
+
+                        List<IKnownWord> knownWords = dictionary.search(trial, false, 1, CompoundWordParserProvider.search);
                         if (!knownWords.isEmpty()) {
                             if (knownWords.get(0).getWord().startsWith(trial, true)) {
                                 break;

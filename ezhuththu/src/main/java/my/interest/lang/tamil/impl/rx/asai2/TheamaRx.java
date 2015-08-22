@@ -1,6 +1,7 @@
 package my.interest.lang.tamil.impl.rx.asai2;
 
-import my.interest.lang.tamil.internal.api.UnicodePatternGenerator;
+import my.interest.lang.tamil.impl.yaappu.AsaiRx;
+import my.interest.lang.tamil.internal.api.PatternGenerator;
 
 /**
  * <p>
@@ -8,8 +9,12 @@ import my.interest.lang.tamil.internal.api.UnicodePatternGenerator;
  *
  * @author velsubra
  */
-public class TheamaRx implements UnicodePatternGenerator {
+public class TheamaRx extends AsaiRx {
+
+    public TheamaRx() {
+        super("தேமா");
+    }
     public String generate() {
-        return  "(?!(${ntirai}))(${ntear}${ntear})";
+        return  "((?!(${ntirai}))(${ntear}${ntear})|(${kurril}${ottu}${ntear}))";
     }
 }

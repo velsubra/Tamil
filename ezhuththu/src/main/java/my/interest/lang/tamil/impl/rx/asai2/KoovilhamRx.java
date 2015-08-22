@@ -1,6 +1,7 @@
 package my.interest.lang.tamil.impl.rx.asai2;
 
-import my.interest.lang.tamil.internal.api.UnicodePatternGenerator;
+import my.interest.lang.tamil.impl.yaappu.AsaiRx;
+import my.interest.lang.tamil.internal.api.PatternGenerator;
 
 /**
  * <p>
@@ -8,13 +9,12 @@ import my.interest.lang.tamil.internal.api.UnicodePatternGenerator;
  *
  * @author velsubra
  */
-public class KoovilhamRx  implements UnicodePatternGenerator {
+public final class KoovilhamRx  extends AsaiRx {
+
+    public KoovilhamRx() {
+        super("கூவிளம்");
+    }
     public String generate() {
-        //return  "((?!(${ntirai}))((${ntear})(${ntear})))";
-        //  return  "((?!(${ntirai}))(${ntear}${ntear}))";
-
-        // return  "(?>${ntirai}|${ntear}${ntear})";
-
-        return  "(?!(${ntirai}))(${ntear}${ntirai})";
+        return  "((?!(${ntirai}))(${ntear}${ntirai})|(${kurril}${ottu}${ntirai}))";
     }
 }
