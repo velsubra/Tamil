@@ -1,6 +1,6 @@
 package test;
 
-import my.interest.lang.tamil.internal.api.IPropertyFinder;
+import tamil.util.IPropertyFinder;
 import my.interest.lang.util.Grid;
 import my.interest.lang.util.Row;
 import my.interest.lang.util.TextFileWriter;
@@ -274,6 +274,17 @@ public class EzhuththuTest implements IPropertyFinder {
 
         System.out.println("Set:" + set);
         Assert.assertEquals(set.size(), 6);
+
+
+        set = calc.find("எழுத்து");
+        System.out.println("Size:" + set.size());
+        System.out.println("Set:" + set);
+        Assert.assertEquals(set.size(), 247);
+
+        set = calc.find("!எழுத்து");
+        System.out.println("Size:" + set.size());
+        System.out.println("Set:" + set);
+        Assert.assertEquals(set.size(), 0);
 
 
         set = calc.find("உகரவரிசைவலி");

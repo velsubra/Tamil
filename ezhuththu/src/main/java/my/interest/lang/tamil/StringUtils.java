@@ -1,6 +1,6 @@
 package my.interest.lang.tamil;
 
-import my.interest.lang.tamil.internal.api.IPropertyFinder;
+import tamil.util.IPropertyFinder;
 import my.interest.lang.tamil.punar.EnglishToTamilPropertyFinder;
 
 import java.util.ArrayList;

@@ -2,7 +2,7 @@ package tamil.util.regx;
 
 import my.interest.lang.tamil.StringUtils;
 import my.interest.lang.tamil.impl.rx.RxRegistry;
-import my.interest.lang.tamil.internal.api.IPropertyFinder;
+import tamil.util.IPropertyFinder;
 import tamil.lang.TamilWord;
 
 import java.util.regex.Matcher;

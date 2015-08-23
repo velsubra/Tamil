@@ -56,6 +56,7 @@ public class TamilEzhuththuSetCalculatorImpl implements TamilCharacterSetCalcula
     static final Map<String, EzhuththuDescription> map = new HashMap<String, EzhuththuDescription>();
 
     static {
+        map.put("எழுத்து", new AnyOneInTamilLetterSetRx("எழுத்து", "தமிழெழுத்தைக்குறிக்கிறது. எ.கா: ப ", EzhuththuUtils.filterAaytham(), EzhuththuUtils.filterUyir(), EzhuththuUtils.filterMei(), EzhuththuUtils.filterUyirMei()));
         map.put("குறில்", new AnyOneInTamilLetterSetRx("குறில்", "குறிலெழுத்தைக்குறிக்கிறது. எ.கா: க", EzhuththuUtils.filterKuRil()));
         map.put("!குறில்", new AnyOneInTamilLetterSetRx("!குறில்", "குறிலல்லாவெழுத்தைக்குறிக்கிறது. எ.கா) ஆ, க்" , EzhuththuUtils.filterOut(EzhuththuUtils.filterKuRil())));
 

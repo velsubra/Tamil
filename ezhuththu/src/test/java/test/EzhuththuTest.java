@@ -2,7 +2,7 @@ package test;
 
 import my.interest.lang.tamil.EzhuththuUtils;
 import my.interest.lang.tamil.StringUtils;
-import my.interest.lang.tamil.internal.api.IPropertyFinder;
+import tamil.util.IPropertyFinder;
 import org.junit.Assert;
 import org.junit.Test;
 import tamil.lang.*;
@@ -43,7 +43,7 @@ public class EzhuththuTest {
         TamilCharacterSetCalculator calc = TamilFactory.getTamilCharacterSetCalculator();
 
         System.out.println("Size:"+ calc.getEzhuththuDescriptions().size());
-        Assert.assertTrue(90==calc.getEzhuththuDescriptions().size());
+        Assert.assertTrue(91==calc.getEzhuththuDescriptions().size());
         Set<TamilCharacter> set = calc.find("யகரவரிசை");
         Assert.assertEquals(set.size(), 13);
 
