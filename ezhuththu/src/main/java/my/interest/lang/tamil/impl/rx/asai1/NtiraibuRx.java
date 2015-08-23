@@ -16,6 +16,6 @@ public final  class NtiraibuRx extends AsaiRx {
     }
 
     public String generate() {
-        return  "(${ntirai}${kuttiyalugaram})";
+        return  "(${ntirai}${valiyugaravarisai})";
     }
 }

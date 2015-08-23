@@ -22,7 +22,7 @@ public interface TamilCharacterSetCalculator {
 
     /**
      * Method to find set of Tamil letters satisfying the query.
-     * @param query  the query to calculate the letter set. The query can be anything from {@link EzhuththuDescription#getName()} or any compound word containing them.
+     * @param query  the query to calculate the letter set. The query can be anything from {@link EzhuththuDescription#getName()} or any compound word containing them. E.g) வலியுகரவரிசை
      * @return the letter set
      * @throws TamilPlatformException  if there is any issue in finding the letter set.
      */

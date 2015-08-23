@@ -27,11 +27,7 @@ public class EzhuththuTest {
         TamilFactory.init();
     }
 
-    static Map<String, String> map = new HashMap<String, String>();
 
-    static {
-        map.put("T{thamizhezhuththu}", "\\u0B02-\\u0BCD");
-    }
 
 
     @Test
@@ -212,30 +208,12 @@ public class EzhuththuTest {
         Assert.assertTrue(matcher.matches());
 
 
-        pattern = TamilPattern.compile("${ntearbu}");
-        matcher = pattern.matcher("அம்சு");
-        Assert.assertTrue(matcher.matches());
 
 
         pattern = TamilPattern.compile("${ntirai}");
         matcher = pattern.matcher("காசு");
         Assert.assertFalse(matcher.matches());
 
-        pattern = TamilPattern.compile("${ntearbu}");
-        matcher = pattern.matcher("காசு");
-        Assert.assertTrue(matcher.matches());
-
-        pattern = TamilPattern.compile("${ntiraibu}");
-        matcher = pattern.matcher("பிறப்பு");
-        Assert.assertTrue(matcher.matches());
-
-        pattern = TamilPattern.compile("${ntiraibu}");
-        matcher = pattern.matcher("காசு");
-        Assert.assertFalse(matcher.matches());
-
-        pattern = TamilPattern.compile("${ntearbu}");
-        matcher = pattern.matcher("பிறப்பு");
-        Assert.assertFalse(matcher.matches());
 
 
 
@@ -243,9 +221,7 @@ public class EzhuththuTest {
         matcher = pattern.matcher("பசு");
         Assert.assertTrue(matcher.matches());
 
-        pattern = TamilPattern.compile("${ntearbu}");
-        matcher = pattern.matcher("பசு");
-        Assert.assertTrue(matcher.matches());
+
 
         pattern = TamilPattern.compile("${theamaa}");
         matcher = pattern.matcher("பசு");

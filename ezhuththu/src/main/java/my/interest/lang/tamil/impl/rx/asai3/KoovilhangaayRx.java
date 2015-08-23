@@ -16,6 +16,6 @@ public class KoovilhangaayRx extends AsaiRx {
     }
     public String generate() {
 
-        return  "((?!(${ntirai}))(${ntear}${ntirai}${ntear})|(${kurril}${ottu}${ntirai}${ntear}))";
+        return  "((?!(${ntirai}))(${ntear}${ntirai}${ntear})|(${kurril}${mey}${ntirai}${ntear}))";
     }
 }

@@ -68,7 +68,12 @@ public class SaxParser implements CompoundWordParser {
         ParserResultCollection collection = new ParserResultCollection();
         FeatureSet set = features == null ? FeatureSet.EMPTY : new FeatureSet(features);
         TamilDictionary dictionary =  set.getDictionary();
-        if (dictionary ==null) {
+
+//        TamilDictionary dictionary = set.isFeatureEnabled(ParseAsNumberFeature.class) ? NumberDictionary.INSTANCE : null;
+//        if (dictionary == null) {
+//            dictionary = set.isFeatureEnabled(ParseAsNumberFeature.class) ? NumberDictionary.INSTANCE : null;
+//        }
+        if (dictionary == null) {
             dictionary  = TamilFactory.getSystemDictionary();
         }
 

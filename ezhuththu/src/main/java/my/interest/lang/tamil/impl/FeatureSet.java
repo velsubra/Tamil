@@ -109,12 +109,14 @@ public final class FeatureSet {
         if (features == null || features.isEmpty()) {
             return null;
         } else {
-            List<TamilDictionary> list = new ArrayList<TamilDictionary>();
+            //List<TamilDictionary> list = new ArrayList<TamilDictionary>();
             for (ParseWithDictionary d: features) {
-                list.add(d.getDictionary());
+                return d.getDictionary();
+               // list.add(d.getDictionary());
             }
-            return new DictionaryCollection(list);
+           // return new DictionaryCollection(list);
         }
+        return null;
 
     }
 

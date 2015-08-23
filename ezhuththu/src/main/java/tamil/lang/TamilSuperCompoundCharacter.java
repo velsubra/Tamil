@@ -65,13 +65,15 @@ public class TamilSuperCompoundCharacter extends TamilCharacter implements Chara
 
     @Override
     public TamilCompoundCharacter getMeiPart() throws NoMeiPartException {
-        throw new NoMeiPartException("Invalid call. There is no Mei part in this letter:" + this.toString());
+        return sequence[sequence.length-1].getMeiPart();
+       // throw new NoMeiPartException("Invalid call. There is no Mei part in this letter:" + this.toString());
     }
 
 
     @Override
     public TamilSimpleCharacter getUyirPart() throws NoUyirPartException {
-        throw new NoUyirPartException("Invalid call. There is no Uyir part in this letter:" + this.toString());
+        return sequence[sequence.length-1].getUyirPart();
+       // throw new NoUyirPartException("Invalid call. There is no Uyir part in this letter:" + this.toString());
     }
 
 
