@@ -411,7 +411,7 @@ public final class DefaultNumberReader implements NumberReader {
                     } else {
                         String _7digit = String.valueOf(val);
                         if (_7digit.length() > 7) {
-                            throw new NotANumberException("Recognized over flow!:" + _7digit + ". Please make sure you break at hundreds, thousands, lakhs and crores. The usage such as நூறாயிரம் should be avoided. Use இலட்சம்  instead.");
+                            throw new NotANumberException("Encountering over-flow!:" + _7digit + ". Please make sure you break at hundreds, thousands, lakhs and crores. The usage such as நூறாயிரம் should be avoided. Use இலட்சம்  instead.");
                         }
                         while (_7digit.length() < 7) {
                             _7digit = "0" + _7digit;

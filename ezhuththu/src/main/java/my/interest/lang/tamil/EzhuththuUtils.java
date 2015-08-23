@@ -41,6 +41,17 @@ public class EzhuththuUtils {
     public static final String VINAIMUTRU_BASE_INTRANSITIVE = "vinaimuttu.intransitive";
 
 
+    //This gets the first chance to get cut
+    static final String[] wrapCutText = new String[]{" ", "/", "\\", ";", "|", ")", "}", "]", ","};
+
+    //This gets the last chance to break
+    static final String[] wrapCutText_finally = new String[]{"_", "-", ".", "=", ":"};
+
+
+    //Dont cut when the text ends with any of the below for e.g) http://host should not be cut into http:// and  host
+    static final String[] wrapCutText_NOT_ENDING = new String[]{"://", ":/"};
+
+
     private static List<Class<? extends IKnownWord>> peyar = new ArrayList<Class<? extends IKnownWord>>();
 
     static {
@@ -1020,4 +1031,179 @@ public class EzhuththuUtils {
         }
         return null;
     }
+
+    public static String padChar(int minLength, char what, String where, int maxLength, boolean addToRight) {
+        if (where == null)
+            return null;
+        for (int i = where.length(); i < minLength && where.length() < maxLength; i++) {
+            if (addToRight)
+                where = where + what;
+            else
+                where = what + where;
+        }
+        if (maxLength > 0 && where.length() > maxLength) {
+            where = where.substring(0, maxLength);
+        }
+        return where;
+    }
+
+    public static String convertToHelpText(String source, int eachLineMaxLength, int nextLineOffset) {
+
+        //  try {
+        if (eachLineMaxLength <= 0)
+            eachLineMaxLength = 80;
+        if (source == null)
+            return null;
+        source = source.replaceAll("\t", "   ");
+
+        StringBuffer ret = new StringBuffer("");
+        boolean alreadyCut = false;
+
+        while (source.length() > eachLineMaxLength || source.contains("\n")) {
+            boolean newLine = false;
+            boolean cutAtMax = false;
+            int lastIndexAtSpace =
+                    (source.length() > eachLineMaxLength ? source.substring(0, eachLineMaxLength + 1) :
+                            source).indexOf("\n");
+            if (lastIndexAtSpace < 0) {
+                for (int i = 0; i < wrapCutText.length; i++) {
+                    int temp = 0;
+                    // if (source.length() > eachLineMaxLength) {
+
+                    String cut = source.substring(0, eachLineMaxLength);
+                    temp = cut.lastIndexOf(wrapCutText[i]);
+                    if (temp > 0) {
+                        boolean endSwith = false;
+                        String end = cut.substring(0, temp);
+                        for (String e : wrapCutText_NOT_ENDING) {
+                            if (end.endsWith(e)) {
+                                endSwith = true;
+                                break;
+                            }
+                        }
+                        if (endSwith) {
+                            temp = -1;
+                        }
+                    }
+
+
+                    //                        } else {
+                    //                            temp = source.lastIndexOf(wrapCutText[i]);
+                    //                        }
+
+                    if (temp > lastIndexAtSpace) {
+                        lastIndexAtSpace = temp;
+                    }
+
+                }
+                if (lastIndexAtSpace < 0) {
+                    for (int i = 0; i < wrapCutText_finally.length; i++) {
+                        int temp = 0;
+
+
+                        String cut = source.substring(0, eachLineMaxLength);
+                        temp = cut.lastIndexOf(wrapCutText_finally[i]);
+                        if (temp > 0) {
+                            boolean endSwith = false;
+                            String end = cut.substring(0, temp);
+                            for (String e : wrapCutText_NOT_ENDING) {
+                                if (end.endsWith(e)) {
+                                    endSwith = true;
+                                    break;
+                                }
+                            }
+                            if (endSwith) {
+                                temp = -1;
+                            }
+                        }
+
+
+                        if (temp > lastIndexAtSpace) {
+                            lastIndexAtSpace = temp;
+                        }
+                    }
+
+
+                }
+
+            } else {
+                newLine = true;
+            }
+
+
+            if (lastIndexAtSpace < 0) {
+                lastIndexAtSpace = eachLineMaxLength;
+                cutAtMax = true;
+            }
+            String line =
+                    source.substring(0, newLine ? lastIndexAtSpace : (cutAtMax ? lastIndexAtSpace : lastIndexAtSpace +
+                            1));
+
+            ret.append(line);
+            ret.append("\n");
+            source =
+                    source.substring(newLine ? (lastIndexAtSpace + 1) : (cutAtMax ? lastIndexAtSpace : lastIndexAtSpace +
+                            1), source.length());
+            //System.out.println(source);
+
+            for (int i = 0; i < nextLineOffset; i++) {
+                ret.append(" ");
+            }
+
+            if (eachLineMaxLength > nextLineOffset && !alreadyCut) {
+                eachLineMaxLength = eachLineMaxLength - nextLineOffset;
+                alreadyCut = true;
+            }
+            // System.out.println(ret.toString());
+            //System.out.println(source);
+        }
+        ret.append(source);
+        return ret.toString();
+//        } catch (Exception e){
+//            //Logger.getDEFAULT().printlnError(e.getMessage());
+//            //System.out.println( source);
+//            return source;
+//        }
+    }
+
+
+
+    public static int getKeyMaxLength(Map map) {
+        if (map == null)
+            return 0;
+        int maxLength = 0;
+        for (Iterator it = map.keySet().iterator(); it.hasNext(); ) {
+            Object obj = it.next();
+            if (obj != null && obj.toString().length() > maxLength)
+                maxLength = obj.toString().length();
+        }
+        return maxLength;
+    }
+
+    public static String[] getAllInnerErrorMessages(Throwable th) {
+        List<String> all = new ArrayList<String>();
+        boolean msgFound = false;
+        while (th != null) {
+            if (th.getMessage() != null && !th.getMessage().trim().equals("")) {
+                if (!msgFound && all.size() > 0) {
+                    all.add(0, th.getMessage());
+                }
+                all.add(th.getMessage());
+                msgFound = true;
+            } else {
+                all.add(th.getClass().getName());
+            }
+            th = th.getCause();
+        }
+        return all.toArray(new String[0]);
+    }
+
+    public static String getString(String sp, int count) {
+        StringBuffer ret = new StringBuffer();
+        for (int i = 0; i < count; i++) {
+            ret.append(sp);
+        }
+        return ret.toString();
+    }
+
 }

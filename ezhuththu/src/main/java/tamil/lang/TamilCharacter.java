@@ -448,6 +448,17 @@ public abstract class TamilCharacter extends AbstractCharacter {
             return -1;
         }
         TamilCharacter tamil = (TamilCharacter) o;
+//        if (isVadaMozhiYezhuththu()) {
+//            if (tamil.isVadaMozhiYezhuththu()) {
+//                return 0;
+//            } else {
+//               return -1;
+//            }
+//        } else {
+//            if (tamil.isVadaMozhiYezhuththu()) {
+//                return 1;
+//            }
+//        }
         if (this == tamil) {
             return 0;
         } else {

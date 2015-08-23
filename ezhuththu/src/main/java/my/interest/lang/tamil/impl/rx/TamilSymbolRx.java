@@ -21,12 +21,10 @@ public class TamilSymbolRx implements PatternGenerator {
     }
 
     public String getDescription() {
-        return "Represent any code point. It may not be a Tamil character.";
+        return "Represent any Tamil code point. Note: It may not be a full Tamil character. ";
     }
 
-    public boolean isCharacterSet() {
-        return false;
-    }
+
 
     public Set<TamilCharacter> getCharacterSet() {
         return null;

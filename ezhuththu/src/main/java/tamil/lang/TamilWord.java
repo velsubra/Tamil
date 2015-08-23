@@ -733,7 +733,7 @@ public final class TamilWord extends AbstractWord<AbstractCharacter> implements 
 
 
     /**
-     * Returns the total number of codepoints used by all the characters in the word
+     * Returns the total number of code points used by all the characters in the word
      *
      * @return the count >=0, by counting all the characters size in terms of number of unicode codepoints used.
      */
@@ -749,8 +749,60 @@ public final class TamilWord extends AbstractWord<AbstractCharacter> implements 
     }
 
     /**
+     * Gets codepoint index for a given tamil index
+     * @param tamilIndex the tamil character index
+     * @return  the codepoint index that points the character at the given index
+     */
+    public int getCodepointIndexForIndex(int tamilIndex) {
+        if (size() <= tamilIndex ) {
+            throw new TamilPlatformException("Illegal index:" + tamilIndex);
+        }
+        if (tamilIndex < 0 ) {
+            throw new TamilPlatformException("Illegal index:" + tamilIndex);
+        }
+        int count = 0;
+        Iterator<AbstractCharacter> it =  this.listIterator();
+        int index = 0;
+        while(it.hasNext() ) {
+            if (index == tamilIndex) {
+                return count;
+            }
+            index ++;
+            count += it.next().getCodePointsCount();
+        }
+
+        throw new TamilPlatformException("Unexpected exception");
+    }
+
+    /**
+     * Returns tamil character index for a codepoint index
+     * @param codepointIndex  the value of the code point index. Index starts with 0;
+     * @return  the index of tamil character. Index starts with 0
+     */
+    public int getIndexForCodepointIndex(int codepointIndex) {
+        if (size() ==0 ) {
+            throw new TamilPlatformException("word is empty");
+        }
+        if (codepointIndex < 0 ) {
+            throw new TamilPlatformException("Illegal index:" + codepointIndex);
+        }
+        int count = 0;
+        Iterator<AbstractCharacter> it =  this.listIterator();
+        int index = 0;
+        while(it.hasNext()) {
+            count += it.next().getCodePointsCount();
+            if (count > codepointIndex) {
+                return index;
+            }
+            index ++;
+        }
+
+        throw new TamilPlatformException("Illegal index:" + codepointIndex +". Max index is " + (count - 1));
+    }
+
+    /**
      * This method returns unicode string representation.
-     * @return
+     * @return  the unicode representation of the tamil character.
      */
     //todo:needs revisit.
     public  String toUnicodeStringRepresentation() {

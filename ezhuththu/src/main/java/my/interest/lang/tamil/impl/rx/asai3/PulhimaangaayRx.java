@@ -15,6 +15,6 @@ public class PulhimaangaayRx extends AsaiRx {
         super("புளிமாங்காய்");
     }
     public String generate() {
-        return  "((?!(${karuvilham}))(${ntirai}${ntear}${ntear})|(${ntirai}${kurril}${ottu}${ntear}))";
+        return  "((?!(${karuvilham}))(${ntirai}${ntear}${ntear})|(${ntirai}${kurril}${mey}${ntear}))";
     }
 }

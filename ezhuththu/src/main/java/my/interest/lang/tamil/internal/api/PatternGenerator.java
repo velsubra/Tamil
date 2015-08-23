@@ -14,6 +14,6 @@ import java.util.Set;
 public interface PatternGenerator extends EzhuththuDescription {
 
     public  String generate();
-    public boolean isCharacterSet();
+
 
 }

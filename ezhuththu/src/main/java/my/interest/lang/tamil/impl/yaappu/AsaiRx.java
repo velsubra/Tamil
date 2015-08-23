@@ -18,18 +18,18 @@ public abstract  class AsaiRx implements PatternGenerator {
     }
 
     String name = null;
+    String desc = null;
 
     public AsaiRx(String name) {
        this.name = name;
+       this.desc = "வாய்ப்பாடு '"+ this.name + "' -ஐக்குறிக்கிறது.";
     }
 
     public String getDescription() {
-        return name;
+        return desc;
     }
 
-    public boolean isCharacterSet() {
-        return false;
-    }
+
 
     public Set<TamilCharacter> getCharacterSet() {
         return null;

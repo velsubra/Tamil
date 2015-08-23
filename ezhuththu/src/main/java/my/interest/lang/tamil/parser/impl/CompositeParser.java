@@ -26,7 +26,7 @@ public class CompositeParser implements CompoundWordParser {
 
 
     public ParserResult quickParse(TamilWord singleWord) {
-        ParserResultCollection list = parse(singleWord, 5, null);
+        ParserResultCollection list = parse(singleWord, 10, null);
         if (list == null || list.isEmpty()) {
             return null;
         }

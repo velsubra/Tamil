@@ -15,6 +15,6 @@ public final class NtearbuRx  extends AsaiRx {
     }
 
     public String generate() {
-        return  "((${ntear})(${kuttiyalugaram}))";
+        return  "((${ntear})(${valiyugaravarisai}))";
     }
 }

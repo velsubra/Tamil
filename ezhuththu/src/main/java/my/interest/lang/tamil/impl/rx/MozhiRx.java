@@ -24,9 +24,6 @@ public class MozhiRx implements PatternGenerator {
         return "Pattern for Tamil word. A possible sequence that could be a Tamil Word.";
     }
 
-    public boolean isCharacterSet() {
-        return false;
-    }
 
     public Set<TamilCharacter> getCharacterSet() {
         return null;

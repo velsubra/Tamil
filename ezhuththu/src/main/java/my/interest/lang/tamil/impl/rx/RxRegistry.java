@@ -2,7 +2,6 @@ package my.interest.lang.tamil.impl.rx;
 
 import common.lang.impl.AbstractCharacter;
 import my.interest.lang.tamil.EzhuththuUtils;
-import my.interest.lang.tamil.impl.dictionary.DefaultPlatformDictionaryBase;
 import my.interest.lang.tamil.impl.rx.asai1.NtearRx;
 import my.interest.lang.tamil.impl.rx.asai1.NtearbuRx;
 import my.interest.lang.tamil.impl.rx.asai1.NtiraiRx;
@@ -17,14 +16,15 @@ import my.interest.lang.tamil.internal.api.IPropertyFinder;
 import my.interest.lang.tamil.internal.api.PatternGenerator;
 import tamil.lang.TamilCharacter;
 import tamil.lang.TamilFactory;
-
 import tamil.lang.TamilWord;
-
 import tamil.lang.api.ezhuththu.EzhuththuDescription;
 import tamil.lang.exception.TamilPlatformException;
 import tamil.yaappu.seer.AbstractSeer;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * <p>
@@ -34,7 +34,7 @@ import java.util.*;
  */
 public class RxRegistry implements IPropertyFinder {
 
-    static final Map<String, PatternGenerator> map = new HashMap<String, PatternGenerator>();
+    public static final Map<String, PatternGenerator> map = new HashMap<String, PatternGenerator>();
 
     IPropertyFinder parent = null;
 
@@ -43,15 +43,13 @@ public class RxRegistry implements IPropertyFinder {
     }
 
 
-
-
     static {
 
 
         map.put("எழுத்துவடிவம்", new TamilSymbolRx());
-        map.put("!எழுத்துவடிவம்", new NonTamilSymbolRx());
+        map.put("!எழுத்துவடிவம்", new NonTamilSymbolRx("!எழுத்துவடிவம்"));
         map.put("எழுத்து", new AnyOneInTamilLetterSetRx("எழுத்து", "தமிழெழுத்தைக்குறிக்கிறது. எ.கா: ப ", EzhuththuUtils.filterAaytham(), EzhuththuUtils.filterUyir(), EzhuththuUtils.filterMei(), EzhuththuUtils.filterUyirMei()));
-        map.put("!எழுத்து", new NonTamilSymbolRx());
+        map.put("!எழுத்து", new NonTamilSymbolRx("!எழுத்து"));
 
         Set<EzhuththuDescription> sets = TamilFactory.getTamilCharacterSetCalculator().getEzhuththuDescriptions();
         for (EzhuththuDescription set : sets) {
@@ -91,7 +89,6 @@ public class RxRegistry implements IPropertyFinder {
         map.put("கருவிளங்கனி", new KaruvilhanganiRx());
 
 
-
     }
 
     public String findProperty(String p1) {
@@ -102,10 +99,18 @@ public class RxRegistry implements IPropertyFinder {
         }
         if (gen == null) {
 
-            if (p1.startsWith("(") && p1.endsWith(")")) {
-                String inner = p1.substring(1, p1.length() - 1);
+            if (p1.startsWith("(")) {
+                String inner = p1.substring(1, p1.length());
+                if (p1.endsWith(")")) {
+                    inner = p1.substring(0, p1.length() - 1);
+                    return "\\b${" + inner + "}\\b";
 
-                return "\\b${" + inner + "}\\b";
+                } else {
+                    return "\\b${" + inner + "}";
+                }
+            } else if (p1.endsWith(")")) {
+                String inner = p1.substring(0, p1.length() - 1);
+                return "${" + inner + "}\\b";
 
             }
             if (p1.startsWith("அசை[") && p1.endsWith("]")) {
@@ -136,9 +141,9 @@ public class RxRegistry implements IPropertyFinder {
                         } else if (p.isNtedilezhuththu()) {
                             buffer.append("${ntedil}");
                         } else if (p.isMeyyezhuththu()) {
-                            buffer.append("(${ottu}|${aaytham})");
+                            buffer.append("(${mey}|${aaytham})");
                         } else {
-                            buffer.append("(${ottu}|${aaytham})");
+                            buffer.append("(${mey}|${aaytham})");
                         }
 
                     } else {
@@ -162,7 +167,7 @@ public class RxRegistry implements IPropertyFinder {
                         if (p.isUyirezhuththu()) {
                             buffer.append("${uyir}");
                         } else if (p.isMeyyezhuththu()) {
-                            buffer.append("${ottu}");
+                            buffer.append("${mey}");
                         } else if (p.isUyirMeyyezhuththu()) {
                             buffer.append("${uyirmey}");
                         } else {

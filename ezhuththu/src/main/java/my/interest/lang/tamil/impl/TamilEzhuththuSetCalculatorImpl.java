@@ -5,7 +5,7 @@ import my.interest.lang.tamil.impl.dictionary.DefaultPlatformDictionaryBase;
 import my.interest.lang.tamil.impl.rx.AnyOneInTamilLetterSetRx;
 
 
-import my.interest.lang.tamil.parser.impl.sax.SaxParser;
+
 import tamil.lang.TamilCharacter;
 import tamil.lang.TamilFactory;
 import tamil.lang.TamilSimpleCharacter;
@@ -13,13 +13,10 @@ import tamil.lang.TamilWord;
 import tamil.lang.api.dictionary.TamilDictionary;
 import tamil.lang.api.ezhuththu.EzhuththuDescription;
 import tamil.lang.api.ezhuththu.TamilCharacterSetCalculator;
-import tamil.lang.api.parser.EagerlyParsingFeature;
-import tamil.lang.api.parser.ParseWithDictionary;
-import tamil.lang.api.parser.ParserResult;
-import tamil.lang.api.parser.ParserResultCollection;
+import tamil.lang.api.parser.*;
 import tamil.lang.exception.TamilPlatformException;
 import tamil.lang.known.IKnownWord;
-import tamil.lang.known.derived.Peyarechcham;
+
 import tamil.lang.known.non.derived.AbstractKnownWord;
 import tamil.lang.known.non.derived.Peyarchchol;
 import tamil.lang.known.non.derived.idai.Ottu;
@@ -62,51 +59,55 @@ public class TamilEzhuththuSetCalculatorImpl implements TamilCharacterSetCalcula
         map.put("குறில்", new AnyOneInTamilLetterSetRx("குறில்", "குறிலெழுத்தைக்குறிக்கிறது. எ.கா: க", EzhuththuUtils.filterKuRil()));
         map.put("!குறில்", new AnyOneInTamilLetterSetRx("!குறில்", "குறிலல்லாவெழுத்தைக்குறிக்கிறது. எ.கா) ஆ, க்" , EzhuththuUtils.filterOut(EzhuththuUtils.filterKuRil())));
 
-        map.put("நெடில்", new AnyOneInTamilLetterSetRx("நெடில்", EzhuththuUtils.filterNedil()));
-        map.put("!நெடில்", new AnyOneInTamilLetterSetRx("!நெடில்", EzhuththuUtils.filterOut(EzhuththuUtils.filterNedil())));
+        map.put("நெடில்", new AnyOneInTamilLetterSetRx("நெடில்","நெடிலெழுத்தைக்குறிக்கிறது எ.கா) ஆ, கீ", EzhuththuUtils.filterNedil()));
+        map.put("!நெடில்", new AnyOneInTamilLetterSetRx("!நெடில்","நெடிலல்லாவெழுத்தைக்குறிக்கிறது எ.கா) க், அ, ஃ", EzhuththuUtils.filterOut(EzhuththuUtils.filterNedil())));
 
-        map.put("உயிர்", new AnyOneInTamilLetterSetRx("உயிர்", EzhuththuUtils.filterUyir()));
-        map.put("!உயிர்", new AnyOneInTamilLetterSetRx("!உயிர்", EzhuththuUtils.filterOut(EzhuththuUtils.filterUyir())));
+        map.put("உயிர்", new AnyOneInTamilLetterSetRx("உயிர்","உயிரெழுத்தைக்குறிக்கிறது எ.கா) அ, ஔ   ", EzhuththuUtils.filterUyir()));
+        map.put("!உயிர்", new AnyOneInTamilLetterSetRx("!உயிர்","உயிரல்லாவெழுத்தைக்குறிக்கிறது எ.கா) க், நா, ஃ ", EzhuththuUtils.filterOut(EzhuththuUtils.filterUyir())));
 
-        map.put("மெய்", new AnyOneInTamilLetterSetRx("மெய்", EzhuththuUtils.filterMei()));
-        map.put("!மெய்", new AnyOneInTamilLetterSetRx("!மெய்", EzhuththuUtils.filterOut(EzhuththuUtils.filterMei())));
-
-
-        map.put("!உயிர்மெய்", new AnyOneInTamilLetterSetRx("!உயிர்மெய்", EzhuththuUtils.filterOut(EzhuththuUtils.filterUyirMei())));
-        map.put("உயிர்மெய்", new AnyOneInTamilLetterSetRx("உயிர்மெய்", EzhuththuUtils.filterUyirMei()));
-
-        map.put("ஆய்தம்", new AnyOneInTamilLetterSetRx("ஆய்தம்", EzhuththuUtils.filterAaytham()));
-        map.put("!ஆய்தம்", new AnyOneInTamilLetterSetRx("!ஆய்தம்", EzhuththuUtils.filterOut(EzhuththuUtils.filterAaytham())));
-        map.put("முதல்", new AnyOneInTamilLetterSetRx("முதல்", EzhuththuUtils.filterUyir(), EzhuththuUtils.filterMei()));
-        map.put("!முதல்", new AnyOneInTamilLetterSetRx("!முதல்", EzhuththuUtils.filterAaytham(), EzhuththuUtils.filterUyirMei()));
+        map.put("மெய்", new AnyOneInTamilLetterSetRx("மெய்","மெய்யெழுத்தைக்குறிக்கிறது எ.கா) ங், க் ", EzhuththuUtils.filterMei()));
+        map.put("!மெய்", new AnyOneInTamilLetterSetRx("!மெய்","மெய்யல்லாவெழுத்தைக்குறிக்கிறது எ.கா) அ, கா, ஃ", EzhuththuUtils.filterOut(EzhuththuUtils.filterMei())));
 
 
-        map.put("!வலி", new AnyOneInTamilLetterSetRx("!வலி", EzhuththuUtils.filterOut(EzhuththuUtils.filterVali())));
-        map.put("வலி", new AnyOneInTamilLetterSetRx("வலி", EzhuththuUtils.filterVali()));
-        map.put("!மெலி", new AnyOneInTamilLetterSetRx("!மெலி", EzhuththuUtils.filterOut(EzhuththuUtils.filterMeli())));
-        map.put("மெலி", new AnyOneInTamilLetterSetRx("மெலி", EzhuththuUtils.filterMeli()));
-        map.put("!இடை", new AnyOneInTamilLetterSetRx("!இடை", EzhuththuUtils.filterOut(EzhuththuUtils.filterIdai())));
-        map.put("இடை", new AnyOneInTamilLetterSetRx("இடை", EzhuththuUtils.filterIdai()));
+        map.put("!உயிர்மெய்", new AnyOneInTamilLetterSetRx("!உயிர்மெய்","உயிர்மெய்யல்லாவெழுத்தைக்குறிக்கிறது. எ.கா) க், ஃ, ஆ", EzhuththuUtils.filterOut(EzhuththuUtils.filterUyirMei())));
+        map.put("உயிர்மெய்", new AnyOneInTamilLetterSetRx("உயிர்மெய்","உயிர்மெய்யெழுத்தைக்குறிக்கிறது எ.கா) கா, சூ, ப", EzhuththuUtils.filterUyirMei()));
+
+        map.put("ஆய்தம்", new AnyOneInTamilLetterSetRx("ஆய்தம்","ஆய்தவெழுத்தைக்குறிக்கிறது (ஃ)", EzhuththuUtils.filterAaytham()));
+        map.put("!ஆய்தம்", new AnyOneInTamilLetterSetRx("!ஆய்தம்","ஆய்தமல்லாவெழுத்தைக்குறிக்கிறது. எ.கா) ஆ, க ,ந்", EzhuththuUtils.filterOut(EzhuththuUtils.filterAaytham())));
+
+        map.put("முதல்", new AnyOneInTamilLetterSetRx("முதல்","முதலெழுத்தைக்குறிக்கிறது எ.கா) க், அ, ஐ", EzhuththuUtils.filterUyir(), EzhuththuUtils.filterMei()));
+        map.put("!முதல்", new AnyOneInTamilLetterSetRx("!முதல்","முதலெழுத்தல்லாவெழுத்தைக்க்குறிக்கிறது எ.கா) ஃ, கா , மீ", EzhuththuUtils.filterAaytham(), EzhuththuUtils.filterUyirMei()));
 
 
-        map.put("!மொழிமுதல்", new AnyOneInTamilLetterSetRx("!மொழிமுதல்", EzhuththuUtils.filterOut(EzhuththuUtils.filterMozhiMuthal())));
-        map.put("மொழிமுதல்", new AnyOneInTamilLetterSetRx("மொழிமுதல்", EzhuththuUtils.filterMozhiMuthal()));
+        map.put("!வலி", new AnyOneInTamilLetterSetRx("!வலி","வலியல்லாவெழுத்தைக்குறிக்கிறது எ.கா) ங், ம, ஆ", EzhuththuUtils.filterOut(EzhuththuUtils.filterVali())));
+        map.put("வலி", new AnyOneInTamilLetterSetRx("வலி","வலியெழுத்தைக்குறிக்கிறது எ.கா) க, சா, ப்", EzhuththuUtils.filterVali()));
 
-        map.put("!மொழிக்கடை", new AnyOneInTamilLetterSetRx("!மொழிக்கடை", EzhuththuUtils.filterOut(EzhuththuUtils.filterMozhiLast())));
-        map.put("மொழிக்கடை", new AnyOneInTamilLetterSetRx("மொழிக்கடை", EzhuththuUtils.filterMozhiLast()));
-
-
-        map.put("!மொழியிடை", new AnyOneInTamilLetterSetRx("!மொழியிடை", EzhuththuUtils.filterOut(EzhuththuUtils.filterMozhiYidai())));
-        map.put("மொழியிடை", new AnyOneInTamilLetterSetRx("மொழியிடை", EzhuththuUtils.filterMozhiYidai()));
+        map.put("!மெலி", new AnyOneInTamilLetterSetRx("!மெலி","மெலியல்லாவெழுத்தைக்குறிக்கிறது எ.கா) ங், நா , மௌ             ", EzhuththuUtils.filterOut(EzhuththuUtils.filterMeli())));
+        map.put("மெலி", new AnyOneInTamilLetterSetRx("மெலி","மெலியெழுத்தைக்குறிக்கிறது எ.கா) மா, ந், ணௌ ", EzhuththuUtils.filterMeli()));
 
 
-        map.put("!வடமொழியெழுத்து", new AnyOneInTamilLetterSetRx("!வடமொழியெழுத்து", EzhuththuUtils.filterOut(EzhuththuUtils.filterVadaMozhi())));
-        map.put("வடமொழியெழுத்து", new AnyOneInTamilLetterSetRx("வடமொழியெழுத்து", EzhuththuUtils.filterVadaMozhi()));
+        map.put("!இடை", new AnyOneInTamilLetterSetRx("!இடை","இடையல்லாவெழுத்தைக்குறிக்கிறது எ.கா) க், நீ, ம", EzhuththuUtils.filterOut(EzhuththuUtils.filterIdai())));
+        map.put("இடை", new AnyOneInTamilLetterSetRx("இடை","இடையெழுத்தைக்குறிக்கிறது எ.கா) ய, ர், வீ", EzhuththuUtils.filterIdai()));
+
+
+        map.put("!மொழிமுதல்", new AnyOneInTamilLetterSetRx("!மொழிமுதல்","மொழிமுதலல்லாவெழுத்தைக்குறிக்கிறது எ.கா) ன, ர, க்    ", EzhuththuUtils.filterOut(EzhuththuUtils.filterMozhiMuthal())));
+        map.put("மொழிமுதல்", new AnyOneInTamilLetterSetRx("மொழிமுதல்","மொழிமுதலெழுத்தைக்குறிக்கிறது. எ.கா) ஆ, க , நீ", EzhuththuUtils.filterMozhiMuthal()));
+
+        map.put("!மொழிக்கடை", new AnyOneInTamilLetterSetRx("!மொழிக்கடை","மொழிக்கடையல்லாவெழுத்தைக்குறிக்கிறது எ.கா) ந் , க் , ஆ ", EzhuththuUtils.filterOut(EzhuththuUtils.filterMozhiLast())));
+        map.put("மொழிக்கடை", new AnyOneInTamilLetterSetRx("மொழிக்கடை","மொழிக்கடையெழுத்தைக்குறிக்கிறது எ.கா) ன், ம் ,கு ", EzhuththuUtils.filterMozhiLast()));
+
+
+        map.put("!மொழியிடை", new AnyOneInTamilLetterSetRx("!மொழியிடை","மொழியிடையல்லாவெழுத்தைக்குறிக்கிறது எ.கா) ஆ, எ, ஔ", EzhuththuUtils.filterOut(EzhuththuUtils.filterMozhiYidai())));
+        map.put("மொழியிடை", new AnyOneInTamilLetterSetRx("மொழியிடை","மொழியிடையெழுத்தைக்குறிக்கிறது எ.கா) க், ச, மா", EzhuththuUtils.filterMozhiYidai()));
+
+
+        map.put("!வடமொழியெழுத்து", new AnyOneInTamilLetterSetRx("!வடமொழியெழுத்து","வடமொழியெழுத்தல்லாவெழுத்தைக்குறிக்கிறது எ.கா) அ, ஃ, க், தூ", EzhuththuUtils.filterOut(EzhuththuUtils.filterVadaMozhi())));
+        map.put("வடமொழியெழுத்து", new AnyOneInTamilLetterSetRx("வடமொழியெழுத்து","வடமொழியெழுத்தைக்குறிக்கிறது எ.கா) ஸ, ஷ், ஜ", EzhuththuUtils.filterVadaMozhi()));
 
 
 
-        map.put("!ஓரெழுத்துமொழி", new AnyOneInTamilLetterSetRx("!ஓரெழுத்துமொழி", "ஓரெழுத்தாயிருந்து ஒருமொழியாயிருக்கும் வாய்ப்பில்லாத எழுத்து",EzhuththuUtils.filterOut(EzhuththuUtils.filterOarezhutthuMozhi())));
-        map.put("ஓரெழுத்துமொழி", new AnyOneInTamilLetterSetRx("ஓரெழுத்துமொழி","ஓரெழுத்தாயிருந்து ஒருமொழியாயிருக்கும் வாய்ப்புகொண்ட எழுத்து", EzhuththuUtils.filterOarezhutthuMozhi()));
+        map.put("!ஓரெழுத்துமொழி", new AnyOneInTamilLetterSetRx("!ஓரெழுத்துமொழி", "தனிச்சொல்லாயிருக்கவியலாவெழுத்தைக்குறிக்கிறது எகா) க், ம, அ",EzhuththuUtils.filterOut(EzhuththuUtils.filterOarezhutthuMozhi())));
+        map.put("ஓரெழுத்துமொழி", new AnyOneInTamilLetterSetRx("ஓரெழுத்துமொழி","தனிச்சொல்லாயிருக்கவல்லவெழுத்தைக்குறிக்கிறது எ.கா) மா, ஆ, கோ ", EzhuththuUtils.filterOarezhutthuMozhi()));
 
 
 
@@ -211,22 +212,21 @@ public class TamilEzhuththuSetCalculatorImpl implements TamilCharacterSetCalcula
             parsed.add(new letter_known(TamilWord.from("!"), true));
             return parsed;
         } else {
-            ParserResultCollection resultCollection = new SaxParser().parse(TamilWord.from(compound), 10, new ParseWithDictionary() {
-                        @Override
-                        public TamilDictionary getDictionary() {
-                            return LetterDictionary;
-                        }
-                    }
-            );
+            String[] splits = compound.split(" ");
+            List<IKnownWord> ret = new ArrayList<IKnownWord>();
+            for (String sp: splits) {
+                ParserResultCollection resultCollection = TamilFactory.getCompoundWordParser().parse(TamilWord.from(sp), 10, new ParseWithCustomDictionary(LetterDictionary));
 
-            if (resultCollection.isEmpty()) {
-                throw new TamilPlatformException("Unable to parse:" + compound);
+                if (resultCollection.isEmpty()) {
+                    throw new TamilPlatformException("Unable to parse:" + sp);
+                }
+                ParserResult result = resultCollection.getList().get(0);
+                if (!result.isParsed()) {
+                    throw new TamilPlatformException("Unable to parse:" + sp);
+                }
+                ret.addAll(result.getSplitWords());
             }
-            ParserResult result = resultCollection.getList().get(0);
-            if (!result.isParsed()) {
-                throw new TamilPlatformException("Unable to parse:" + compound);
-            }
-            return result.getSplitWords();
+            return ret;
 
 
         }

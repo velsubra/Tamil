@@ -12,21 +12,23 @@ import java.util.Set;
  * @author velsubra
  */
 public class NonTamilSymbolRx implements PatternGenerator {
+    String name = null;
+    public  NonTamilSymbolRx(String name) {
+        this.name = name;
+    }
+
     public String generate() {
         return  "[\\u0000-\\u0B01\\u0BCC-\\uFFFF]";
     }
 
     public String getName() {
-        return "!எழுத்துவடிவம்";
+        return name;
     }
 
     public String getDescription() {
         return "Characters outside Tamil block";
     }
 
-    public boolean isCharacterSet() {
-        return false;
-    }
 
     public Set<TamilCharacter> getCharacterSet() {
         return null;

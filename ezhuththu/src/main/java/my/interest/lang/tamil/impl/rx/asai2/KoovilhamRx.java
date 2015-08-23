@@ -15,6 +15,6 @@ public final class KoovilhamRx  extends AsaiRx {
         super("கூவிளம்");
     }
     public String generate() {
-        return  "((?!(${ntirai}))(${ntear}${ntirai})|(${kurril}${ottu}${ntirai}))";
+        return  "((?!(${ntirai}))(${ntear}${ntirai})|(${kurril}${mey}${ntirai}))";
     }
 }
