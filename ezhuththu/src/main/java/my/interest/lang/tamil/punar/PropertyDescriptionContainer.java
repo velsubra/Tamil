@@ -5,7 +5,7 @@ import my.interest.lang.tamil.StringUtils;
 import my.interest.lang.tamil.TamilUtils;
 import my.interest.lang.tamil.generated.types.*;
 import my.interest.lang.tamil.generated.types.Properties;
-import my.interest.lang.tamil.internal.api.IPropertyFinder;
+import tamil.util.IPropertyFinder;
 import tamil.lang.TamilCharacter;
 
 import java.util.*;

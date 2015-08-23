@@ -1,6 +1,6 @@
 package tamil.lang.api.regex;
 
-import my.interest.lang.tamil.internal.api.IPropertyFinder;
+import tamil.util.IPropertyFinder;
 import tamil.lang.exception.service.ServiceException;
 import tamil.util.regx.TamilPattern;
 

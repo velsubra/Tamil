@@ -12,7 +12,7 @@ import my.interest.lang.tamil.impl.rx.asai2.PulhimaRx;
 import my.interest.lang.tamil.impl.rx.asai2.TheamaRx;
 import my.interest.lang.tamil.impl.rx.asai3.*;
 import my.interest.lang.tamil.impl.yaappu.SeerIterator;
-import my.interest.lang.tamil.internal.api.IPropertyFinder;
+import tamil.util.IPropertyFinder;
 import my.interest.lang.tamil.internal.api.PatternGenerator;
 import tamil.lang.TamilCharacter;
 import tamil.lang.TamilFactory;

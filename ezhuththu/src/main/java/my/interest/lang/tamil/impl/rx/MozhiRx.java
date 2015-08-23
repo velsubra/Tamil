@@ -7,6 +7,10 @@ import java.util.Set;
 
 /**
  * <p>
+ *     Regular expression for matching any Tamil word. ${மொழி} can be used in any Tamil regular expression.
+ *
+ *     ${மொழி} is defined to be (${ஓரெழுத்துமொழி})|(${மொழிமுதல்}${மொழியிடை}*${மொழிக்கடை}+)
+ *
  * </p>
  *
  * @author velsubra

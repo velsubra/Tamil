@@ -2,7 +2,7 @@ package my.interest.lang.tamil.impl;
 
 import my.interest.lang.tamil.generated.types.AppDescription;
 import my.interest.lang.tamil.generated.types.AppResource;
-import my.interest.lang.tamil.internal.api.IPropertyFinder;
+import tamil.util.IPropertyFinder;
 import my.interest.lang.tamil.internal.api.PersistenceInterface;
 import tamil.lang.api.applet.AppletTamilFactory;
 
