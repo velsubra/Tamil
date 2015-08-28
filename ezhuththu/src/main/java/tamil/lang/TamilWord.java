@@ -802,7 +802,7 @@ public final class TamilWord extends AbstractWord<AbstractCharacter> implements 
 
     /**
      * This method returns unicode string representation.
-     * @return  the unicode representation of the tamil character.
+     * @return  the unicode representation of the tamil word.
      */
     //todo:needs revisit.
     public  String toUnicodeStringRepresentation() {

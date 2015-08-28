@@ -85,6 +85,26 @@ public class EzhuththuTest {
         pattern = TamilPattern.compile("${(வகை[f f])}");
         matcher = pattern.matcher(TamilFactory.getTransliterator(null).transliterate("f f").toString());
         Assert.assertTrue(matcher.matches());
+
+
+        pattern = TamilPattern.compile("${அசை[செந்தமிழ்]}");
+        matcher = pattern.matcher("கூவிளம்");
+        Assert.assertTrue(matcher.matches());
+
+        pattern = TamilPattern.compile("${மாத்திரை[தென்னை]}");
+        matcher = pattern.matcher("கண்ணா");
+        Assert.assertTrue(matcher.matches());
+
+
+
+        pattern = TamilPattern.compile("${வகை[தமிழ்]}");
+        matcher = pattern.matcher("பாகம்");
+        Assert.assertTrue(matcher.matches());
+
+
+        pattern = TamilPattern.compile("${மெய்வகை[அங்கு]}");
+        matcher = pattern.matcher("அந்தி");
+        Assert.assertTrue(matcher.matches());
     }
 
 

@@ -77,7 +77,7 @@ public class SaxParser implements CompoundWordParser {
             dictionary  = TamilFactory.getSystemDictionary();
         }
 
-
+        System.out.println("DICT Size:" + dictionary.size());
         singleWord = singleWord.filterToPure();
         if (singleWord.isEmpty()) {
             return collection;

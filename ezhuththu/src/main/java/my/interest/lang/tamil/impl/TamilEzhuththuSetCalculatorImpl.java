@@ -5,7 +5,7 @@ import my.interest.lang.tamil.impl.dictionary.DefaultPlatformDictionaryBase;
 import my.interest.lang.tamil.impl.rx.AnyOneInTamilLetterSetRx;
 
 
-
+import my.interest.lang.tamil.parser.impl.sax.SaxParser;
 import tamil.lang.TamilCharacter;
 import tamil.lang.TamilFactory;
 import tamil.lang.TamilSimpleCharacter;
@@ -216,7 +216,7 @@ public class TamilEzhuththuSetCalculatorImpl implements TamilCharacterSetCalcula
             String[] splits = compound.split(" ");
             List<IKnownWord> ret = new ArrayList<IKnownWord>();
             for (String sp: splits) {
-                ParserResultCollection resultCollection = TamilFactory.getCompoundWordParser().parse(TamilWord.from(sp), 10, new ParseWithCustomDictionary(LetterDictionary));
+                ParserResultCollection resultCollection = new SaxParser().parse(TamilWord.from(sp), 10, new ParseWithCustomDictionary(LetterDictionary));
 
                 if (resultCollection.isEmpty()) {
                     throw new TamilPlatformException("Unable to parse:" + sp);

@@ -264,6 +264,14 @@ public class EzhuththuTest implements IPropertyFinder {
             Assert.assertEquals(14, matcher.start());
             Assert.assertEquals(22, matcher.end());
         }
+
+
+        pattern = TamilFactory.getRegXCompiler().compile("${அகரவரிசையுயிர்மெய்}", new EzhuththuTest());
+        matcher = pattern.matcher("க் கா கி கீ  கெ கே கை கொ கோ கௌ    ");
+        if (matcher.find()) {
+            throw new Exception("அகரவுயிர்மெய் is   found. at:"+ matcher.start());
+
+        }
     }
 
     @Test
@@ -272,6 +280,17 @@ public class EzhuththuTest implements IPropertyFinder {
         Set<TamilCharacter> set = calc.find("வலியுகரவரிசை");
         System.out.println("Size:" + set.size());
 
+        System.out.println("Set:" + set);
+        Assert.assertEquals(set.size(), 6);
+
+        set = calc.find("இடைமெய்");
+        System.out.println("Size:" + set.size());
+        System.out.println("Set:" + set);
+        Assert.assertEquals(set.size(), 6);
+
+
+        set = calc.find("மெய்யிடை");
+        System.out.println("Size:" + set.size());
         System.out.println("Set:" + set);
         Assert.assertEquals(set.size(), 6);
 
@@ -411,6 +430,11 @@ public class EzhuththuTest implements IPropertyFinder {
         System.out.println("Size:" + set.size());
         System.out.println("Set:" + set);
         Assert.assertEquals(set.size(), 2);
+
+        set = calc.find("ஆகாரவரிசையிடை");
+        System.out.println("Size:" + set.size());
+        System.out.println("Set:" + set);
+        Assert.assertEquals(set.size(), 6);
     }
 
     @Override

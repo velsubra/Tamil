@@ -59,6 +59,8 @@ public class RxRegistry implements IPropertyFinder {
                 map.put(set.getName(), new AnyOneInTamilLetterSetRx(set.getName(), set.getDescription(), set.getCharacterSet()));
             }
         }
+        map.put("கொக்கி", new TamilGlyphRx());
+
 
 
         map.put("மொழி", new MozhiRx());
