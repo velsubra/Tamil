@@ -67,14 +67,14 @@ public class SeerIterator implements Iterator<AbstractSeer> {
 
     }
 
-    private void consumeAllOttu(TamilWord w) {
+    private void consumeAllOttu(TamilWord  seer) {
         while (hasNext()) {
             AbstractCharacter ch = w.charAt(index);
             if (!ch.isPureTamilLetter()) {
                 throw new TamilPlatformException("Not a Tamil character " + ch.toString() + " at Index:" + index);
             }
             if (ch.asTamilCharacter().isMeyyezhuththu() || ch.asTamilCharacter().isAaythavezhuththu()) {
-                w.add(ch);
+                seer.add(ch);
                 index++;
             } else {
                 break;

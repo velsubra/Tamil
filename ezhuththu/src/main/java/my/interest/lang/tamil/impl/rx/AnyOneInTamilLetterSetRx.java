@@ -57,9 +57,9 @@ public final class AnyOneInTamilLetterSetRx implements PatternGenerator {
                 if (!first) {
                     buffer.append("|");
                 }
-                buffer.append("(?:");
+               // buffer.append("(?:");
                 buffer.append(ch.toUnicodeStringRepresentation());
-                buffer.append(")");
+               // buffer.append(")");
 
                 first = false;
             }

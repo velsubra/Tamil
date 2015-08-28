@@ -25,7 +25,7 @@ public class MozhiRx implements PatternGenerator {
     }
 
     public String getDescription() {
-        return "Pattern for Tamil word. A possible sequence that could be a Tamil Word.";
+        return "Pattern for a Tamil word. A possible sequence that could be a Tamil Word.";
     }
 
 

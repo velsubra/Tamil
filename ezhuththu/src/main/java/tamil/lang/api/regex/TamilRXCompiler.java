@@ -20,13 +20,13 @@ import java.util.Set;
  * The following patterns have special meaning
  * <p/>
  * <table border='1'></tr><th align='center'>S.No</th><th align='center'>Usage in Regular Expression</th><th align='center'>Description of the expression</th></tr>
- * <tr><td>1</td><td>${(..}</td> <td> Pattern to be found only at the start of a word.</td> </tr>
- * <tr><td>2</td><td>${..)}</td> <td> Pattern to be found only at the end of a word.</td> </tr>
- * <tr><td>3</td><td>${(..)}</td> <td> Pattern to be found as whole word only.</td> </tr>
- * <tr><td>4</td><td>${அசை[சொல்]}</td> <td> Pattern to match the same list of அசை as in the given சொல்</td> </tr>
- * <tr><td>5</td><td>${மாத்திரை[சொல்]}</td> <td> Pattern to match the same list of மாத்திரை for each character  as in  the given சொல்</td> </tr>
- * <tr><td>6</td><td>${வகை[சொல்]}</td> <td> Pattern to match the same list of வகை (உயிர், உயிர்மெய்ம் மெய், ஆய்தம்) of each character  as in the given சொல்</td> </tr>
- *  <tr><td>7</td><td>${மெய்வகை[சொல்]}</td> <td> Pattern to match the same list of மெய்வகை (வலி,மெலி,இடை) of each character  as in the given சொல்</td> </tr>
+ * <tr><td>1</td><td>${</b>(</b>..}</td> <td> Pattern to be found only at the start of a word.</td> </tr>
+ * <tr><td>2</td><td>${..</b>)</b>}</td> <td> Pattern to be found only at the end of a word.</td> </tr>
+ * <tr><td>3</td><td>${</b>(</b>..</b>)</b>}</td> <td> Pattern to be found as whole word only. ${(மொழி)}          matches syntactically right whole words.</td> </tr>
+ * <tr><td>4</td><td>${<b>அசை</b>[சொல்]}</td> <td> Pattern to match the same list of அசை as in the given சொல். ${அசை[செந்தமிழ்] matches கூவிளம் as  both செந்தமிழ் and கூவிளம்   have same asai patterns.</td> </tr>
+ * <tr><td>5</td><td>${</b>மாத்திரை</b>[சொல்]}</td> <td> Pattern to match the same list of மாத்திரை for each character  as in  the given சொல். ${மாத்திரை[தென்னை]} matches with கண்ணா</td> </tr>
+ * <tr><td>6</td><td>${</b>வகை</b>[சொல்]}</td> <td> Pattern to match the same list of வகை (உயிர், உயிர்மெய்ம் மெய், ஆய்தம்) of each character  as in the given சொல். ${வகை[தமிழ்]} matches with பாகம்</td> </tr>
+ *  <tr><td>7</td><td>${</b>மெய்வகை</b>[சொல்]}</td> <td> Pattern to match the same list of மெய்வகை (வலி,மெலி,இடை) of each character  as in the given சொல். ${மெய்வகை[அங்கு] matches with அந்தி</td> </tr>
  * </table>
  * <p/>
  * </p>

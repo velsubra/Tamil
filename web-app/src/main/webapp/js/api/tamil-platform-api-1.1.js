@@ -1010,30 +1010,27 @@ $(document).ready(function () {
 
     $(".tamil-text").on('focus', function () {
         // console.log($(this).val());
-        tamil = SYS_TRANSLIT.transliterate($(this).val(), "110").tamil;
+        SYS_TRANSLIT.transliterateAsync(new _object_wrapper($(this))._translit_tamil_text_callback , $(this).val(), "110");
         // console.log(tamil);
-        $(this).val(tamil);
-        $(this).$popupDiv("#tamil_text");
-        if (tamil) {
-            if (tamil.indexOf("\n") >= 0) {
-                $('#tamil_text').html("<pre>" + tamil + "</pre>");
-            } else {
-                $('#tamil_text').html(tamil);
-            }
-        }
+
     });
 
-    $(".tamil-text").on('input', function () {
-        tamil = SYS_TRANSLIT.transliterate($(this).val(), "110").tamil;
+     function _object_wrapper(obj) {
+         this._translit_tamil_text_callback =  function (tamilout) {
+             var tamil = tamilout.tamil;
+             obj.$popupDiv("#tamil_text");
+             if (tamil) {
+                 if (tamil.indexOf("\n") >= 0) {
+                     $('#tamil_text').html("<pre>" + tamil + "</pre>");
+                 } else {
+                     $('#tamil_text').html(tamil);
+                 }
+             }
+         }
+     }
 
-        $(this).$popupDiv("#tamil_text");
-        if (tamil) {
-            if (tamil.indexOf("\n") >= 0) {
-                $('#tamil_text').html("<pre>" + tamil + "</pre>");
-            } else {
-                $('#tamil_text').html(tamil);
-            }
-        }
+    $(".tamil-text").on('input', function () {
+        SYS_TRANSLIT.transliterateAsync(new _object_wrapper($(this))._translit_tamil_text_callback , $(this).val(), "110") ;
 
     });
 

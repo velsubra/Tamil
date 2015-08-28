@@ -137,7 +137,7 @@ public abstract class AbstractCharacter implements common.lang.Character, Compar
     public abstract int[] getCodePoints();
 
     public  String toUnicodeStringRepresentation() {
-        StringBuffer buffer = new StringBuffer();
+        StringBuffer buffer = new StringBuffer("(?:");
         for (int code : getCodePoints()) {
             String val =   Integer.toHexString(code);
             while (val.length()< 4) {
@@ -145,6 +145,7 @@ public abstract class AbstractCharacter implements common.lang.Character, Compar
             }
             buffer.append("\\u" + val);
         }
+        buffer.append(")");
         return buffer.toString();
     }
 
