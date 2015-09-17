@@ -224,7 +224,7 @@ public class StringUtils {
         }
 
         public  IndexContext resolveInner(String openmarker, String closeMarker,boolean exceptionWhenNotAllResolved, boolean esecapeUnresolved, boolean keepUnresolved, int level) {
-            if (moreToResolve && level <5) {
+            if (moreToResolve && level <15) {
                 IndexContext innerContext =  replaceWithContext(this, openmarker, closeMarker, finalString, this.keys, exceptionWhenNotAllResolved, esecapeUnresolved, keepUnresolved, level);
 
                 return innerContext;

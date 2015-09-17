@@ -1,5 +1,7 @@
 package test;
 
+import my.interest.lang.tamil.impl.yaappu.AsaiIterator;
+import tamil.lang.TamilWord;
 import tamil.util.IPropertyFinder;
 import my.interest.lang.util.Grid;
 import my.interest.lang.util.Row;
@@ -14,6 +16,7 @@ import tamil.lang.api.regex.RxDescription;
 import tamil.lang.exception.TamilPlatformException;
 import tamil.util.regx.TamilMatcher;
 import tamil.util.regx.TamilPattern;
+import tamil.yaappu.asai.AbstractAsai;
 
 import java.io.PrintStream;
 import java.util.*;
@@ -27,6 +30,27 @@ import java.util.regex.Matcher;
  */
 public class EzhuththuTest implements IPropertyFinder {
 
+
+//    @Test
+//    public void test_Asai() {
+//        TamilWord w = TamilWord.from("சேர்ந்தார்");
+//        Iterator<AbstractAsai> it = w.asaiIterator();
+//        while(it.hasNext()) {
+//            AbstractAsai asai =  it.next();
+//            System.out.println(asai);
+//        }
+//    }
+
+
+    @Test
+    public void test_Asai() {
+        TamilWord w = TamilWord.from("சேர்ந்தார்க்கு");
+        Iterator<AbstractAsai> it = w.asaiIterator();
+        while(it.hasNext()) {
+            AbstractAsai asai =  it.next();
+            System.out.println(asai +":" + asai.getValue());
+        }
+    }
 
     @Test
     public void testDescriptions() {
@@ -146,6 +170,14 @@ public class EzhuththuTest implements IPropertyFinder {
         matcher = pattern.matcher("பசு");
         Assert.assertTrue(matcher.matches());
 
+
+        pattern = TamilPattern.compile("${theamaa}");
+        matcher = pattern.matcher("சேர்ந்தார்");
+        Assert.assertTrue(matcher.matches());
+
+        pattern = TamilPattern.compile("${theamaangaay}");
+        matcher = pattern.matcher("சேர்ந்தார்க்கு");
+        Assert.assertTrue(matcher.matches());
 
     }
 

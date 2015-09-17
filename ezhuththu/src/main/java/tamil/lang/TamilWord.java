@@ -4,10 +4,10 @@ import common.lang.impl.AbstractCharacter;
 import common.lang.impl.AbstractWord;
 import common.lang.impl.UnknownCharacter;
 import my.interest.lang.tamil.EzhuththuUtils;
-import my.interest.lang.tamil.impl.yaappu.SeerIterator;
+import my.interest.lang.tamil.impl.yaappu.AsaiIterator;
 import my.interest.lang.tamil.parser.impl.TamilWordListener;
 import tamil.lang.exception.TamilPlatformException;
-import tamil.yaappu.seer.AbstractSeer;
+import tamil.yaappu.asai.AbstractAsai;
 
 import java.util.Collection;
 import java.util.Iterator;
@@ -823,8 +823,8 @@ public final class TamilWord extends AbstractWord<AbstractCharacter> implements 
     }
 
 
-    public Iterator<AbstractSeer> seerIterator() {
-        return new SeerIterator(this.duplicate());
+    public Iterator<AbstractAsai> asaiIterator() {
+        return new AsaiIterator(this.duplicate());
     }
 
 

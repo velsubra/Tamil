@@ -4,9 +4,9 @@ import common.lang.impl.AbstractCharacter;
 import tamil.lang.TamilCharacter;
 import tamil.lang.TamilWord;
 import tamil.lang.exception.TamilPlatformException;
-import tamil.yaappu.seer.Ntear;
-import tamil.yaappu.seer.Ntirai;
-import tamil.yaappu.seer.AbstractSeer;
+import tamil.yaappu.asai.Ntear;
+import tamil.yaappu.asai.Ntirai;
+import tamil.yaappu.asai.AbstractAsai;
 
 import java.util.Iterator;
 
@@ -16,11 +16,11 @@ import java.util.Iterator;
  *
  * @author velsubra
  */
-public class SeerIterator implements Iterator<AbstractSeer> {
+public class AsaiIterator implements Iterator<AbstractAsai> {
     int index = 0;
     TamilWord w = null;
 
-    public SeerIterator(TamilWord w) {
+    public AsaiIterator(TamilWord w) {
         this.w = w;
         if (this.w == null) {
             this.w = TamilWord.from("");
@@ -39,7 +39,7 @@ public class SeerIterator implements Iterator<AbstractSeer> {
         return ch.asTamilCharacter();
     }
 
-    public AbstractSeer next() {
+    public AbstractAsai next() {
         TamilCharacter tamil = getTamilChar();
         TamilWord seer = new TamilWord(tamil);
         if (tamil.isMeyyezhuththu() || tamil.isAaythavezhuththu()) {

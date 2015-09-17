@@ -15,6 +15,6 @@ public final class NtearRx extends AsaiRx {
     }
 
     public String generate() {
-        return "((${ntedil}${mey})|(${kurril}${mey})|(${ntedil})|(${kurril}))";
+        return "((${ntedil}${mey}*)|(${kurril}${mey}*))";
     }
 }

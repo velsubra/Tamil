@@ -17,7 +17,7 @@ import java.util.Set;
  */
 public class MozhiRx implements PatternGenerator {
     public String generate() {
-        return  "(${oarezhuththumozhi})|(${mozhimuthal}${mozhiyidai}*${mozhikkadai}+)";
+        return  "((${mozhimuthal}${mozhiyidai}*${mozhikkadai}+)|(${oarezhuththumozhi}))";
     }
 
     public String getName() {

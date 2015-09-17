@@ -54,23 +54,23 @@ public class WordGeneratorFromVinaiyadi extends WordsGenerator {
             //thodar
 
 
-//            table = DefinitionFactory.generateVinaimuttu("thodar-muttu-vinaimuttu", root.getRoot(), true);
-//            PersistenceInterface.addDerivativeWithTenseAndPaal(container, true, table, true, true, VinaiMuttu.class);
-//
-//            table = DefinitionFactory.generateVinaimuttu("thodar-muttu-vinaimuttu", root.getRoot(), false);
-//            PersistenceInterface.addDerivativeWithTenseAndPaal(container, false, table, true, true, VinaiMuttu.class);
-//
-//            table = DefinitionFactory.generateVinaimuttu("muttu-vinaimuttu", root.getRoot(), true);
-//            PersistenceInterface.addDerivativeWithTenseAndPaal(container, true, table, false, true, VinaiMuttu.class);
-//
-//            table = DefinitionFactory.generateVinaimuttu("muttu-vinaimuttu", root.getRoot(), false);
-//            PersistenceInterface.addDerivativeWithTenseAndPaal(container, false, table, false, true, VinaiMuttu.class);
-//
-//            table = DefinitionFactory.generateVinaimuttu("thodar-vinaimuttu", root.getRoot(), true);
-//            PersistenceInterface.addDerivativeWithTenseAndPaal(container, true, table, true, false, VinaiMuttu.class);
-//
-//            table = DefinitionFactory.generateVinaimuttu("thodar-vinaimuttu", root.getRoot(), false);
-//            PersistenceInterface.addDerivativeWithTenseAndPaal(container, false, table, true, false, VinaiMuttu.class);
+            table = DefinitionFactory.generateVinaimuttu("thodar-muttu-vinaimuttu", root.getRoot(), true);
+            PersistenceInterface.addDerivativeWithTenseAndPaal(container, true, table, true, true, VinaiMuttu.class);
+
+            table = DefinitionFactory.generateVinaimuttu("thodar-muttu-vinaimuttu", root.getRoot(), false);
+            PersistenceInterface.addDerivativeWithTenseAndPaal(container, false, table, true, true, VinaiMuttu.class);
+
+            table = DefinitionFactory.generateVinaimuttu("muttu-vinaimuttu", root.getRoot(), true);
+            PersistenceInterface.addDerivativeWithTenseAndPaal(container, true, table, false, true, VinaiMuttu.class);
+
+            table = DefinitionFactory.generateVinaimuttu("muttu-vinaimuttu", root.getRoot(), false);
+            PersistenceInterface.addDerivativeWithTenseAndPaal(container, false, table, false, true, VinaiMuttu.class);
+
+            table = DefinitionFactory.generateVinaimuttu("thodar-vinaimuttu", root.getRoot(), true);
+            PersistenceInterface.addDerivativeWithTenseAndPaal(container, true, table, true, false, VinaiMuttu.class);
+
+            table = DefinitionFactory.generateVinaimuttu("thodar-vinaimuttu", root.getRoot(), false);
+            PersistenceInterface.addDerivativeWithTenseAndPaal(container, false, table, true, false, VinaiMuttu.class);
 
             //thodar ends
 

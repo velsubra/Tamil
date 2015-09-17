@@ -1,4 +1,4 @@
-package tamil.yaappu.seer;
+package tamil.yaappu.asai;
 
 import tamil.lang.TamilWord;
 
@@ -8,13 +8,13 @@ import tamil.lang.TamilWord;
  *
  * @author velsubra
  */
-public abstract class AbstractSeer {
+public abstract class AbstractAsai {
     public TamilWord getValue() {
         return value;
     }
 
     private TamilWord value;
-    public AbstractSeer(TamilWord word) {
+    public AbstractAsai(TamilWord word) {
         this.value = word;
     }
     public boolean isNtear() {

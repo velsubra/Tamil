@@ -1,4 +1,4 @@
-package tamil.yaappu.seer;
+package tamil.yaappu.asai;
 
 import tamil.lang.TamilWord;
 
@@ -8,7 +8,7 @@ import tamil.lang.TamilWord;
  *
  * @author velsubra
  */
-public final  class Ntirai  extends AbstractSeer {
+public final  class Ntirai  extends AbstractAsai {
     public Ntirai(TamilWord word) {
         super(word);
     }

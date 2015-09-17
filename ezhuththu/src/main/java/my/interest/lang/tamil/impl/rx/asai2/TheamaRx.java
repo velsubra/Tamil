@@ -15,6 +15,6 @@ public class TheamaRx extends AsaiRx {
         super("தேமா");
     }
     public String generate() {
-        return  "((?!(${ntirai}))(${ntear}${ntear})|(${kurril}${mey}${ntear}))";
+        return  "((?!(${ntirai}))(${ntear}${ntear})|(${kurril}${mey}+${ntear})|(${ntedil}${mey}+${ntear}))";
     }
 }
