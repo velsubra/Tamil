@@ -26,7 +26,7 @@ public class UnicodeUyirezhuthu extends AbstractTamilCharacter implements UyirEz
     private OliAlavu oliAlavu;
     private TamilCharacter.DIGEST_VOWEL vowelDigest;
 
-    public UnicodeUyirezhuthu(int value, OliAlavu oliAlavu, TamilCharacter.DIGEST_VOWEL vowelDigest) {
+    private UnicodeUyirezhuthu(int value, OliAlavu oliAlavu, TamilCharacter.DIGEST_VOWEL vowelDigest) {
         this.value = value;
         this.oliAlavu = oliAlavu;
         this.vowelDigest = vowelDigest;
@@ -47,6 +47,7 @@ public class UnicodeUyirezhuthu extends AbstractTamilCharacter implements UyirEz
 
     @Override
     public String getSoundStrengthDigest() {
+        // TODO Check if this can be "_0_" and use Inam.NONE.toString() instead of hardcoding
         return "_00_";
     }
 
