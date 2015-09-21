@@ -322,7 +322,7 @@ public class DefinitionFactory extends EzhuththuUtils {
 
                                 commavalues = " ";
                             }
-                            commavalueslist = TamilUtils.parseString(commavalues, ",", false,true);
+                            commavalueslist = TamilUtils.parseString(commavalues, ",", false, true);
 
                         } else if (item.getDerivedValues() != null) {
                             DefinedValues sub = new DefinedValues();

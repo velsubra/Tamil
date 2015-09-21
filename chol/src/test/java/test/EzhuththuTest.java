@@ -168,6 +168,11 @@ public class EzhuththuTest implements IPropertyFinder {
 
         pattern = TamilPattern.compile("${ntearbu}");
         matcher = pattern.matcher("பசு");
+        Assert.assertFalse(matcher.matches());
+
+
+        pattern = TamilPattern.compile("${ntirai}");
+        matcher = pattern.matcher("பசு");
         Assert.assertTrue(matcher.matches());
 
 
@@ -178,6 +183,12 @@ public class EzhuththuTest implements IPropertyFinder {
         pattern = TamilPattern.compile("${theamaangaay}");
         matcher = pattern.matcher("சேர்ந்தார்க்கு");
         Assert.assertTrue(matcher.matches());
+
+
+        pattern = TamilPattern.compile("${karuvilham}");
+        matcher = pattern.matcher("அரிதுஅரோ");
+        Assert.assertTrue(matcher.matches());
+
 
     }
 

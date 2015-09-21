@@ -16,6 +16,6 @@ public class TheamaangaayRx extends AsaiRx {
     }
     public String generate() {
         return  "((?!(${ntirai})|${koovilham})(${ntear}${ntear}${ntear})|(${kurril}${mey}+${ntear}${ntear})|(${ntedil}${mey}+${ntear}${ntear}))";
-        //return  "((?!((${ntirai})|${koovilham}).*)(${ntear}${ntear}${ntear}))";
+       // return  "((?!((${ntirai})|${koovilham}).*)(${ntear}${ntear}${ntear}))";
     }
 }

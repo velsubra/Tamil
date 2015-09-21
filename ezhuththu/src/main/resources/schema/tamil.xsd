@@ -226,6 +226,7 @@
             <xs:element name="code" type="xs:string"/>
             <xs:element name="root" type="xs:string"/>
             <xs:element name="name" type="xs:string"/>
+            <xs:element name="libraryDependencies" type="xs:string"/>
             <xs:element name="description" type="xs:string"/>
             <xs:element name="externalResources" type="ExternalResource" minOccurs="0" maxOccurs="unbounded"/>
             <xs:element name="resources" type="AppResources"/>

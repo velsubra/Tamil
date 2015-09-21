@@ -35,7 +35,7 @@
             return;
         }
 
-        $("#result_table tr:gt(11)").detach();
+        $("#result_table tr:gt(12)").detach();
         var table = $("#result_table tr:last");
         var apps = _describeApp(appname);
         console.log(JSON.stringify(apps));
@@ -72,6 +72,8 @@
         }
 
         $('#extroots').val(extroots);
+
+        $('#libs').val(apps.libraryDependencies);
 
         var resultrow = null;
         apps = apps.resources;
@@ -182,6 +184,23 @@
         _createAppResource(appname, resname, seccode);
         _load_All_Resources();
     }
+
+
+    function _createClassloader() {
+
+        var libs = $('#libs').val();
+
+
+        var appname = $('#appname').val();
+        if (appname == "") {
+            alert("App not found on the url");
+            return;
+        }
+
+        var seccode = $('#seccode').val();
+        _createAppClassloader(appname, libs, seccode);
+        _load_All_Resources();
+    }
     //]]>
 
     </script>
@@ -266,6 +285,7 @@
                     <td><textarea title="External URL roots (comma separated). Resources not found locally will be downloaded from external paths. It could be http or file locations." id="extroots" cols="40" rows="2"></textarea></td>
                 </tr>
 
+
                 <tr>
                     <th>Application Description</th>
                     <td><textarea id="description" cols="40" rows="2"></textarea></td>
@@ -281,6 +301,31 @@
 
 
     </tr>
+
+
+
+    <tr>
+        <th colspan="2">Libraries:  <textarea title="" id="libs" wrap="off" cols="80" rows="3">#Please enter URLs pointing maven POMs or jars
+
+#Example1 Direct POM  // Default repo will be used for loading the artifacts
+#http://repo1.maven.org/maven2/com/google/guava/guava/11.0/guava-11.0.pom
+
+#Example2 Maven repo,POM   // All the artifacts will be downloaded from the given repo
+#http://repo1.maven.org/maven2,http://repo1.maven.org/maven2/com/google/guava/guava/11.0/guava-11.0.pom
+
+#Example3 Direct JAR from remote
+#http://myhost:port/my.jar
+
+#Example4 Direct JAR from local  file system
+#file:/customer/scratch/my.jar
+                    </textarea>
+
+        </th>
+        <td> <input
+                onclick="javascript:_createClassloader()" type="button" name="btncreateCl"
+                value="Update Classloader"/></td>
+    </tr>
+
     <tr>
         <th colspan="2">New Resource name: <input size="40" type="text" name="resname" id="resname" value=""> </input>
 

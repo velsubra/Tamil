@@ -425,7 +425,6 @@ public abstract class TamilCharacter extends AbstractCharacter {
     }
 
     private String soundDigest = null;
-
     public String getSoundSizeDigest() {
         if (soundDigest == null) {
 

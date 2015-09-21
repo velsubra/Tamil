@@ -1,5 +1,6 @@
 package my.interest.tamil.rest.resources.apps;
 
+import groovy.lang.GroovyShell;
 import my.interest.lang.tamil.StringUtils;
 import my.interest.lang.tamil.TamilUtils;
 import my.interest.lang.tamil.generated.types.AppDescription;
@@ -41,6 +42,7 @@ import java.util.Map;
 public class AppAccessResource {
 
     private AppDescription app = null;
+
 
     public AppAccessResource(AppDescription app) {
         this.app = app;
@@ -114,6 +116,8 @@ public class AppAccessResource {
                     map.put("R_PATH", name);
                     map.put("R_BODY", httpRequest.getInputStream());
                     map.put("R_", httpRequest);
+
+
 
 
                     Object obj = script.eval(map);

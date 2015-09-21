@@ -9,6 +9,7 @@ import my.interest.lang.tamil.multi.WordGeneratorFromIdai;
 import my.interest.lang.tamil.multi.WordGeneratorFromPeyar;
 import my.interest.lang.tamil.multi.WordGeneratorFromVinaiyadi;
 import my.interest.lang.tamil.punar.handler.verrrrumai.VAllHandler;
+import my.interest.lang.tamil.xml.AppCache;
 import tamil.lang.known.non.derived.idai.*;
 
 import javax.xml.bind.JAXBContext;
@@ -146,6 +147,17 @@ public class FileBasedPersistence extends PersistenceInterface   {
 
     private static void reCompileAllScripts() {
         for (AppDescription app : cached.getApps().getApps().getList().getApp()) {
+            if (app.getCache() == null)  {
+                app.setCache(new AppCache());
+            }
+            if (app.getCache().getAppClassLoader() == null) {
+                try {
+                    app.getCache().buildClassloader(app);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    //ignore
+                }
+            }
 
             if (app.getResources() == null) {
                 app.setResources(new AppResources());

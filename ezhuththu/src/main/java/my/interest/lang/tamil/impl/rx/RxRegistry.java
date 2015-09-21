@@ -2,10 +2,7 @@ package my.interest.lang.tamil.impl.rx;
 
 import common.lang.impl.AbstractCharacter;
 import my.interest.lang.tamil.EzhuththuUtils;
-import my.interest.lang.tamil.impl.rx.asai1.NtearRx;
-import my.interest.lang.tamil.impl.rx.asai1.NtearbuRx;
-import my.interest.lang.tamil.impl.rx.asai1.NtiraiRx;
-import my.interest.lang.tamil.impl.rx.asai1.NtiraibuRx;
+import my.interest.lang.tamil.impl.rx.asai1.*;
 import my.interest.lang.tamil.impl.rx.asai2.Karuvilham;
 import my.interest.lang.tamil.impl.rx.asai2.KoovilhamRx;
 import my.interest.lang.tamil.impl.rx.asai2.PulhimaRx;
@@ -61,6 +58,8 @@ public class RxRegistry implements IPropertyFinder {
         }
         map.put("கொக்கி", new TamilGlyphRx());
 
+        map.put("குற்றுக்குறில்", new Kuttukkurril());
+        map.put("குற்றுநெடில்", new KuttuNtedil());
 
 
         map.put("மொழி", new MozhiRx());

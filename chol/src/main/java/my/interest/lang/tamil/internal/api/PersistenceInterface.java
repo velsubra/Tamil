@@ -1,5 +1,7 @@
 package my.interest.lang.tamil.internal.api;
 
+import groovy.lang.GroovyClassLoader;
+import groovy.lang.GroovyShell;
 import my.interest.lang.tamil.EzhuththuUtils;
 import my.interest.lang.tamil.StringUtils;
 import my.interest.lang.tamil.TamilUtils;
@@ -1174,6 +1176,10 @@ public abstract class PersistenceInterface extends DefaultPlatformDictionaryBase
         if (app.getCache().getInheritanceList().isEmpty()) {
             app.getCache().buildInheritanceOrder(all, app);
         }
+        if (app.getCache().getAppClassLoader() == null) {
+            app.getCache().buildClassloader(app);
+        }
+
         for (AppDescription inherit : app.getCache().getInheritanceList()) {
             for (AppResource r : inherit.getResources().getResources()) {
                 if (resource.equals(r.getName())) {
@@ -1309,6 +1315,7 @@ public abstract class PersistenceInterface extends DefaultPlatformDictionaryBase
             target.setPlatform("1.1");
             target.setName(as);
             target.setRoot(as);
+            target.setLibraryDependencies(app.getLibraryDependencies());
             target.setResourceInheritance(app.getResourceInheritance());
             target.setDescription(app.getDescription());
             target.setCode(code == null ? target.getCode() : code);
@@ -1524,10 +1531,63 @@ public abstract class PersistenceInterface extends DefaultPlatformDictionaryBase
     }
 
 
-    static final GroovyScriptEngineImpl engine = new GroovyScriptEngineImpl();
+
+    public List<String> updateClassloader(String code, String name, String paths) {
+
+
+
+        lock();
+
+        try {
+            TamilRootWords file = getAllRootWords();
+            if (name == null || name.trim().equals("")) {
+                throw new RuntimeException("App name is mandatory!");
+            }
+
+
+            AppDescription app = findApp(name, file, false);
+            if (app == null) {
+                throw new RuntimeException("App not found");
+            }
+
+
+            if (app.getCode() != null) {
+                if (!app.getCode().equals(code)) {
+                    throw new RuntimeException("Security Code does not match: Access Denied.");
+                }
+            }
+
+            app.setLibraryDependencies(paths);
+            persist(file);
+            if (app.getCache() == null) {
+                app.setCache(new AppCache());
+            }
+            return  app.getCache().buildClassloader(app);
+
+
+
+        } finally {
+            unlock();
+        }
+
+    }
+
+
+
+   // static final GroovyScriptEngineImpl engine = new GroovyScriptEngineImpl();
     static final Map<String, SoftReference<CompiledScript>> compiledScripts = new HashMap<String, SoftReference<CompiledScript>>();
 
 
+    /**
+     * Compiles only if needed.
+     * @param app
+     * @param resource
+     * @param key
+     * @param script
+     * @param forceCompile
+     * @return
+     * @throws ScriptException
+     */
     public synchronized static CompiledScript compile(AppDescription app, AppResource resource, String key, String script, boolean forceCompile) throws ScriptException {
 
         CompiledScript c = null;
@@ -1541,7 +1601,14 @@ public abstract class PersistenceInterface extends DefaultPlatformDictionaryBase
         if (c == null) {
             script = StringUtils.replaceForT(script);
             script = StringUtils.replaceFor$(script, new PropertyFinderForResource(app, resource, null), false);
-            c = engine.compile(script);
+            GroovyScriptEngineImpl shell = (GroovyScriptEngineImpl) app.getCache().getGroovyScriptEngine();
+            if (shell == null) {
+                app.getCache().setGroovyScriptEngine(new GroovyScriptEngineImpl(new GroovyClassLoader(app.getCache().getAppClassLoader())));
+                shell = (GroovyScriptEngineImpl) app.getCache().getGroovyScriptEngine();
+            }   else {
+                System.out.println("Reusing groovy shell!");
+            }
+            c = shell.compile(script);
             compiledScripts.put(key, new SoftReference<CompiledScript>(c));
         }
         return c;

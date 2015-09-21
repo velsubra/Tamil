@@ -116,6 +116,11 @@ public class EzhuththuTest {
         Assert.assertTrue(matcher.matches());
 
 
+        pattern = TamilPattern.compile("${theamaangaay}");
+        matcher = pattern.matcher("தம்பியும்");
+        Assert.assertFalse(matcher.matches());
+
+
 //        Pattern patt = Pattern.compile("(?<!ab)a");
 //        matcher = patt.matcher("ada");
 //        Assert.assertTrue(matcher.matches());

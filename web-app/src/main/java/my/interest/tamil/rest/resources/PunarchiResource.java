@@ -1,20 +1,16 @@
 package my.interest.tamil.rest.resources;
 
 import common.lang.impl.AbstractCharacter;
-import my.interest.lang.tamil.parser.impl.sax.SaxParser;
 import tamil.lang.TamilCompoundCharacter;
 import tamil.lang.TamilFactory;
 import tamil.lang.TamilWord;
 import my.interest.lang.tamil.TamilUtils;
 import my.interest.lang.tamil.internal.api.HandlerFactory;
-import my.interest.lang.tamil.internal.api.PersistenceInterface;
 import my.interest.lang.tamil.bean.*;
 import my.interest.lang.tamil.punar.TamilWordPartContainer;
 import my.interest.lang.tamil.punar.handler.AbstractPunarchiHandler;
 import my.interest.lang.tamil.translit.EnglishToTamilCharacterLookUpContext;
-import tamil.lang.api.feature.Feature;
 import tamil.lang.api.feature.FeatureConstants;
-import tamil.lang.api.parser.ParserResult;
 import tamil.lang.api.trans.TranslitFeature;
 
 import javax.ws.rs.*;
