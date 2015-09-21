@@ -1,9 +1,6 @@
 package tamil.lang.unicode;
 
-import tamil.lang.AbstractTamilCharacter;
-import tamil.lang.OliAlavu;
-import tamil.lang.TamilCharacter;
-import tamil.lang.UyirEzhuthu;
+import tamil.lang.*;
 
 import static tamil.lang.OliAlavu.KURIL;
 import static tamil.lang.OliAlavu.NEDIL;
@@ -46,17 +43,6 @@ public class UnicodeUyirezhuthu extends AbstractTamilCharacter implements UyirEz
     }
 
     @Override
-    public String getSoundStrengthDigest() {
-        // TODO Check if this can be "_0_" and use Inam.NONE.toString() instead of hardcoding
-        return "_00_";
-    }
-
-    @Override
-    public String getConsonantDigest() {
-        return "_00_";
-    }
-
-    @Override
     public String getVowelDigest() {
         return vowelDigest.toString();
     }
@@ -73,7 +59,6 @@ public class UnicodeUyirezhuthu extends AbstractTamilCharacter implements UyirEz
 
     @Override
     public int getNumericStrength() {
-        //TODO To replace with aayutha ezhuthu value once it is implemented
-        return (value - '\u0B83') * 100 + 1;
+        return (value - UnicodeAayuthavezhuthu.AKTHU.getValue()) * 100 + 1;
     }
 }

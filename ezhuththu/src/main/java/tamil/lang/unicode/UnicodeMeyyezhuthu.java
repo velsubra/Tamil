@@ -33,12 +33,6 @@ public class UnicodeMeyyezhuthu extends AbstractTamilCharacter implements Meyyez
         this.consonantDigest = consonantDigest;
     }
 
-
-    @Override
-    public String getSoundSizeDigest() {
-        return OliAlavu.NONE.toString();
-    }
-
     @Override
     public String getSoundStrengthDigest() {
         return inam.toString();
@@ -47,11 +41,6 @@ public class UnicodeMeyyezhuthu extends AbstractTamilCharacter implements Meyyez
     @Override
     public String getConsonantDigest() {
         return consonantDigest.toString();
-    }
-
-    @Override
-    public String getVowelDigest() {
-        return "_00_";
     }
 
     @Override
@@ -66,7 +55,7 @@ public class UnicodeMeyyezhuthu extends AbstractTamilCharacter implements Meyyez
 
     @Override
     public int getNumericStrength() {
-        return (consonantValue - TamilSimpleCharacter.AKTHU.getValue()) * 100;
+        return (consonantValue - UnicodeAayuthavezhuthu.AKTHU.getValue()) * 100;
     }
 
     public boolean isVallinam() {

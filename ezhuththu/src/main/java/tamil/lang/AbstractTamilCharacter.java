@@ -1,13 +1,21 @@
 package tamil.lang;
 
 public abstract class AbstractTamilCharacter {
-    public abstract String getSoundSizeDigest();
+    public String getSoundSizeDigest(){
+        return OliAlavu.NONE.toString();
+    }
 
-    public abstract String getSoundStrengthDigest();
+    public String getSoundStrengthDigest(){
+        return Inam.NONE.toString();
+    }
 
-    public abstract String getConsonantDigest();
+    public String getConsonantDigest(){
+        return TamilCharacter.DIGEST_CONSONANT_TYPE._NONE_.toString();
+    }
 
-    public abstract String getVowelDigest();
+    public String getVowelDigest(){
+        return TamilCharacter.DIGEST_VOWEL._NONE_.toString();
+    }
 
     public abstract String getCharacterTypeDigest();
 

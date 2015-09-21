@@ -18,7 +18,7 @@ public class UnicodeUyirezhuthuTest {
             assertThat(e.isKuril(), is(true));
             assertThat(e.isNedil(), is(false));
             assertThat(e.getSoundSizeDigest(), is("_1.0_"));
-            assertThat(e.getSoundStrengthDigest(), is("_00_"));
+            assertThat(e.getSoundStrengthDigest(), is("_0_"));
             assertThat(e.getConsonantDigest(), is("_00_"));
             assertThat(e.getCharacterTypeDigest(), is(TamilCharacter.DIGEST_CHAR_TYPE._U_.toString()));
             assertThat(e.getCodePointsCount(), is(1));
@@ -29,7 +29,7 @@ public class UnicodeUyirezhuthuTest {
             assertThat(e.isKuril(), is(false));
             assertThat(e.isNedil(), is(true));
             assertThat(e.getSoundSizeDigest(), is("_2.0_"));
-            assertThat(e.getSoundStrengthDigest(), is("_00_"));
+            assertThat(e.getSoundStrengthDigest(), is("_0_"));
             assertThat(e.getConsonantDigest(), is("_00_"));
             assertThat(e.getCharacterTypeDigest(), is(TamilCharacter.DIGEST_CHAR_TYPE._U_.toString()));
             assertThat(e.getCodePointsCount(), is(1));

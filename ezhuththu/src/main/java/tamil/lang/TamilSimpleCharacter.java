@@ -689,7 +689,7 @@ public final class TamilSimpleCharacter extends TamilCharacter implements Simple
     public String getConsonantDigest() {
         if (consonantDigest == null) {
             if (isAaythavezhuththu()) {
-                consonantDigest = DIGEST_CONSONANT_TYPE._AKTHU_.toString();
+                consonantDigest = DIGEST_CONSONANT_TYPE._NONE_.toString();
             } else if (isKa()) {
                 consonantDigest = DIGEST_CONSONANT_TYPE._KA_.toString();
             } else if (isNga()) {

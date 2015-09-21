@@ -321,7 +321,7 @@ public abstract class TamilCharacter extends AbstractCharacter {
 
 
     public static enum DIGEST_CONSONANT_TYPE {
-        _AKTHU_, _KA_, _NGA_, _SA_, _NYA_, _DA_, _NNNA_, _THA_, _NTHA_, _PA_, _MA_, _YA_, _RA_, _LA_, _VA_, _LLLA_, _LLA_, _RRA_, _NA_;
+        _NONE_, _KA_, _NGA_, _SA_, _NYA_, _DA_, _NNNA_, _THA_, _NTHA_, _PA_, _MA_, _YA_, _RA_, _LA_, _VA_, _LLLA_, _LLA_, _RRA_, _NA_;
 
         @Override
         public String toString() {
@@ -348,11 +348,11 @@ public abstract class TamilCharacter extends AbstractCharacter {
     }
 
     public static enum DIGEST_VOWEL {
-        _a_, _aa_, _E_, _EE_, _U_, _UU_, _A_, _AA_, _I_, _O_, _OO_, _OU_;
+        _NONE_, _a_, _aa_, _E_, _EE_, _U_, _UU_, _A_, _AA_, _I_, _O_, _OO_, _OU_;
 
         @Override
         public String toString() {
-            return "_" + ordinalToTwoCharString(this.ordinal() + 1) + "_";
+            return "_" + ordinalToTwoCharString(this.ordinal()) + "_";
         }
     }
 
