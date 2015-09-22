@@ -7,26 +7,28 @@ import static tamil.lang.OliAlavu.NEDIL;
 import static tamil.lang.TamilCharacter.DIGEST_CHAR_TYPE._U_;
 
 public class UnicodeUyirezhuthu extends AbstractTamilCharacter implements UyirEzhuthu {
-    public static UnicodeUyirezhuthu a = new UnicodeUyirezhuthu('\u0B85', KURIL, TamilCharacter.DIGEST_VOWEL._a_);
-    public static UnicodeUyirezhuthu aa = new UnicodeUyirezhuthu('\u0B86', NEDIL, TamilCharacter.DIGEST_VOWEL._aa_);
-    public static UnicodeUyirezhuthu E = new UnicodeUyirezhuthu('\u0B87', KURIL, TamilCharacter.DIGEST_VOWEL._E_);
-    public static UnicodeUyirezhuthu EE = new UnicodeUyirezhuthu('\u0B88', NEDIL, TamilCharacter.DIGEST_VOWEL._EE_);
-    public static UnicodeUyirezhuthu U = new UnicodeUyirezhuthu('\u0B89', KURIL, TamilCharacter.DIGEST_VOWEL._U_);
-    public static UnicodeUyirezhuthu UU = new UnicodeUyirezhuthu('\u0B8A', NEDIL, TamilCharacter.DIGEST_VOWEL._UU_);
-    public static UnicodeUyirezhuthu A = new UnicodeUyirezhuthu('\u0B8E', KURIL, TamilCharacter.DIGEST_VOWEL._A_);
-    public static UnicodeUyirezhuthu AA = new UnicodeUyirezhuthu('\u0B8F', NEDIL, TamilCharacter.DIGEST_VOWEL._AA_);
-    public static UnicodeUyirezhuthu I = new UnicodeUyirezhuthu('\u0B90', NEDIL, TamilCharacter.DIGEST_VOWEL._I_);
-    public static UnicodeUyirezhuthu O = new UnicodeUyirezhuthu('\u0B92', KURIL, TamilCharacter.DIGEST_VOWEL._O_);
-    public static UnicodeUyirezhuthu OO = new UnicodeUyirezhuthu('\u0B93', NEDIL, TamilCharacter.DIGEST_VOWEL._OO_);
-    public static UnicodeUyirezhuthu OU = new UnicodeUyirezhuthu('\u0B94', NEDIL, TamilCharacter.DIGEST_VOWEL._OU_);
+    public static UnicodeUyirezhuthu a = new UnicodeUyirezhuthu('\u0B85', KURIL, TamilCharacter.DIGEST_VOWEL._a_, Glyphs.NONE);
+    public static UnicodeUyirezhuthu aa = new UnicodeUyirezhuthu('\u0B86', NEDIL, TamilCharacter.DIGEST_VOWEL._aa_, Glyphs.aa);
+    public static UnicodeUyirezhuthu E = new UnicodeUyirezhuthu('\u0B87', KURIL, TamilCharacter.DIGEST_VOWEL._E_, Glyphs.E);
+    public static UnicodeUyirezhuthu EE = new UnicodeUyirezhuthu('\u0B88', NEDIL, TamilCharacter.DIGEST_VOWEL._EE_, Glyphs.EE);
+    public static UnicodeUyirezhuthu U = new UnicodeUyirezhuthu('\u0B89', KURIL, TamilCharacter.DIGEST_VOWEL._U_, Glyphs.U);
+    public static UnicodeUyirezhuthu UU = new UnicodeUyirezhuthu('\u0B8A', NEDIL, TamilCharacter.DIGEST_VOWEL._UU_, Glyphs.UU);
+    public static UnicodeUyirezhuthu A = new UnicodeUyirezhuthu('\u0B8E', KURIL, TamilCharacter.DIGEST_VOWEL._A_, Glyphs.A);
+    public static UnicodeUyirezhuthu AA = new UnicodeUyirezhuthu('\u0B8F', NEDIL, TamilCharacter.DIGEST_VOWEL._AA_, Glyphs.AA);
+    public static UnicodeUyirezhuthu I = new UnicodeUyirezhuthu('\u0B90', NEDIL, TamilCharacter.DIGEST_VOWEL._I_, Glyphs.I);
+    public static UnicodeUyirezhuthu O = new UnicodeUyirezhuthu('\u0B92', KURIL, TamilCharacter.DIGEST_VOWEL._O_, Glyphs.O);
+    public static UnicodeUyirezhuthu OO = new UnicodeUyirezhuthu('\u0B93', NEDIL, TamilCharacter.DIGEST_VOWEL._OO_, Glyphs.OO);
+    public static UnicodeUyirezhuthu OU = new UnicodeUyirezhuthu('\u0B94', NEDIL, TamilCharacter.DIGEST_VOWEL._OU_, Glyphs.OU);
     private int value;
     private OliAlavu oliAlavu;
     private TamilCharacter.DIGEST_VOWEL vowelDigest;
+    private Glyphs glyph;
 
-    private UnicodeUyirezhuthu(int value, OliAlavu oliAlavu, TamilCharacter.DIGEST_VOWEL vowelDigest) {
+    private UnicodeUyirezhuthu(int value, OliAlavu oliAlavu, TamilCharacter.DIGEST_VOWEL vowelDigest, Glyphs glyph) {
         this.value = value;
         this.oliAlavu = oliAlavu;
         this.vowelDigest = vowelDigest;
+        this.glyph = glyph;
     }
 
     public boolean isKuril() {
@@ -60,5 +62,9 @@ public class UnicodeUyirezhuthu extends AbstractTamilCharacter implements UyirEz
     @Override
     public int getNumericStrength() {
         return (value - UnicodeAayuthavezhuthu.AKTHU.getValue()) * 100 + 1;
+    }
+
+    public Glyphs getGlyph() {
+        return glyph;
     }
 }
