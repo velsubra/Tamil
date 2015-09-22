@@ -31,7 +31,7 @@ public interface CompoundWordParser {
      * @param features the list of parsing features used to parse.
      * @return the returns set of results.
      */
-    public List<ParserResult> parse(TamilWord singleWord, int maxReturn, ParseFeature ... features);
+    public ParserResultCollection parse(TamilWord singleWord, int maxReturn, ParseFeature ... features);
 
 
 

@@ -2,6 +2,7 @@ package tamil.lang.known.thodar;
 
 import tamil.lang.TamilWord;
 import tamil.lang.known.IKnownWord;
+import tamil.lang.known.non.derived.ITheriyaachchol;
 
 import java.util.List;
 
@@ -12,7 +13,7 @@ import java.util.List;
  *
  * @author velsubra
  */
-public final class UnknownThodarMozhi extends AbstractThodarMozhi {
+public final class UnknownThodarMozhi extends AbstractThodarMozhi implements ITheriyaachchol {
     public UnknownThodarMozhi(TamilWord word, IKnownWord... knowns) {
         super(word, knowns);
     }

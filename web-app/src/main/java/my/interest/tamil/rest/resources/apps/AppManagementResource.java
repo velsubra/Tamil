@@ -1,5 +1,6 @@
 package my.interest.tamil.rest.resources.apps;
 
+import my.interest.lang.tamil.TamilUtils;
 import my.interest.lang.tamil.generated.types.*;
 import my.interest.lang.tamil.internal.api.PersistenceInterface;
 import my.interest.lang.tamil.xml.AppCache;
@@ -49,6 +50,8 @@ public class AppManagementResource {
 
         ret.setName(app.getName());
         ret.setCode("****");
+        ret.getExternalResources().addAll(app.getExternalResources());
+        ret.setLibraryDependencies(app.getLibraryDependencies());
         ret.setResources(new AppResources());
         if (app.getResources() != null) {
             ret.getResources().setWelcome(app.getResources().getWelcome());
@@ -103,13 +106,32 @@ public class AppManagementResource {
     }
 
 
+    @PUT
+    @Path("/apps/name/{name}/libs/text")
+
+    public Response createClassloader(@PathParam("name") String name,  @HeaderParam("X-TAMIL-APP-ACCESS-CODE") String code, String paths) {
+        try {
+          List<String> urls =  PersistenceInterface.get().updateClassloader(code, name, paths);
+            return Response.status(200).type(MediaType.TEXT_PLAIN).entity(TamilUtils.getSeparatedListOfString(urls, "","",false,"\n")).build();
+        } catch (WebApplicationException wa) {
+            throw wa;
+        } catch (ResourceException re) {
+            throw re;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new ResourceException(e.getMessage());
+        }
+
+    }
+
+
     @GET
     @Path("/apps/name/{name}/resources/resource/{resourcename:.*}")
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public JAXBElement<AppResource> getResource(@PathParam("name") String name, @PathParam("resourcename") String resourcename) {
 
         try {
-            AppResource resource = PersistenceInterface.get().findAppResource(name, resourcename);
+            AppResource resource = PersistenceInterface.get().findAppResource(name, resourcename,true);
 
             return new ObjectFactory().createAppresource(resource);
 
@@ -152,9 +174,9 @@ public class AppManagementResource {
     @PUT
     @Path("/apps/name/{name}/")
     @Consumes("text/plain; charset=UTF-8")
-    public Response updateApp(@PathParam("name") String name, @QueryParam("welcome") String welcome,  @HeaderParam("X-TAMIL-APP-ACCESS-CODE") String code, @QueryParam("parents") String parents, @QueryParam("inheritanceorder") String inheritanceorder, String desc) {
+    public Response updateApp(@PathParam("name") String name, @QueryParam("welcome") String welcome,  @HeaderParam("X-TAMIL-APP-ACCESS-CODE") String code, @QueryParam("parents") String parents, @QueryParam("inheritanceorder") String inheritanceorder, @QueryParam("externalroots") String externalUrls,String desc) {
         try {
-            PersistenceInterface.get().updateApp(code, name, welcome, parents,inheritanceorder, desc);
+            PersistenceInterface.get().updateApp(code, name, welcome, parents,inheritanceorder, desc, externalUrls);
             return Response.status(202).build();
         } catch (WebApplicationException wa) {
             throw wa;

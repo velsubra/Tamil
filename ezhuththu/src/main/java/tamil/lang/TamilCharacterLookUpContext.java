@@ -1,48 +1,85 @@
 package tamil.lang;
 
+import tamil.lang.exception.TamilPlatformException;
+
 import java.util.*;
 
 /**
  * <p>
- *     The class that registers all the tamil characters as defined by the Unicode consortium.
- *     End users typically would not need to use this class. If you need to read a tamil word from a UTF-8 String, please use
- *     {@link TamilWord#from(String)}
+ * The class that registers all the tamil characters as defined by the Unicode consortium.  This allows reading Tamil text in the normalized form.
+ * <p/>
+ * <p/>
+ * End users typically would not need to use this class. If you need to read a tamil word from a  String, please use
+ * {@link TamilWord#from(String)}.  Glyphs that cannot be legally paired with adjacent consonants are mapped with  real vowel during normalization.
+ * <p/>
+ * <p/>
  * </p>
  *
  * @author velsubra
  */
- public final class TamilCharacterLookUpContext {
+public final class TamilCharacterLookUpContext {
 
     /**
      * Returns the current character in the context.
      */
     public TamilCharacter currentChar;
 
-   // TamilCharacterLookUpContext parent = null;
+    // TamilCharacterLookUpContext parent = null;
+
     private Map<Integer, TamilCharacterLookUpContext> continuations = null;
 
-    private static Map<Integer, TamilCharacterLookUpContext> map = new HashMap<Integer, TamilCharacterLookUpContext>();
+    private static final Map<Integer, TamilCharacterLookUpContext> map = new HashMap<Integer, TamilCharacterLookUpContext>();
 
     private TamilCharacterLookUpContext(TamilCharacter simpleCharacter) {
         this.currentChar = simpleCharacter;
     }
 
     /**
-     * Lists all tamil characters registered.
+     * The continuous registered sequence.
+     *
+     * @see <a href="ftp://ftp.unicode.org/Public/UNIDATA/UnicodeData.txt>UnicodeData.txt</a>
+     */
+    public Map<Integer, TamilCharacterLookUpContext> getContinuations() {
+        if (continuations == null) {
+            return null;
+        }
+        return Collections.unmodifiableMap(continuations);
+    }
+
+    public static Map<Integer, TamilCharacterLookUpContext> getMap() {
+        return Collections.unmodifiableMap(map);
+    }
+
+
+    /**
+     * Returns set of all Tamil characters registered.
+     * @return  the map
+     */
+    public static Set<TamilCharacter> getAllTamilCharacters() {
+        Set<TamilCharacter> list = new HashSet<TamilCharacter>();
+         for (TamilCharacterLookUpContext context : getMap().values())  {
+             list.addAll(context.getTamilCharacters());
+         }
+        return list;
+    }
+
+    /**
+     * Lists all tamil characters registered from this context.
+     *
      * @return the set of all known tamil characters
      */
 
-    public  Set<TamilCharacter>  getAllTamilCharacters() {
+    private Set<TamilCharacter> getTamilCharacters() {
         Set<TamilCharacter> list = new HashSet<TamilCharacter>();
         if (this.currentChar != null) {
             list.add(this.currentChar);
         }
-        if (continuations!= null)  {
+        if (continuations != null) {
             for (TamilCharacterLookUpContext context : this.continuations.values()) {
-                list.addAll(context.getAllTamilCharacters());
+                list.addAll(context.getTamilCharacters());
             }
         }
-        return  list;
+        return list;
     }
 
 
@@ -78,17 +115,86 @@ import java.util.*;
             continuations = new HashMap<Integer, TamilCharacterLookUpContext>();
         }
         TamilCharacterLookUpContext context = new TamilCharacterLookUpContext(tamilCharacter);
-       // context.parent = this;
+        // context.parent = this;
         continuations.put(continuation, context);
         return context;
 
     }
 
-    private void registerCompoundAt(TamilCompoundCharacter tamilCharacter) {
-        registerNext(tamilCharacter.getVowel(), tamilCharacter);
+    private List<TamilCharacterLookUpContext> registerCompoundAt(TamilCompoundCharacter tamilCharacter) {
+        return  registerCompoundAt(tamilCharacter, tamilCharacter);
     }
 
+    private List<TamilCharacterLookUpContext> registerCompoundAt(TamilCompoundCharacter tamilCompoundCharacter, TamilCharacter toRegister) {
+        List<TamilCharacterLookUpContext> ret = new ArrayList<TamilCharacterLookUpContext>();
+        ret.add(registerNext(tamilCompoundCharacter.getVowel(), toRegister));
+        TamilCharacterLookUpContext context = this;
+        if (tamilCompoundCharacter.vowelDecomposed != null && tamilCompoundCharacter.vowelDecomposed.length > 0) {
+            for (int i = 0; i < tamilCompoundCharacter.vowelDecomposed.length; i++) {
+                TamilCharacterLookUpContext newContext = context.next(tamilCompoundCharacter.vowelDecomposed[i]);
+                if (newContext == null) {
+                    if (i != tamilCompoundCharacter.vowelDecomposed.length - 1) {
+                        throw new TamilPlatformException("Invalid registration at index: " + i + " of total length " + tamilCompoundCharacter.vowelDecomposed.length);
+                    } else {
+                        break;
+                    }
+                } else {
+                    if (i == tamilCompoundCharacter.vowelDecomposed.length - 1) {
+                        throw new TamilPlatformException("Invalid registration at last index: Character exists:" + newContext.currentChar);
+                    }
+                    context = newContext;
+
+                }
+
+            }
+            ret.add(context.registerNext(tamilCompoundCharacter.vowelDecomposed[tamilCompoundCharacter.vowelDecomposed.length - 1], toRegister));
+
+        }
+        return ret;
+    }
+
+//    private List<TamilCharacterLookUpContext> registerSuperCompoundAt(TamilSuperCompoundCharacter tamilCharacter) {
+//        if (tamilCharacter.getSequence().length <= 1) {
+//            throw new TamilPlatformException("Invalid registration for TamilSuperCompoundCharacter. " + tamilCharacter + ". Minimum two characters are required");
+//        }
+//        List<TamilCharacterLookUpContext> ret = new ArrayList<TamilCharacterLookUpContext>();
+//        ret.add(this);
+//
+//
+//        for (int i = 1; i < tamilCharacter.getSequence().length; i++) {
+//            List<TamilCharacterLookUpContext> newret = new ArrayList<TamilCharacterLookUpContext>();
+//            for (TamilCharacterLookUpContext context : ret) {
+//                TamilCharacter next = tamilCharacter.getSequence()[i];
+//                if (TamilSimpleCharacter.class.isAssignableFrom(next.getClass())) {
+//                    newret.add(context.registerNext(((TamilSimpleCharacter) next).getValue(), tamilCharacter));
+//                }  else {
+//                    throw new TamilPlatformException("Invalid character:" + next);
+//                }
+//            }
+//            ret = newret;
+//        }
+//        return ret;
+//    }
+
+
     static {
+        registerSimple(TamilSimpleCharacter.OM);
+        registerSimple(TamilSimpleCharacter.ZERO);
+        registerSimple(TamilSimpleCharacter.ONE);
+        registerSimple(TamilSimpleCharacter.TWO);
+        registerSimple(TamilSimpleCharacter.THREE);
+        registerSimple(TamilSimpleCharacter.FOUR);
+        registerSimple(TamilSimpleCharacter.FIVE);
+        registerSimple(TamilSimpleCharacter.SIX);
+        registerSimple(TamilSimpleCharacter.SEVEN);
+        registerSimple(TamilSimpleCharacter.EIGHT);
+        registerSimple(TamilSimpleCharacter.NINE);
+        registerSimple(TamilSimpleCharacter.TEN);
+        registerSimple(TamilSimpleCharacter.HUNDRED);
+        registerSimple(TamilSimpleCharacter.THOUSAND);
+        registerSimple(TamilSimpleCharacter.RS);
+
+
         registerSimple(TamilSimpleCharacter.AKTHU);
         registerSimple(TamilSimpleCharacter.a);
         registerSimple(TamilSimpleCharacter.aa);
@@ -100,27 +206,31 @@ import java.util.*;
         registerSimple(TamilSimpleCharacter.AA);
         registerSimple(TamilSimpleCharacter.I);
         registerSimple(TamilSimpleCharacter.O);
+
+        //ftp://ftp.unicode.org/Public/UNIDATA/UnicodeData.txt
+        //0B94;TAMIL LETTER AU;Lo;0;L;0B92 0BD7;;;;N;;;;;
+        registerSimple(TamilSimpleCharacter.O).registerNext(TamilCompoundCharacter.OU_, TamilSimpleCharacter.OU);
+
         registerSimple(TamilSimpleCharacter.OO);
         registerSimple(TamilSimpleCharacter.OU);
 
 
         //Register extension vowels as simple real vowels. Useful when the consonant was missed.
         registerSimple(TamilCompoundCharacter.aa, TamilSimpleCharacter.aa);
-        registerSimple(TamilCompoundCharacter.E,TamilSimpleCharacter.E);
-        registerSimple(TamilCompoundCharacter.EE,TamilSimpleCharacter.EE);
-        registerSimple(TamilCompoundCharacter.U,TamilSimpleCharacter.U);
-        registerSimple(TamilCompoundCharacter.UU,TamilSimpleCharacter.UU);
-        registerSimple(TamilCompoundCharacter.A,TamilSimpleCharacter.A);
-        registerSimple(TamilCompoundCharacter.AA,TamilSimpleCharacter.AA);
-        registerSimple(TamilCompoundCharacter.I,TamilSimpleCharacter.I);
-        registerSimple(TamilCompoundCharacter.O,TamilSimpleCharacter.O);
-        registerSimple(TamilCompoundCharacter.OO,TamilSimpleCharacter.OO);
-        registerSimple(TamilCompoundCharacter.OU,TamilSimpleCharacter.OU);
+        registerSimple(TamilCompoundCharacter.E, TamilSimpleCharacter.E);
+        registerSimple(TamilCompoundCharacter.EE, TamilSimpleCharacter.EE);
+        registerSimple(TamilCompoundCharacter.U, TamilSimpleCharacter.U);
+        registerSimple(TamilCompoundCharacter.UU, TamilSimpleCharacter.UU);
+        registerSimple(TamilCompoundCharacter.A, TamilSimpleCharacter.A);
+        registerSimple(TamilCompoundCharacter.AA, TamilSimpleCharacter.AA);
+        registerSimple(TamilCompoundCharacter.I, TamilSimpleCharacter.I);
+        registerSimple(TamilCompoundCharacter.O, TamilSimpleCharacter.O);
+        registerSimple(TamilCompoundCharacter.OO, TamilSimpleCharacter.OO);
+        registerSimple(TamilCompoundCharacter.OU, TamilSimpleCharacter.OU);
+        registerSimple(TamilCompoundCharacter.OU_, TamilSimpleCharacter.OU);
 
 
-
-
-        registerSimple(TamilSimpleCharacter.KA).registerCompoundAt(TamilCompoundCharacter.IK);
+        List<TamilCharacterLookUpContext> iks = registerSimple(TamilSimpleCharacter.KA).registerCompoundAt(TamilCompoundCharacter.IK);
         registerSimple(TamilSimpleCharacter.NGA).registerCompoundAt(TamilCompoundCharacter.ING);
         registerSimple(TamilSimpleCharacter.SA).registerCompoundAt(TamilCompoundCharacter.ICH);
         registerSimple(TamilSimpleCharacter.NYA).registerCompoundAt(TamilCompoundCharacter.INJ);
@@ -140,87 +250,10 @@ import java.util.*;
         registerSimple(TamilSimpleCharacter.NA).registerCompoundAt(TamilCompoundCharacter.IN);
 
         registerSimple(TamilSimpleCharacter.SHA_).registerCompoundAt(TamilCompoundCharacter.ISH_);
-        registerSimple(TamilSimpleCharacter.SSA_).registerCompoundAt(TamilCompoundCharacter.ISS_);
+        List<TamilCharacterLookUpContext> isss = registerSimple(TamilSimpleCharacter.SSA_).registerCompoundAt(TamilCompoundCharacter.ISS_);
+        registerSimple(TamilSimpleCharacter.SSSA_).registerCompoundAt(TamilCompoundCharacter.ISSS_);
         registerSimple(TamilSimpleCharacter.HA_).registerCompoundAt(TamilCompoundCharacter.IH_);
         registerSimple(TamilSimpleCharacter.JA_).registerCompoundAt(TamilCompoundCharacter.IJ_);
-
-
-        registerSimple(TamilSimpleCharacter.KA).registerCompoundAt(TamilCompoundCharacter.IK_OU);
-        registerSimple(TamilSimpleCharacter.NGA).registerCompoundAt(TamilCompoundCharacter.ING_OU);
-        registerSimple(TamilSimpleCharacter.SA).registerCompoundAt(TamilCompoundCharacter.ICH_OU);
-        registerSimple(TamilSimpleCharacter.NYA).registerCompoundAt(TamilCompoundCharacter.INJ_OU);
-        registerSimple(TamilSimpleCharacter.DA).registerCompoundAt(TamilCompoundCharacter.IDD_OU);
-        registerSimple(TamilSimpleCharacter.NNNA).registerCompoundAt(TamilCompoundCharacter.INNN_OU);
-        registerSimple(TamilSimpleCharacter.THA).registerCompoundAt(TamilCompoundCharacter.ITH_OU);
-        registerSimple(TamilSimpleCharacter.NTHA).registerCompoundAt(TamilCompoundCharacter.INTH_OU);
-        registerSimple(TamilSimpleCharacter.PA).registerCompoundAt(TamilCompoundCharacter.IP_OU);
-        registerSimple(TamilSimpleCharacter.MA).registerCompoundAt(TamilCompoundCharacter.IM_OU);
-        registerSimple(TamilSimpleCharacter.YA).registerCompoundAt(TamilCompoundCharacter.IY_OU);
-        registerSimple(TamilSimpleCharacter.RA).registerCompoundAt(TamilCompoundCharacter.IR_OU);
-        registerSimple(TamilSimpleCharacter.LA).registerCompoundAt(TamilCompoundCharacter.IL_OU);
-        registerSimple(TamilSimpleCharacter.VA).registerCompoundAt(TamilCompoundCharacter.IV_OU);
-        registerSimple(TamilSimpleCharacter.LLLA).registerCompoundAt(TamilCompoundCharacter.ILLL_OU);
-        registerSimple(TamilSimpleCharacter.LLA).registerCompoundAt(TamilCompoundCharacter.ILL_OU);
-        registerSimple(TamilSimpleCharacter.RRA).registerCompoundAt(TamilCompoundCharacter.IRR_OU);
-        registerSimple(TamilSimpleCharacter.NA).registerCompoundAt(TamilCompoundCharacter.IN_OU);
-
-        registerSimple(TamilSimpleCharacter.SHA_).registerCompoundAt(TamilCompoundCharacter.ISH_OU);
-        registerSimple(TamilSimpleCharacter.SSA_).registerCompoundAt(TamilCompoundCharacter.ISS_OU);
-        registerSimple(TamilSimpleCharacter.HA_).registerCompoundAt(TamilCompoundCharacter.IH_OU);
-        registerSimple(TamilSimpleCharacter.JA_).registerCompoundAt(TamilCompoundCharacter.IJ_OU);
-
-
-
-        registerSimple(TamilSimpleCharacter.KA).registerCompoundAt(TamilCompoundCharacter.IK_OO);
-        registerSimple(TamilSimpleCharacter.NGA).registerCompoundAt(TamilCompoundCharacter.ING_OO);
-        registerSimple(TamilSimpleCharacter.SA).registerCompoundAt(TamilCompoundCharacter.ICH_OO);
-        registerSimple(TamilSimpleCharacter.NYA).registerCompoundAt(TamilCompoundCharacter.INJ_OO);
-        registerSimple(TamilSimpleCharacter.DA).registerCompoundAt(TamilCompoundCharacter.IDD_OO);
-        registerSimple(TamilSimpleCharacter.NNNA).registerCompoundAt(TamilCompoundCharacter.INNN_OO);
-        registerSimple(TamilSimpleCharacter.THA).registerCompoundAt(TamilCompoundCharacter.ITH_OO);
-        registerSimple(TamilSimpleCharacter.NTHA).registerCompoundAt(TamilCompoundCharacter.INTH_OO);
-        registerSimple(TamilSimpleCharacter.PA).registerCompoundAt(TamilCompoundCharacter.IP_OO);
-        registerSimple(TamilSimpleCharacter.MA).registerCompoundAt(TamilCompoundCharacter.IM_OO);
-        registerSimple(TamilSimpleCharacter.YA).registerCompoundAt(TamilCompoundCharacter.IY_OO);
-        registerSimple(TamilSimpleCharacter.RA).registerCompoundAt(TamilCompoundCharacter.IR_OO);
-        registerSimple(TamilSimpleCharacter.LA).registerCompoundAt(TamilCompoundCharacter.IL_OO);
-        registerSimple(TamilSimpleCharacter.VA).registerCompoundAt(TamilCompoundCharacter.IV_OO);
-        registerSimple(TamilSimpleCharacter.LLLA).registerCompoundAt(TamilCompoundCharacter.ILLL_OO);
-        registerSimple(TamilSimpleCharacter.LLA).registerCompoundAt(TamilCompoundCharacter.ILL_OO);
-        registerSimple(TamilSimpleCharacter.RRA).registerCompoundAt(TamilCompoundCharacter.IRR_OO);
-        registerSimple(TamilSimpleCharacter.NA).registerCompoundAt(TamilCompoundCharacter.IN_OO);
-
-        registerSimple(TamilSimpleCharacter.SHA_).registerCompoundAt(TamilCompoundCharacter.ISH_OO);
-         registerSimple(TamilSimpleCharacter.SSA_).registerCompoundAt(TamilCompoundCharacter.ISS_OO);
-        registerSimple(TamilSimpleCharacter.HA_).registerCompoundAt(TamilCompoundCharacter.IH_OO);
-        registerSimple(TamilSimpleCharacter.JA_).registerCompoundAt(TamilCompoundCharacter.IJ_OO);
-
-
-
-        registerSimple(TamilSimpleCharacter.KA).registerCompoundAt(TamilCompoundCharacter.IK_O);
-        registerSimple(TamilSimpleCharacter.NGA).registerCompoundAt(TamilCompoundCharacter.ING_O);
-        registerSimple(TamilSimpleCharacter.SA).registerCompoundAt(TamilCompoundCharacter.ICH_O);
-        registerSimple(TamilSimpleCharacter.NYA).registerCompoundAt(TamilCompoundCharacter.INJ_O);
-        registerSimple(TamilSimpleCharacter.DA).registerCompoundAt(TamilCompoundCharacter.IDD_O);
-        registerSimple(TamilSimpleCharacter.NNNA).registerCompoundAt(TamilCompoundCharacter.INNN_O);
-        registerSimple(TamilSimpleCharacter.THA).registerCompoundAt(TamilCompoundCharacter.ITH_O);
-        registerSimple(TamilSimpleCharacter.NTHA).registerCompoundAt(TamilCompoundCharacter.INTH_O);
-        registerSimple(TamilSimpleCharacter.PA).registerCompoundAt(TamilCompoundCharacter.IP_O);
-        registerSimple(TamilSimpleCharacter.MA).registerCompoundAt(TamilCompoundCharacter.IM_O);
-        registerSimple(TamilSimpleCharacter.YA).registerCompoundAt(TamilCompoundCharacter.IY_O);
-        registerSimple(TamilSimpleCharacter.RA).registerCompoundAt(TamilCompoundCharacter.IR_O);
-        registerSimple(TamilSimpleCharacter.LA).registerCompoundAt(TamilCompoundCharacter.IL_O);
-        registerSimple(TamilSimpleCharacter.VA).registerCompoundAt(TamilCompoundCharacter.IV_O);
-        registerSimple(TamilSimpleCharacter.LLLA).registerCompoundAt(TamilCompoundCharacter.ILLL_O);
-        registerSimple(TamilSimpleCharacter.LLA).registerCompoundAt(TamilCompoundCharacter.ILL_O);
-        registerSimple(TamilSimpleCharacter.RRA).registerCompoundAt(TamilCompoundCharacter.IRR_O);
-        registerSimple(TamilSimpleCharacter.NA).registerCompoundAt(TamilCompoundCharacter.IN_O);
-
-        registerSimple(TamilSimpleCharacter.SHA_).registerCompoundAt(TamilCompoundCharacter.ISH_O);
-         registerSimple(TamilSimpleCharacter.SSA_).registerCompoundAt(TamilCompoundCharacter.ISS_O);
-        registerSimple(TamilSimpleCharacter.HA_).registerCompoundAt(TamilCompoundCharacter.IH_O);
-        registerSimple(TamilSimpleCharacter.JA_).registerCompoundAt(TamilCompoundCharacter.IJ_O);
-
 
 
         registerSimple(TamilSimpleCharacter.KA).registerCompoundAt(TamilCompoundCharacter.IK_I);
@@ -243,10 +276,10 @@ import java.util.*;
         registerSimple(TamilSimpleCharacter.NA).registerCompoundAt(TamilCompoundCharacter.IN_I);
 
         registerSimple(TamilSimpleCharacter.SHA_).registerCompoundAt(TamilCompoundCharacter.ISH_I);
-         registerSimple(TamilSimpleCharacter.SSA_).registerCompoundAt(TamilCompoundCharacter.ISS_I);
+        registerSimple(TamilSimpleCharacter.SSA_).registerCompoundAt(TamilCompoundCharacter.ISS_I);
+        registerSimple(TamilSimpleCharacter.SSSA_).registerCompoundAt(TamilCompoundCharacter.ISSS_I);
         registerSimple(TamilSimpleCharacter.HA_).registerCompoundAt(TamilCompoundCharacter.IH_I);
         registerSimple(TamilSimpleCharacter.JA_).registerCompoundAt(TamilCompoundCharacter.IJ_I);
-
 
 
         registerSimple(TamilSimpleCharacter.KA).registerCompoundAt(TamilCompoundCharacter.IK_AA);
@@ -270,9 +303,9 @@ import java.util.*;
 
         registerSimple(TamilSimpleCharacter.SHA_).registerCompoundAt(TamilCompoundCharacter.ISH_AA);
         registerSimple(TamilSimpleCharacter.SSA_).registerCompoundAt(TamilCompoundCharacter.ISS_AA);
+        registerSimple(TamilSimpleCharacter.SSSA_).registerCompoundAt(TamilCompoundCharacter.ISSS_AA);
         registerSimple(TamilSimpleCharacter.HA_).registerCompoundAt(TamilCompoundCharacter.IH_AA);
         registerSimple(TamilSimpleCharacter.JA_).registerCompoundAt(TamilCompoundCharacter.IJ_AA);
-
 
 
         registerSimple(TamilSimpleCharacter.KA).registerCompoundAt(TamilCompoundCharacter.IK_A);
@@ -296,9 +329,9 @@ import java.util.*;
 
         registerSimple(TamilSimpleCharacter.SHA_).registerCompoundAt(TamilCompoundCharacter.ISH_A);
         registerSimple(TamilSimpleCharacter.SSA_).registerCompoundAt(TamilCompoundCharacter.ISS_A);
+        registerSimple(TamilSimpleCharacter.SSSA_).registerCompoundAt(TamilCompoundCharacter.ISSS_A);
         registerSimple(TamilSimpleCharacter.HA_).registerCompoundAt(TamilCompoundCharacter.IH_A);
         registerSimple(TamilSimpleCharacter.JA_).registerCompoundAt(TamilCompoundCharacter.IJ_A);
-
 
 
         registerSimple(TamilSimpleCharacter.KA).registerCompoundAt(TamilCompoundCharacter.IK_UU);
@@ -322,9 +355,9 @@ import java.util.*;
 
         registerSimple(TamilSimpleCharacter.SHA_).registerCompoundAt(TamilCompoundCharacter.ISH_UU);
         registerSimple(TamilSimpleCharacter.SSA_).registerCompoundAt(TamilCompoundCharacter.ISS_UU);
+        registerSimple(TamilSimpleCharacter.SSSA_).registerCompoundAt(TamilCompoundCharacter.ISSS_UU);
         registerSimple(TamilSimpleCharacter.HA_).registerCompoundAt(TamilCompoundCharacter.IH_UU);
         registerSimple(TamilSimpleCharacter.JA_).registerCompoundAt(TamilCompoundCharacter.IJ_UU);
-
 
 
         registerSimple(TamilSimpleCharacter.KA).registerCompoundAt(TamilCompoundCharacter.IK_U);
@@ -347,10 +380,10 @@ import java.util.*;
         registerSimple(TamilSimpleCharacter.NA).registerCompoundAt(TamilCompoundCharacter.IN_U);
 
         registerSimple(TamilSimpleCharacter.SHA_).registerCompoundAt(TamilCompoundCharacter.ISH_U);
-         registerSimple(TamilSimpleCharacter.SSA_).registerCompoundAt(TamilCompoundCharacter.ISS_U);
+        registerSimple(TamilSimpleCharacter.SSA_).registerCompoundAt(TamilCompoundCharacter.ISS_U);
+        registerSimple(TamilSimpleCharacter.SSSA_).registerCompoundAt(TamilCompoundCharacter.ISSS_U);
         registerSimple(TamilSimpleCharacter.HA_).registerCompoundAt(TamilCompoundCharacter.IH_U);
         registerSimple(TamilSimpleCharacter.JA_).registerCompoundAt(TamilCompoundCharacter.IJ_U);
-
 
 
         registerSimple(TamilSimpleCharacter.KA).registerCompoundAt(TamilCompoundCharacter.IK_EE);
@@ -374,9 +407,9 @@ import java.util.*;
 
         registerSimple(TamilSimpleCharacter.SHA_).registerCompoundAt(TamilCompoundCharacter.ISH_EE);
         registerSimple(TamilSimpleCharacter.SSA_).registerCompoundAt(TamilCompoundCharacter.ISS_EE);
+        registerSimple(TamilSimpleCharacter.SSSA_).registerCompoundAt(TamilCompoundCharacter.ISSS_EE);
         registerSimple(TamilSimpleCharacter.HA_).registerCompoundAt(TamilCompoundCharacter.IH_EE);
         registerSimple(TamilSimpleCharacter.JA_).registerCompoundAt(TamilCompoundCharacter.IJ_EE);
-
 
 
         registerSimple(TamilSimpleCharacter.KA).registerCompoundAt(TamilCompoundCharacter.IK_E);
@@ -400,9 +433,9 @@ import java.util.*;
 
         registerSimple(TamilSimpleCharacter.SHA_).registerCompoundAt(TamilCompoundCharacter.ISH_E);
         registerSimple(TamilSimpleCharacter.SSA_).registerCompoundAt(TamilCompoundCharacter.ISS_E);
+        registerSimple(TamilSimpleCharacter.SSSA_).registerCompoundAt(TamilCompoundCharacter.ISSS_E);
         registerSimple(TamilSimpleCharacter.HA_).registerCompoundAt(TamilCompoundCharacter.IH_E);
         registerSimple(TamilSimpleCharacter.JA_).registerCompoundAt(TamilCompoundCharacter.IJ_E);
-
 
 
         registerSimple(TamilSimpleCharacter.KA).registerCompoundAt(TamilCompoundCharacter.IK_aa);
@@ -426,45 +459,91 @@ import java.util.*;
 
         registerSimple(TamilSimpleCharacter.SHA_).registerCompoundAt(TamilCompoundCharacter.ISH_aa);
         registerSimple(TamilSimpleCharacter.SSA_).registerCompoundAt(TamilCompoundCharacter.ISS_aa);
+        registerSimple(TamilSimpleCharacter.SSSA_).registerCompoundAt(TamilCompoundCharacter.ISSS_aa);
         registerSimple(TamilSimpleCharacter.HA_).registerCompoundAt(TamilCompoundCharacter.IH_aa);
         registerSimple(TamilSimpleCharacter.JA_).registerCompoundAt(TamilCompoundCharacter.IJ_aa);
 
 
+        // These have to registered later to help the normalization.
 
-    }
+        registerSimple(TamilSimpleCharacter.KA).registerCompoundAt(TamilCompoundCharacter.IK_OU);
+        registerSimple(TamilSimpleCharacter.NGA).registerCompoundAt(TamilCompoundCharacter.ING_OU);
+        registerSimple(TamilSimpleCharacter.SA).registerCompoundAt(TamilCompoundCharacter.ICH_OU);
+        registerSimple(TamilSimpleCharacter.NYA).registerCompoundAt(TamilCompoundCharacter.INJ_OU);
+        registerSimple(TamilSimpleCharacter.DA).registerCompoundAt(TamilCompoundCharacter.IDD_OU);
+        registerSimple(TamilSimpleCharacter.NNNA).registerCompoundAt(TamilCompoundCharacter.INNN_OU);
+        registerSimple(TamilSimpleCharacter.THA).registerCompoundAt(TamilCompoundCharacter.ITH_OU);
+        registerSimple(TamilSimpleCharacter.NTHA).registerCompoundAt(TamilCompoundCharacter.INTH_OU);
+        registerSimple(TamilSimpleCharacter.PA).registerCompoundAt(TamilCompoundCharacter.IP_OU);
+        registerSimple(TamilSimpleCharacter.MA).registerCompoundAt(TamilCompoundCharacter.IM_OU);
+        registerSimple(TamilSimpleCharacter.YA).registerCompoundAt(TamilCompoundCharacter.IY_OU);
+        registerSimple(TamilSimpleCharacter.RA).registerCompoundAt(TamilCompoundCharacter.IR_OU);
+        registerSimple(TamilSimpleCharacter.LA).registerCompoundAt(TamilCompoundCharacter.IL_OU);
+        registerSimple(TamilSimpleCharacter.VA).registerCompoundAt(TamilCompoundCharacter.IV_OU);
+        registerSimple(TamilSimpleCharacter.LLLA).registerCompoundAt(TamilCompoundCharacter.ILLL_OU);
+        registerSimple(TamilSimpleCharacter.LLA).registerCompoundAt(TamilCompoundCharacter.ILL_OU);
+        registerSimple(TamilSimpleCharacter.RRA).registerCompoundAt(TamilCompoundCharacter.IRR_OU);
+        registerSimple(TamilSimpleCharacter.NA).registerCompoundAt(TamilCompoundCharacter.IN_OU);
 
-
-
-
-    /**
-     * Looks up a tamil character based on the given code point
-     * See {@link #currentChar} to know the character interpreted.
-     *
-     * @param value the code point value
-     * @return null if it is not start of a tamil character
-     *
-     */
-    public static TamilCharacterLookUpContext lookup(int value) {
-        return map.get(value);
-    }
-
-
-    /**
-     * Concatenates the next code point with the current context.
-     *
-     * See {@link #currentChar} to know the character interpreted.
-     * @param value the next code point
-     * @return null, when the next code point cannot be concatenated with the current context,
-     */
-    public TamilCharacterLookUpContext next(int value) {
-        if (continuations == null) {
-            return null;
-        }
-        return continuations.get(value);
-    }
+        registerSimple(TamilSimpleCharacter.SHA_).registerCompoundAt(TamilCompoundCharacter.ISH_OU);
+        registerSimple(TamilSimpleCharacter.SSA_).registerCompoundAt(TamilCompoundCharacter.ISS_OU);
+        registerSimple(TamilSimpleCharacter.SSSA_).registerCompoundAt(TamilCompoundCharacter.ISSS_OU);
+        registerSimple(TamilSimpleCharacter.HA_).registerCompoundAt(TamilCompoundCharacter.IH_OU);
+        registerSimple(TamilSimpleCharacter.JA_).registerCompoundAt(TamilCompoundCharacter.IJ_OU);
 
 
-    static {
+        registerSimple(TamilSimpleCharacter.KA).registerCompoundAt(TamilCompoundCharacter.IK_OO);
+        registerSimple(TamilSimpleCharacter.NGA).registerCompoundAt(TamilCompoundCharacter.ING_OO);
+        registerSimple(TamilSimpleCharacter.SA).registerCompoundAt(TamilCompoundCharacter.ICH_OO);
+        registerSimple(TamilSimpleCharacter.NYA).registerCompoundAt(TamilCompoundCharacter.INJ_OO);
+        registerSimple(TamilSimpleCharacter.DA).registerCompoundAt(TamilCompoundCharacter.IDD_OO);
+        registerSimple(TamilSimpleCharacter.NNNA).registerCompoundAt(TamilCompoundCharacter.INNN_OO);
+        registerSimple(TamilSimpleCharacter.THA).registerCompoundAt(TamilCompoundCharacter.ITH_OO);
+        registerSimple(TamilSimpleCharacter.NTHA).registerCompoundAt(TamilCompoundCharacter.INTH_OO);
+        registerSimple(TamilSimpleCharacter.PA).registerCompoundAt(TamilCompoundCharacter.IP_OO);
+        registerSimple(TamilSimpleCharacter.MA).registerCompoundAt(TamilCompoundCharacter.IM_OO);
+        registerSimple(TamilSimpleCharacter.YA).registerCompoundAt(TamilCompoundCharacter.IY_OO);
+        registerSimple(TamilSimpleCharacter.RA).registerCompoundAt(TamilCompoundCharacter.IR_OO);
+        registerSimple(TamilSimpleCharacter.LA).registerCompoundAt(TamilCompoundCharacter.IL_OO);
+        registerSimple(TamilSimpleCharacter.VA).registerCompoundAt(TamilCompoundCharacter.IV_OO);
+        registerSimple(TamilSimpleCharacter.LLLA).registerCompoundAt(TamilCompoundCharacter.ILLL_OO);
+        registerSimple(TamilSimpleCharacter.LLA).registerCompoundAt(TamilCompoundCharacter.ILL_OO);
+        registerSimple(TamilSimpleCharacter.RRA).registerCompoundAt(TamilCompoundCharacter.IRR_OO);
+        registerSimple(TamilSimpleCharacter.NA).registerCompoundAt(TamilCompoundCharacter.IN_OO);
+
+        registerSimple(TamilSimpleCharacter.SHA_).registerCompoundAt(TamilCompoundCharacter.ISH_OO);
+        registerSimple(TamilSimpleCharacter.SSA_).registerCompoundAt(TamilCompoundCharacter.ISS_OO);
+        registerSimple(TamilSimpleCharacter.SSSA_).registerCompoundAt(TamilCompoundCharacter.ISSS_OO);
+        registerSimple(TamilSimpleCharacter.HA_).registerCompoundAt(TamilCompoundCharacter.IH_OO);
+        registerSimple(TamilSimpleCharacter.JA_).registerCompoundAt(TamilCompoundCharacter.IJ_OO);
+
+
+        registerSimple(TamilSimpleCharacter.KA).registerCompoundAt(TamilCompoundCharacter.IK_O);
+        registerSimple(TamilSimpleCharacter.NGA).registerCompoundAt(TamilCompoundCharacter.ING_O);
+        registerSimple(TamilSimpleCharacter.SA).registerCompoundAt(TamilCompoundCharacter.ICH_O);
+        registerSimple(TamilSimpleCharacter.NYA).registerCompoundAt(TamilCompoundCharacter.INJ_O);
+        registerSimple(TamilSimpleCharacter.DA).registerCompoundAt(TamilCompoundCharacter.IDD_O);
+        registerSimple(TamilSimpleCharacter.NNNA).registerCompoundAt(TamilCompoundCharacter.INNN_O);
+        registerSimple(TamilSimpleCharacter.THA).registerCompoundAt(TamilCompoundCharacter.ITH_O);
+        registerSimple(TamilSimpleCharacter.NTHA).registerCompoundAt(TamilCompoundCharacter.INTH_O);
+        registerSimple(TamilSimpleCharacter.PA).registerCompoundAt(TamilCompoundCharacter.IP_O);
+        registerSimple(TamilSimpleCharacter.MA).registerCompoundAt(TamilCompoundCharacter.IM_O);
+        registerSimple(TamilSimpleCharacter.YA).registerCompoundAt(TamilCompoundCharacter.IY_O);
+        registerSimple(TamilSimpleCharacter.RA).registerCompoundAt(TamilCompoundCharacter.IR_O);
+        registerSimple(TamilSimpleCharacter.LA).registerCompoundAt(TamilCompoundCharacter.IL_O);
+        registerSimple(TamilSimpleCharacter.VA).registerCompoundAt(TamilCompoundCharacter.IV_O);
+        registerSimple(TamilSimpleCharacter.LLLA).registerCompoundAt(TamilCompoundCharacter.ILLL_O);
+        registerSimple(TamilSimpleCharacter.LLA).registerCompoundAt(TamilCompoundCharacter.ILL_O);
+        registerSimple(TamilSimpleCharacter.RRA).registerCompoundAt(TamilCompoundCharacter.IRR_O);
+        registerSimple(TamilSimpleCharacter.NA).registerCompoundAt(TamilCompoundCharacter.IN_O);
+
+        registerSimple(TamilSimpleCharacter.SHA_).registerCompoundAt(TamilCompoundCharacter.ISH_O);
+        registerSimple(TamilSimpleCharacter.SSA_).registerCompoundAt(TamilCompoundCharacter.ISS_O);
+        registerSimple(TamilSimpleCharacter.SSSA_).registerCompoundAt(TamilCompoundCharacter.ISSS_O);
+        registerSimple(TamilSimpleCharacter.HA_).registerCompoundAt(TamilCompoundCharacter.IH_O);
+        registerSimple(TamilSimpleCharacter.JA_).registerCompoundAt(TamilCompoundCharacter.IJ_O);
+
+
         for (TamilSimpleCharacter t : TamilSimpleCharacter.simplecharacters) {
             t.init();
         }
@@ -478,5 +557,76 @@ import java.util.*;
         TamilCompoundCharacter.characters = null;
 
 
+
+
+        for (TamilCharacterLookUpContext ik : iks) {
+            TamilCharacterLookUpContext ksha = ik.registerNext(TamilSimpleCharacter.SHA_.getValue(), TamilSuperCompoundCharacter.IKSHA);
+            ksha.registerCompoundAt(TamilCompoundCharacter.ISH_, TamilSuperCompoundCharacter.IKSH);
+
+
+
+            ksha.registerCompoundAt(TamilCompoundCharacter.ISH_aa, TamilSuperCompoundCharacter.IKSH_aa);
+             ksha.registerCompoundAt(TamilCompoundCharacter.ISH_E,TamilSuperCompoundCharacter.IKSH_E);
+             ksha.registerCompoundAt(TamilCompoundCharacter.ISS_EE,TamilSuperCompoundCharacter.IKSH_EE);
+             ksha.registerCompoundAt(TamilCompoundCharacter.ISH_U,TamilSuperCompoundCharacter.IKSH_U);
+             ksha.registerCompoundAt(TamilCompoundCharacter.ISH_UU,TamilSuperCompoundCharacter.IKSH_UU);
+             ksha.registerCompoundAt(TamilCompoundCharacter.ISH_A,TamilSuperCompoundCharacter.IKSH_A);
+             ksha.registerCompoundAt(TamilCompoundCharacter.ISH_AA,TamilSuperCompoundCharacter.IKSH_AA);
+             ksha.registerCompoundAt(TamilCompoundCharacter.ISH_I,TamilSuperCompoundCharacter.IKSH_I);
+
+             ksha.registerCompoundAt(TamilCompoundCharacter.ISH_O,TamilSuperCompoundCharacter.IKSH_O);
+             ksha.registerCompoundAt(TamilCompoundCharacter.ISH_OU,TamilSuperCompoundCharacter.IKSH_OU);
+             ksha.registerCompoundAt(TamilCompoundCharacter.ISH_OO,TamilSuperCompoundCharacter.IKSH_OO);
+
+
+
+        }
+//
+//        for (TamilCharacterLookUpContext iss : isss) {
+//            iss.registerSuperCompoundAt(TamilSuperCompoundCharacter.SHREE_);
+//        }
+
+        for (TamilSuperCompoundCharacter t : TamilSuperCompoundCharacter.supercompound) {
+            t.init();
+        }
+        TamilSuperCompoundCharacter.supercompound.clear();
+        TamilSuperCompoundCharacter.supercompound = null;
+
+
+        for (TamilCharacter t : getAllTamilCharacters()) {
+            t.postInit();
+        }
+
+
     }
+
+
+    /**
+     * Looks up a tamil character based on the given code point
+     * See {@link #currentChar} to know the character interpreted.
+     *
+     * @param value the code point value
+     * @return null if it is not start of a tamil character
+     */
+    public static TamilCharacterLookUpContext lookup(int value) {
+        return map.get(value);
+    }
+
+
+    /**
+     * Concatenates the next code point with the current context.
+     * <p/>
+     * See {@link #currentChar} to know the character interpreted.
+     *
+     * @param value the next code point
+     * @return null, when the next code point cannot be concatenated with the current context,
+     */
+    public TamilCharacterLookUpContext next(int value) {
+        if (continuations == null) {
+            return null;
+        }
+        return continuations.get(value);
+    }
+
+
 }

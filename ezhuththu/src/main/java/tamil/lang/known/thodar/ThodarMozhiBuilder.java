@@ -4,7 +4,7 @@ import tamil.lang.known.derived.PanhpupPeyarththiribu;
 import tamil.util.PathBuilder;
 import tamil.lang.known.IKnownWord;
 import tamil.lang.known.non.derived.IPeyarchchol;
-import tamil.lang.known.non.derived.Ottu;
+import tamil.lang.known.non.derived.idai.Ottu;
 import tamil.lang.known.non.derived.Vinaiyadi;
 
 import java.util.ArrayList;

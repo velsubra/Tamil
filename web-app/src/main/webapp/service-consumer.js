@@ -2,7 +2,7 @@
 var server = "rest/";
 
 //Enable this for local deployment , For server deployment comment-out.
-//server = "";
+server = "";
 
 
 var current_questions_id = null;
@@ -14,7 +14,7 @@ map_pages['edit-verb.html'] = 'வினைமுற்று';
 map_pages['edit-peyarechcham.html'] = 'பெயரெச்சம்';
 map_pages['edit-ethirmarrai-peyarechcham.html'] = 'எதிர்மறைப்பெயரெச்சம்';
 map_pages['edit-vinaiyechcham.html'] = 'வினையெச்சம்';
-map_pages['edit-vinaiyaalanaiyum-peyar.html'] = 'வினையாலணையும்பெயர்';
+map_pages['edit-vinaiyaalanaiyum-peyar.html'] = 'வினையாலணையும்பெயர்';                        //
 map_pages['edit-ethirmarrai-vinaiyaalanaiyum-peyar.html'] = 'எதிர்மறைவினையாலணையும்பெயர்';
 map_pages['edit-thozhirrPeyar.html'] = 'தொழிற்பெயர் ';
 map_pages['thodar-muttukal.html'] = 'தொடர்வினைமுற்று';

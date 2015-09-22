@@ -1,9 +1,9 @@
 package my.interest.lang.tamil.punar.thodar;
 
 import tamil.lang.known.IKnownWord;
-import tamil.lang.known.non.derived.Aththu;
+import tamil.lang.known.non.derived.idai.Aththu;
 import tamil.lang.known.non.derived.IPeyarchchol;
-import tamil.lang.known.non.derived.Ottu;
+import tamil.lang.known.non.derived.idai.Ottu;
 import my.interest.lang.tamil.punar.AbstractThodarmozhiBuilder;
 import my.interest.lang.tamil.punar.TamilWordPartContainer;
 import my.interest.lang.tamil.punar.ThodarMozhiBuilder;

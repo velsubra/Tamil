@@ -33,10 +33,10 @@ public class WordGeneratorFromIdai extends WordsGenerator {
             PropertyDescriptionContainer cont = per.getConsolidatedPropertyContainerFor(idai);
             if (cont.isChuttuIdaichchol()) {
                 Chuttuppeyar chol = new Chuttuppeyar(id, cont.isAtomicIdaichchol());
-                PersistenceInterface.addOrUpdateKnown(chol);
+                PersistenceInterface.addIfNotFound(chol);
             } else {
                 NonStartingIdaichchol chol = new NonStartingIdaichchol(id, cont.isAtomicIdaichchol());
-                PersistenceInterface.addOrUpdateKnown(chol);
+                PersistenceInterface.addIfNotFound(chol);
             }
 
 

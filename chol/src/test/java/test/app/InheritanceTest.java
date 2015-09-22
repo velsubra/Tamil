@@ -79,12 +79,12 @@ public class InheritanceTest {
         three.getResources().getResources().add(three3);
 
 
-        AppResource r = PersistenceInterface.findAppResource(all, one.getName(), one1.getName());
+        AppResource r = PersistenceInterface.findAppResource(all, one.getName(), one1.getName(), true);
         Assert.assertEquals(one1, r);
-        r = PersistenceInterface.findAppResource(all, one.getName(), one2.getName());
+        r = PersistenceInterface.findAppResource(all, one.getName(), one2.getName(), true);
         Assert.assertEquals(one2, r);
 
-        r = PersistenceInterface.findAppResource(all, two.getName(), one2.getName());
+        r = PersistenceInterface.findAppResource(all, two.getName(), one2.getName(), true);
         Assert.assertEquals(null, r);
 
         clearCache(all);
@@ -96,10 +96,10 @@ public class InheritanceTest {
         two.getResourceInheritance().getParentApps().add(one.getName());
         two.getResourceInheritance().setInheritanceOrder(ResourceInheritanceOrder.DEPTH_FIRST_PRE_ORDER);  //does not matter for now
 
-        r = PersistenceInterface.findAppResource(all, two.getName(), one2.getName());
-        Assert.assertEquals(PersistenceInterface.findAppResource(all, one.getName(), one2.getName()), r);
+        r = PersistenceInterface.findAppResource(all, two.getName(), one2.getName(),true);
+        Assert.assertEquals(PersistenceInterface.findAppResource(all, one.getName(), one2.getName(), true), r);
 
-        r = PersistenceInterface.findAppResource(all, two.getName(), three1.getName());
+        r = PersistenceInterface.findAppResource(all, two.getName(), three1.getName(),true);
         Assert.assertEquals(null, r);
 
        // setting one to inherit three
@@ -110,16 +110,16 @@ public class InheritanceTest {
 
 
         clearCache(all);
-        r = PersistenceInterface.findAppResource(all, two.getName(), three1.getName());
-        Assert.assertEquals(PersistenceInterface.findAppResource(all, three.getName(), three1.getName()), r);
+        r = PersistenceInterface.findAppResource(all, two.getName(), three1.getName(), true);
+        Assert.assertEquals(PersistenceInterface.findAppResource(all, three.getName(), three1.getName(), true), r);
         clearCache(all);
 
         // setting three to inherit one
         three.setResourceInheritance(new ResourceInheritance());
         three.getResourceInheritance().getParentApps().add(three.getName());
 
-        r = PersistenceInterface.findAppResource(all, three.getName(), three1.getName());
-        Assert.assertEquals(PersistenceInterface.findAppResource(all, two.getName(), three1.getName()), r);
+        r = PersistenceInterface.findAppResource(all, three.getName(), three1.getName(), true);
+        Assert.assertEquals(PersistenceInterface.findAppResource(all, two.getName(), three1.getName(), true), r);
 
 
 
@@ -139,7 +139,7 @@ public class InheritanceTest {
         four2.setName("four2");
         four.getResources().getResources().add(four2);
 
-        r = PersistenceInterface.findAppResource(all, four.getName(), same1.getName());
+        r = PersistenceInterface.findAppResource(all, four.getName(), same1.getName(), true);
         Assert.assertEquals(null, r);  // same is not available through 4
 
 
@@ -153,18 +153,18 @@ public class InheritanceTest {
         four.setResourceInheritance(new ResourceInheritance());
         four.getResourceInheritance().getParentApps().add(three.getName());
         four.getResourceInheritance().setInheritanceOrder(ResourceInheritanceOrder.DEPTH_FIRST_PRE_ORDER);
-        r = PersistenceInterface.findAppResource(all, four.getName(), same1.getName());
+        r = PersistenceInterface.findAppResource(all, four.getName(), same1.getName(), true);
         Assert.assertEquals(null, r);  // same is Still not available through 4
 
 
         // setting four to inherit two as well
         four.getResourceInheritance().getParentApps().add(two.getName());
-        r = PersistenceInterface.findAppResource(all, four.getName(), same1.getName());
+        r = PersistenceInterface.findAppResource(all, four.getName(), same1.getName(), true);
         Assert.assertEquals(null, r);  // same is Still not available through 4 as the cache is not cleared
 
         clearCache(all);
-        r = PersistenceInterface.findAppResource(all, four.getName(), same1.getName());
-        Assert.assertEquals(PersistenceInterface.findAppResource(all, two.getName(), same2.getName()), r);
+        r = PersistenceInterface.findAppResource(all, four.getName(), same1.getName(), true);
+        Assert.assertEquals(PersistenceInterface.findAppResource(all, two.getName(), same2.getName(), true), r);
 
         clearCache(all);
 
@@ -176,16 +176,16 @@ public class InheritanceTest {
         clearCache(all);
         four.getResourceInheritance().setInheritanceOrder(ResourceInheritanceOrder.BREADTH_FIRST);
 
-        r = PersistenceInterface.findAppResource(all, four.getName(), same1.getName());
-        Assert.assertEquals(PersistenceInterface.findAppResource(all, two.getName(), same2.getName()), r);
+        r = PersistenceInterface.findAppResource(all, four.getName(), same1.getName(), true);
+        Assert.assertEquals(PersistenceInterface.findAppResource(all, two.getName(), same2.getName(), true), r);
 
 
         clearCache(all);
         four.getResourceInheritance().setInheritanceOrder(ResourceInheritanceOrder.DEPTH_FIRST_PRE_ORDER);
 
         // in case of depth first, it should resolve from app one.
-        r = PersistenceInterface.findAppResource(all, four.getName(), same1.getName());
-        Assert.assertEquals(PersistenceInterface.findAppResource(all, one.getName(), same2.getName()), r);
+        r = PersistenceInterface.findAppResource(all, four.getName(), same1.getName(), true);
+        Assert.assertEquals(PersistenceInterface.findAppResource(all, one.getName(), same2.getName(), true), r);
 
     }
 

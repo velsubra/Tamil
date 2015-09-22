@@ -7,6 +7,7 @@ import tamil.lang.known.IKnownWord;
 import tamil.lang.spi.TamilDictionaryProvider;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
@@ -23,13 +24,21 @@ public class DictionaryCollection implements TamilDictionary {
     public DictionaryCollection(Iterator<TamilDictionaryProvider> iterator) {
         list = new ArrayList<TamilDictionary>();
         while (iterator.hasNext()) {
-            TamilDictionary d =iterator.next().create();
+            TamilDictionary d = iterator.next().create();
             if (d != null) {
                 list.add(d);
             }
         }
 
     }
+
+
+    public DictionaryCollection(List<TamilDictionary> list) {
+        this.list = new ArrayList<TamilDictionary>();
+        this.list.addAll(list);
+
+    }
+
 
     /**
      * looks up for a known tamil word.
@@ -165,4 +174,70 @@ public class DictionaryCollection implements TamilDictionary {
         }
 
     }
+
+    /**
+     * Returns the size of the dictionary
+     *
+     * @return the size >=0
+     */
+    public int size() {
+        int size = 0;
+        for (TamilDictionary d : this.list) {
+            if (d == this) continue;
+            size += d.size();
+        }
+        return size;
+    }
+
+    public IKnownWord peek(IKnownWord known) {
+        for (TamilDictionary d : this.list) {
+            if (d == this) continue;
+            IKnownWord k = d.peek(known);
+            if (k != null) {
+                return k;
+            }
+        }
+        return null;
+    }
+
+
+    public Collection<Class<? extends IKnownWord>> getWordTypes() {
+        Collection<Class<? extends IKnownWord>> finalTypes = new java.util.HashSet<Class<? extends IKnownWord>>();
+        for (TamilDictionary d : this.list) {
+            if (d == this) continue;
+            Collection<Class<? extends IKnownWord>> sublist = d.getWordTypes();
+            if (sublist != null) {
+                finalTypes.addAll(sublist);
+            }
+        }
+        return finalTypes;
+    }
+
+
+    public TamilDictionary getMiniDictionaryForWordType(Class<? extends IKnownWord> type) {
+
+        List<TamilDictionary> list = new ArrayList<TamilDictionary>();
+        for (TamilDictionary d : this.list) {
+            if (d == this) continue;
+            TamilDictionary sub = d.getMiniDictionaryForWordType(type);
+            if (sub != null) {
+                list.add(sub);
+            }
+        }
+        return new DictionaryCollection(list);
+    }
+
+    public boolean contains(TamilDictionary dictionary) {
+        if (list.contains(dictionary)) return true;
+        for (TamilDictionary d : this.list) {
+            if (d == this) continue;
+            if (DictionaryCollection.class.isAssignableFrom(d.getClass())) {
+                if (((DictionaryCollection) d).contains(dictionary)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
 }

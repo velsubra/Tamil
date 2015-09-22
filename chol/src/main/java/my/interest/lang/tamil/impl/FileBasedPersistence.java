@@ -9,8 +9,8 @@ import my.interest.lang.tamil.multi.WordGeneratorFromIdai;
 import my.interest.lang.tamil.multi.WordGeneratorFromPeyar;
 import my.interest.lang.tamil.multi.WordGeneratorFromVinaiyadi;
 import my.interest.lang.tamil.punar.handler.verrrrumai.VAllHandler;
-import tamil.lang.TamilWord;
-import tamil.lang.known.non.derived.*;
+import my.interest.lang.tamil.xml.AppCache;
+import tamil.lang.known.non.derived.idai.*;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
@@ -32,6 +32,7 @@ public class FileBasedPersistence extends PersistenceInterface   {
     static final Logger logger = Logger.getLogger(FileBasedPersistence.class.getName());
     private String path = null;
 
+    public static PersistenceInterface ME_SINGLETON = new FileBasedPersistence();
 
 
     static TamilRootWords cached = null;
@@ -146,6 +147,17 @@ public class FileBasedPersistence extends PersistenceInterface   {
 
     private static void reCompileAllScripts() {
         for (AppDescription app : cached.getApps().getApps().getList().getApp()) {
+            if (app.getCache() == null)  {
+                app.setCache(new AppCache());
+            }
+            if (app.getCache().getAppClassLoader() == null) {
+                try {
+                    app.getCache().buildClassloader(app);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    //ignore
+                }
+            }
 
             if (app.getResources() == null) {
                 app.setResources(new AppResources());
@@ -165,7 +177,7 @@ public class FileBasedPersistence extends PersistenceInterface   {
         }
     }
 
-    public FileBasedPersistence() {
+    private FileBasedPersistence() {
         this.path = new File(getWorkDir(), "i18n.xml").getAbsolutePath();
         if (lastloaded == null) {
             lastloaded = getLastModified();
@@ -267,14 +279,19 @@ public class FileBasedPersistence extends PersistenceInterface   {
                 }
 
 
-                addKnown(new Kalh());
-                addKnown(new AtomicIsolatedIdai(TamilWord.from("தான்")));
-                addKnown(new AtomicIsolatedIdai(TamilWord.from("உம்")));
-                addKnown(new Aththu());
-                addKnown(new Ottu("க்"));
-                addKnown(new Ottu("ச்"));
-                addKnown(new Ottu("த்"));
-                addKnown(new Ottu("ப்"));
+                addKnown( Kalh.KALH);
+                addKnown(Thaan.THAAN);
+                addKnown(Um.UM);
+                addKnown(Aththu.ATHTHU);
+                addKnown(Ottu.IK);
+                addKnown(Ottu.ICH);
+                addKnown(Ottu.ITH);
+                addKnown(Ottu.IP);
+                addKnown(Aaga.AAGA);
+                addKnown(Aay.AAY);
+                addKnown(Aa.AA);
+                addKnown(Ea.EA);
+                addKnown(Oa.OA);
 
 //                addKnown(new Ottu("ந்"));
 //                addKnown(new Ottu("ஞ்"));
@@ -419,5 +436,8 @@ public class FileBasedPersistence extends PersistenceInterface   {
     }
 
 
-
+    @Override
+    public GlobalTypes getNounGlobalTypes() {
+        return getAllRootWords().getPeyar().getGlobalTypes();
+    }
 }

@@ -121,6 +121,20 @@
             <scope>provided</scope>
         </dependency>
 
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20090211</version>
+            <scope>provided</scope>
+        </dependency>
+
+
+        <dependency>
+            <groupId>org.apache.maven</groupId>
+            <artifactId>maven-model</artifactId>
+            <version>3.1.0</version>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
     <build>
         <finalName>tamil-web-app</finalName>
@@ -140,6 +154,7 @@
                     </execution>
                 </executions>
                 <configuration>
+
                     <recursive>true</recursive>
                     <directoryRoots>
                         <directoryRoot>${basedir}/src/main/webapp/js/api</directoryRoot>

@@ -8,6 +8,7 @@ import tamil.lang.TamilFactory;
 import tamil.lang.TamilSimpleCharacter;
 import tamil.lang.TamilWord;
 import tamil.lang.known.non.derived.IPeyarchchol;
+import tamil.lang.known.non.derived.idai.Kalh;
 import tamil.lang.known.non.derived.Vinaiyadi;
 
 /**
@@ -22,7 +23,17 @@ public final class VinaiyaalanhaiyumPeyar extends DerivativeWithTenseAndPaal imp
     static TamilWord illai = TamilWord.from("illai");
     static TamilWord unhdu = TamilWord.from("unhdu");
     public VinaiyaalanhaiyumPeyar(TamilWord word, Vinaiyadi vinaiyadi, SimpleTense tense, PaalViguthi viguthi) {
+        this(word,vinaiyadi,tense,viguthi,false);
+    }
+    public VinaiyaalanhaiyumPeyar(TamilWord word, Vinaiyadi vinaiyadi, SimpleTense tense, PaalViguthi viguthi, boolean derived) {
         super(word, vinaiyadi, tense, viguthi);
+        if (derived) return;
+        if (viguthi == PaalViguthi.AAR || viguthi == PaalViguthi.AR) {
+            TamilWord withkalh = word.duplicate();
+            withkalh.addAll(Kalh.KALH.getWord());
+            VinaiyaalanhaiyumPeyar kalh = new VinaiyaalanhaiyumPeyar(withkalh, vinaiyadi, tense, viguthi, true);
+            TamilFactory.getSystemDictionary().add(kalh);
+        }
 
         if (PaalViguthi.THU == viguthi) {
 

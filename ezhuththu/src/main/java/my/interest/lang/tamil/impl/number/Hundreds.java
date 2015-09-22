@@ -80,7 +80,7 @@ public class Hundreds extends AbstractPlace {
                     word = new TamilWordPartContainer(TamilWord.from("ஐந்நூற்று"));
 
                 } else {
-                    word = new TamilWordPartContainer(TamilWord.from("ஐநூறு"));
+                    word = new TamilWordPartContainer(TamilWord.from("ஐந்நூறு"));
                 }
                 break;
 

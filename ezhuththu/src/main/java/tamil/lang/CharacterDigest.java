@@ -8,7 +8,7 @@ import java.util.List;
  * Gets different character digest for a Word.  This provides a different view of a word through
  * <ol>
  * <li>Character type (ஆய்தம் = 1, உயிர் = 2, மெய் = 3, உயிர்மெய் = 4 )</li>
- * <li>Constants(மெய்யெழுத்துகள் க் = 1, ங் = 2  ,ச் = 3 ...  ன் = 18 )  </li>
+ * <li>Consonants(மெய்யெழுத்துகள் க் = 1, ங் = 2  ,ச் = 3 ...  ன் = 18 )  </li>
  * <li>Sound size (மாத்திரை =>  மெய், ஆயுதம் = 0.5, குறில் = 1 , நெடில் = 2.0 )</li>
  * <li>Sound strength (வல்லினம் = 3, மெல்லினம் = 1 , இடையினம் = 2 )</li>
  * <li>Vowels(உயிரெழுத்துகள் அ = 1, ஆ = 2 .... ஔ = 12 ) </li>
@@ -31,6 +31,7 @@ import java.util.List;
  * System.out.println("getSoundSizeDigest\t\t: " + w.getSoundSizeDigest().toString());
  * System.out.println("getSoundStrengthDigest\t: " + w.getSoundStrengthDigest().toString());
  * System.out.println("getVowelDigest\t\t\t: " + w.getVowelDigest().toString());
+ * System.out.println("getPositionDigest\t\t\t: " + w.getPositionDigest().toString());
  *
  *     The above code prints
  *
@@ -38,7 +39,8 @@ import java.util.List;
  * getConsonantDigest       : _03__08__07__10__15_
  * getSoundSizeDigest       : _1.0__0.5__1.0__1.0__0.5_
  * getSoundStrengthDigest   : _3__1__3__1__2_
- * getVowelDigest           : _07__0.0__01__03__0.0_
+ * getVowelDigest           : _07__00__01__03__00_
+ * getPositionDigest        :
  * </pre>
  *
  * @author velsubra
@@ -47,8 +49,17 @@ import java.util.List;
  * @see TamilWord#getSoundSizeDigest()
  * @see TamilWord#getSoundStrengthDigest()
  * @see TamilWord#getVowelDigest()
+ * @see TamilWord#getPositionDigest() ()
  */
 public final class CharacterDigest extends ArrayList<String> implements Comparable {
+
+
+    /**
+     * Enumeration of types.
+     */
+    public static enum CHAR_DIGEST {
+        VOWEL, CONSONANT, CHAR_TYPE, SOUND_SIZE, SOUND_STRENGTH, POSITION
+    }
 
     @Override
     public String toString() {

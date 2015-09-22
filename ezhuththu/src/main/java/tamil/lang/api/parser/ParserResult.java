@@ -2,6 +2,8 @@ package tamil.lang.api.parser;
 
 import tamil.lang.TamilWord;
 import tamil.lang.known.IKnownWord;
+import tamil.lang.known.non.derived.ITheriyaachchol;
+import tamil.lang.known.non.derived.Theriyaachchol;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -166,5 +168,14 @@ public class ParserResult implements Comparable {
         public String getMessage() {
             return message;
         }
+    }
+
+    public Theriyaachchol findUnknownPart() {
+        for (IKnownWord know : splitWords) {
+            if (ITheriyaachchol.class.isAssignableFrom(know.getClass()))  {
+                return (Theriyaachchol)know;
+            }
+        }
+        return null;
     }
 }

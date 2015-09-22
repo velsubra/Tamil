@@ -9,6 +9,7 @@ import tamil.lang.TamilWord;
 import tamil.lang.sound.AtomicSound;
 import tamil.lang.sound.TamilSoundLookUpContext;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -25,6 +26,7 @@ public class SoundTest {
     @Test
     public void testList() throws Exception {
         List<AtomicSound> list = TamilSoundLookUpContext.getAllTamilSounds();
+        Collections.sort(list);
         int count = 0;
         for (AtomicSound s : list) {
             count++;

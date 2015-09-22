@@ -20,9 +20,9 @@ public class NumberReaderResource extends BaseResource {
 
 
     @GET
-    @Path("/one/")
+    @Path("/totext/one/")
     @Produces("application/json; charset=UTF-8")
-    public String readGet(@QueryParam("number") String number, @DefaultValue("") @QueryParam("features") String features) throws Exception {
+    public String readTextGet(@QueryParam("number") String number, @DefaultValue("") @QueryParam("features") String features) throws Exception {
         JSONObject obj = new JSONObject();
         try {
             NumberReader reader = TamilFactory.getNumberReader();
@@ -33,5 +33,22 @@ public class NumberReaderResource extends BaseResource {
         }
         return obj.toString();
     }
+
+
+    @GET
+    @Path("/tonumber/one/")
+    @Produces("application/json; charset=UTF-8")
+    public String readNumberGet(@QueryParam("number") String number, @DefaultValue("") @QueryParam("features") String features) throws Exception {
+        JSONObject obj = new JSONObject();
+        try {
+            NumberReader reader = TamilFactory.getNumberReader();
+            String w = reader.readAsNumber(number, FeatureSet.findFeatures(ReaderFeature.class, features).toArray(new ReaderFeature[]{}));
+            obj.put("number", w);
+        } catch (Exception e) {
+            handle(obj, e);
+        }
+        return obj.toString();
+    }
+
 
 }

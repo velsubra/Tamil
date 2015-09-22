@@ -33,12 +33,88 @@ public abstract class TamilCharacter extends AbstractCharacter {
     protected static final int VADA_MOZHI = 16;
 
     protected static final int KURIL = 32;
-    //protected static final int NEDIL = 64;
+    protected static final int NEDIL = 64;
 
 
     protected static final int VALLINAM = 128;
     protected static final int MELLINAM = 256;
     protected static final int IDAIYINAM = 512;
+
+
+    protected static final int MOZHI_MUTHAL = 1024;
+
+    protected static final int MOZHI_LAST = 2048;
+
+
+    /**
+     * Initialize all the derivations during the character initialization.
+     */
+    protected void postInit() {
+        this.typeSpecification |= _isMozhimuthal() ? MOZHI_MUTHAL : 0;
+        this.typeSpecification |= _isMozhiLast() ? MOZHI_LAST : 0;
+    }
+
+
+    private boolean _isMozhiLast() {
+        if (!isPureTamilLetter()) return false;
+        if (isUyirezhuththu()) return false;
+        if (isAaythavezhuththu()) return false;
+        if (isVadaMozhiYezhuththu()) return false;
+
+
+        if (isMeyyezhuththu()) {
+            if (isVallinam()) return false;
+
+
+            if (this == TamilCompoundCharacter.INTH) return false;
+            if (this == TamilCompoundCharacter.INJ) return false;
+            if (this == TamilCompoundCharacter.IV) return false;
+            return true;
+
+        }
+
+        //now it should be uyirmei
+        TamilCompoundCharacter mei = getMeiPart();
+        if (mei == TamilCompoundCharacter.ING) return false;
+
+        TamilSimpleCharacter uyir = getUyirPart();
+        if (uyir == TamilSimpleCharacter.A) return  false;
+        if (uyir == TamilSimpleCharacter.O) return  false;
+        if (uyir == TamilSimpleCharacter.OU) return  false;
+
+        return true;
+
+    }
+
+    private boolean _isMozhimuthal() {
+        if (!isPureTamilLetter()) return false;
+        if (isUyirezhuththu()) return true;
+        if (isMeyyezhuththu()) return false;
+        if (isAaythavezhuththu()) return false;
+        if (isVadaMozhiYezhuththu()) return false;
+        if (isUyirMeyyezhuththu()) {
+            TamilCompoundCharacter mei = getMeiPart();
+            TamilSimpleCharacter uyir = getUyirPart();
+            if (mei == TamilCompoundCharacter.IDD) return false;
+            if (mei == TamilCompoundCharacter.IRR) return false;
+            if (mei == TamilCompoundCharacter.ING) return false;
+            if (mei == TamilCompoundCharacter.INNN) return false;
+            if (mei == TamilCompoundCharacter.IN) return false;
+            if (mei == TamilCompoundCharacter.IR) return false;
+            if (mei == TamilCompoundCharacter.IL) return false;
+            if (mei == TamilCompoundCharacter.ILL) return false;
+            if (mei == TamilCompoundCharacter.ILLL) return false;
+            if ((mei == TamilCompoundCharacter.IV)) {
+                //nothing starts with வு
+                if (uyir == TamilSimpleCharacter.U) {
+                    return false;
+
+                }
+            }
+        }
+
+        return true;
+    }
 
     /**
      * Integer holding the specification of character. Bits in this number are used to store specification of this character.
@@ -46,6 +122,40 @@ public abstract class TamilCharacter extends AbstractCharacter {
      * Please use {@link #isUyirezhuththu()}  instead.
      */
     protected int typeSpecification = 0;
+
+
+    /**
+     * Returns if the character can be the first character in a legal  Tamil word
+     *
+     * @return true if yes , false otherwise.
+     */
+    public final boolean isWordToStartWith() {
+        return (typeSpecification & MOZHI_MUTHAL) != 0;
+    }
+
+
+    /**
+     * Returns if the character can be contained in a word in such a way that has adjacent.
+     *
+     * @return true if the letter could be part of a word.
+     */
+    public boolean isWordToContain() {
+        if (isPureTamilLetter()) {
+            return !isUyirezhuththu();
+        } else {
+            return false;
+        }
+    }
+
+
+    /**
+     * Returns if the character can be  the last character in a legal  Tamil word
+     *
+     * @return true if yes , false otherwise.
+     */
+    public final boolean isWordToEndWith() {
+        return (typeSpecification & MOZHI_LAST) != 0;
+    }
 
 
     /**
@@ -101,6 +211,16 @@ public abstract class TamilCharacter extends AbstractCharacter {
      */
     public final boolean isKurilezhuththu() {
         return (typeSpecification & KURIL) != 0;
+    }
+
+
+    /**
+     * Returns if the character is  நெடில்
+     *
+     * @return true for நெடில் , false otherwise
+     */
+    public final boolean isNtedilezhuththu() {
+        return (typeSpecification & NEDIL) != 0;
     }
 
     /**
@@ -217,6 +337,7 @@ public abstract class TamilCharacter extends AbstractCharacter {
         }
     }
 
+
     public static enum DIGEST_CHAR_TYPE {
         _AY_, _U_, _M_, _UM_;
 
@@ -254,6 +375,29 @@ public abstract class TamilCharacter extends AbstractCharacter {
         return charDigest;
     }
 
+
+    private String positionDigest = null;
+
+    public String getPositionDigest() {
+        if (positionDigest == null) {
+            int val = 0;
+
+            if (isWordToStartWith()) {
+                val += 1;
+            }
+
+            if (isWordToContain()) {
+                val += 2;
+            }
+            if (isWordToEndWith()) {
+                val += 4;
+            }
+
+            positionDigest = "_" + val + "_";
+        }
+        return positionDigest;
+    }
+
     public static enum DIGEST_SOUND_STRENGTH {
         _M_, _I_, _V_;
 
@@ -281,7 +425,6 @@ public abstract class TamilCharacter extends AbstractCharacter {
     }
 
     private String soundDigest = null;
-
     public String getSoundSizeDigest() {
         if (soundDigest == null) {
 
@@ -298,14 +441,69 @@ public abstract class TamilCharacter extends AbstractCharacter {
     }
 
 
-    @Override
     public int compareTo(Object o) {
 
         if (!TamilCharacter.class.isAssignableFrom(o.getClass())) {
             return -1;
         }
-        return Integer.valueOf(getNumericStrength()).compareTo(((TamilCharacter) o).getNumericStrength());
+        TamilCharacter tamil = (TamilCharacter) o;
+//        if (isVadaMozhiYezhuththu()) {
+//            if (tamil.isVadaMozhiYezhuththu()) {
+//                return 0;
+//            } else {
+//               return -1;
+//            }
+//        } else {
+//            if (tamil.isVadaMozhiYezhuththu()) {
+//                return 1;
+//            }
+//        }
+        if (this == tamil) {
+            return 0;
+        } else {
+            if (isAaythavezhuththu()) {
+                return -1;
+            } else if (tamil.isAaythavezhuththu()) {
+                return 1;
+            }
+
+            if (isUyirezhuththu() || isUyirMeyyezhuththu()) {
+                if (tamil.isUyirezhuththu() || tamil.isUyirMeyyezhuththu()) {
+                    int uyri = new Integer(getUyirPart().getNumericStrength()).compareTo(tamil.getUyirPart().getNumericStrength());
+                    if (uyri == 0) {
+                        if (isUyirMeyyezhuththu()) {
+                            if (tamil.isUyirMeyyezhuththu()) {
+                                return new Integer(getMeiPart().getNumericStrength()).compareTo(tamil.getMeiPart().getNumericStrength());
+                            } else {
+                                return 1;
+                            }
+                        } else {
+                            if (tamil.isUyirMeyyezhuththu()) {
+                                return -1;
+                            } else {
+                                return 0;
+                            }
+                        }
+                    } else {
+                        return uyri;
+                    }
+                } else {
+                    return 1;
+                }
+            } else {
+                // this is mei
+
+                if (tamil.isMeyyezhuththu()) {
+                    return getNumericStrength() - tamil.getNumericStrength();
+                } else {
+                    // tamil has uyir
+                    return -1;
+                }
+            }
+
+        }
     }
+    // return Integer.valueOf(getNumericStrength()).compareTo(((TamilCharacter) o).getNumericStrength());
 
 
     public boolean equals(TamilCharacter ch, boolean full) {
@@ -429,8 +627,6 @@ public abstract class TamilCharacter extends AbstractCharacter {
         }
         return vallinam;
     }
-
-
 
 
 }

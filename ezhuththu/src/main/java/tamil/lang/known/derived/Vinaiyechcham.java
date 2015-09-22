@@ -4,11 +4,11 @@ package tamil.lang.known.derived;
 import my.interest.lang.tamil.generated.types.PaalViguthi;
 import my.interest.lang.tamil.generated.types.RootVerbDescription;
 import my.interest.lang.tamil.generated.types.SimpleTense;
-
 import my.interest.lang.tamil.punar.PropertyDescriptionContainer;
 import my.interest.lang.tamil.punar.TamilWordPartContainer;
 import my.interest.lang.tamil.punar.handler.VinaiMutruCreationHandler;
 import tamil.lang.*;
+import tamil.lang.known.derived.inhaippu.VinaiIf;
 import tamil.lang.known.non.derived.IVinaiyechcham;
 import tamil.lang.known.non.derived.Vinaiyadi;
 
@@ -17,19 +17,25 @@ import java.util.Map;
 
 /**
  * <p>
- *     வினையெச்சம் எ.கா) வர, வந்து
+ * வினையெச்சம் எ.கா) வர, வந்து
  * </p>
  *
  * @author velsubra
  */
 public final class Vinaiyechcham extends DerivativeWithTense implements IVinaiyechcham {
 
-    static TamilWord ulh = TamilWord.from("ulh");
-    static TamilWord illai = TamilWord.from("illai");
+    static final TamilWord ulh = TamilWord.from("ulh");
+    static final TamilWord illai = TamilWord.from("illai");
+
+
+    static final TamilWord chol = TamilWord.from("சொல்");
+
+    static final TamilWord aagu = TamilWord.from("ஆகு");
+
 
     private static final Map<PaalViguthi, TamilWord> ulhlhana = new HashMap<PaalViguthi, TamilWord>();
 
-    static  RootVerbDescription iruDescription = null;
+    static RootVerbDescription iruDescription = null;
 
     private static void fillMap() {
         for (PaalViguthi v : PaalViguthi.values()) {
@@ -70,14 +76,14 @@ public final class Vinaiyechcham extends DerivativeWithTense implements IVinaiye
                     w.add(TamilCompoundCharacter.IK_I);
                     ThozhirrPeyar th = new ThozhirrPeyar(w, vinaiyadi);
                     TamilFactory.getSystemDictionary().add(th);
-                }  else if (word.endsWith(TamilSimpleCharacter.KA)) {
+                } else if (word.endsWith(TamilSimpleCharacter.KA)) {
                     //பார்க்கை
                     TamilWord w = word.duplicate();
                     w.removeLast();
                     w.add(TamilCompoundCharacter.IK_I);
                     ThozhirrPeyar th = new ThozhirrPeyar(w, vinaiyadi);
                     TamilFactory.getSystemDictionary().add(th);
-                }   else {
+                } else {
 
                     //காண்கை
 
@@ -115,7 +121,7 @@ public final class Vinaiyechcham extends DerivativeWithTense implements IVinaiye
                 }
                 PropertyDescriptionContainer container = new PropertyDescriptionContainer(iruDescription);
                 for (PaalViguthi v : PaalViguthi.values()) {
-                    VinaiMuttu vm = new VinaiMuttu(ulhlhana.get(v), new Vinaiyadi(TamilWord.from("இரு"), container, false), SimpleTense.PRESENT, v, true);
+                    VinaiMuttu vm = new VinaiMuttu(ulhlhana.get(v), Vinaiyadi.get(TamilWord.from("இரு"), container, false), SimpleTense.PRESENT, v, true);
                     TamilFactory.getSystemDictionary().add(vm);
                 }
 
@@ -152,6 +158,11 @@ public final class Vinaiyechcham extends DerivativeWithTense implements IVinaiye
             }
 
             if (tense == SimpleTense.PAST) {
+
+//                if (aagu.equals(vinaiyadi.getWord())) {
+//                    TamilFactory.getSystemDictionary().add( new Vinaiyechcham(TamilWord.from("ஆய்"),vinaiyadi, tense, true));
+//                }
+
                 //வந்திற்று
                 TamilWord vm = null;
                 TamilCharacter last = word.getLast().asTamilCharacter();
@@ -168,7 +179,36 @@ public final class Vinaiyechcham extends DerivativeWithTense implements IVinaiye
                 }
                 TamilFactory.getSystemDictionary().add(new VinaiMuttu(vm, vinaiyadi, SimpleTense.PAST, PaalViguthi.THU, true));
                 TamilFactory.getSystemDictionary().add(new VinaiMuttu(vm, vinaiyadi, SimpleTense.PAST, PaalViguthi.A, true));
+
+
+                //சொன்னால்
+                //ஓடினால்
+                //ஒடித்தால்
+
+
+                if (last.isUyirMeyyezhuththu() && last.getUyirPart().equals(TamilSimpleCharacter.E)) {
+                    //சொல்லு is also accounted
+                    TamilWord ifaal = null;
+                    if (vinaiyadi.getWord().startsWith(chol)) {
+                        ifaal = TamilWord.from("சொன்னால்");
+                    } else {
+                        ifaal = word.duplicate();
+                        ifaal.add(TamilCompoundCharacter.IN_aa);
+                        ifaal.add(TamilCompoundCharacter.IL);
+                    }
+
+                    TamilFactory.getSystemDictionary().add(new VinaiIf(ifaal, vinaiyadi));
+
+                } else if (last.isUyirMeyyezhuththu() && last.getUyirPart().equals(TamilSimpleCharacter.U)) {
+                    TamilWord ifaal = word.duplicate();
+                    ifaal.add(ifaal.removeLast().asTamilCharacter().getMeiPart().addUyir(TamilSimpleCharacter.aa));
+                    ifaal.add(TamilCompoundCharacter.IL);
+                    TamilFactory.getSystemDictionary().add(new VinaiIf(ifaal, vinaiyadi));
+                }
+
             }
+
+
         }
     }
 

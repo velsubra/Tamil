@@ -202,6 +202,11 @@
         </xs:sequence>
     </xs:complexType>
 
+    <xs:complexType name="ExternalResource">
+        <xs:sequence>
+            <xs:element name="url" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
 
 
     <xs:complexType name="AppDescription">
@@ -221,7 +226,9 @@
             <xs:element name="code" type="xs:string"/>
             <xs:element name="root" type="xs:string"/>
             <xs:element name="name" type="xs:string"/>
+            <xs:element name="libraryDependencies" type="xs:string"/>
             <xs:element name="description" type="xs:string"/>
+            <xs:element name="externalResources" type="ExternalResource" minOccurs="0" maxOccurs="unbounded"/>
             <xs:element name="resources" type="AppResources"/>
             <xs:element name="resourceInheritance" type="ResourceInheritance"/>
         </xs:sequence>

@@ -12,7 +12,7 @@ import my.interest.lang.tamil.punar.handler.idai.KurilNedilHandler;
 import my.interest.lang.tamil.punar.handler.iyalbu.IyalbuPunarchiHandler;
 import my.interest.lang.tamil.punar.handler.iyalbu.JustAddHandler;
 import my.interest.lang.tamil.punar.handler.magaraveeru.NannolHandler219;
-import my.interest.lang.tamil.punar.handler.magaraveeru.NannolHandler227;
+import my.interest.lang.tamil.punar.handler.lagaraveeru.NannolHandler227;
 import my.interest.lang.tamil.punar.handler.nannool.*;
 import my.interest.lang.tamil.punar.handler.palapala.NannoolHandler170_Pala;
 import my.interest.lang.tamil.punar.handler.thannotru.ThannotruIrattiththalHandler;

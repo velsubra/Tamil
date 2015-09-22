@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Character recognition</title>
+
+    <script>
+        var IMAGE_DATA = null;
+        var SPLIT_TIMES = 1.5;
+        var SPLIT_THICK = 8;
+        var NO_SPLIT_IF_LESS = 0.5;
+
+        //  var EXPECTED_MAX_WIDTH = 20;
+
+        function possibleSections() {
+            this.thickness = new Array();
+            this.next0thick = -1;
+
+            this.insertThickness = function (x, thick) {
+                var index = this.thickness.length;
+                for (var i = 0; i < this.thickness.length; i++) {
+                    if (this.thickness[i].thick >= thick) {
+                        index = i;
+                        break;
+                    }
+                }
+
+                this.thickness.splice(index, 0, {"x": x, "thick": thick});
+            }
+
+        }
+
+        function charSection(imagedata, x, y, width, height, possibles) {
+            this.imagedata = imagedata;
+            this.x = x;
+            this.y = y;
+            this.width = width;
+            this.height = height;
+            this.possibles = possibles;
+            this.verticalSections = new Array();
+
+
+            //  console.log(this);
+
+            this.getImagePortion = function() {
+                var ctx =  this.imagedata.canvas.getContext("2d");
+               return ctx.getImageData(this.x, this.y, this.width -1, this.height -1);
+            }
+
+            this.splitTopBottom = function () {
+
+
+                var tempy = this.y;
+                while (tempy < this.y + this.height) {
+                    tempy++;
+                    var oldtempy = tempy;
+                    tempy = this.imagedata.getNextHorizontalY(this.x, tempy, this.width, this.height);
+                    if (tempy < 0) {
+                       tempy =  this.y + this.height;
+                    }
+
+                    if (tempy - this.y < this.height) {
+                        this.imagedata.drawLine(this.x, tempy, this.x + this.width, tempy);
+                    }
+                    if (tempy - oldtempy > 1) {
+                        var verticalpart  = new charSection(this.imagedata,this.x,oldtempy,this.width,tempy - oldtempy, null);
+                        this.verticalSections.push(verticalpart);
+                    }
+                }
+
+                console.log(this);
+            }
+
+            this.splitLeftRight = function () {
+                var average = this.imagedata.getAverageWidth();
+                // console.log("average:" + average +" this:" + this.width);
+                // console.log(this);
+                var try_with_next = true;
+                while (try_with_next) {
+                    try_with_next = false;
+                    //  if ((average * SPLIT_TIMES < this.width || this.width > EXPECTED_MAX_WIDTH) && this.possibles.thickness.length > 0) {
+                    if ((average * SPLIT_TIMES < this.width) && this.possibles.thickness.length > 0) {
+                        var lowthickpoint = this.possibles.thickness[0];
+                        console.log("lowthickpoint.thick :" + lowthickpoint.thick);
+                        if (lowthickpoint.thick < SPLIT_THICK) {    // we may change this later
+                            var index = this.getCharIndex();
+                            if (index >= 0) {
+                                this.possibles.thickness.splice(0, 1);
+                                var left_possibilities = new possibleSections();
+                                var right_possibilities = new possibleSections();
+                                for (var i = 0; i < this.possibles.thickness.length; i++) {
+                                    if (this.possibles.thickness[i].x < lowthickpoint.x) {
+                                        left_possibilities.insertThickness(this.possibles.thickness[i].x, this.possibles.thickness[i].thick);
+                                    } else {
+                                        right_possibilities.insertThickness(this.possibles.thickness[i].x, this.possibles.thickness[i].thick);
+                                    }
+                                }
+
+                                var leftchar = new charSection(this.imagedata, this.x, this.y, lowthickpoint.x - this.x, height, left_possibilities);
+                                var rightchar = new charSection(this.imagedata, lowthickpoint.x + 1, this.y, this.x + this.width - (lowthickpoint.x + 1), height, left_possibilities);
+
+                                if ((leftchar.width > average * NO_SPLIT_IF_LESS) && (rightchar.width > average * NO_SPLIT_IF_LESS)) {
+                                    this.imagedata.charsections[index] = rightchar;
+                                    this.imagedata.charsections.splice(index, 0, leftchar);
+                                    this.imagedata.drawLine(lowthickpoint.x, this.y - 1, lowthickpoint.x, this.y + this.height + 1, "#FF0000");
+                                    return true;
+                                } else {
+                                    try_with_next = true;
+                                }
+
+                            }
+
+                        }
+
+                    }
+                }
+                return false;
+            }
+
+            this.getCharIndex = function () {
+                for (var i = 0; i < this.imagedata.charsections.length; i++) {
+                    if (this.imagedata.charsections[i] == this) {
+                        return i;
+                    }
+                }
+                return -1;
+            }
+
+        }
+
+        function imageData(canvas, data, w, h) {
+            this.canvas = canvas;
+            this.data = data;
+            this.width = w;
+            this.height = h;
+            this.charsections = new Array();
+
+
+            this.getAverageWidth = function () {
+                if (this.charsections.length == 0) return 0;
+                var total = 0;
+                for (var i = 0; i < this.charsections.length; i++) {
+                    total += this.charsections[i].width;
+                }
+                return total / this.charsections.length;
+
+            }
+
+            this.getPixel = function (x, y) {
+                var red = data[((this.width * y) + x) * 4];
+                var green = data[((this.width * y) + x) * 4 + 1];
+                var blue = data[((this.width * y) + x) * 4 + 2];
+                var alpha = data[((this.width * y) + x) * 4 + 3];
+                return {"red": red, "green": green, "blue": blue, "alpha": alpha};
+            }
+
+            this.getMinX = function () {
+                for (var i = 0; i < this.width; i++) {
+                    for (var j = 0; j < this.height; j++) {
+                        if (this.getPixel(i, j).blue != 0) {
+                            return i;
+                        }
+                    }
+                }
+            }
+
+            this.getMaxX = function () {
+                for (var i = this.width - 1; i >= 0; i--) {
+                    for (var j = 0; j < this.height; j++) {
+                        if (this.getPixel(i, j).blue != 0) {
+                            return i;
+                        }
+                    }
+                }
+            }
+
+            this.getMinY = function () {
+                for (var i = 0; i < this.height; i++) {
+                    for (var j = 0; j < this.width; j++) {
+                        if (this.getPixel(j, i).blue != 0) {
+                            return i;
+                        }
+                    }
+                }
+            }
+
+            this.getMaxY = function () {
+                for (var i = this.height - 1; i >= 0; i--) {
+                    for (var j = 0; j < this.width; j++) {
+                        if (this.getPixel(j, i).blue != 0) {
+                            return i;
+                        }
+                    }
+                }
+            }
+
+            this.encloseText = function () {
+
+                var minx = this.getMinX();
+                var miny = this.getMinY();
+                var width = this.getMaxX() - minx + 1;
+                var height = this.getMaxY() - miny + 1;
+               // this.drawRect(minx - 1, miny - 1, width + 2, height + 2);
+
+
+                var tempx = minx;
+
+
+                while (true) {
+                    tempx++;
+                    var oldtempx = tempx;
+                    var possibilities = this.getNextVerticalX(tempx, miny, width, height);
+                    tempx = possibilities.next0thick;
+                    if (tempx < 0) {
+                        break;
+                    }
+
+
+                    if (tempx - minx < width) {
+                        this.drawLine(tempx, miny - 1, tempx, miny + height + 1);
+                    }
+
+                    if (tempx - oldtempx > 1) {
+//                        // A character is found.
+                        var thischar = new charSection(this, oldtempx, miny, tempx - oldtempx, height, possibilities);
+                        this.charsections.push(thischar);
+//
+//
+//
+                    }
+
+
+                    if (tempx - minx >= width) {
+                        break;
+                    }
+
+                }
+
+                console.log("Chars#:" + this.charsections.length);
+
+
+                var retry = true;
+                while (retry) {
+                    for (var i = 0; i < this.charsections.length; i++) {
+                        retry = this.charsections[i].splitLeftRight();
+                        if (retry) {
+                            break;
+                        }
+                    }
+                }
+
+                retry = true;
+                while (retry) {
+                    for (var i = 0; i < this.charsections.length; i++) {
+                        retry = this.charsections[i].splitLeftRight();
+                        if (retry) {
+                            break;
+                        }
+                    }
+                }
+
+                for (var i = 0; i < this.charsections.length; i++) {
+                    this.charsections[i].splitTopBottom();
+                }
+
+
+                for (var i = 0; i < this.charsections.length; i++) {
+                   var charfull =  this.charsections[i];
+                    var bufferCtx = this.canvas.getContext("2d");
+
+                   for (var j = 0; j < charfull.verticalSections.length; j++) {
+                       bufferCtx.putImageData(charfull.verticalSections[j].getImagePortion(), charfull.x, charfull.y + 150 - ((charfull.verticalSections.length-j)*50));
+                   }
+
+                }
+
+
+                console.log("Chars#:" + this.charsections.length);
+
+
+            }
+
+            this.drawLine = function (x, y, xe, ye, color) {
+                var ctx = this.canvas.getContext("2d");
+                ctx.lineWidth = "1";
+                ctx.strokeStyle = color ? color : "#00FF00";
+                ctx.beginPath();
+                ctx.moveTo(x, y);
+                ctx.lineTo(xe, ye);
+                ctx.stroke();
+            }
+
+            this.drawRect = function (x, y, w, h) {
+                var ctx = this.canvas.getContext("2d");
+                ctx.rect(x, y, w, h);
+                ctx.lineWidth = "1";
+                ctx.stroke();
+            }
+
+            this.getNextVerticalX = function (startx, starty, width, height) {
+                var possibilities = new possibleSections();
+                for (var i = startx; i < startx + width; i++) {
+
+                    var thick = 0;
+                    for (var j = starty; j < starty + height; j++) {
+                        if (this.getPixel(i, j).blue != 0) {
+                            thick++;
+                        }
+                    }
+                    if (thick == 0) {
+                        possibilities.next0thick = i;
+                        return possibilities;
+                    } else {
+                        possibilities.insertThickness(i, thick);
+                    }
+                }
+                return possibilities;
+            }
+
+
+            this.getNextHorizontalY = function (startx, starty, width, height) {
+                for (var j = starty; j < starty + height; j++) {
+                    var clean = true;
+                    for (var i = startx; i < startx + width; i++) {
+                        if (this.getPixel(i, j).blue != 0) {
+                            clean = false;
+                            break;
+                        }
+                    }
+                    if (clean) {
+                        return j;
+                    }
+                }
+                return -1;
+            }
+        }
+
+
+        function _init() {
+            var canvas = document.getElementById("e");
+            var context = canvas.getContext("2d");
+            context.fillStyle = "blue";
+            context.font = "32px Arial";
+            // var str = "கன்";
+            //var str = "வேல்முருகன்";
+          //  var str = "இது இன்னொருசோதனை ";
+            var str = "படம்பட்ம்  ";
+           // var str = "த்ட்ற்க்ச்ன்ழ்வ்வி தி ";
+            context.fillText(str, 50, 50);
+
+            var data = context.getImageData(0, 0, canvas.width, canvas.height);
+
+            IMAGE_DATA = new imageData(canvas, data.data, data.width, data.height);
+            console.log(IMAGE_DATA.getMinX());
+            console.log(IMAGE_DATA.getMaxX());
+
+            console.log(IMAGE_DATA.getMinY());
+            console.log(IMAGE_DATA.getMaxY())
+            IMAGE_DATA.encloseText();
+
+
+        }
+
+    </script>
+</head>
+
+<body onload="_init()">
+<div>
+    <canvas id="e" width="1200" height="200"/>
+</div>
+</body>
+</html>

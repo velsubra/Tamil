@@ -4,10 +4,13 @@ import common.lang.impl.AbstractCharacter;
 import common.lang.impl.AbstractWord;
 import common.lang.impl.UnknownCharacter;
 import my.interest.lang.tamil.EzhuththuUtils;
+import my.interest.lang.tamil.impl.yaappu.AsaiIterator;
 import my.interest.lang.tamil.parser.impl.TamilWordListener;
 import tamil.lang.exception.TamilPlatformException;
+import tamil.yaappu.asai.AbstractAsai;
 
 import java.util.Collection;
+import java.util.Iterator;
 
 /**
  * <p>
@@ -17,11 +20,12 @@ import java.util.Collection;
  * So, the word represented by this object may not be a tamil word (சொல் ) at all. See {@link tamil.lang.api.dictionary.TamilDictionary#lookup(TamilWord)}
  * <p/>
  * <p>
- * This should be treated as Tamil Sting equivalent of  java.common.lang.lang.String. ie) it can potentially contain spaces and non tamil characters
+ * This should be treated as Tamil String equivalent of  java.lang.String. ie) it can potentially contain spaces and non tamil characters
  * </p>
  *
  * @author velsubra
  * @see #from(String)
+ * @see #from(java.lang.String, boolean)
  * @see #isPure()
  */
 public final class TamilWord extends AbstractWord<AbstractCharacter> implements Comparable {
@@ -52,16 +56,16 @@ public final class TamilWord extends AbstractWord<AbstractCharacter> implements 
      * @return the number of replacements done.
      */
     public int replaceAll(TamilWord what, TamilWord with, boolean fullmatch) {
-        return replaceAll(0, what, with, fullmatch,false);
+        return replaceAll(0, what, with, fullmatch, false);
     }
 
     /**
      * Replaces all the occurrences of a text with another text
      *
-     * @param searchIndex the index to start searching from
-     * @param what        the text to be found
-     * @param with        the text to be replaced with
-     * @param fullmatch   flag to indicate if the exact match has to be done.
+     * @param searchIndex           the index to start searching from
+     * @param what                  the text to be found
+     * @param with                  the text to be replaced with
+     * @param fullmatch             flag to indicate if the exact match has to be done.
      * @param mergeLastOnSingleChar When fulmatch is false , the text which is replacing is merged (இயல்புபுணர்ச்சியுடன்  ) in both the ends
      *                              However when a single character is replacing, this value indicates where that should get merged. When true, the character is merged last, otherwise at the start of the index where the initial text to be found was found..
      * @return the number of replacements done.
@@ -71,7 +75,7 @@ public final class TamilWord extends AbstractWord<AbstractCharacter> implements 
         int index = replace(searchIndex, what, with, fullmatch, mergeLastOnSingleChar);
         while (index >= 0) {
             count++;
-            index = replace(index + with.size(), what, with, fullmatch,mergeLastOnSingleChar);
+            index = replace(index + with.size(), what, with, fullmatch, mergeLastOnSingleChar);
         }
         return count;
 
@@ -106,7 +110,7 @@ public final class TamilWord extends AbstractWord<AbstractCharacter> implements 
                 with = with.duplicate();
                 AbstractCharacter whatFirst = sub.getFirst();
                 if (!with.isEmpty()) {
-                    if (with.size() != 1 || !mergeLastOnSingleChar ) {
+                    if (with.size() != 1 || !mergeLastOnSingleChar) {
                         AbstractCharacter withFirst = with.getFirst();
                         if (whatFirst != withFirst && whatFirst.isTamilLetter()) {
                             with.removeFirst();
@@ -124,7 +128,7 @@ public final class TamilWord extends AbstractWord<AbstractCharacter> implements 
                 if (withoriginal.size() != 1 || mergeLastOnSingleChar) {
                     AbstractCharacter whatLast = sub.getLast();
                     if (!withoriginal.isEmpty()) {
-                        if (with.size() != 1 || mergeLastOnSingleChar ) {
+                        if (with.size() != 1 || mergeLastOnSingleChar) {
                             AbstractCharacter withLast = with.getLast();
                             if (whatLast != withLast && whatLast.isTamilLetter()) {
                                 with.removeLast();
@@ -419,7 +423,7 @@ public final class TamilWord extends AbstractWord<AbstractCharacter> implements 
      * Exception will be raised if start and end indices are not in the valid bound.
      *
      * @param start the start index, inclusive
-     * @param end   the end index inclusive
+     * @param end   the end index exclusive
      * @return the sub word. Empty word when the indices are valid and  start=end
      */
     public TamilWord subWord(int start, int end) {
@@ -500,6 +504,20 @@ public final class TamilWord extends AbstractWord<AbstractCharacter> implements 
         }
     }
 
+    /**
+     * Gets the digest for specified type
+     *
+     * @param digest_for the type asked for
+     * @return string representing the digest
+     */
+    public CharacterDigest getDigest(CharacterDigest.CHAR_DIGEST digest_for) {
+        CharacterDigest buffer = new CharacterDigest();
+        for (AbstractCharacter c : this) {
+            buffer.add(c.getDigest(digest_for));
+        }
+        return buffer;
+    }
+
 
     public CharacterDigest getConsonantDigest() {
         CharacterDigest buffer = new CharacterDigest();
@@ -509,6 +527,13 @@ public final class TamilWord extends AbstractWord<AbstractCharacter> implements 
         return buffer;
     }
 
+    public CharacterDigest getPositionDigest() {
+        CharacterDigest buffer = new CharacterDigest();
+        for (AbstractCharacter c : this) {
+            buffer.add(c.getPositionDigest());
+        }
+        return buffer;
+    }
 
     /**
      * Returns all the consonants (மெய்யெழுத்துகள் )
@@ -708,17 +733,98 @@ public final class TamilWord extends AbstractWord<AbstractCharacter> implements 
 
 
     /**
-     * Returns the total number of codepoints used by all the characters in the word
+     * Returns the total number of code points used by all the characters in the word
      *
      * @return the count >=0, by counting all the characters size in terms of number of unicode codepoints used.
      */
     public int getCodePointsTotalCount() {
 
         int count = 0;
-        for (AbstractCharacter c : this.toArray(new AbstractCharacter[0])) {
-            count += c.getCodePointsCount();
+        Iterator<AbstractCharacter> it =  this.listIterator();
+        while(it.hasNext()) {
+            count += it.next().getCodePointsCount();
         }
+
         return count;
+    }
+
+    /**
+     * Gets codepoint index for a given tamil index
+     * @param tamilIndex the tamil character index
+     * @return  the codepoint index that points the character at the given index
+     */
+    public int getCodepointIndexForIndex(int tamilIndex) {
+        if (size() <= tamilIndex ) {
+            throw new TamilPlatformException("Illegal index:" + tamilIndex);
+        }
+        if (tamilIndex < 0 ) {
+            throw new TamilPlatformException("Illegal index:" + tamilIndex);
+        }
+        int count = 0;
+        Iterator<AbstractCharacter> it =  this.listIterator();
+        int index = 0;
+        while(it.hasNext() ) {
+            if (index == tamilIndex) {
+                return count;
+            }
+            index ++;
+            count += it.next().getCodePointsCount();
+        }
+
+        throw new TamilPlatformException("Unexpected exception");
+    }
+
+    /**
+     * Returns tamil character index for a codepoint index
+     * @param codepointIndex  the value of the code point index. Index starts with 0;
+     * @return  the index of tamil character. Index starts with 0
+     */
+    public int getIndexForCodepointIndex(int codepointIndex) {
+        if (size() ==0 ) {
+            throw new TamilPlatformException("word is empty");
+        }
+        if (codepointIndex < 0 ) {
+            throw new TamilPlatformException("Illegal index:" + codepointIndex);
+        }
+        int count = 0;
+        Iterator<AbstractCharacter> it =  this.listIterator();
+        int index = 0;
+        while(it.hasNext()) {
+            count += it.next().getCodePointsCount();
+            if (count > codepointIndex) {
+                return index;
+            }
+            index ++;
+        }
+
+        throw new TamilPlatformException("Illegal index:" + codepointIndex +". Max index is " + (count - 1));
+    }
+
+    /**
+     * This method returns unicode string representation.
+     * @return  the unicode representation of the tamil word.
+     */
+    //todo:needs revisit.
+    public  String toUnicodeStringRepresentation() {
+        StringBuffer buffer = new StringBuffer();
+        Iterator<AbstractCharacter> it =  this.listIterator();
+        while(it.hasNext()) {
+           buffer.append(it.next().toUnicodeStringRepresentation());
+        }
+        return buffer.toString();
+    }
+
+    public int length() {
+        return size();
+    }
+
+    public AbstractCharacter charAt(int index) {
+        return get(index);
+    }
+
+
+    public Iterator<AbstractAsai> asaiIterator() {
+        return new AsaiIterator(this.duplicate());
     }
 
 

@@ -2,9 +2,7 @@ package tamil.lang.known.thodar;
 
 import tamil.lang.TamilWord;
 import tamil.lang.known.non.derived.IPeyarchchol;
-import tamil.lang.known.non.derived.VUrubu;
-
-import java.util.List;
+import tamil.lang.known.non.derived.idai.VUrubu;
 
 /**
  * <p>

@@ -4,6 +4,7 @@ import common.lang.SimpleCharacter;
 
 /**
  * <p>
+ *     Represents non-tamil characters.
  * </p>
  *
  * @author velsubra
@@ -47,6 +48,13 @@ public class UnknownCharacter extends AbstractCharacter implements SimpleCharact
         return Integer.valueOf(getValue()).compareTo(((UnknownCharacter) o).getValue());
     }
 
+
+    @Override
+    public int[] getCodePoints() {
+        int[] ret = new int[1];
+        ret[0] = getValue();
+        return ret;
+    }
 
     @Override
     public int getCodePointsCount() {

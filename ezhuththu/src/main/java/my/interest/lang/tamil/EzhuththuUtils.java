@@ -4,6 +4,7 @@ import common.lang.impl.AbstractCharacter;
 import my.interest.lang.tamil.generated.types.*;
 import my.interest.lang.tamil.generated.types.Properties;
 import my.interest.lang.tamil.internal.api.TamilCharacterParserListener;
+import my.interest.lang.tamil.internal.api.TamilLetterFilter;
 import my.interest.lang.tamil.internal.api.TamilSoundParserListener;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -14,6 +15,12 @@ import tamil.lang.known.non.derived.IPeyarchchol;
 import tamil.lang.sound.AtomicSound;
 import tamil.lang.sound.TamilSoundLookUpContext;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBElement;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.util.JAXBSource;
+import javax.xml.namespace.QName;
 import java.io.*;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -32,6 +39,17 @@ public class EzhuththuUtils {
     public static final String NS_XML = "http://www.w3.org/2001/XMLSchema";
     public static final String VINAIMUTRU_BASE = "vinaimuttu.transitive";
     public static final String VINAIMUTRU_BASE_INTRANSITIVE = "vinaimuttu.intransitive";
+
+
+    //This gets the first chance to get cut
+    static final String[] wrapCutText = new String[]{" ", "/", "\\", ";", "|", ")", "}", "]", ","};
+
+    //This gets the last chance to break
+    static final String[] wrapCutText_finally = new String[]{"_", "-", ".", "=", ":"};
+
+
+    //Dont cut when the text ends with any of the below for e.g) http://host should not be cut into http:// and  host
+    static final String[] wrapCutText_NOT_ENDING = new String[]{"://", ":/"};
 
 
     private static List<Class<? extends IKnownWord>> peyar = new ArrayList<Class<? extends IKnownWord>>();
@@ -114,7 +132,7 @@ public class EzhuththuUtils {
         Property property = new Property();
         property.setName(obj.getString("name"));
         property.setValue(obj.getString("value"));
-        return  property;
+        return property;
 
     }
 
@@ -168,6 +186,62 @@ public class EzhuththuUtils {
             }
         }
     }
+
+    public static <T> T deepCopyJAXB(T object, Class<T> clazz) {
+        if (object == null) return null;
+        try {
+            JAXBContext jaxbContext = JAXBContext.newInstance(clazz);
+            JAXBElement<T> contentObject = new JAXBElement<T>(new QName(clazz.getSimpleName()), clazz, object);
+            JAXBSource source = new JAXBSource(jaxbContext, contentObject);
+            return jaxbContext.createUnmarshaller().unmarshal(source, clazz).getValue();
+        } catch (JAXBException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static String toXMLJAXB(Object object) {
+        if (object == null) return null;
+        try {
+            return new String(toXMLJAXBData(object), EzhuththuUtils.ENCODING);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static byte[] fromThrowable(Throwable t) {
+
+        ByteArrayOutputStream ba = new ByteArrayOutputStream();
+        try {
+            PrintStream pr = new PrintStream(ba, true, ENCODING);
+            t.printStackTrace(pr);
+            pr.flush();
+            ba.flush();
+            ba.close();
+            pr.close();
+        } catch (IOException io) {
+
+        }
+        return ba.toByteArray();
+    }
+
+
+    public static byte[] toXMLJAXBData(Object object) {
+        if (object == null) return null;
+        try {
+            Class clazz = object.getClass();
+            JAXBContext jaxbContext = JAXBContext.newInstance(clazz);
+            JAXBElement contentObject = new JAXBElement(new QName(clazz.getSimpleName()), clazz, object);
+            Marshaller marshaller = jaxbContext.createMarshaller();
+            marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            marshaller.marshal(contentObject, out);
+            byte[] data = out.toByteArray();
+            return data;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 
     public static byte[] readAllFrom(InputStream in, boolean chunked) {
         if (in == null)
@@ -377,6 +451,179 @@ public class EzhuththuUtils {
         return hash;
     }
 
+    public static Set<TamilCharacter> filterTamilCharacters(TamilLetterFilter filter) {
+
+        Set<TamilCharacter> set = new LinkedHashSet<TamilCharacter>();
+        Set<TamilCharacter> all = TamilCharacterLookUpContext.getAllTamilCharacters();
+        Iterator<TamilCharacter> it = all.iterator();
+        while (it.hasNext()) {
+            TamilCharacter ch = it.next();
+            if (filter.filter(ch)) {
+                set.add(ch);
+            }
+        }
+        return set;
+    }
+
+    public static Set<TamilCharacter> filterIntersection(Set<TamilCharacter> one, Set<TamilCharacter> two) {
+        Set<TamilCharacter> inter = new LinkedHashSet<TamilCharacter>();
+        Iterator<TamilCharacter> it = one.iterator();
+        while (it.hasNext()) {
+            TamilCharacter ch = it.next();
+            if (two.contains(ch)) {
+                inter.add(ch);
+            }
+        }
+        return inter;
+
+    }
+
+    public static Set<TamilCharacter> filterKuRil() {
+        return filterTamilCharacters(new TamilLetterFilter() {
+            public boolean filter(TamilCharacter tamil) {
+                return tamil.isPureTamilLetter() && tamil.isKurilezhuththu();
+            }
+        });
+    }
+
+    public static Set<TamilCharacter> filterNedil() {
+        return filterTamilCharacters(new TamilLetterFilter() {
+            public boolean filter(TamilCharacter tamil) {
+                return tamil.isPureTamilLetter() && tamil.isNtedilezhuththu();
+            }
+        });
+    }
+
+    public static Set<TamilCharacter> filterUyir() {
+        return filterTamilCharacters(new TamilLetterFilter() {
+            public boolean filter(TamilCharacter tamil) {
+                return tamil.isPureTamilLetter() && tamil.isUyirezhuththu();
+            }
+        });
+    }
+
+    public static Set<TamilCharacter> filterAaytham() {
+        return filterTamilCharacters(new TamilLetterFilter() {
+            public boolean filter(TamilCharacter tamil) {
+                return tamil.isPureTamilLetter() && tamil.isAaythavezhuththu();
+            }
+        });
+    }
+
+
+    public static Set<TamilCharacter> filterVali() {
+        return filterTamilCharacters(new TamilLetterFilter() {
+            public boolean filter(TamilCharacter tamil) {
+                return tamil.isPureTamilLetter() && tamil.isVallinam();
+            }
+        });
+    }
+
+    public static Set<TamilCharacter> filterVadaMozhi() {
+        return filterTamilCharacters(new TamilLetterFilter() {
+            public boolean filter(TamilCharacter tamil) {
+                return tamil.isVadaMozhiYezhuththu();
+            }
+        });
+    }
+
+
+    public static Set<TamilCharacter> filterIdai() {
+        return filterTamilCharacters(new TamilLetterFilter() {
+            public boolean filter(TamilCharacter tamil) {
+                return tamil.isPureTamilLetter() && tamil.isIdaiyinam();
+            }
+        });
+    }
+
+    public static Set<TamilCharacter> filterMeli() {
+        return filterTamilCharacters(new TamilLetterFilter() {
+            public boolean filter(TamilCharacter tamil) {
+                return tamil.isPureTamilLetter() && tamil.isMellinam();
+            }
+        });
+    }
+
+    public static Set<TamilCharacter> filterUyirMei() {
+        return filterTamilCharacters(new TamilLetterFilter() {
+            public boolean filter(TamilCharacter tamil) {
+                return tamil.isPureTamilLetter() && tamil.isUyirMeyyezhuththu();
+            }
+        });
+    }
+
+    public static Set<TamilCharacter> filterUyirMeiWithUyir(final TamilCharacter uyir) {
+        return filterTamilCharacters(new TamilLetterFilter() {
+            public boolean filter(TamilCharacter tamil) {
+                return tamil.isPureTamilLetter() && tamil.isUyirMeyyezhuththu() && uyir == tamil.getUyirPart();
+            }
+        });
+    }
+
+    public static Set<TamilCharacter> filterUyirMeiWithMei(final TamilCharacter mei) {
+        return filterTamilCharacters(new TamilLetterFilter() {
+            public boolean filter(TamilCharacter tamil) {
+                return tamil.isPureTamilLetter() && tamil.isUyirMeyyezhuththu() && mei == tamil.getMeiPart();
+            }
+        });
+    }
+
+    public static Set<TamilCharacter> filterMei() {
+        return filterTamilCharacters(new TamilLetterFilter() {
+            public boolean filter(TamilCharacter tamil) {
+                return tamil.isPureTamilLetter() && tamil.isMeyyezhuththu();
+            }
+        });
+    }
+
+
+    public static Set<TamilCharacter> filterOarezhutthuMozhi() {
+        return filterTamilCharacters(new TamilLetterFilter() {
+            public boolean filter(TamilCharacter tamil) {
+                return tamil.isPureTamilLetter() && tamil.isWordToStartWith() &&  tamil.isWordToStartWith() &&  !tamil.isKurilezhuththu();
+            }
+        });
+    }
+
+    public static Set<TamilCharacter> filterMozhiMuthal() {
+        return filterTamilCharacters(new TamilLetterFilter() {
+            public boolean filter(TamilCharacter tamil) {
+                return tamil.isPureTamilLetter() && tamil.isWordToStartWith();
+            }
+        });
+    }
+
+    public static Set<TamilCharacter> filterMozhiLast() {
+        return filterTamilCharacters(new TamilLetterFilter() {
+            public boolean filter(TamilCharacter tamil) {
+                return tamil.isPureTamilLetter() && tamil.isWordToEndWith();
+            }
+        });
+    }
+
+
+    public static Set<TamilCharacter> filterMozhiYidai() {
+        return filterTamilCharacters(new TamilLetterFilter() {
+            public boolean filter(TamilCharacter tamil) {
+                return tamil.isPureTamilLetter() && tamil.isWordToContain();
+            }
+        });
+    }
+    public static Set<TamilCharacter> filterOut(final Set<TamilCharacter> set) {
+        return filterTamilCharacters(new TamilLetterFilter() {
+            public boolean filter(TamilCharacter tamil) {
+                return tamil.isPureTamilLetter() && !set.contains(tamil);
+            }
+        });
+    }
+
+    public static Set<TamilCharacter> filterKuttiyalugaram() {
+        return filterTamilCharacters(new TamilLetterFilter() {
+            public boolean filter(TamilCharacter tamil) {
+                return tamil.isPureTamilLetter() && tamil.isUyirMeyyezhuththu() && tamil.isVallinam() && tamil.getUyirPart() == TamilSimpleCharacter.U;
+            }
+        });
+    }
 
     public static void writeToFile(File file, InputStream in) throws Exception {
         FileOutputStream out = new FileOutputStream(validateOutputFile(file.getAbsolutePath(), true));
@@ -784,4 +1031,179 @@ public class EzhuththuUtils {
         }
         return null;
     }
+
+    public static String padChar(int minLength, char what, String where, int maxLength, boolean addToRight) {
+        if (where == null)
+            return null;
+        for (int i = where.length(); i < minLength && where.length() < maxLength; i++) {
+            if (addToRight)
+                where = where + what;
+            else
+                where = what + where;
+        }
+        if (maxLength > 0 && where.length() > maxLength) {
+            where = where.substring(0, maxLength);
+        }
+        return where;
+    }
+
+    public static String convertToHelpText(String source, int eachLineMaxLength, int nextLineOffset) {
+
+        //  try {
+        if (eachLineMaxLength <= 0)
+            eachLineMaxLength = 80;
+        if (source == null)
+            return null;
+        source = source.replaceAll("\t", "   ");
+
+        StringBuffer ret = new StringBuffer("");
+        boolean alreadyCut = false;
+
+        while (source.length() > eachLineMaxLength || source.contains("\n")) {
+            boolean newLine = false;
+            boolean cutAtMax = false;
+            int lastIndexAtSpace =
+                    (source.length() > eachLineMaxLength ? source.substring(0, eachLineMaxLength + 1) :
+                            source).indexOf("\n");
+            if (lastIndexAtSpace < 0) {
+                for (int i = 0; i < wrapCutText.length; i++) {
+                    int temp = 0;
+                    // if (source.length() > eachLineMaxLength) {
+
+                    String cut = source.substring(0, eachLineMaxLength);
+                    temp = cut.lastIndexOf(wrapCutText[i]);
+                    if (temp > 0) {
+                        boolean endSwith = false;
+                        String end = cut.substring(0, temp);
+                        for (String e : wrapCutText_NOT_ENDING) {
+                            if (end.endsWith(e)) {
+                                endSwith = true;
+                                break;
+                            }
+                        }
+                        if (endSwith) {
+                            temp = -1;
+                        }
+                    }
+
+
+                    //                        } else {
+                    //                            temp = source.lastIndexOf(wrapCutText[i]);
+                    //                        }
+
+                    if (temp > lastIndexAtSpace) {
+                        lastIndexAtSpace = temp;
+                    }
+
+                }
+                if (lastIndexAtSpace < 0) {
+                    for (int i = 0; i < wrapCutText_finally.length; i++) {
+                        int temp = 0;
+
+
+                        String cut = source.substring(0, eachLineMaxLength);
+                        temp = cut.lastIndexOf(wrapCutText_finally[i]);
+                        if (temp > 0) {
+                            boolean endSwith = false;
+                            String end = cut.substring(0, temp);
+                            for (String e : wrapCutText_NOT_ENDING) {
+                                if (end.endsWith(e)) {
+                                    endSwith = true;
+                                    break;
+                                }
+                            }
+                            if (endSwith) {
+                                temp = -1;
+                            }
+                        }
+
+
+                        if (temp > lastIndexAtSpace) {
+                            lastIndexAtSpace = temp;
+                        }
+                    }
+
+
+                }
+
+            } else {
+                newLine = true;
+            }
+
+
+            if (lastIndexAtSpace < 0) {
+                lastIndexAtSpace = eachLineMaxLength;
+                cutAtMax = true;
+            }
+            String line =
+                    source.substring(0, newLine ? lastIndexAtSpace : (cutAtMax ? lastIndexAtSpace : lastIndexAtSpace +
+                            1));
+
+            ret.append(line);
+            ret.append("\n");
+            source =
+                    source.substring(newLine ? (lastIndexAtSpace + 1) : (cutAtMax ? lastIndexAtSpace : lastIndexAtSpace +
+                            1), source.length());
+            //System.out.println(source);
+
+            for (int i = 0; i < nextLineOffset; i++) {
+                ret.append(" ");
+            }
+
+            if (eachLineMaxLength > nextLineOffset && !alreadyCut) {
+                eachLineMaxLength = eachLineMaxLength - nextLineOffset;
+                alreadyCut = true;
+            }
+            // System.out.println(ret.toString());
+            //System.out.println(source);
+        }
+        ret.append(source);
+        return ret.toString();
+//        } catch (Exception e){
+//            //Logger.getDEFAULT().printlnError(e.getMessage());
+//            //System.out.println( source);
+//            return source;
+//        }
+    }
+
+
+
+    public static int getKeyMaxLength(Map map) {
+        if (map == null)
+            return 0;
+        int maxLength = 0;
+        for (Iterator it = map.keySet().iterator(); it.hasNext(); ) {
+            Object obj = it.next();
+            if (obj != null && obj.toString().length() > maxLength)
+                maxLength = obj.toString().length();
+        }
+        return maxLength;
+    }
+
+    public static String[] getAllInnerErrorMessages(Throwable th) {
+        List<String> all = new ArrayList<String>();
+        boolean msgFound = false;
+        while (th != null) {
+            if (th.getMessage() != null && !th.getMessage().trim().equals("")) {
+                if (!msgFound && all.size() > 0) {
+                    all.add(0, th.getMessage());
+                }
+                all.add(th.getMessage());
+                msgFound = true;
+            } else {
+                all.add(th.getClass().getName());
+            }
+            th = th.getCause();
+        }
+        return all.toArray(new String[0]);
+    }
+
+    public static String getString(String sp, int count) {
+        StringBuffer ret = new StringBuffer();
+        for (int i = 0; i < count; i++) {
+            ret.append(sp);
+        }
+        return ret.toString();
+    }
+
 }

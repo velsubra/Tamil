@@ -10,6 +10,9 @@ import tamil.lang.TamilWord;
 import tamil.lang.api.join.WordsJoiner;
 import tamil.lang.known.IKnownWord;
 import tamil.lang.known.non.derived.IBaseVinai;
+import tamil.lang.known.non.derived.idai.Kalh;
+import tamil.lang.known.non.derived.idai.Thaan;
+import tamil.lang.known.non.derived.idai.Um;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -85,6 +88,15 @@ public class NannoolHandler183 extends AbstractPunarchiHandler {
     @Override
     public TamilWordPartContainer join(TamilWordPartContainer nilai, TamilWordPartContainer varum) {
         if (!varum.getWord().get(0).isTamilLetter()) return  null;
+        if (Kalh.KALH.getWord().equals(varum.getWord())) {
+            return null;
+        }
+        if (Thaan.THAAN.getWord().equals(varum.getWord())) {
+            return null;
+        }
+        if (Um.UM.getWord().equals(varum.getWord())) {
+            return null;
+        }
         if (nilai.isKutriyaLugaram()) {
             if ((nilai.getWord().endsWith(ntoorru, false) || nilai.getWord().endsWith(aarru)) && (varum.getWord().startsWith(koadi) || varum.getWord().startsWith(aayira) || varum.getWord().startsWith(iladcha))) {
                 return null;

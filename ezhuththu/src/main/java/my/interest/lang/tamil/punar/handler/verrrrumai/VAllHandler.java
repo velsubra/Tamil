@@ -5,7 +5,7 @@ import my.interest.lang.tamil.punar.TamilWordPartContainer;
 import my.interest.lang.tamil.punar.handler.AbstractPunarchiHandler;
 import tamil.lang.TamilFactory;
 import tamil.lang.known.non.derived.IPeyarchchol;
-import tamil.lang.known.non.derived.VUrubu;
+import tamil.lang.known.non.derived.idai.VUrubu;
 import tamil.lang.known.thodar.Veattumaiththodar;
 
 import java.util.ArrayList;

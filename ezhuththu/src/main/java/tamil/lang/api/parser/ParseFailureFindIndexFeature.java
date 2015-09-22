@@ -8,4 +8,9 @@ package tamil.lang.api.parser;
  * @author velsubra
  */
 public final class ParseFailureFindIndexFeature extends  ParseFeature {
+    public  static  final   ParseFailureFindIndexFeature FEATURE = new ParseFailureFindIndexFeature();
+
+    private  ParseFailureFindIndexFeature() {
+
+    }
 }

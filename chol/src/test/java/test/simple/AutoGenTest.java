@@ -22,7 +22,7 @@ import java.util.Date;
  */
 public class AutoGenTest {
     static {
-        new File("/Users/velsubra/Downloads/i18n/i18n.xml").delete();
+      //  new File("/Users/velsubra/Downloads/i18n/i18n.xml").delete();
     }
 
     @Test

@@ -17,7 +17,9 @@ public class NonStartingIdaichchol extends AbstractKnownWord implements  INonSta
         if (atomic) {
             addProperty("THANI", "true");
         }
-        type = EnglishToTamilCharacterLookUpContext.getBestMatch("idaichchol");
+        if (NonStartingIdaichchol.class == getClass()) {
+            type = EnglishToTamilCharacterLookUpContext.getBestMatch("idaichchol");
+        }
         addProperty("THALAI", "false");
     }
 

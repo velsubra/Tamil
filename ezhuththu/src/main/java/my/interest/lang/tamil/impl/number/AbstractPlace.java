@@ -22,6 +22,8 @@ public abstract class AbstractPlace {
 
     }
 
+
+
     protected int size;
 
 

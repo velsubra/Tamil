@@ -122,6 +122,40 @@ function _createAppAs(app, newapp, code) {
 }
 
 
+
+
+
+function _createAppClassloader(app, libs, code) {
+
+
+    jQuery.ajax({
+
+        type:"PUT",
+        headers:{
+            "X-TAMIL-APP-ACCESS-CODE":"" + code
+        },
+        url:server + "app-management/apps/name/" + encodeURI(app) + "/libs/text/",
+        contentType:"text/plain; charset=utf-8",
+        async:false,
+        data : "" + libs,
+        statusCode:{
+            500:function (data, status, XHR) {
+                console.log(data);
+                alert("Class loader could not be updated!:" + JSON.parse(data.responseText).message);
+            } ,
+
+            200:function (data, status, XHR) {
+                console.log(data);
+                alert("libraries Updated with:\n\n" + data);
+            }
+        }
+
+    });
+
+
+}
+
+
 function _createAppResource(app, resource, code) {
 
 
@@ -148,7 +182,7 @@ function _createAppResource(app, resource, code) {
 
 
 
-function _saveAppDetails(code, app,  welcome, parentapps, searchscheme, desc) {
+function _saveAppDetails(code, app,  welcome, parentapps, searchscheme, desc ,extroots) {
     var q = "/?";
 
     if (welcome) {
@@ -159,7 +193,11 @@ function _saveAppDetails(code, app,  welcome, parentapps, searchscheme, desc) {
         q += "parents=" + parentapps +"&";
     }
     if (searchscheme) {
-        q += "inheritanceorder=" + searchscheme ;
+        q += "inheritanceorder=" + searchscheme +"&" ;
+    }
+
+    if (extroots) {
+        q += "externalroots=" + extroots ;
     }
 
     jQuery.ajax({

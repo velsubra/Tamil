@@ -2,6 +2,7 @@ package tamil.lang;
 
 
 import common.lang.SimpleCharacter;
+import my.interest.lang.tamil.impl.rx.TamilGlyphRx;
 import tamil.lang.exception.NoMeiPartException;
 import tamil.lang.exception.NoUyirPartException;
 
@@ -23,7 +24,6 @@ import java.util.List;
  * </pre>
  *
  * @author velsubra
- *
  * @see TamilCharacterLookUpContext#lookup(int)
  * @see TamilWord#from(String)
  */
@@ -46,6 +46,7 @@ public final class TamilSimpleCharacter extends TamilCharacter implements Simple
         this.typeSpecification |= _isAaythavezhuththu() ? AAYTHAM : 0;
         this.typeSpecification |= _isVadaMozhiYezhuththu() ? VADA_MOZHI : 0;
         this.typeSpecification |= _isKurilezhuththu() ? KURIL : 0;
+        this.typeSpecification |= !_isKurilezhuththu() && !_isAaythavezhuththu() ? NEDIL : 0;
         this.typeSpecification |= _isVallinam() ? VALLINAM : 0;
         this.typeSpecification |= _isMellinam() ? MELLINAM : 0;
         this.typeSpecification |= _isIdaiyanam() ? IDAIYINAM : 0;
@@ -371,6 +372,12 @@ public final class TamilSimpleCharacter extends TamilCharacter implements Simple
     }
 
 
+    // 23  ஶ
+    public boolean isSSSa_() {
+        return isSSSa_(getValue());
+    }
+
+
     public static final TamilSimpleCharacter KA = new TamilSimpleCharacter('\u0B95');
 
 
@@ -524,15 +531,39 @@ public final class TamilSimpleCharacter extends TamilCharacter implements Simple
 
 
     public static final TamilSimpleCharacter SSA_ = new TamilSimpleCharacter('\u0BB8');
+
     // 22  ஸ
     public static boolean isSSa_(int value) {
         return value == SSA_.value;
     }
 
+    public static final TamilSimpleCharacter SSSA_ = new TamilSimpleCharacter('\u0BB6');
+
+    // 23  ஶ
+    public static boolean isSSSa_(int value) {
+        return value == SSSA_.value;
+    }
+
+
+    public static final TamilSimpleCharacter OM = new TamilSimpleCharacter('\u0BD0');
+    public static final TamilSimpleCharacter ZERO = new TamilSimpleCharacter('\u0BE6');
+    public static final TamilSimpleCharacter ONE = new TamilSimpleCharacter('\u0BE7');
+    public static final TamilSimpleCharacter TWO = new TamilSimpleCharacter('\u0BE8');
+    public static final TamilSimpleCharacter THREE = new TamilSimpleCharacter('\u0BE9');
+    public static final TamilSimpleCharacter FOUR = new TamilSimpleCharacter('\u0BEA');
+    public static final TamilSimpleCharacter FIVE = new TamilSimpleCharacter('\u0BEB');
+    public static final TamilSimpleCharacter SIX = new TamilSimpleCharacter('\u0BEC');
+    public static final TamilSimpleCharacter SEVEN = new TamilSimpleCharacter('\u0BED');
+    public static final TamilSimpleCharacter EIGHT = new TamilSimpleCharacter('\u0BEE');
+    public static final TamilSimpleCharacter NINE = new TamilSimpleCharacter('\u0BEF');
+    public static final TamilSimpleCharacter TEN = new TamilSimpleCharacter('\u0BF0');
+    public static final TamilSimpleCharacter HUNDRED = new TamilSimpleCharacter('\u0BF1');
+    public static final TamilSimpleCharacter THOUSAND = new TamilSimpleCharacter('\u0BF2');
+    public static final TamilSimpleCharacter RS = new TamilSimpleCharacter('\u0BF9');
 
 
     private boolean _isVadaMozhiYezhuththu() {
-        return isJa_() || isSHa_() || isHa_() ||isSSa_();
+        return isJa_() || isSHa_() || isHa_() || isSSa_() || isSSSa_();
     }
 
 
@@ -543,12 +574,12 @@ public final class TamilSimpleCharacter extends TamilCharacter implements Simple
 
 
     public static boolean isUyirMeyyezhuththu(int value) {
-        return isJa_(value) || isSHa_(value) || isHa_(value) ||  isSSa_(value)|| isKa(value) || isNga(value) || isSa(value) || isNya(value) || isDa(value) || isNNNa(value) || isTha(value) || isNtha(value) || isPa(value) || isMa(value) || isYa(value) || isRa(value) || isLa(value) || isVa(value) || isLLLa(value) || isLLa(value) || isRRa(value) || isNa(value);
+        return isJa_(value) || isSHa_(value) || isHa_(value) || isSSa_(value) || isSSSa_(value) || isKa(value) || isNga(value) || isSa(value) || isNya(value) || isDa(value) || isNNNa(value) || isTha(value) || isNtha(value) || isPa(value) || isMa(value) || isYa(value) || isRa(value) || isLa(value) || isVa(value) || isLLLa(value) || isLLa(value) || isRRa(value) || isNa(value);
 
     }
 
     public static boolean isVadaMozhiYezhuththu(int value) {
-        return isJa_(value) || isSHa_(value) || isHa_(value) ||  isSSa_(value);
+        return isJa_(value) || isSHa_(value) || isHa_(value) || isSSa_(value) || isSSSa_(value);
     }
 
 
@@ -636,6 +667,14 @@ public final class TamilSimpleCharacter extends TamilCharacter implements Simple
         }
         return soundStrength;
 
+    }
+
+
+    @Override
+    public int[] getCodePoints() {
+        int[] ret = new int[1];
+        ret[0] = getValue();
+        return ret;
     }
 
     @Override
@@ -730,6 +769,27 @@ public final class TamilSimpleCharacter extends TamilCharacter implements Simple
             }
         }
         return vowelDigest;
+    }
+
+    public String toUnicodeStringRepresentation() {
+
+
+        if (isUyirMeyyezhuththu()) {
+            StringBuffer buffer = new StringBuffer("(?:");
+
+            String val = Integer.toHexString(getValue());
+            while (val.length() < 4) {
+                val = "0" + val;
+            }
+            buffer.append("\\u" + val);
+            buffer.append("(?!");
+            buffer.append(new TamilGlyphRx().generate());
+            buffer.append(")");
+            buffer.append(")");
+            return buffer.toString();
+        } else {
+            return super.toUnicodeStringRepresentation();
+        }
     }
 
 

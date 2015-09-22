@@ -11,6 +11,10 @@ import tamil.lang.api.number.NotANumberException;
 import tamil.lang.api.number.NumberReader;
 import tamil.lang.api.number.PunharchiFeature;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
 /**
  * <p>
  * </p>
@@ -23,7 +27,152 @@ public class NumberTest {
     }
 
     @Test
-    public void testRead0() throws Exception {
+    public void testRead00() throws Exception {
+        NumberReader reader = TamilFactory.getNumberReader();
+
+
+        TamilWord word = reader.readNumber(String.valueOf(12), FeatureConstants.READ_NUMBER_PUNHARCHCHI_KEEP_ONLY_POSITION_VAL_135);
+        String ret = reader.readAsNumber(word.toString());
+        System.out.println("Number Back\t:" + ret);
+        Assert.assertEquals(Long.parseLong(ret), 12);
+
+
+        for (int i = 0; i < 100; i++) {
+            word = reader.readNumber(String.valueOf(i), FeatureConstants.READ_NUMBER_PUNHARCHCHI_KEEP_ONLY_POSITION_VAL_135);
+
+            System.out.println("Number Given\t:" + i);
+            System.out.println("Text:" + word.toString());
+            ret = reader.readAsNumber(word.toString());
+            System.out.println("Number Back\t:" + ret);
+            Assert.assertEquals(Long.parseLong(ret), i);
+
+
+            word = reader.readNumber(String.valueOf(i), PunharchiFeature.INSTANCE_FULL);
+            System.out.println("Text:" + word.toString());
+            ret = reader.readAsNumber(word.toString());
+            System.out.println("Number Back\t:" + ret);
+            Assert.assertEquals(Long.parseLong(ret), i);
+
+            word = reader.readNumber(String.valueOf(i));
+            System.out.println("Text:" + word.toString());
+            ret = reader.readAsNumber(word.toString());
+            System.out.println("Number Back\t:" + ret);
+            Assert.assertEquals(Long.parseLong(ret), i);
+
+        }
+    }
+    @Test
+    public void testRead01() throws Exception {
+        NumberReader reader = TamilFactory.getNumberReader();
+        testReadWrite(reader, "0");
+        testReadWrite(reader, "0.0","0");
+        testReadWrite(reader, "0.1","0.1");
+        testReadWrite(reader, "0.01");
+        testReadWrite(reader, "0.00000001");
+        testReadWrite(reader, "0.00000001234567890","0.0000000123456789");
+        testReadWrite(reader, "0.000450002330100000000000000000000002000000000000001");
+        testReadWrite(reader, "10000000");
+        testReadWrite(reader, "100000000000000");
+        testReadWrite(reader, "1000000000000000000000");
+        testReadWrite(reader, "1000000000000000000000101");
+        testReadWrite(reader, "10000001000000100001000010101");
+        testReadWrite(reader, "0000001000000100001000010101","1000000100001000010101");
+        testReadWrite(reader, "6000000000000002");
+        testReadWrite(reader, "7527203843535636364646000000000000002343242");
+        testReadWrite(reader, "35000");
+        testReadWrite(reader, "3002427350850188288");
+
+    }
+
+    @Test
+    public void testRead02() throws Exception {
+        NumberReader reader = TamilFactory.getNumberReader();
+
+        testReadWrite(reader,384);
+        testReadWrite(reader,20384);
+
+        testReadWrite(reader,752720384);
+        testReadWrite(reader,752720384);
+    }
+
+    @Test
+    public void testRead03() throws Exception {
+        NumberReader reader = TamilFactory.getNumberReader();
+        Exception failed = null;
+        List<Long> faileds = new ArrayList<Long>();
+        for (int j = 0 ; j < 10; j++) {
+            Random random = new Random();
+            long randomValue =
+                    (long)(random.nextDouble()*(Long.MAX_VALUE - 0));
+            if (randomValue <0 ){
+                randomValue = -randomValue;
+            }
+            try {
+                testReadWrite(reader, randomValue);
+            } catch (Exception e) {
+                System.out.println("Failed:" + randomValue);
+                failed = e;
+                faileds.add(randomValue);
+            }
+
+
+
+        }
+        if (failed != null) {
+            System.out.println("Failed List------->:" + faileds);
+              throw failed;
+        }
+
+    }
+
+    @Test
+    public void testRead04() throws Exception {
+        NumberReader reader = TamilFactory.getNumberReader();
+
+        testReadWrite(reader, "5796739736615636992");
+        testReadWrite(reader, "53001");
+    }
+
+    private  static void    testReadWrite( NumberReader reader, long randomValue) {
+        if (randomValue < 0) {
+            randomValue = -randomValue;
+        }
+
+        testReadWrite(reader, String.valueOf(randomValue));
+    }
+
+    private  static void testReadWrite( NumberReader reader, String randomValue) {
+           testReadWrite(reader, randomValue, randomValue);
+    }
+
+
+    private  static void testReadWrite( NumberReader reader, String randomValue, String expected) {
+
+        TamilWord word = reader.readNumber(randomValue,FeatureConstants.READ_NUMBER_PUNHARCHCHI_KEEP_ONLY_POSITION_VAL_135);
+
+        System.out.println("Number Given\t:" + randomValue);
+        System.out.println("Text:" + word.toString());
+        String ret =  reader.readAsNumber(word.toString());
+        System.out.println("Number  Back\t:" + ret);
+        Assert.assertEquals(ret, expected);
+
+
+        word = reader.readNumber(String.valueOf(randomValue),PunharchiFeature.INSTANCE_FULL);
+        System.out.println("Text:" + word.toString());
+        ret =  reader.readAsNumber(word.toString());
+        System.out.println("Number  Back\t:" + ret);
+        Assert.assertEquals(ret, expected);
+
+        word = reader.readNumber(String.valueOf(randomValue));
+        System.out.println("Text:" + word.toString());
+        ret =  reader.readAsNumber(word.toString());
+        System.out.println("Number  Back\t:" + ret);
+        Assert.assertEquals(ret, expected);
+        System.out.println("------------------------");
+    }
+
+    @Test
+    public void testRead1() throws Exception {
 
         NumberReader reader = TamilFactory.getNumberReader();
         TamilWord word = reader.readNumber(null);

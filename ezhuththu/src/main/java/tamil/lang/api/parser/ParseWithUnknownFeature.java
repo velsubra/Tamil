@@ -8,4 +8,9 @@ package tamil.lang.api.parser;
  * @author velsubra
  */
 public final  class ParseWithUnknownFeature extends  ParseFeature {
+    public  static  final   ParseWithUnknownFeature FEATURE = new ParseWithUnknownFeature();
+
+    private  ParseWithUnknownFeature() {
+
+    }
 }

@@ -73,7 +73,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>2.9.1</version>
+                <version>2.10.1</version>
                 <executions>
                     <execution>
                         <id>attach-javadocs</id>
@@ -83,8 +83,10 @@
                     </execution>
                 </executions>
                 <configuration>
+                    <debug>true</debug>
                     <charset>UTF-8</charset>
                     <docencoding>UTF-8</docencoding>
+                    <encoding>UTF-8</encoding>
                     <docfilessubdirs>true</docfilessubdirs>
                     <links>
                         <link>http://java.sun.com/j2se/1.7.0/docs/api/</link>

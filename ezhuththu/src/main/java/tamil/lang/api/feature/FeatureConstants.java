@@ -1,24 +1,20 @@
 package tamil.lang.api.feature;
 
-import tamil.lang.api.dictionary.AutoSuggestFeature;
-import tamil.lang.api.dictionary.DictionaryFeature;
-import tamil.lang.api.dictionary.ExactMatchSearch;
+import tamil.lang.api.dictionary.*;
 import tamil.lang.api.number.IgnoreNonDigitFeature;
 import tamil.lang.api.number.PunharchiFeature;
-import tamil.lang.api.parser.ParseFailureFindIndexFeature;
-import tamil.lang.api.parser.ParseWithUnknownFeature;
+import tamil.lang.api.parser.*;
 import tamil.lang.api.trans.JoinFeature;
 import tamil.lang.api.trans.NounLookupFeature;
 
 /**
  * <p>
- *     Most of the APIs takes for list of features
+ * Most of the APIs takes for list of features
  * </p>
  *
  * @author velsubra
  */
 public final class FeatureConstants {
-
 
 
     /**
@@ -53,13 +49,17 @@ public final class FeatureConstants {
 
     public static final DictionaryFeature DICTIONARY_EXACT_MATCH_VAL_160 = new ExactMatchSearch();
     public static final DictionaryFeature DICTIONARY_AUTO_SUGGEST_VAL_165 = new AutoSuggestFeature();
-
-    public static final ParseWithUnknownFeature PARSE_WITH_UNKNOWN_VAL_170 = new ParseWithUnknownFeature();
-
-    public static final ParseFailureFindIndexFeature PARSE_FIND_FAILURE_INDEX_VAL_175 = new ParseFailureFindIndexFeature();
+    public static final StartsWithHigherLengthSearch DICTIONARY_STARTS_WITH_HIGHER_LENGTH_VAL_166 = StartsWithHigherLengthSearch.FEATURE;
+    public static final ReverseSearchFeature  DICTIONARY_REVERSED_SEARCH_VAL_167 =   ReverseSearchFeature.FEATURE;
 
 
 
+    public static final ParseWithUnknownFeature PARSE_WITH_UNKNOWN_VAL_170 =  ParseWithUnknownFeature.FEATURE;
+    public static final ParseAsNumberFeature PARSE_FOR_NUMBER_VAL_172 =  ParseAsNumberFeature.FEATURE;
+
+    public static final ParseFailureFindIndexFeature PARSE_FIND_FAILURE_INDEX_VAL_175 = ParseFailureFindIndexFeature.FEATURE;
+    public static final EagerlyParsingFeature PARSE_EAGER_FIND_LONG_WORDS_VAL_176 = EagerlyParsingFeature.FEATURE;
+    public static final VallinavottuEndingOk PARSE_EAGER_FIND_LONG_WORDS_VAL_177 = VallinavottuEndingOk.FEATURE;
 
 
 
