@@ -26,7 +26,7 @@ public class NonTamilSymbolRx implements PatternGenerator {
     }
 
     public String getDescription() {
-        return "Characters outside Tamil block";
+        return "Code points outside Tamil block. Note: !எழுத்து and !எழுத்துவடிவம் mean the same thing. However, எழுத்து and எழுத்துவடிவம் mean different things. ";
     }
 
 

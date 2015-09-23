@@ -1,9 +1,6 @@
 package my.interest.lang.tamil.internal.api;
 
-import tamil.lang.TamilCharacter;
-import tamil.lang.api.ezhuththu.EzhuththuDescription;
-
-import java.util.Set;
+import tamil.lang.api.ezhuththu.EzhuththuSetDescription;
 
 /**
  * <p>
@@ -11,9 +8,10 @@ import java.util.Set;
  *
  * @author velsubra
  */
-public interface PatternGenerator extends EzhuththuDescription {
+public interface PatternGenerator extends EzhuththuSetDescription {
 
     public  String generate();
+  //  public String groupName();
 
 
 }

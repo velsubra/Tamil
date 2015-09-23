@@ -1,6 +1,5 @@
 package test;
 
-import my.interest.lang.tamil.impl.yaappu.AsaiIterator;
 import tamil.lang.TamilWord;
 import tamil.util.IPropertyFinder;
 import my.interest.lang.util.Grid;
@@ -10,7 +9,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import tamil.lang.TamilCharacter;
 import tamil.lang.TamilFactory;
-import tamil.lang.api.ezhuththu.EzhuththuDescription;
+import tamil.lang.api.ezhuththu.EzhuththuSetDescription;
 import tamil.lang.api.ezhuththu.TamilCharacterSetCalculator;
 import tamil.lang.api.regex.RxDescription;
 import tamil.lang.exception.TamilPlatformException;
@@ -74,8 +73,8 @@ public class EzhuththuTest implements IPropertyFinder {
         int count1 = 0;
         for (RxDescription rx : list) {
 
-            if (EzhuththuDescription.class.isAssignableFrom(rx.getClass())) {
-                EzhuththuDescription e = (EzhuththuDescription) rx;
+            if (EzhuththuSetDescription.class.isAssignableFrom(rx.getClass())) {
+                EzhuththuSetDescription e = (EzhuththuSetDescription) rx;
                 if (e.getCharacterSet() == null) continue;
                 count1++;
                 int cols = 0;
@@ -102,8 +101,8 @@ public class EzhuththuTest implements IPropertyFinder {
 
         grid1.pack(400);
         grid1.printTo(new TextFileWriter(new PrintStream(System.out, true)));
-
-       // System.out.println(grid1.toHtml());
+        System.out.println("Copy this into the document of EzhuththuSetDescription");
+        System.out.println(grid1.toHtml());
 
 
 
@@ -117,8 +116,8 @@ public class EzhuththuTest implements IPropertyFinder {
         for (RxDescription rx : list) {
              boolean nonchar = true;
 
-            if (EzhuththuDescription.class.isAssignableFrom(rx.getClass())) {
-                EzhuththuDescription e = (EzhuththuDescription) rx;
+            if (EzhuththuSetDescription.class.isAssignableFrom(rx.getClass())) {
+                EzhuththuSetDescription e = (EzhuththuSetDescription) rx;
                 if (e.getCharacterSet() != null) {
                     nonchar  = false;
                 };
@@ -139,6 +138,7 @@ public class EzhuththuTest implements IPropertyFinder {
         grid.pack(400);
         grid.printTo(new TextFileWriter(new PrintStream(System.out, true)));
 
+        System.out.println("Copy this into the document of TamilRXCompiler");
         System.out.println(grid.toHtml());
 
 
@@ -187,6 +187,18 @@ public class EzhuththuTest implements IPropertyFinder {
 
         pattern = TamilPattern.compile("${karuvilham}");
         matcher = pattern.matcher("அரிதுஅரோ");
+        Assert.assertTrue(matcher.matches());
+
+        pattern = TamilPattern.compile("${([தமிழ்])}");
+        matcher = pattern.matcher("தமிழ்");
+        Assert.assertTrue(matcher.matches());
+
+        pattern = TamilPattern.compile("${[(தமிழ்)]}");
+        matcher = pattern.matcher("தமிழ்");
+        Assert.assertFalse(matcher.matches());
+
+        pattern = TamilPattern.compile("${[(தமிழ்)]}");
+        matcher = pattern.matcher("(தமிழ்)");
         Assert.assertTrue(matcher.matches());
 
 

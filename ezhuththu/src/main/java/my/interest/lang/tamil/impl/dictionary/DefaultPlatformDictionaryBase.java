@@ -438,9 +438,9 @@ public abstract class DefaultPlatformDictionaryBase implements TamilDictionary {
 
     protected void removeKnown(IKnownWord w) {
         if (w.getWord().toString().equals("அத்து")) {
-            System.out.println("Removing ------------------------------:" + w);
+          //  System.out.println("Removing ------------------------------:" + w);
             new RuntimeException("removing ").printStackTrace();
-            ;
+
         }
         set.remove(w);
         reversedset.remove(w);

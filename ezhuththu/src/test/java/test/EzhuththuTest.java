@@ -2,11 +2,11 @@ package test;
 
 import my.interest.lang.tamil.EzhuththuUtils;
 import my.interest.lang.tamil.StringUtils;
-import tamil.util.IPropertyFinder;
 import org.junit.Assert;
 import org.junit.Test;
 import tamil.lang.*;
 import tamil.lang.api.ezhuththu.TamilCharacterSetCalculator;
+import tamil.util.IPropertyFinder;
 import tamil.util.regx.TamilPattern;
 
 import java.util.HashMap;
@@ -28,8 +28,6 @@ public class EzhuththuTest {
     }
 
 
-
-
     @Test
     public void testSize() {
         Assert.assertEquals(5 * 18 + 5, EzhuththuUtils.filterKuRil().size());
@@ -42,8 +40,8 @@ public class EzhuththuTest {
     public void testNoCalculations() {
         TamilCharacterSetCalculator calc = TamilFactory.getTamilCharacterSetCalculator();
 
-        System.out.println("Size:"+ calc.getEzhuththuDescriptions().size());
-        Assert.assertTrue(91==calc.getEzhuththuDescriptions().size());
+        System.out.println("Size:" + calc.getEzhuththuSetDescriptions().size());
+        Assert.assertTrue(91 == calc.getEzhuththuSetDescriptions().size());
         Set<TamilCharacter> set = calc.find("யகரவரிசை");
         Assert.assertEquals(set.size(), 13);
 
@@ -70,6 +68,26 @@ public class EzhuththuTest {
         Matcher matcher = pattern.matcher(TamilFactory.getTransliterator(null).transliterate("sai").toString());
         Assert.assertTrue(matcher.matches());
 
+        pattern = TamilPattern.compile("${(குறள்)}");
+        matcher = pattern.matcher("\n" +
+                "           இருள்சேர் இருவினையும் சேரா\n" +
+                " இறைவன்\n" +
+                "பொருள்சேர் \n" +
+                "புகழ்புரிந்தார் மாட்டு ");
+        Assert.assertTrue(matcher.find());
+
+
+        pattern = TamilPattern.compile("${தளை[(மாச்சீர்) முன் நேர்]}");
+        matcher = pattern.matcher("தேமா தேமா");
+        Assert.assertTrue(matcher.find());
+        System.out.println(matcher.start() + ":" + matcher.end());
+
+        pattern =  TamilPattern.compile("${தளை[மாச்சீர் முன் நேர்]}");
+        matcher = pattern.matcher("தேமா விளம்");
+        Assert.assertFalse(matcher.find());
+
+
+
         pattern = TamilPattern.compile("${(வகை[kadal])}");
         matcher = pattern.matcher(TamilFactory.getTransliterator(null).transliterate("thamizh").toString());
         Assert.assertTrue(matcher.matches());
@@ -94,7 +112,6 @@ public class EzhuththuTest {
         pattern = TamilPattern.compile("${மாத்திரை[தென்னை]}");
         matcher = pattern.matcher("கண்ணா");
         Assert.assertTrue(matcher.matches());
-
 
 
         pattern = TamilPattern.compile("${வகை[தமிழ்]}");
@@ -233,19 +250,14 @@ public class EzhuththuTest {
         Assert.assertTrue(matcher.matches());
 
 
-
-
         pattern = TamilPattern.compile("${ntirai}");
         matcher = pattern.matcher("காசு");
         Assert.assertFalse(matcher.matches());
 
 
-
-
         pattern = TamilPattern.compile("${ntirai}");
         matcher = pattern.matcher("பசு");
         Assert.assertTrue(matcher.matches());
-
 
 
         pattern = TamilPattern.compile("${theamaa}");
@@ -255,7 +267,6 @@ public class EzhuththuTest {
         pattern = TamilPattern.compile("${theamaa}");
         matcher = pattern.matcher("பசுக்கள்");
         Assert.assertFalse(matcher.matches());
-
 
 
         pattern = TamilPattern.compile("${theamaa}");
@@ -316,8 +327,6 @@ public class EzhuththuTest {
         Assert.assertTrue(matcher.matches());
 
 
-
-
         pattern = TamilPattern.compile("${pulhimaa}");
         matcher = pattern.matcher("சுக்கன்");
         Assert.assertFalse(matcher.matches());
@@ -370,8 +379,6 @@ public class EzhuththuTest {
         Assert.assertTrue(matcher.matches());
 
 
-
-
         pattern = TamilPattern.compile("${karuvilham}");
         matcher = pattern.matcher("சுக்கன்");
         Assert.assertFalse(matcher.matches());
@@ -407,7 +414,6 @@ public class EzhuththuTest {
         Assert.assertFalse(matcher.matches());
 
 
-
         pattern = TamilPattern.compile("${theamaangaay}");
         matcher = pattern.matcher("காலடம்");
         Assert.assertFalse(matcher.matches());
@@ -429,8 +435,6 @@ public class EzhuththuTest {
         pattern = TamilPattern.compile("${theamaangaay}");
         matcher = pattern.matcher("மாம்மாம்ம");
         Assert.assertTrue(matcher.matches());
-
-
 
 
         pattern = TamilPattern.compile("${theamaa}");
@@ -464,7 +468,6 @@ public class EzhuththuTest {
         pattern = TamilPattern.compile("${theamaangaay}");
         matcher = pattern.matcher(TamilFactory.getTransliterator(null).transliterate("தெம்மாங்க").toString());
         Assert.assertTrue(matcher.matches());
-
 
 
         pattern = TamilPattern.compile("${pulhimaangaay}");
@@ -520,13 +523,9 @@ public class EzhuththuTest {
         Assert.assertTrue(matcher.matches());
 
 
-
         pattern = TamilPattern.compile("${theamaangaay}");
         matcher = pattern.matcher(TamilFactory.getTransliterator(null).transliterate("pulhimaangaay").toString());
         Assert.assertFalse(matcher.matches());
-
-
-
 
 
     }

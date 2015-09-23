@@ -85,6 +85,7 @@ public abstract class AbstractVearrrrumaiHandler extends AbstractPunarchiHandler
 
     @Override
     public TamilWordPartContainer join(TamilWordPartContainer nilai, TamilWordPartContainer varum) {
+        if(!nilai.isEndingFine()) return null;
         if (!isOnRightViguthi(varum)) return null;
 
         TamilWordPartContainer v = varum;

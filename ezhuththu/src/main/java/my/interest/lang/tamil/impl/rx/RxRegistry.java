@@ -8,14 +8,21 @@ import my.interest.lang.tamil.impl.rx.asai2.KoovilhamRx;
 import my.interest.lang.tamil.impl.rx.asai2.PulhimaRx;
 import my.interest.lang.tamil.impl.rx.asai2.TheamaRx;
 import my.interest.lang.tamil.impl.rx.asai3.*;
+import my.interest.lang.tamil.impl.rx.cir.*;
+import my.interest.lang.tamil.impl.rx.paa.KurralRx;
+import my.interest.lang.tamil.impl.rx.paa.KurralhCirRx;
+import my.interest.lang.tamil.impl.rx.paa.KurralhThalaiRx;
+import my.interest.lang.tamil.impl.rx.thalhai.*;
+import my.interest.lang.tamil.impl.rx.util.IdaivelhiRx;
 import my.interest.lang.tamil.impl.yaappu.AsaiIterator;
-import tamil.util.IPropertyFinder;
 import my.interest.lang.tamil.internal.api.PatternGenerator;
 import tamil.lang.TamilCharacter;
 import tamil.lang.TamilFactory;
 import tamil.lang.TamilWord;
-import tamil.lang.api.ezhuththu.EzhuththuDescription;
+import tamil.lang.api.ezhuththu.EzhuththuSetDescription;
 import tamil.lang.exception.TamilPlatformException;
+import tamil.util.IPropertyFinder;
+import tamil.util.regx.TamilPatternSyntaxException;
 import tamil.yaappu.asai.AbstractAsai;
 
 import java.util.HashMap;
@@ -48,8 +55,8 @@ public class RxRegistry implements IPropertyFinder {
         map.put("எழுத்து", new AnyOneInTamilLetterSetRx("எழுத்து", "தமிழெழுத்தைக்குறிக்கிறது. எ.கா: ப ", EzhuththuUtils.filterAaytham(), EzhuththuUtils.filterUyir(), EzhuththuUtils.filterMei(), EzhuththuUtils.filterUyirMei()));
         map.put("!எழுத்து", new NonTamilSymbolRx("!எழுத்து"));
 
-        Set<EzhuththuDescription> sets = TamilFactory.getTamilCharacterSetCalculator().getEzhuththuDescriptions();
-        for (EzhuththuDescription set : sets) {
+        Set<EzhuththuSetDescription> sets = TamilFactory.getTamilCharacterSetCalculator().getEzhuththuSetDescriptions();
+        for (EzhuththuSetDescription set : sets) {
             if (PatternGenerator.class.isAssignableFrom(set.getClass())) {
                 map.put(set.getName(), (PatternGenerator) set);
             } else {
@@ -66,14 +73,14 @@ public class RxRegistry implements IPropertyFinder {
 
         map.put("நேர்", new NtearRx());
         map.put("நிரை", new NtiraiRx());
-        map.put("நாள்", new NtearRx());
-        map.put("மலர்", new NtiraiRx());
+        map.put("நாள்", new NtaalhRx());
+        map.put("மலர்", new MalarRx());
 
         map.put("நேர்பு", new NtearbuRx());
         map.put("நிரைபு", new NtiraibuRx());
 
-        map.put("காசு", new NtearbuRx());
-        map.put("பிறப்பு", new NtiraibuRx());
+        map.put("காசு", new KaasuRx());
+        map.put("பிறப்பு", new PirrappuRx());
 
         map.put("தேமா", new TheamaRx());
         map.put("புளிமா", new PulhimaRx());
@@ -88,6 +95,27 @@ public class RxRegistry implements IPropertyFinder {
         map.put("புளிமாங்கனி", new PulhimaanganiRx());
         map.put("கூவிளங்கனி", new KoovilhanganiRx());
         map.put("கருவிளங்கனி", new KaruvilhanganiRx());
+
+        map.put("அசை", new Asai());
+        map.put("காய்ச்சீர்", new Kaaychcheer());
+        map.put("கனிச்சீர்", new Kanichcheer());
+        map.put("மாச்சீர்", new Maachcheer());
+        map.put("விளச்சீர்", new Vilhachcheer());
+
+        map.put("ஈரசைச்சீர்", new Eerasaichcheer());
+        map.put("மூவசைச்சீர்", new Moovasaichcheer());
+
+        map.put("மாமுன் நிரை", new MaaMunNtiraiRx());
+        map.put("விளம்முன் நேர்", new VilhamMunNtear());
+        map.put("இயற்சீர்வெண்டளை", new IyarrCirVendalhaiRx());
+
+        map.put("வெண்டளை", new VendalhaiRx());
+        map.put("வெண்சீர்வெண்டளை", new VenhCirVendalhaiRx());
+        map.put("இடைவெளி", new IdaivelhiRx());
+        map.put("வெண்பாவின் இறுதிச்சீர்", new VenhbaLastCirRx());
+        map.put("குறளின் சீரமைப்பு", new KurralhCirRx());
+        map.put("குறளின் தளையமைப்பு", new KurralhThalaiRx());
+        map.put("குறள்", new KurralRx());
 
 
     }
@@ -112,6 +140,41 @@ public class RxRegistry implements IPropertyFinder {
             } else if (p1.endsWith(")")) {
                 String inner = p1.substring(0, p1.length() - 1);
                 return "${" + inner + "}\\b";
+
+            }
+            if (p1.startsWith("[") && p1.endsWith("]")) {
+                String inner = p1.substring(1, p1.length() - 1);
+                TamilWord literal = TamilWord.from(inner, true);
+                return literal.toUnicodeStringRepresentation();
+            }
+
+            if (p1.startsWith("தளை[") && p1.endsWith("]")) {
+                String inner = p1.substring(4, p1.length() - 1).trim();
+                int munIndex = inner.indexOf(" முன் ");
+                if (munIndex < 1) {
+                   throw new TamilPatternSyntaxException("Invalid definition for தளை. It should be of the form ${தளை[(மாச்சீர்) முன் நேர்]} ", p1, 0);
+                }
+                String first = inner.substring(0, munIndex).trim();
+                String second = inner.substring(munIndex + 6).trim();
+                if (second.length() == 0) {
+                  throw  new TamilPatternSyntaxException("Invalid definition for தளை. It should be of the form ${தளை[(மாச்சீர்) முன் நேர்]} ", p1, 0);
+                }
+                //            String contextFirst = StringUtils.replaceWithContext("${", "}", "${" + first +"}", this, true, true, true).finalString;
+//                String  contextSecond = StringUtils.replaceWithContext("${", "}", "${" + second +"}", this, true, true, true).finalString;
+                //     contextFirst = contextFirst.replaceAll("\\*", "{0,10}");
+                //   contextFirst = contextFirst.replaceAll("\\+", "{1,10}");
+
+//                contextSecond = contextSecond.replaceAll("\\*", "{0,10}");
+//                contextSecond = contextSecond.replaceAll("\\+", "{1,10}");
+                //  first ="ezhuththu";
+                StringBuffer buffer = new StringBuffer();
+                // buffer.append("(?<=(${" + first +"}))\\s+");
+                // buffer.append("(?<=(" + contextFirst +"))\\s+");
+                buffer.append("${" + first + "}\\s+");
+                buffer.append("(?=(${" + second + "}))");
+                String ret = buffer.toString();
+
+                return ret;
 
             }
             if (p1.startsWith("அசை[") && p1.endsWith("]")) {

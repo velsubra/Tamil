@@ -1,7 +1,6 @@
 package my.interest.lang.tamil.impl.rx.asai1;
 
-import my.interest.lang.tamil.impl.yaappu.AsaiRx;
-import my.interest.lang.tamil.internal.api.PatternGenerator;
+import my.interest.lang.tamil.impl.yaappu.YaappuBaseRx;
 
 /**
  * <p>
@@ -9,7 +8,10 @@ import my.interest.lang.tamil.internal.api.PatternGenerator;
  *
  * @author velsubra
  */
-public final class NtearbuRx  extends AsaiRx {
+public  class NtearbuRx  extends YaappuBaseRx {
+    protected NtearbuRx(String name) {
+        super(name);
+    }
     public NtearbuRx() {
         super("நேர்பு");
     }

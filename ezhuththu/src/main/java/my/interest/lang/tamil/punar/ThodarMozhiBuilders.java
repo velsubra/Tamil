@@ -48,9 +48,9 @@ public class ThodarMozhiBuilders {
         //Map<String, ThodarMozhiBuilders> cachedContext = new HashMap<String, ThodarMozhiBuilders>();
         ThodarMozhiBuilders done = add(container, cache, unknowns, dontparse);
 
-        System.out.println("Dont parse:" + dontparse);
-        System.out.println("Cache:" + cache.keySet());
-        System.out.println("Unknowns:" + unknowns);
+//        System.out.println("Dont parse:" + dontparse);
+//        System.out.println("Cache:" + cache.keySet());
+//        System.out.println("Unknowns:" + unknowns);
         ThodarMozhiBuilders ret = new ThodarMozhiBuilders();
         for (ThodarMozhiBuilder b : done.getList()) {
             if (b.isAtLogicalCompletion()) {

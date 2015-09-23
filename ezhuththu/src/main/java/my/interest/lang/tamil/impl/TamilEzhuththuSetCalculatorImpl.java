@@ -7,11 +7,10 @@ import my.interest.lang.tamil.impl.rx.AnyOneInTamilLetterSetRx;
 
 import my.interest.lang.tamil.parser.impl.sax.SaxParser;
 import tamil.lang.TamilCharacter;
-import tamil.lang.TamilFactory;
 import tamil.lang.TamilSimpleCharacter;
 import tamil.lang.TamilWord;
 import tamil.lang.api.dictionary.TamilDictionary;
-import tamil.lang.api.ezhuththu.EzhuththuDescription;
+import tamil.lang.api.ezhuththu.EzhuththuSetDescription;
 import tamil.lang.api.ezhuththu.TamilCharacterSetCalculator;
 import tamil.lang.api.parser.*;
 import tamil.lang.exception.TamilPlatformException;
@@ -53,7 +52,7 @@ public class TamilEzhuththuSetCalculatorImpl implements TamilCharacterSetCalcula
         }
     }
 
-    static final Map<String, EzhuththuDescription> map = new HashMap<String, EzhuththuDescription>();
+    static final Map<String, EzhuththuSetDescription> map = new HashMap<String, EzhuththuSetDescription>();
 
     static {
         map.put("எழுத்து", new AnyOneInTamilLetterSetRx("எழுத்து", "தமிழெழுத்தைக்குறிக்கிறது. எ.கா: ப ", EzhuththuUtils.filterAaytham(), EzhuththuUtils.filterUyir(), EzhuththuUtils.filterMei(), EzhuththuUtils.filterUyirMei()));
@@ -189,14 +188,14 @@ public class TamilEzhuththuSetCalculatorImpl implements TamilCharacterSetCalcula
     }
 
 
-    public Set<EzhuththuDescription> getEzhuththuDescriptions() {
-        return Collections.unmodifiableSet(new LinkedHashSet<EzhuththuDescription>( map.values()));
+    public Set<EzhuththuSetDescription> getEzhuththuSetDescriptions() {
+        return Collections.unmodifiableSet(new LinkedHashSet<EzhuththuSetDescription>( map.values()));
     }
 
 
     private Set<TamilCharacter> resolve(String compound) {
 
-        EzhuththuDescription desc = map.get(compound);
+        EzhuththuSetDescription desc = map.get(compound);
         if (desc == null) {
             return resolve(resolveSimpleToParsedList(compound));
         }  else {
@@ -235,7 +234,7 @@ public class TamilEzhuththuSetCalculatorImpl implements TamilCharacterSetCalcula
 
 
     private Set<TamilCharacter> resolve(List<IKnownWord> parsed) {
-        EzhuththuDescription gen = map.get(parsed.get(0).getWord().toString());
+        EzhuththuSetDescription gen = map.get(parsed.get(0).getWord().toString());
         if (gen == null) {
             throw new TamilPlatformException("Unknown letter set:" + parsed.get(0).getWord().toString());
         }

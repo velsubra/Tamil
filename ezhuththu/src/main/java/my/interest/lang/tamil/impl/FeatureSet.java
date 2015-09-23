@@ -42,7 +42,7 @@ public final class FeatureSet {
                             try {
                                 Feature val = (Feature) f.get(null);
                                 if (val == null) continue;
-                                System.out.println("adding:" + number + ":feature " + val.getClass().getName());
+                               // System.out.println("adding:" + number + ":feature " + val.getClass().getName());
                                 registeredFeatures.put(number, val);
                             } catch (IllegalAccessException il) {
 

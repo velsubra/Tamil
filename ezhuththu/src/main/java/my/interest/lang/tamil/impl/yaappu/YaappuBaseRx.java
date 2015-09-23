@@ -11,7 +11,7 @@ import java.util.Set;
  *
  * @author velsubra
  */
-public abstract  class AsaiRx implements PatternGenerator {
+public abstract  class YaappuBaseRx implements PatternGenerator {
 
     public String getName() {
         return name;
@@ -20,7 +20,7 @@ public abstract  class AsaiRx implements PatternGenerator {
     String name = null;
     String desc = null;
 
-    public AsaiRx(String name) {
+    public YaappuBaseRx(String name) {
        this.name = name;
        this.desc = "வாய்ப்பாடு '"+ this.name + "' -ஐக்குறிக்கிறது.";
     }

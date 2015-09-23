@@ -1,7 +1,6 @@
 package my.interest.lang.tamil.impl.rx.asai2;
 
-import my.interest.lang.tamil.impl.yaappu.AsaiRx;
-import my.interest.lang.tamil.internal.api.PatternGenerator;
+import my.interest.lang.tamil.impl.yaappu.YaappuBaseRx;
 
 /**
  * <p>
@@ -9,7 +8,7 @@ import my.interest.lang.tamil.internal.api.PatternGenerator;
  *
  * @author velsubra
  */
-public final class PulhimaRx  extends AsaiRx {
+public final class PulhimaRx  extends YaappuBaseRx {
 
     public PulhimaRx() {
         super("புளிமா");

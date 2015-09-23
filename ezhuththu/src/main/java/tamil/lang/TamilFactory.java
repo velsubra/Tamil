@@ -165,7 +165,7 @@ public final class TamilFactory {
 
     /**
      * Gets the compiler for Tamil regular expression. Tamil regular expression is any Java regular expression that contains variables of the form
-     * ${tamil_expression}, where  tamil_expression could be any tamil character set returned by {@link  tamil.lang.api.ezhuththu.TamilCharacterSetCalculator#getEzhuththuDescriptions()} or anything that is calculated by {@link TamilCharacterSetCalculator#find(String)}.
+     * ${tamil_expression}, where  tamil_expression could be any tamil character set returned by {@link  tamil.lang.api.ezhuththu.TamilCharacterSetCalculator#getEzhuththuSetDescriptions()} or anything that is calculated by {@link TamilCharacterSetCalculator#find(String)}.
      * The expression ${tamil_expression} means any single character from the character set tamil_expression. For example ${குறில்}
      * means any குறில் character.  ${குறில்}* mean 0 or more குறிலெழுத்துகள்     .
      *

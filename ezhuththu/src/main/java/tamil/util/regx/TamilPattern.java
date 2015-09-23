@@ -61,7 +61,7 @@ public final class TamilPattern {
      */
     public static TamilPattern compile(String pattern, int flags, IPropertyFinder aliasFinder) {
         StringUtils.IndexContext context = StringUtils.replaceWithContext("${", "}", pattern, new RxRegistry(aliasFinder), true, true, true);
-        System.out.println("pattern:" + pattern + " =>Real RX:" + context.finalString);
+      //  System.out.println("pattern:" + pattern + " =>Real RX:" + context.finalString);
         return new TamilPattern(pattern, context, flags);
 
 

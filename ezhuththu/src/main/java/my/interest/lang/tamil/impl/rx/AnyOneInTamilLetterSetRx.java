@@ -40,7 +40,7 @@ public final class AnyOneInTamilLetterSetRx implements PatternGenerator {
         this.name = name;
         this.description = description;
 
-        System.out.println(this.name + ":" + set.size() + ":" + set);
+        //System.out.println(this.name + ":" + set.size() + ":" + set);
     }
 
     public String generate() {

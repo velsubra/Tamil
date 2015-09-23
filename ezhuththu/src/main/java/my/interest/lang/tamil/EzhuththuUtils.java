@@ -25,6 +25,8 @@ import java.io.*;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * <p>
@@ -1204,6 +1206,116 @@ public class EzhuththuUtils {
             ret.append(sp);
         }
         return ret.toString();
+    }
+
+    public static long getLastModifiedDate(File dir) {
+        if (!dir.exists())
+            return 0;
+        if (dir.isFile()) {
+            return dir.lastModified();
+        } else {
+            String[] files = findDirectoriesWithPatternAt(dir, null);
+            long ret = dir.lastModified();
+            for (int i = 0; i < files.length; i++) {
+                long sub = getLastModifiedDate(new File(dir, files[i]));
+                if (ret < sub) {
+                    ret = sub;
+                }
+            }
+            files = findFilesWithPatternAt(dir, null);
+
+            for (int i = 0; i < files.length; i++) {
+                long sub = getLastModifiedDate(new File(dir, files[i]));
+                if (ret < sub) {
+                    ret = sub;
+                }
+            }
+            return ret;
+        }
+    }
+    public static String[] findDirectoriesWithPatternAt(File dir, final String pattern) {
+        if (dir == null)
+            return null;
+        if (!dir.exists() || !dir.isDirectory())
+            return null;
+        return dir.list(new FilenameFilter() {
+            public boolean accept(File dir, String name) {
+
+                if (!new File(dir, name).isDirectory())
+                    return false;
+                if (pattern == null)
+                    return true;
+                Pattern pat = Pattern.compile(pattern);
+                Matcher matcher = pat.matcher(name);
+                return matcher.matches();
+
+            }
+
+        });
+    }
+
+    public static List<String> recurseFindFilesWithPatternAt(File dir, final String pattern) {
+        List<String> list = new ArrayList<String>();
+        recurseFindAndAddFilesWithPatternAt(dir, "", pattern, list);
+        return list;
+
+    }
+
+
+    public static void recurseFindAndAddFilesWithPatternAt(File dir, String offset, final String pattern,
+                                                           List<String> list) {
+
+        File effectiveDir = new File(dir, offset);
+        String files[] = findFilesWithPatternAt(effectiveDir, pattern);
+        if (files != null) {
+            for (String file : files) {
+                list.add(offset + file);
+            }
+        }
+        String dirs[] = findDirectoriesWithPatternAt(effectiveDir, null);
+        if (dirs != null) {
+            for (String sub : dirs) {
+                recurseFindAndAddFilesWithPatternAt(dir, offset + sub + File.separator, pattern, list);
+            }
+        }
+
+    }
+
+
+    public static String[] findFilesWithPatternAt(File dir, final String pattern) {
+        if (dir == null)
+            return null;
+        if (!dir.exists() || !dir.isDirectory())
+            return null;
+        return dir.list(new FilenameFilter() {
+            public boolean accept(File dir, String name) {
+
+                if (!new File(dir, name).isFile())
+                    return false;
+                if (pattern == null)
+                    return true;
+                Pattern pat = Pattern.compile(pattern);
+                Matcher matcher = pat.matcher(name);
+
+                return matcher.matches();
+
+            }
+
+        });
+    }
+
+
+
+    public static String getFileBaseName(String fileName) {
+        if (fileName == null) {
+            throw new RuntimeException("fileName can not be null");
+        }
+        int index = fileName.indexOf(".");
+        if (index < 0) {
+            return fileName;
+        } else {
+            return fileName.substring(0, index);
+        }
     }
 
 }
