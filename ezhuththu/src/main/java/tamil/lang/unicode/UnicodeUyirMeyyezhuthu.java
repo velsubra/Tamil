@@ -254,7 +254,7 @@ public class UnicodeUyirMeyyezhuthu extends AbstractTamilCharacter implements Uy
 
     @Override
     public int getCodePointsCount() {
-        return 2;
+        return Glyphs.NONE.equals(uyirezhuthu.getGlyph()) ? 1 : 2;
     }
 
     @Override

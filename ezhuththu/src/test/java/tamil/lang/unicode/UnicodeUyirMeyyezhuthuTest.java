@@ -82,87 +82,87 @@ public class UnicodeUyirMeyyezhuthuTest {
         List<UnicodeUyirMeyyezhuthu> mellinam = asList(NGA, NYA, NNNA, NTHA, MA, NA);
         List<UnicodeUyirMeyyezhuthu> idaiyinam = asList(YA, RA, LA, VA, LLLA, LLA);
 
-        verifyPropertiesOf(agaraVarisai, vallinam, mellinam, idaiyinam, 1, true, "_01_");
+        verifyPropertiesOf(agaraVarisai, vallinam, mellinam, idaiyinam, 1, true, "_01_", 1);
 
         List<UnicodeUyirMeyyezhuthu> aagaaraVarisai = asList(IK_aa, ING_aa, ICH_aa, INJ_aa, IDD_aa, INNN_aa, ITH_aa, INTH_aa, IP_aa, IM_aa, IY_aa, IR_aa, IL_aa, IV_aa, ILLL_aa, ILL_aa, IRR_aa, IN_aa);
         vallinam = asList(IK_aa, ICH_aa, IDD_aa, ITH_aa, IP_aa, IRR_aa);
         mellinam = asList(ING_aa, INJ_aa, INNN_aa, INTH_aa, IM_aa, IN_aa);
         idaiyinam = asList(IY_aa, IR_aa, IL_aa, IV_aa, ILLL_aa, ILL_aa);
 
-        verifyPropertiesOf(aagaaraVarisai, vallinam, mellinam, idaiyinam, 2, false, "_02_");
+        verifyPropertiesOf(aagaaraVarisai, vallinam, mellinam, idaiyinam, 2, false, "_02_", 2);
 
         List<UnicodeUyirMeyyezhuthu> egaraVarisai = asList(IK_E, ING_E, ICH_E, INJ_E, IDD_E, INNN_E, ITH_E, INTH_E, IP_E, IM_E, IY_E, IR_E, IL_E, IV_E, ILLL_E, ILL_E, IRR_E, IN_E);
         vallinam = asList(IK_E, ICH_E, IDD_E, ITH_E, IP_E, IRR_E);
         mellinam = asList(ING_E, INJ_E, INNN_E, INTH_E, IM_E, IN_E);
         idaiyinam = asList(IY_E, IR_E, IL_E, IV_E, ILLL_E, ILL_E);
 
-        verifyPropertiesOf(egaraVarisai, vallinam, mellinam, idaiyinam, 3, true, "_03_");
+        verifyPropertiesOf(egaraVarisai, vallinam, mellinam, idaiyinam, 3, true, "_03_", 2);
 
         List<UnicodeUyirMeyyezhuthu> eegaaraVarisai = asList(IK_EE, ING_EE, ICH_EE, INJ_EE, IDD_EE, INNN_EE, ITH_EE, INTH_EE, IP_EE, IM_EE, IY_EE, IR_EE, IL_EE, IV_EE, ILLL_EE, ILL_EE, IRR_EE, IN_EE);
         vallinam = asList(IK_EE, ICH_EE, IDD_EE, ITH_EE, IP_EE, IRR_EE);
         mellinam = asList(ING_EE, INJ_EE, INNN_EE, INTH_EE, IM_EE, IN_EE);
         idaiyinam = asList(IY_EE, IR_EE, IL_EE, IV_EE, ILLL_EE, ILL_EE);
 
-        verifyPropertiesOf(eegaaraVarisai, vallinam, mellinam, idaiyinam, 4, false, "_04_");
+        verifyPropertiesOf(eegaaraVarisai, vallinam, mellinam, idaiyinam, 4, false, "_04_", 2);
 
         List<UnicodeUyirMeyyezhuthu> ugaraVarisai = asList(IK_U, ING_U, ICH_U, INJ_U, IDD_U, INNN_U, ITH_U, INTH_U, IP_U, IM_U, IY_U, IR_U, IL_U, IV_U, ILLL_U, ILL_U, IRR_U, IN_U);
         vallinam = asList(IK_U, ICH_U, IDD_U, ITH_U, IP_U, IRR_U);
         mellinam = asList(ING_U, INJ_U, INNN_U, INTH_U, IM_U, IN_U);
         idaiyinam = asList(IY_U, IR_U, IL_U, IV_U, ILLL_U, ILL_U);
 
-        verifyPropertiesOf(ugaraVarisai, vallinam, mellinam, idaiyinam, 5, true, "_05_");
+        verifyPropertiesOf(ugaraVarisai, vallinam, mellinam, idaiyinam, 5, true, "_05_", 2);
 
         List<UnicodeUyirMeyyezhuthu> uugaaraVarisai = asList(IK_UU, ING_UU, ICH_UU, INJ_UU, IDD_UU, INNN_UU, ITH_UU, INTH_UU, IP_UU, IM_UU, IY_UU, IR_UU, IL_UU, IV_UU, ILLL_UU, ILL_UU, IRR_UU, IN_UU);
         vallinam = asList(IK_UU, ICH_UU, IDD_UU, ITH_UU, IP_UU, IRR_UU);
         mellinam = asList(ING_UU, INJ_UU, INNN_UU, INTH_UU, IM_UU, IN_UU);
         idaiyinam = asList(IY_UU, IR_UU, IL_UU, IV_UU, ILLL_UU, ILL_UU);
 
-        verifyPropertiesOf(uugaaraVarisai, vallinam, mellinam, idaiyinam, 6, false, "_06_");
+        verifyPropertiesOf(uugaaraVarisai, vallinam, mellinam, idaiyinam, 6, false, "_06_", 2);
 
         List<UnicodeUyirMeyyezhuthu> AgaraVarisai = asList(IK_A, ING_A, ICH_A, INJ_A, IDD_A, INNN_A, ITH_A, INTH_A, IP_A, IM_A, IY_A, IR_A, IL_A, IV_A, ILLL_A, ILL_A, IRR_A, IN_A);
         vallinam = asList(IK_A, ICH_A, IDD_A, ITH_A, IP_A, IRR_A);
         mellinam = asList(ING_A, INJ_A, INNN_A, INTH_A, IM_A, IN_A);
         idaiyinam = asList(IY_A, IR_A, IL_A, IV_A, ILLL_A, ILL_A);
 
-        verifyPropertiesOf(AgaraVarisai, vallinam, mellinam, idaiyinam, 7, true, "_07_");
+        verifyPropertiesOf(AgaraVarisai, vallinam, mellinam, idaiyinam, 7, true, "_07_", 2);
 
         List<UnicodeUyirMeyyezhuthu> AAgaaraVarisai = asList(IK_AA, ING_AA, ICH_AA, INJ_AA, IDD_AA, INNN_AA, ITH_AA, INTH_AA, IP_AA, IM_AA, IY_AA, IR_AA, IL_AA, IV_AA, ILLL_AA, ILL_AA, IRR_AA, IN_AA);
         vallinam = asList(IK_AA, ICH_AA, IDD_AA, ITH_AA, IP_AA, IRR_AA);
         mellinam = asList(ING_AA, INJ_AA, INNN_AA, INTH_AA, IM_AA, IN_AA);
         idaiyinam = asList(IY_AA, IR_AA, IL_AA, IV_AA, ILLL_AA, ILL_AA);
 
-        verifyPropertiesOf(AAgaaraVarisai, vallinam, mellinam, idaiyinam, 8, false, "_08_");
+        verifyPropertiesOf(AAgaaraVarisai, vallinam, mellinam, idaiyinam, 8, false, "_08_", 2);
 
         List<UnicodeUyirMeyyezhuthu> igaaraVarisai = asList(IK_I, ING_I, ICH_I, INJ_I, IDD_I, INNN_I, ITH_I, INTH_I, IP_I, IM_I, IY_I, IR_I, IL_I, IV_I, ILLL_I, ILL_I, IRR_I, IN_I);
         vallinam = asList(IK_I, ICH_I, IDD_I, ITH_I, IP_I, IRR_I);
         mellinam = asList(ING_I, INJ_I, INNN_I, INTH_I, IM_I, IN_I);
         idaiyinam = asList(IY_I, IR_I, IL_I, IV_I, ILLL_I, ILL_I);
 
-        verifyPropertiesOf(igaaraVarisai, vallinam, mellinam, idaiyinam, 9, false, "_09_");
+        verifyPropertiesOf(igaaraVarisai, vallinam, mellinam, idaiyinam, 9, false, "_09_", 2);
 
         List<UnicodeUyirMeyyezhuthu> ogaraVarisai = asList(IK_O, ING_O, ICH_O, INJ_O, IDD_O, INNN_O, ITH_O, INTH_O, IP_O, IM_O, IY_O, IR_O, IL_O, IV_O, ILLL_O, ILL_O, IRR_O, IN_O);
         vallinam = asList(IK_O, ICH_O, IDD_O, ITH_O, IP_O, IRR_O);
         mellinam = asList(ING_O, INJ_O, INNN_O, INTH_O, IM_O, IN_O);
         idaiyinam = asList(IY_O, IR_O, IL_O, IV_O, ILLL_O, ILL_O);
 
-        verifyPropertiesOf(ogaraVarisai, vallinam, mellinam, idaiyinam, 10, true, "_10_");
+        verifyPropertiesOf(ogaraVarisai, vallinam, mellinam, idaiyinam, 10, true, "_10_", 2);
 
         List<UnicodeUyirMeyyezhuthu> oogaaraVarisai = asList(IK_OO, ING_OO, ICH_OO, INJ_OO, IDD_OO, INNN_OO, ITH_OO, INTH_OO, IP_OO, IM_OO, IY_OO, IR_OO, IL_OO, IV_OO, ILLL_OO, ILL_OO, IRR_OO, IN_OO);
         vallinam = asList(IK_OO, ICH_OO, IDD_OO, ITH_OO, IP_OO, IRR_OO);
         mellinam = asList(ING_OO, INJ_OO, INNN_OO, INTH_OO, IM_OO, IN_OO);
         idaiyinam = asList(IY_OO, IR_OO, IL_OO, IV_OO, ILLL_OO, ILL_OO);
 
-        verifyPropertiesOf(oogaaraVarisai, vallinam, mellinam, idaiyinam, 11, false, "_11_");
+        verifyPropertiesOf(oogaaraVarisai, vallinam, mellinam, idaiyinam, 11, false, "_11_", 2);
 
         List<UnicodeUyirMeyyezhuthu> ougaaraVarisai = asList(IK_OU, ING_OU, ICH_OU, INJ_OU, IDD_OU, INNN_OU, ITH_OU, INTH_OU, IP_OU, IM_OU, IY_OU, IR_OU, IL_OU, IV_OU, ILLL_OU, ILL_OU, IRR_OU, IN_OU);
         vallinam = asList(IK_OU, ICH_OU, IDD_OU, ITH_OU, IP_OU, IRR_OU);
         mellinam = asList(ING_OU, INJ_OU, INNN_OU, INTH_OU, IM_OU, IN_OU);
         idaiyinam = asList(IY_OU, IR_OU, IL_OU, IV_OU, ILLL_OU, ILL_OU);
 
-        verifyPropertiesOf(ougaaraVarisai, vallinam, mellinam, idaiyinam, 12, false, "_12_");
+        verifyPropertiesOf(ougaaraVarisai, vallinam, mellinam, idaiyinam, 12, false, "_12_", 2);
     }
 
-    private void verifyPropertiesOf(List<UnicodeUyirMeyyezhuthu> uyirMeyyezhuthukkal, List<UnicodeUyirMeyyezhuthu> vallinam, List<UnicodeUyirMeyyezhuthu> mellinam, List<UnicodeUyirMeyyezhuthu> idaiyinam, int vowelOffset, boolean isKuril, String vowelDigest) {
+    private void verifyPropertiesOf(List<UnicodeUyirMeyyezhuthu> uyirMeyyezhuthukkal, List<UnicodeUyirMeyyezhuthu> vallinam, List<UnicodeUyirMeyyezhuthu> mellinam, List<UnicodeUyirMeyyezhuthu> idaiyinam, int vowelOffset, boolean isKuril, String vowelDigest, int codePointsCount) {
         String soundSizeDigest = isKuril ? "_1.0_" : "_2.0_";
         boolean isNedil = !isKuril;
         for (UnicodeUyirMeyyezhuthu e : uyirMeyyezhuthukkal){
@@ -171,7 +171,7 @@ public class UnicodeUyirMeyyezhuthuTest {
             assertThat(e.getSoundSizeDigest(), is(soundSizeDigest));
             assertThat(e.getCharacterTypeDigest(), is("_4_"));
             assertThat(e.getVowelDigest(), is(vowelDigest));
-            assertThat(e.getCodePointsCount(), is(2));
+            assertThat(e.getCodePointsCount(), is(codePointsCount));
         }
 
         for (UnicodeUyirMeyyezhuthu e : vallinam){
