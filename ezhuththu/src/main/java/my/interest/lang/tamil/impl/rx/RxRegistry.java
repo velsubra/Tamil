@@ -2,6 +2,7 @@ package my.interest.lang.tamil.impl.rx;
 
 import common.lang.impl.AbstractCharacter;
 import my.interest.lang.tamil.EzhuththuUtils;
+import my.interest.lang.tamil.TamilUtils;
 import my.interest.lang.tamil.impl.rx.asai1.*;
 import my.interest.lang.tamil.impl.rx.asai2.Karuvilham;
 import my.interest.lang.tamil.impl.rx.asai2.KoovilhamRx;
@@ -152,12 +153,12 @@ public class RxRegistry implements IPropertyFinder {
                 String inner = p1.substring(4, p1.length() - 1).trim();
                 int munIndex = inner.indexOf(" முன் ");
                 if (munIndex < 1) {
-                   throw new TamilPatternSyntaxException("Invalid definition for தளை. It should be of the form ${தளை[(மாச்சீர்) முன் நேர்]} ", p1, 0);
+                    throw new TamilPatternSyntaxException("Invalid definition for தளை. It should be of the form ${தளை[(மாச்சீர்) முன் நேர்]} ", p1, 0);
                 }
                 String first = inner.substring(0, munIndex).trim();
                 String second = inner.substring(munIndex + 6).trim();
                 if (second.length() == 0) {
-                  throw  new TamilPatternSyntaxException("Invalid definition for தளை. It should be of the form ${தளை[(மாச்சீர்) முன் நேர்]} ", p1, 0);
+                    throw new TamilPatternSyntaxException("Invalid definition for தளை. It should be of the form ${தளை[(மாச்சீர்) முன் நேர்]} ", p1, 0);
                 }
                 //            String contextFirst = StringUtils.replaceWithContext("${", "}", "${" + first +"}", this, true, true, true).finalString;
 //                String  contextSecond = StringUtils.replaceWithContext("${", "}", "${" + second +"}", this, true, true, true).finalString;
@@ -294,11 +295,22 @@ public class RxRegistry implements IPropertyFinder {
 
                 return null;
             }
-            return new AnyOneInTamilLetterSetRx(p1, chars).generate();
-        } else {
-            return gen.generate();
+            gen = new AnyOneInTamilLetterSetRx(p1, chars);
         }
+        return  gen.generate();
+//        String groupName = TamilUtils.toRxGroupName(TamilWord.from(gen.getName(), true).translitToEnglish());
+//        if (generatedPatterns.containsKey(gen.getName())) {
+//            return "(\\k<" + groupName + ">)";
+//        } else {
+//
+//            generatedPatterns.put(gen.getName(), gen);
+//            String ex = "(?<" + groupName + ">(" + gen.generate() + "))";
+//            return ex;
+//        }
+
     }
+
+    private Map<String, PatternGenerator> generatedPatterns = new HashMap<String, PatternGenerator>();
 
 
 }

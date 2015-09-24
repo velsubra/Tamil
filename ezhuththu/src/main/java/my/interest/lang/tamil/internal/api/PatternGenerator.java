@@ -11,7 +11,7 @@ import tamil.lang.api.ezhuththu.EzhuththuSetDescription;
 public interface PatternGenerator extends EzhuththuSetDescription {
 
     public  String generate();
-  //  public String groupName();
+
 
 
 }

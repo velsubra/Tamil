@@ -814,6 +814,16 @@ public final class TamilWord extends AbstractWord<AbstractCharacter> implements 
         return buffer.toString();
     }
 
+
+    public String translitToEnglish() {
+        StringBuffer buffer = new StringBuffer();
+        Iterator<AbstractCharacter> it =  this.listIterator();
+        while(it.hasNext()) {
+            buffer.append(it.next().translitToEnglish());
+        }
+        return buffer.toString();
+    }
+
     public int length() {
         return size();
     }

@@ -52,6 +52,7 @@ public abstract class TamilCharacter extends AbstractCharacter {
     protected void postInit() {
         this.typeSpecification |= _isMozhimuthal() ? MOZHI_MUTHAL : 0;
         this.typeSpecification |= _isMozhiLast() ? MOZHI_LAST : 0;
+
     }
 
 
@@ -627,6 +628,8 @@ public abstract class TamilCharacter extends AbstractCharacter {
         }
         return vallinam;
     }
+
+
 
 
 }

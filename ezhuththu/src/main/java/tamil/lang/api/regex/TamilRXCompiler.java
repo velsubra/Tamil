@@ -25,11 +25,11 @@ import java.util.Set;
  * <tr><td>3</td><td>${</b>(</b>..</b>)</b>}</td> <td> Pattern to be found as whole word only. ${(மொழி)}          matches syntactically right whole words.</td> </tr>
  * <tr><td>4</td><td>${<b>அசை</b>[சொல்]}</td> <td> Pattern to match the same list of அசை as in the given சொல். ${அசை[செந்தமிழ்] matches கூவிளம் as  both செந்தமிழ் and கூவிளம்   have same asai patterns.</td> </tr>
  * <tr><td>5</td><td>${<b>மாத்திரை</b>[சொல்]}</td> <td> Pattern to match the same list of மாத்திரை for each character  as in  the given சொல். ${மாத்திரை[தென்னை]} matches with கண்ணா</td> </tr>
- * <tr><td>6</td><td>${<b>வகை</b>[சொல்]}</td> <td> Pattern to match the same list of வகை (உயிர், உயிர்மெய்ம் மெய், ஆய்தம்) of each character  as in the given சொல். ${வகை[தமிழ்]} matches with பாகம்</td> </tr>
+ * <tr><td>6</td><td>${<b>வகை</b>[சொல்]}</td> <td> Pattern to match the same list of வகை (உயிர், உயிர்மெய் மெய், ஆய்தம்) of each character  as in the given சொல். ${வகை[தமிழ்]} matches with பாகம்</td> </tr>
  *  <tr><td>7</td><td>${<b>மெய்வகை</b>[சொல்]}</td> <td> Pattern to match the same list of மெய்வகை (வலி,மெலி,இடை) of each character  as in the given சொல். ${மெய்வகை[அங்கு] matches with அந்தி</td> </tr>
  *  <tr><td>8</td><td>${[தமிழ்]}</td> <td> Pattern to match the literal text தமிழ்</td> </tr>
- *  <tr><td>9</td><td>${தளை[ex1 முன் ex2]}</td> <td> Pattern to match தளை. ${தளை[(மாச்சீர்) முன் நிரை]}  என்பது இயற்சீர்வெண்டளையை குறிக்கும்.
- *  குறிப்பு: இரண்டாஞ்சீரின் தன்மையை ஆராய்ந்துதான் தளை காணப்பட்டாலும், தளைக்கான பாங்கு முதற்சீரையும்(அதாவது  ex1) அதற்குப்பின்வரும் இடைவெளியையுமட்டுமே   குறிக்கும், இரண்டாஞ்சீரை பாங்குடன் இணைக்காது.
+ *  <tr><td>9</td><td>${<b>தளை</b>[ex1 முன் ex2]}</td> <td> Pattern to match தளை. ${தளை[(மாச்சீர்) முன் நிரை]}  என்பது இயற்சீர்வெண்டளையை குறிக்கும்.
+ *  குறிப்பு: இரண்டாஞ்சீரின் தன்மையை ஆராய்ந்துதான் தளை காணப்பட்டாலும், தளைக்கான பாங்கு முதற்சீரையும்(அதாவது  ex1) அதற்குப்பின்வரும் இடைவெளியையும்மட்டுமே   குறிக்கும், இரண்டாஞ்சீரை பாங்குடன் இணைக்காது.
  *  This expression will only match ex1 and the whitespaces following it.
  *  The expression ex2 is not part of the matching al though the correctness of the binding(தளை) is tested along with expression ex2.
  *  This is to facilitate the sub-sequent search that could involve the the expression ex2, the second cir.  </td> </tr>
@@ -39,7 +39,7 @@ import java.util.Set;
  * <p/>
  * <p>
  * <p/>
- * It is capable of compiling a standard expression containing tamil expression and produce standard {@link java.util.regex.Matcher}  against a character sequence.
+ * It is capable of compiling a  expression containing tamil expression and produce standard {@link java.util.regex.Matcher}  against a character sequence.
  * <p/>
  * <p/>
  * </p>

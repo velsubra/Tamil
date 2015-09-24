@@ -56,6 +56,16 @@ public class UnknownCharacter extends AbstractCharacter implements SimpleCharact
         return ret;
     }
 
+    /**
+     * Translit the character to roman letter(s)
+     *
+     * @return returns roman letters
+     */
+    @Override
+    public String translitToEnglish() {
+        return  toString();
+    }
+
     @Override
     public int getCodePointsCount() {
         return 1;

@@ -1,23 +1,12 @@
 package my.interest.lang.tamil;
 
-import common.lang.impl.AbstractCharacter;
-import my.interest.lang.tamil.generated.types.PaalViguthi;
-import my.interest.lang.tamil.generated.types.SimpleTense;
-import my.interest.lang.tamil.internal.api.TamilCharacterParserListener;
-import tamil.lang.*;
-import tamil.lang.known.IKnownWord;
-import tamil.lang.known.non.derived.IPeyarchchol;
-
-import java.io.*;
-import java.util.*;
-
 /**
  * <p>
  * </p>
  *
  * @author velsubra
  */
-public class TamilUtils extends  EzhuththuUtils {
+public class TamilUtils extends EzhuththuUtils {
 
 
     public final static long ONE_SECOND = 1000;
@@ -36,9 +25,27 @@ public class TamilUtils extends  EzhuththuUtils {
     private TamilUtils() {
     }
 
+
+    public static String toRxGroupName(String str) {
+        StringBuffer buffer = new StringBuffer();
+        for (int i = 0; i < str.length(); i++) {
+            char ch = str.charAt(i);
+            if (ch >= 'a' && ch <= 'z') {
+                buffer.append(ch);
+            } else if (ch >= 'A' && ch <= 'Z') {
+                buffer.append(ch);
+            } else if (ch >= '0' && ch <= '0') {
+                buffer.append(ch);
+            } else {
+                buffer.append("0");
+            }
+        }
+        return buffer.toString();
+    }
+
     /**
      * converts time (in milliseconds) to human-readable format
-     *  "<w> days, <x> hours, <y> minutes and (z) seconds"
+     * "<w> days, <x> hours, <y> minutes and (z) seconds"
      */
 
     public static String millisToLongDHMS(long duration) {
@@ -46,7 +53,7 @@ public class TamilUtils extends  EzhuththuUtils {
     }
 
     public static String millisToLongDHMS(long duration, boolean includemillis) {
-        if (duration < 0 ) {
+        if (duration < 0) {
             return "[Clock not in sync]";
         }
         StringBuffer res = new StringBuffer();
@@ -92,7 +99,7 @@ public class TamilUtils extends  EzhuththuUtils {
                 res.append(temp).append(" second").append(temp > 1 ? "s" : "");
             }
             if (includemillis) {
-                if (!res.toString().equals("") ) {
+                if (!res.toString().equals("")) {
                     res.append(" and ");
                 }
 
@@ -104,8 +111,6 @@ public class TamilUtils extends  EzhuththuUtils {
             return duration + " ms";
         }
     }
-
-
 
 
 //    public static boolean isUyarThinhaipPeyar(TamilWord w) {
@@ -120,7 +125,6 @@ public class TamilUtils extends  EzhuththuUtils {
 //        }
 //        return isUyarthinai;
 //    }
-
 
 
 }

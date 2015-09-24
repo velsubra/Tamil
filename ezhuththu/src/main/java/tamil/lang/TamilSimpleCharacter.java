@@ -30,10 +30,11 @@ import java.util.List;
 public final class TamilSimpleCharacter extends TamilCharacter implements SimpleCharacter {
 
     static List<TamilSimpleCharacter> simplecharacters = new ArrayList<TamilSimpleCharacter>();
+    private String eng = null;
 
-
-    private TamilSimpleCharacter(int value) {
+    private TamilSimpleCharacter(int value,String eng) {
         this.value = value;
+        this.eng = eng;
         simplecharacters.add(this);
 
     }
@@ -72,7 +73,7 @@ public final class TamilSimpleCharacter extends TamilCharacter implements Simple
     }
 
 
-    public static final TamilSimpleCharacter AKTHU = new TamilSimpleCharacter('\u0B83');
+    public static final TamilSimpleCharacter AKTHU = new TamilSimpleCharacter('\u0B83',"ak");
 
     public static boolean isAaythavezhuththu(int value) {
         return value == AKTHU.value;
@@ -152,84 +153,84 @@ public final class TamilSimpleCharacter extends TamilCharacter implements Simple
     }
 
 
-    public static final TamilSimpleCharacter a = new TamilSimpleCharacter('\u0B85');
+    public static final TamilSimpleCharacter a = new TamilSimpleCharacter('\u0B85',"a");
 
     //அ
     public static boolean isa(int value) {
         return value == a.value;
     }
 
-    public static final TamilSimpleCharacter aa = new TamilSimpleCharacter('\u0B86');
+    public static final TamilSimpleCharacter aa = new TamilSimpleCharacter('\u0B86',"aa");
 
     // ஆ
     public static boolean isaa(int value) {
         return value == aa.value;
     }
 
-    public static final TamilSimpleCharacter E = new TamilSimpleCharacter('\u0B87');
+    public static final TamilSimpleCharacter E = new TamilSimpleCharacter('\u0B87',"i");
 
     //3 e   இ
     public static boolean isE(int value) {
         return value == E.value;
     }
 
-    public static final TamilSimpleCharacter EE = new TamilSimpleCharacter('\u0B88');
+    public static final TamilSimpleCharacter EE = new TamilSimpleCharacter('\u0B88',"ee");
 
     //4 ee   ஈ
     public static boolean isEE(int value) {
         return value == EE.value;
     }
 
-    public static final TamilSimpleCharacter U = new TamilSimpleCharacter('\u0B89');
+    public static final TamilSimpleCharacter U = new TamilSimpleCharacter('\u0B89',"u");
 
     //5 u   உ
     public static boolean isU(int value) {
         return value == U.value;
     }
 
-    public static final TamilSimpleCharacter UU = new TamilSimpleCharacter('\u0B8A');
+    public static final TamilSimpleCharacter UU = new TamilSimpleCharacter('\u0B8A',"oo");
 
     //6 uu ஊ
     public static boolean isUU(int value) {
         return value == UU.value;
     }
 
-    public static final TamilSimpleCharacter A = new TamilSimpleCharacter('\u0B8E');
+    public static final TamilSimpleCharacter A = new TamilSimpleCharacter('\u0B8E',"e");
 
     //7 A எ
     public static boolean isA(int value) {
         return value == A.value;
     }
 
-    public static final TamilSimpleCharacter AA = new TamilSimpleCharacter('\u0B8F');
+    public static final TamilSimpleCharacter AA = new TamilSimpleCharacter('\u0B8F',"ea");
 
     //8 AA ஏ
     public static boolean isAA(int value) {
         return value == AA.value;
     }
 
-    public static final TamilSimpleCharacter I = new TamilSimpleCharacter('\u0B90');
+    public static final TamilSimpleCharacter I = new TamilSimpleCharacter('\u0B90',"ai");
 
     //9 i  ஐ
     public static boolean isI(int value) {
         return value == I.value;
     }
 
-    public static final TamilSimpleCharacter O = new TamilSimpleCharacter('\u0B92');
+    public static final TamilSimpleCharacter O = new TamilSimpleCharacter('\u0B92',"o");
 
     //10 o  ஒ
     public static boolean isO(int value) {
         return value == O.value;
     }
 
-    public static final TamilSimpleCharacter OO = new TamilSimpleCharacter('\u0B93');
+    public static final TamilSimpleCharacter OO = new TamilSimpleCharacter('\u0B93',"oa");
 
     //11  oo  ஓ
     public static boolean isOO(int value) {
         return value == OO.value;
     }
 
-    public static final TamilSimpleCharacter OU = new TamilSimpleCharacter('\u0B94');
+    public static final TamilSimpleCharacter OU = new TamilSimpleCharacter('\u0B94',"ou");
 
     //12 OU  ஔ
     public static boolean isOU(int value) {
@@ -378,7 +379,7 @@ public final class TamilSimpleCharacter extends TamilCharacter implements Simple
     }
 
 
-    public static final TamilSimpleCharacter KA = new TamilSimpleCharacter('\u0B95');
+    public static final TamilSimpleCharacter KA = new TamilSimpleCharacter('\u0B95',"ka");
 
 
     //1 க
@@ -386,21 +387,21 @@ public final class TamilSimpleCharacter extends TamilCharacter implements Simple
         return value == KA.value;
     }
 
-    public static final TamilSimpleCharacter NGA = new TamilSimpleCharacter('\u0B99');
+    public static final TamilSimpleCharacter NGA = new TamilSimpleCharacter('\u0B99',"nga");
 
     // 2  ங
     public static boolean isNga(int value) {
         return value == NGA.value;
     }
 
-    public static final TamilSimpleCharacter SA = new TamilSimpleCharacter('\u0B9A');
+    public static final TamilSimpleCharacter SA = new TamilSimpleCharacter('\u0B9A',"sa");
 
     // 3 ச
     public static boolean isSa(int value) {
         return value == SA.value;
     }
 
-    public static final TamilSimpleCharacter NYA = new TamilSimpleCharacter('\u0B9E');
+    public static final TamilSimpleCharacter NYA = new TamilSimpleCharacter('\u0B9E',"nya");
 
     // 4 ஞ
     public static boolean isNya(int value) {
@@ -408,7 +409,7 @@ public final class TamilSimpleCharacter extends TamilCharacter implements Simple
     }
 
 
-    public static final TamilSimpleCharacter DA = new TamilSimpleCharacter('\u0B9F');
+    public static final TamilSimpleCharacter DA = new TamilSimpleCharacter('\u0B9F',"da");
 
     // 5 ட
     public static boolean isDa(int value) {
@@ -416,91 +417,91 @@ public final class TamilSimpleCharacter extends TamilCharacter implements Simple
     }
 
 
-    public static final TamilSimpleCharacter NNNA = new TamilSimpleCharacter('\u0BA3');
+    public static final TamilSimpleCharacter NNNA = new TamilSimpleCharacter('\u0BA3',"nha");
 
     // 6 ண
     public static boolean isNNNa(int value) {
         return value == NNNA.value;
     }
 
-    public static final TamilSimpleCharacter THA = new TamilSimpleCharacter('\u0BA4');
+    public static final TamilSimpleCharacter THA = new TamilSimpleCharacter('\u0BA4',"tha");
     // 7 த
 
     public static boolean isTha(int value) {
         return value == THA.value;
     }
 
-    public static final TamilSimpleCharacter NTHA = new TamilSimpleCharacter('\u0BA8');
+    public static final TamilSimpleCharacter NTHA = new TamilSimpleCharacter('\u0BA8',"ntha");
 
     // 8 ந
     public static boolean isNtha(int value) {
         return value == NTHA.value;
     }
 
-    public static final TamilSimpleCharacter PA = new TamilSimpleCharacter('\u0BAA');
+    public static final TamilSimpleCharacter PA = new TamilSimpleCharacter('\u0BAA',"pa");
 
     // 9 ப
     public static boolean isPa(int value) {
         return value == PA.value;
     }
 
-    public static final TamilSimpleCharacter MA = new TamilSimpleCharacter('\u0BAE');
+    public static final TamilSimpleCharacter MA = new TamilSimpleCharacter('\u0BAE',"ma");
 
     // 10 ம
     public static boolean isMa(int value) {
         return value == MA.value;
     }
 
-    public static final TamilSimpleCharacter YA = new TamilSimpleCharacter('\u0BAF');
+    public static final TamilSimpleCharacter YA = new TamilSimpleCharacter('\u0BAF',"ya");
 
     // 11 ய
     public static boolean isYa(int value) {
         return value == YA.value;
     }
 
-    public static final TamilSimpleCharacter RA = new TamilSimpleCharacter('\u0BB0');
+    public static final TamilSimpleCharacter RA = new TamilSimpleCharacter('\u0BB0',"ra");
 
     // 12 ர
     public static boolean isRa(int value) {
         return value == RA.value;
     }
 
-    public static final TamilSimpleCharacter LA = new TamilSimpleCharacter('\u0BB2');
+    public static final TamilSimpleCharacter LA = new TamilSimpleCharacter('\u0BB2',"rra");
 
     // 13 ல
     public static boolean isLa(int value) {
         return value == LA.value;
     }
 
-    public static final TamilSimpleCharacter VA = new TamilSimpleCharacter('\u0BB5');
+    public static final TamilSimpleCharacter VA = new TamilSimpleCharacter('\u0BB5',"va");
 
     // 14 வ
     public static boolean isVa(int value) {
         return value == VA.value;
     }
 
-    public static final TamilSimpleCharacter LLLA = new TamilSimpleCharacter('\u0BB4');
+    public static final TamilSimpleCharacter LLLA = new TamilSimpleCharacter('\u0BB4',"zha");
 
     // 15 ழ
     public static boolean isLLLa(int value) {
         return value == LLLA.value;
     }
 
-    public static final TamilSimpleCharacter LLA = new TamilSimpleCharacter('\u0BB3');
+    public static final TamilSimpleCharacter LLA = new TamilSimpleCharacter('\u0BB3',"lha");
 
     // 16 ள
     public static boolean isLLa(int value) {
         return value == LLA.value;
     }
 
-    public static final TamilSimpleCharacter RRA = new TamilSimpleCharacter('\u0BB1');
+    public static final TamilSimpleCharacter RRA = new TamilSimpleCharacter('\u0BB1',"rra");
 
     // 17 ற
     public static boolean isRRa(int value) {
         return value == RRA.value;
     }
 
-    public static final TamilSimpleCharacter NA = new TamilSimpleCharacter('\u0BA9');
+    public static final TamilSimpleCharacter NA = new TamilSimpleCharacter('\u0BA9',"na");
 
     // 18  ன
     public static boolean isNa(int value) {
@@ -508,21 +509,21 @@ public final class TamilSimpleCharacter extends TamilCharacter implements Simple
     }
 
 
-    public static final TamilSimpleCharacter JA_ = new TamilSimpleCharacter('\u0B9C');
+    public static final TamilSimpleCharacter JA_ = new TamilSimpleCharacter('\u0B9C',"ja");
 
     // 19  ஜ
     public static boolean isJa_(int value) {
         return value == JA_.value;
     }
 
-    public static final TamilSimpleCharacter HA_ = new TamilSimpleCharacter('\u0BB9');
+    public static final TamilSimpleCharacter HA_ = new TamilSimpleCharacter('\u0BB9',"ha");
 
     // 20  ஹ
     public static boolean isHa_(int value) {
         return value == HA_.value;
     }
 
-    public static final TamilSimpleCharacter SHA_ = new TamilSimpleCharacter('\u0BB7');
+    public static final TamilSimpleCharacter SHA_ = new TamilSimpleCharacter('\u0BB7',"sha");
 
     // 21  ஷ்
     public static boolean isSHa_(int value) {
@@ -530,14 +531,14 @@ public final class TamilSimpleCharacter extends TamilCharacter implements Simple
     }
 
 
-    public static final TamilSimpleCharacter SSA_ = new TamilSimpleCharacter('\u0BB8');
+    public static final TamilSimpleCharacter SSA_ = new TamilSimpleCharacter('\u0BB8',"ssa");
 
     // 22  ஸ
     public static boolean isSSa_(int value) {
         return value == SSA_.value;
     }
 
-    public static final TamilSimpleCharacter SSSA_ = new TamilSimpleCharacter('\u0BB6');
+    public static final TamilSimpleCharacter SSSA_ = new TamilSimpleCharacter('\u0BB6',"sssa");
 
     // 23  ஶ
     public static boolean isSSSa_(int value) {
@@ -545,21 +546,21 @@ public final class TamilSimpleCharacter extends TamilCharacter implements Simple
     }
 
 
-    public static final TamilSimpleCharacter OM = new TamilSimpleCharacter('\u0BD0');
-    public static final TamilSimpleCharacter ZERO = new TamilSimpleCharacter('\u0BE6');
-    public static final TamilSimpleCharacter ONE = new TamilSimpleCharacter('\u0BE7');
-    public static final TamilSimpleCharacter TWO = new TamilSimpleCharacter('\u0BE8');
-    public static final TamilSimpleCharacter THREE = new TamilSimpleCharacter('\u0BE9');
-    public static final TamilSimpleCharacter FOUR = new TamilSimpleCharacter('\u0BEA');
-    public static final TamilSimpleCharacter FIVE = new TamilSimpleCharacter('\u0BEB');
-    public static final TamilSimpleCharacter SIX = new TamilSimpleCharacter('\u0BEC');
-    public static final TamilSimpleCharacter SEVEN = new TamilSimpleCharacter('\u0BED');
-    public static final TamilSimpleCharacter EIGHT = new TamilSimpleCharacter('\u0BEE');
-    public static final TamilSimpleCharacter NINE = new TamilSimpleCharacter('\u0BEF');
-    public static final TamilSimpleCharacter TEN = new TamilSimpleCharacter('\u0BF0');
-    public static final TamilSimpleCharacter HUNDRED = new TamilSimpleCharacter('\u0BF1');
-    public static final TamilSimpleCharacter THOUSAND = new TamilSimpleCharacter('\u0BF2');
-    public static final TamilSimpleCharacter RS = new TamilSimpleCharacter('\u0BF9');
+    public static final TamilSimpleCharacter OM = new TamilSimpleCharacter('\u0BD0',"om");
+    public static final TamilSimpleCharacter ZERO = new TamilSimpleCharacter('\u0BE6',"zero");
+    public static final TamilSimpleCharacter ONE = new TamilSimpleCharacter('\u0BE7',"one");
+    public static final TamilSimpleCharacter TWO = new TamilSimpleCharacter('\u0BE8',"two");
+    public static final TamilSimpleCharacter THREE = new TamilSimpleCharacter('\u0BE9',"three");
+    public static final TamilSimpleCharacter FOUR = new TamilSimpleCharacter('\u0BEA',"four");
+    public static final TamilSimpleCharacter FIVE = new TamilSimpleCharacter('\u0BEB',"five");
+    public static final TamilSimpleCharacter SIX = new TamilSimpleCharacter('\u0BEC',"six");
+    public static final TamilSimpleCharacter SEVEN = new TamilSimpleCharacter('\u0BED',"seven");
+    public static final TamilSimpleCharacter EIGHT = new TamilSimpleCharacter('\u0BEE',"eight");
+    public static final TamilSimpleCharacter NINE = new TamilSimpleCharacter('\u0BEF',"nine");
+    public static final TamilSimpleCharacter TEN = new TamilSimpleCharacter('\u0BF0',"ten");
+    public static final TamilSimpleCharacter HUNDRED = new TamilSimpleCharacter('\u0BF1',"hundred");
+    public static final TamilSimpleCharacter THOUSAND = new TamilSimpleCharacter('\u0BF2',"thousand");
+    public static final TamilSimpleCharacter RS = new TamilSimpleCharacter('\u0BF9',"rs");
 
 
     private boolean _isVadaMozhiYezhuththu() {
@@ -638,6 +639,11 @@ public final class TamilSimpleCharacter extends TamilCharacter implements Simple
         } else {
             return TamilCharacterLookUpContext.lookup(this.getValue()).next(s.getContinuationVowel()).currentChar;  // new TamilCompoundCharacter(this.getValue(), s.getContinuationVowel());
         }
+    }
+
+    @Override
+    public String translitToEnglish() {
+        return eng;
     }
 
     @Override

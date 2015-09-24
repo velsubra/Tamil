@@ -83,6 +83,15 @@ public class TamilSuperCompoundCharacter extends TamilCharacter implements Chara
     }
 
     @Override
+    public String translitToEnglish() {
+        StringBuffer buffer = new StringBuffer();
+        for (TamilCharacter t : sequence) {
+             buffer.append(t.translitToEnglish());
+        }
+        return  buffer.toString();
+    }
+
+    @Override
     public int getCodePointsCount() {
         int count = 0;
         for (TamilCharacter t : sequence) {

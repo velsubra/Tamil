@@ -150,4 +150,11 @@ public abstract class AbstractCharacter implements common.lang.Character, Compar
     }
 
 
+    /**
+     * Translit the character to roman letter(s)
+     * @return  returns roman letters
+     */
+    public abstract  String translitToEnglish();
+
+
 }

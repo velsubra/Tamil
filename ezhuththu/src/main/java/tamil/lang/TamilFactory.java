@@ -13,10 +13,10 @@ import tamil.lang.api.join.KnownWordsJoiner;
 import tamil.lang.api.join.WordsJoiner;
 import tamil.lang.api.number.NumberReader;
 import tamil.lang.api.parser.CompoundWordParser;
+import tamil.lang.api.persist.manager.PersistenceManager;
 import tamil.lang.api.regex.TamilRXCompiler;
 import tamil.lang.api.trans.Transliterator;
 import tamil.lang.exception.service.ServiceException;
-import tamil.lang.api.persist.manager.PersistenceManager;
 import tamil.lang.known.IKnownWord;
 import tamil.lang.spi.CompoundWordParserProvider;
 import tamil.lang.spi.PersistenceManagerProvider;
@@ -27,7 +27,7 @@ import java.util.ServiceLoader;
 
 /**
  * <p>
- * The platform class that can provide entry point for different services.
+ * The factory class that can provide entry point for different services.
  * If you use as API, Please make sure you call {@link TamilFactory#init()}  before using any API.
  * </p>
  *
@@ -115,7 +115,6 @@ public final class TamilFactory {
     }
 
 
-
     /**
      * Gets the WordsJoiner that can be used to add multiple known words using specific புணர்ச்சி laws.
      *
@@ -127,7 +126,6 @@ public final class TamilFactory {
         KnownWordsJoiner handler = new KnownWordsJoinerImpl(nilaiMozhi);
         return handler;
     }
-
 
 
     /**
@@ -143,8 +141,9 @@ public final class TamilFactory {
 
     /**
      * Gets compound word parser.
-     * @return  CompoundWordParser
-     * @throws ServiceException  if not available in the  current execution env. It is not available in the applet environment.
+     *
+     * @return CompoundWordParser
+     * @throws ServiceException if not available in the  current execution env. It is not available in the applet environment.
      */
     public static CompoundWordParser getCompoundWordParser() throws ServiceException {
         if (parserprovider == null) {
@@ -156,8 +155,9 @@ public final class TamilFactory {
 
     /**
      * Gets the calculator for finding different character sets based on the properties of Tamil Characters.
+     *
      * @return the calculator.
-     * @throws ServiceException  if the calculator cannot be created.
+     * @throws ServiceException if the calculator cannot be created.
      */
     public static TamilCharacterSetCalculator getTamilCharacterSetCalculator() throws ServiceException {
         return TamilEzhuththuSetCalculatorImpl.DEFAULT;
@@ -165,12 +165,21 @@ public final class TamilFactory {
 
     /**
      * Gets the compiler for Tamil regular expression. Tamil regular expression is any Java regular expression that contains variables of the form
-     * ${tamil_expression}, where  tamil_expression could be any tamil character set returned by {@link  tamil.lang.api.ezhuththu.TamilCharacterSetCalculator#getEzhuththuSetDescriptions()} or anything that is calculated by {@link TamilCharacterSetCalculator#find(String)}.
-     * The expression ${tamil_expression} means any single character from the character set tamil_expression. For example ${குறில்}
+     * ${tamil_expression}, where  tamil_expression could be
+     * <ol>
+     * <li>
+     * any tamil character set returned by {@link  tamil.lang.api.ezhuththu.TamilCharacterSetCalculator#getEzhuththuSetDescriptions()} or
+     * </li> <li>
+     * any set that is calculated by {@link TamilCharacterSetCalculator#find(String)} or
+     * </li> <li>
+     *  expressions defined by {@link tamil.lang.api.regex.TamilRXCompiler}
+     * </li>
+     * </ol>
+     * The expression ${letter_set} means any single character from the character set letter_set when letter_set is the name of a letter set, be it fixed or calculated. For example ${குறில்}
      * means any குறில் character.  ${குறில்}* mean 0 or more குறிலெழுத்துகள்     .
      *
      * @return the TamilRXCompiler.
-     * @throws ServiceException  if the compiler can not be obtained.
+     * @throws ServiceException if the compiler can not be obtained.
      */
     public static TamilRXCompiler getRegXCompiler() throws ServiceException {
         return RegXCompilerImpl.DEFAULT;
@@ -179,7 +188,8 @@ public final class TamilFactory {
 
     /**
      * Returns the persistence manager used to persist root words and rules.
-     * @return   PersistenceManager
+     *
+     * @return PersistenceManager
      * @throws ServiceException
      */
     public static PersistenceManager getPersistenceManager() throws ServiceException {
