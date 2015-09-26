@@ -1,5 +1,6 @@
 package my.interest.lang.tamil.impl.rx.paa;
 
+import my.interest.lang.tamil.impl.FeatureSet;
 import my.interest.lang.tamil.internal.api.PatternGenerator;
 import tamil.lang.TamilCharacter;
 
@@ -12,8 +13,8 @@ import java.util.Set;
  * @author velsubra
  */
 public class KurralhThalaiRx implements PatternGenerator {
-    public String generate() {
-        return "(${வெண்டளை}{6})";
+    public String generate(FeatureSet featureSet) {
+        return "(?:${வெண்டளை}{6})";
     }
 
 

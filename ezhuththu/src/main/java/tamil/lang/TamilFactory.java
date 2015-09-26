@@ -3,7 +3,7 @@ package tamil.lang;
 import my.interest.lang.tamil.impl.DefaultNumberReader;
 import my.interest.lang.tamil.impl.TamilEzhuththuSetCalculatorImpl;
 import my.interest.lang.tamil.impl.dictionary.DictionaryCollection;
-import my.interest.lang.tamil.impl.rx.RegXCompilerImpl;
+import my.interest.lang.tamil.impl.rx.RXCompilerImpl;
 import my.interest.lang.tamil.punar.handler.KnownWordsJoinerImpl;
 import my.interest.lang.tamil.punar.handler.WordsJoinHandler;
 import my.interest.lang.tamil.translit.EnglishToTamilCharacterLookUpContext;
@@ -181,8 +181,8 @@ public final class TamilFactory {
      * @return the TamilRXCompiler.
      * @throws ServiceException if the compiler can not be obtained.
      */
-    public static TamilRXCompiler getRegXCompiler() throws ServiceException {
-        return RegXCompilerImpl.DEFAULT;
+    public static TamilRXCompiler getRegEXCompiler() throws ServiceException {
+        return RXCompilerImpl.DEFAULT;
     }
 
 

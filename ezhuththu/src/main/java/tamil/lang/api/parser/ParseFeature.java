@@ -5,7 +5,7 @@ import tamil.lang.api.trans.TranslitFeature;
 
 /**
  * <p>
- *     The features that parses the transliterated  text.
+ *     The features that parses tamil text. See {@link CompoundWordParser#parse(tamil.lang.TamilWord, int, ParseFeature...)}
  * </p>
  *
  * @author velsubra

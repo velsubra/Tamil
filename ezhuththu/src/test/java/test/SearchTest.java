@@ -3,7 +3,7 @@ package test;
 import my.interest.lang.tamil.TamilUtils;
 import org.junit.Test;
 import tamil.util.IPropertyFinder;
-import tamil.util.regx.TamilPattern;
+import tamil.util.regex.TamilPattern;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;

@@ -742,7 +742,7 @@ public final class TamilWord extends AbstractWord<AbstractCharacter> implements 
         int count = 0;
         Iterator<AbstractCharacter> it =  this.listIterator();
         while(it.hasNext()) {
-            count += it.next().getCodePointsCount();
+            count += it.next().getMinCodePointsCount();
         }
 
         return count;
@@ -768,7 +768,7 @@ public final class TamilWord extends AbstractWord<AbstractCharacter> implements 
                 return count;
             }
             index ++;
-            count += it.next().getCodePointsCount();
+            count += it.next().getMinCodePointsCount();
         }
 
         throw new TamilPlatformException("Unexpected exception");
@@ -790,7 +790,7 @@ public final class TamilWord extends AbstractWord<AbstractCharacter> implements 
         Iterator<AbstractCharacter> it =  this.listIterator();
         int index = 0;
         while(it.hasNext()) {
-            count += it.next().getCodePointsCount();
+            count += it.next().getMinCodePointsCount();
             if (count > codepointIndex) {
                 return index;
             }

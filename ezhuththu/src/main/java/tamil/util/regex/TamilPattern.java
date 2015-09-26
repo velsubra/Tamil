@@ -1,7 +1,9 @@
-package tamil.util.regx;
+package tamil.util.regex;
 
 import my.interest.lang.tamil.StringUtils;
+import my.interest.lang.tamil.impl.FeatureSet;
 import my.interest.lang.tamil.impl.rx.RxRegistry;
+import tamil.lang.api.regex.RXFeature;
 import tamil.util.IPropertyFinder;
 import tamil.lang.TamilWord;
 
@@ -32,7 +34,7 @@ public final class TamilPattern {
     }
 
     /**
-     * Compiles Tamil regx into TamilPattern.
+     * Compiles Tamil regex into TamilPattern.
      * @param pattern the tamil pattern to be compiled
      * @return    the compiled TamilPattern
      */
@@ -47,8 +49,8 @@ public final class TamilPattern {
      * @param aliasFinder interface to return alias definitions.
      * @return  the compiled TamilPattern.
      */
-    public static TamilPattern compile(String pattern, IPropertyFinder aliasFinder) {
-        return compile(pattern, 0, aliasFinder);
+    public static TamilPattern compile(String pattern, IPropertyFinder aliasFinder, RXFeature ... features) {
+        return compile(pattern, 0, aliasFinder, features);
 
     }
 
@@ -59,9 +61,12 @@ public final class TamilPattern {
      * @param aliasFinder the interface to find alias definitions
      * @return  TamilPattern
      */
-    public static TamilPattern compile(String pattern, int flags, IPropertyFinder aliasFinder) {
-        StringUtils.IndexContext context = StringUtils.replaceWithContext("${", "}", pattern, new RxRegistry(aliasFinder), true, true, true);
-       System.out.println("pattern:" + pattern + " =>Real RX:" + context.finalString);
+    public static TamilPattern compile(String pattern, int flags, IPropertyFinder aliasFinder, RXFeature ... features) {
+        StringUtils.IndexContext context = StringUtils.replaceWithContext("${", "}", pattern, new RxRegistry(aliasFinder, (features == null || features.length == 0) ? FeatureSet.EMPTY : new FeatureSet(features)), true, true, true);
+        if (context.finalString.length() > 10*1024) {
+            System.out.println("----"+pattern+"-----> Generated Pattern size in KB:" + context.finalString.length() /1000);
+        }
+        // System.out.println("pattern:" + pattern + " =>Real RX:" + context.finalString);
         return new TamilPattern(pattern, context, flags);
 
 

@@ -2,6 +2,9 @@ package common.lang.impl;
 
 import common.lang.SimpleCharacter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * <p>
  *     Represents non-tamil characters.
@@ -50,10 +53,12 @@ public class UnknownCharacter extends AbstractCharacter implements SimpleCharact
 
 
     @Override
-    public int[] getCodePoints() {
+    public List<int[]> getCodePoints() {
+        List<int[]> list = new ArrayList<int[]>();
         int[] ret = new int[1];
         ret[0] = getValue();
-        return ret;
+        list.add(ret);
+        return list;
     }
 
     /**
@@ -67,7 +72,7 @@ public class UnknownCharacter extends AbstractCharacter implements SimpleCharact
     }
 
     @Override
-    public int getCodePointsCount() {
+    public int getMinCodePointsCount() {
         return 1;
     }
 }

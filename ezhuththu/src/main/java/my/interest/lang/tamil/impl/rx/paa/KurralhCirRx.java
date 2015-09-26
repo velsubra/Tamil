@@ -1,5 +1,6 @@
 package my.interest.lang.tamil.impl.rx.paa;
 
+import my.interest.lang.tamil.impl.FeatureSet;
 import my.interest.lang.tamil.internal.api.PatternGenerator;
 import tamil.lang.TamilCharacter;
 
@@ -12,8 +13,8 @@ import java.util.Set;
  * @author velsubra
  */
 public class KurralhCirRx implements PatternGenerator {
-    public String generate() {
-        return "(((${மாச்சீர்}|${விளச்சீர்}|${காய்ச்சீர்})\\s+){6}${வெண்பாவின் இறுதிச்சீர்})";
+    public String generate(FeatureSet featureSet) {
+        return "(?:(?:(?:${மாச்சீர்}|${விளச்சீர்}|${காய்ச்சீர்})${இடைவெளி}){6}${வெண்பாவின் இறுதிச்சீர்})";
     }
 
 

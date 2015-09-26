@@ -1,8 +1,10 @@
 package tamil.lang;
 
 import common.lang.CharacterSequenceCharacter;
+import my.interest.lang.tamil.TamilUtils;
 import tamil.lang.exception.NoMeiPartException;
 import tamil.lang.exception.NoUyirPartException;
+import tamil.util.PathBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,15 +67,15 @@ public class TamilSuperCompoundCharacter extends TamilCharacter implements Chara
 
     @Override
     public TamilCompoundCharacter getMeiPart() throws NoMeiPartException {
-        return sequence[sequence.length-1].getMeiPart();
-       // throw new NoMeiPartException("Invalid call. There is no Mei part in this letter:" + this.toString());
+        return sequence[sequence.length - 1].getMeiPart();
+        // throw new NoMeiPartException("Invalid call. There is no Mei part in this letter:" + this.toString());
     }
 
 
     @Override
     public TamilSimpleCharacter getUyirPart() throws NoUyirPartException {
-        return sequence[sequence.length-1].getUyirPart();
-       // throw new NoUyirPartException("Invalid call. There is no Uyir part in this letter:" + this.toString());
+        return sequence[sequence.length - 1].getUyirPart();
+        // throw new NoUyirPartException("Invalid call. There is no Uyir part in this letter:" + this.toString());
     }
 
 
@@ -86,30 +88,41 @@ public class TamilSuperCompoundCharacter extends TamilCharacter implements Chara
     public String translitToEnglish() {
         StringBuffer buffer = new StringBuffer();
         for (TamilCharacter t : sequence) {
-             buffer.append(t.translitToEnglish());
+            buffer.append(t.translitToEnglish());
         }
-        return  buffer.toString();
+        return buffer.toString();
     }
 
     @Override
-    public int getCodePointsCount() {
+    public int getMinCodePointsCount() {
         int count = 0;
         for (TamilCharacter t : sequence) {
-            count += t.getCodePointsCount();
+            count += t.getMinCodePointsCount();
         }
         return count;
     }
 
     @Override
-    public int[] getCodePoints() {
-        int[] ret = new int[getCodePointsCount()];
-        int i = 0;
+    public List<int[]> getCodePoints() {
+        PathBuilder<int[]> pathBuilder = new PathBuilder<int[]>();
+
         for (TamilCharacter t : sequence) {
-            for (int c : t.getCodePoints()) {
-                ret[i++] = c;
+            if (pathBuilder.getPaths().isEmpty()) {
+                pathBuilder.includeNewPathFromRoot(t.getCodePoints());
+            } else {
+                pathBuilder.multiplyPathsWithNodes(t.getCodePoints());
             }
+
+        }
+        List<List<int[]>> paths = pathBuilder.getPaths();
+        List<int[]> ret = new ArrayList<int[]>();
+        for (List<int[]> list : paths) {
+
+            int full[] = TamilUtils.flattenList(list);
+            ret.add(full);
         }
         return ret;
+
     }
 
     public TamilCharacter[] getSequence() {

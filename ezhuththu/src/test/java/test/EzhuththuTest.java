@@ -1,17 +1,17 @@
 package test;
 
+
 import my.interest.lang.tamil.EzhuththuUtils;
 import my.interest.lang.tamil.StringUtils;
 import org.junit.Assert;
 import org.junit.Test;
 import tamil.lang.*;
 import tamil.lang.api.ezhuththu.TamilCharacterSetCalculator;
+import tamil.lang.api.regex.RXOverrideSysDefnFeature;
 import tamil.util.IPropertyFinder;
-import tamil.util.regx.TamilPattern;
+import tamil.util.regex.TamilPattern;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -63,10 +63,77 @@ public class EzhuththuTest {
 
 
     @Test
+    public void testCodePoints() {
+
+        String rep = toString(TamilSimpleCharacter.a.getCodePoints());
+        System.out.print(rep);
+        Assert.assertEquals("\\u0b85,", rep);
+
+        rep = toString(TamilSimpleCharacter.OU.getCodePoints());
+        System.out.print(rep);
+        Assert.assertEquals("\\u0b94,\\u0b92\\u0bd7,", rep);
+
+        rep = toString(TamilSuperCompoundCharacter.IKSH_OU.getCodePoints());
+        System.out.print(rep);
+        Assert.assertEquals("\\u0b95\\u0bcd\\u0bb7\\u0bcc,\\u0b95\\u0bcd\\u0bb7\\u0bc6\\u0bd7,", rep);
+
+        rep = toString(TamilSuperCompoundCharacter.SHREE_.getCodePoints());
+        System.out.print(rep);
+        Assert.assertEquals("\\u0bb8\\u0bcd\\u0bb0\\u0bc0,", rep);
+
+
+        rep = toString(TamilCompoundCharacter.IR_EE.getCodePoints());
+        System.out.print(rep);
+        Assert.assertEquals("\\u0bb0\\u0bc0,", rep);
+
+
+        rep = toString(TamilCompoundCharacter.IK_OO.getCodePoints());
+        System.out.print(rep);
+        Assert.assertEquals("\\u0b95\\u0bcb,\\u0b95\\u0bc7\\u0bbe,", rep);
+
+        rep = toString(TamilCompoundCharacter.IK_UU.getCodePoints());
+        System.out.print(rep);
+        Assert.assertEquals("\\u0b95\\u0bc2,", rep);
+
+
+    }
+
+    private static String toString(List<int[]> fulllist) {
+        StringBuffer buffer = new StringBuffer();
+        for (int[] list : fulllist) {
+            for (int i : list) {
+
+                String val = Integer.toHexString(i);
+                while (val.length() < 4) {
+                    val = "0" + val;
+                }
+                buffer.append("\\u" + val);
+
+            }
+            buffer.append(",");
+        }
+        return buffer.toString();
+    }
+
+
+
+    @Test
     public void testPatterns1() {
         TamilPattern pattern = TamilPattern.compile("${வகை[ka]}");
         Matcher matcher = pattern.matcher(TamilFactory.getTransliterator(null).transliterate("sai").toString());
         Assert.assertTrue(matcher.matches());
+
+        pattern = TamilPattern.compile("${[கெ]}");
+        String ko = "\u0B95\u0BC6\u0BBE";
+
+        matcher = pattern.matcher(ko);
+        Assert.assertFalse(matcher.find());
+
+
+        pattern = TamilPattern.compile("${அசை[தொற்]}");
+        matcher = pattern.matcher("நேர்");
+        Assert.assertTrue(matcher.matches());
+
 
         pattern = TamilPattern.compile("${அசை[செந்தமிழ்]}");
         matcher = pattern.matcher("கூவிளம்");
@@ -530,6 +597,24 @@ public class EzhuththuTest {
         pattern = TamilPattern.compile("${theamaangaay}");
         matcher = pattern.matcher(TamilFactory.getTransliterator(null).transliterate("pulhimaangaay").toString());
         Assert.assertFalse(matcher.matches());
+
+
+        pattern = TamilPattern.compile("${(mozhi)}${(idaivelhi)}${தளை[(பிறப்பு) முன்  நேர்]}${(mozhi)}");
+        matcher = pattern.matcher("தமிழ் எனது தாய்மொழி");
+        Assert.assertTrue(matcher.matches());
+
+        pattern = TamilPattern.compile("${mozhi}${இடைவெளி}${தளை[பிறப்பு முன்  நேர்]}${mozhi}", new IPropertyFinder() {
+            public String findProperty(String p1) {
+                if("இடைவெளி".equals(p1)) {
+                    return "_";
+                } else {
+                    return null;
+                }
+            }
+        }, RXOverrideSysDefnFeature.FEATURE);
+        matcher = pattern.matcher("தமிழ்_எனது_தாய்மொழி");
+
+        Assert.assertTrue(matcher.matches());
 
 
     }

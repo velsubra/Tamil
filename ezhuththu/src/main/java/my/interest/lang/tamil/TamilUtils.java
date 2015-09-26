@@ -1,5 +1,7 @@
 package my.interest.lang.tamil;
 
+import java.util.List;
+
 /**
  * <p>
  * </p>
@@ -23,6 +25,23 @@ public class TamilUtils extends EzhuththuUtils {
     public final static long ONE_YEAR = ONE_DAY * 365;
 
     private TamilUtils() {
+
+    }
+
+    public static int[]  flattenList(List<int []> list) {
+        int length = 0;
+        for (int [] representation : list) {
+            length += representation.length;
+        }
+        int [] full = new int[length];
+        int index = 0;
+        for (int[] representation : list) {
+            for (int codepoint : representation) {
+                full[index++] = codepoint;
+            }
+
+        }
+        return full;
     }
 
 

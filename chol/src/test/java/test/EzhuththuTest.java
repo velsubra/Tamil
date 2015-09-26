@@ -1,6 +1,7 @@
 package test;
 
 import tamil.lang.TamilWord;
+import tamil.lang.api.regex.RXKuttuFeature;
 import tamil.util.IPropertyFinder;
 import my.interest.lang.util.Grid;
 import my.interest.lang.util.Row;
@@ -13,8 +14,8 @@ import tamil.lang.api.ezhuththu.EzhuththuSetDescription;
 import tamil.lang.api.ezhuththu.TamilCharacterSetCalculator;
 import tamil.lang.api.regex.RxDescription;
 import tamil.lang.exception.TamilPlatformException;
-import tamil.util.regx.TamilMatcher;
-import tamil.util.regx.TamilPattern;
+import tamil.util.regex.TamilMatcher;
+import tamil.util.regex.TamilPattern;
 import tamil.yaappu.asai.AbstractAsai;
 
 import java.io.PrintStream;
@@ -53,7 +54,7 @@ public class EzhuththuTest implements IPropertyFinder {
 
     @Test
     public void testDescriptions() {
-        Set<? extends RxDescription> set = TamilFactory.getRegXCompiler().getRegXDescriptions();
+        Set<? extends RxDescription> set = TamilFactory.getRegEXCompiler().getRegXDescriptions();
         List<RxDescription> list = new ArrayList<RxDescription>();
         list.addAll(set);
 
@@ -187,6 +188,10 @@ public class EzhuththuTest implements IPropertyFinder {
 
         pattern = TamilPattern.compile("${karuvilham}");
         matcher = pattern.matcher("அரிதுஅரோ");
+        Assert.assertFalse(matcher.matches());
+
+        pattern = TamilPattern.compile("${karuvilham}", null, RXKuttuFeature.FEATURE);
+        matcher = pattern.matcher("அரிதுஅரோ");
         Assert.assertTrue(matcher.matches());
 
         pattern = TamilPattern.compile("${([தமிழ்])}");
@@ -207,7 +212,7 @@ public class EzhuththuTest implements IPropertyFinder {
 
     @Test
     public void testCompilationsTamilMatcher() throws Exception {
-        TamilPattern pattern = TamilFactory.getRegXCompiler().compile("${தேமாங்காய்)}", new EzhuththuTest());
+        TamilPattern pattern = TamilFactory.getRegEXCompiler().compile("${தேமாங்காய்)}", new EzhuththuTest());
         TamilMatcher matcher = pattern.tamilMatcher("அமங்கம்மா");
         if (!matcher.find()) {
             throw new Exception("தேமாங்காய் is not found.");
@@ -219,7 +224,7 @@ public class EzhuththuTest implements IPropertyFinder {
             Assert.assertEquals(6, matcher.end());
         }
 
-        pattern = TamilFactory.getRegXCompiler().compile("${(தேமாங்காய்)}", new EzhuththuTest());
+        pattern = TamilFactory.getRegEXCompiler().compile("${(தேமாங்காய்)}", new EzhuththuTest());
         matcher = pattern.tamilMatcher("அமங்கம்மாவின் அங்கம்மா அங்கு ");
         if (!matcher.find()) {
             throw new Exception("தேமாங்காய் is not  found.");
@@ -235,7 +240,7 @@ public class EzhuththuTest implements IPropertyFinder {
 
     @Test
     public void testCompilations() throws Exception {
-        TamilPattern pattern = TamilFactory.getRegXCompiler().compile("${tamil_like}", new EzhuththuTest());
+        TamilPattern pattern = TamilFactory.getRegEXCompiler().compile("${tamil_like}", new EzhuththuTest());
         Matcher matcher = pattern.matcher("தமிழ்");
         Assert.assertTrue(matcher.matches());
 
@@ -245,7 +250,7 @@ public class EzhuththuTest implements IPropertyFinder {
         matcher = pattern.matcher("கமலி");
         Assert.assertFalse(matcher.matches());
 
-        pattern = TamilFactory.getRegXCompiler().compile("${குற்றியலுகரம்}", new EzhuththuTest());
+        pattern = TamilFactory.getRegEXCompiler().compile("${குற்றியலுகரம்}", new EzhuththuTest());
         matcher = pattern.matcher("அரசு");
         Assert.assertTrue(matcher.matches());
 
@@ -267,7 +272,7 @@ public class EzhuththuTest implements IPropertyFinder {
         Assert.assertTrue(matcher.matches());
 
 
-        pattern = TamilFactory.getRegXCompiler().compile("${தேமாங்காய்}", new EzhuththuTest());
+        pattern = TamilFactory.getRegEXCompiler().compile("${தேமாங்காய்}", new EzhuththuTest());
         matcher = pattern.matcher("அங்கம்மா");
         Assert.assertTrue(matcher.matches());
 
@@ -282,14 +287,14 @@ public class EzhuththuTest implements IPropertyFinder {
             throw new Exception("தேமாங்காய் could not be found.");
         }
 
-        pattern = TamilFactory.getRegXCompiler().compile("${(தேமாங்காய்}", new EzhuththuTest());
+        pattern = TamilFactory.getRegEXCompiler().compile("${(தேமாங்காய்}", new EzhuththuTest());
         matcher = pattern.matcher("அமங்கம்மா");
         if (matcher.find()) {
             throw new Exception("தேமாங்காய் is  found.");
 
         }
 
-        pattern = TamilFactory.getRegXCompiler().compile("${தேமாங்காய்)}", new EzhuththuTest());
+        pattern = TamilFactory.getRegEXCompiler().compile("${தேமாங்காய்)}", new EzhuththuTest());
         matcher = pattern.matcher("அமங்கம்மா");
         if (!matcher.find()) {
             throw new Exception("தேமாங்காய் is not found.");
@@ -301,14 +306,14 @@ public class EzhuththuTest implements IPropertyFinder {
             Assert.assertEquals(9, matcher.end());
         }
 
-        pattern = TamilFactory.getRegXCompiler().compile("${(தேமாங்காய்)}", new EzhuththuTest());
+        pattern = TamilFactory.getRegEXCompiler().compile("${(தேமாங்காய்)}", new EzhuththuTest());
         matcher = pattern.matcher("அமங்கம்மாவின்");
         if (matcher.find()) {
             throw new Exception("தேமாங்காய் is  found.");
 
         }
 
-        pattern = TamilFactory.getRegXCompiler().compile("${(தேமாங்காய்)}", new EzhuththuTest());
+        pattern = TamilFactory.getRegEXCompiler().compile("${(தேமாங்காய்)}", new EzhuththuTest());
         matcher = pattern.matcher("அமங்கம்மாவின் அங்கம்மா அங்கு ");
         if (!matcher.find()) {
             throw new Exception("தேமாங்காய் is not  found.");
@@ -321,7 +326,7 @@ public class EzhuththuTest implements IPropertyFinder {
         }
 
 
-        pattern = TamilFactory.getRegXCompiler().compile("${அகரவரிசையுயிர்மெய்}", new EzhuththuTest());
+        pattern = TamilFactory.getRegEXCompiler().compile("${அகரவரிசையுயிர்மெய்}", new EzhuththuTest());
         matcher = pattern.matcher("க் கா கி கீ  கெ கே கை கொ கோ கௌ    ");
         if (matcher.find()) {
             throw new Exception("அகரவுயிர்மெய் is   found. at:"+ matcher.start());

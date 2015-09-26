@@ -1,5 +1,6 @@
 package my.interest.lang.tamil.internal.api;
 
+import my.interest.lang.tamil.impl.FeatureSet;
 import tamil.lang.api.ezhuththu.EzhuththuSetDescription;
 
 /**
@@ -10,7 +11,7 @@ import tamil.lang.api.ezhuththu.EzhuththuSetDescription;
  */
 public interface PatternGenerator extends EzhuththuSetDescription {
 
-    public  String generate();
+    public  String generate(FeatureSet set);
 
 
 

@@ -1,4 +1,4 @@
-package tamil.util.regx;
+package tamil.util.regex;
 
 import tamil.lang.TamilWord;
 

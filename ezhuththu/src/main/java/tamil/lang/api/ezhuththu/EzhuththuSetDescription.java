@@ -13,7 +13,7 @@ import java.util.Set;
  *     Tamil letters have well defined properties that are central to Tamil computing.
  *     Searching for specific Tamil text is not going to be easy with the standard regular expression engine, Because  it can not search letters based on the properties of a symbol.
  *     This means we need a different RegX engine that can search text based on multiple properties of Tamil characters.
- *     This platform provides such a search engine (Please see {@link tamil.lang.TamilFactory#getRegXCompiler()}) that can compile what is called as <b>Tamil Regular Expression</b> and then search.
+ *     This platform provides such a search engine (Please see {@link tamil.lang.TamilFactory#getRegEXCompiler()}) that can compile what is called as <b>Tamil Regular Expression</b> and then search.
  *    </p>  <p>
  *     <b>Tamil regular expression is similar to standard Java regular expression with Tamil related patterns that are of the form ${...} in it.
  *     E.g) <font color='blue'>(${ஓரெழுத்துமொழி})|(${மொழிமுதல்}${மொழியிடை}*${மொழிக்கடை}+)</font>  is a Tamil regular expression to match a syntactically correct Tamil word.

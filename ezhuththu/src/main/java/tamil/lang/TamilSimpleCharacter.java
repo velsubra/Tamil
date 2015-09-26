@@ -2,6 +2,7 @@ package tamil.lang;
 
 
 import common.lang.SimpleCharacter;
+import my.interest.lang.tamil.impl.FeatureSet;
 import my.interest.lang.tamil.impl.rx.TamilGlyphRx;
 import tamil.lang.exception.NoMeiPartException;
 import tamil.lang.exception.NoUyirPartException;
@@ -677,14 +678,23 @@ public final class TamilSimpleCharacter extends TamilCharacter implements Simple
 
 
     @Override
-    public int[] getCodePoints() {
+    public List<int[]> getCodePoints() {
+
+        List<int[]> list = new ArrayList<int[]>();
         int[] ret = new int[1];
         ret[0] = getValue();
-        return ret;
+        list.add(ret);
+        if (this == TamilSimpleCharacter.OU) {
+            ret = new int[2];
+            ret[0] = TamilSimpleCharacter.O.getValue();
+            ret[1] =  TamilCompoundCharacter.OU_;
+            list.add(ret);
+        }
+        return list;
     }
 
     @Override
-    public int getCodePointsCount() {
+    public int getMinCodePointsCount() {
         return 1;
     }
 
@@ -789,11 +799,23 @@ public final class TamilSimpleCharacter extends TamilCharacter implements Simple
             }
             buffer.append("\\u" + val);
             buffer.append("(?!");
-            buffer.append(new TamilGlyphRx().generate());
+            buffer.append(new TamilGlyphRx().generate(FeatureSet.EMPTY));
             buffer.append(")");
             buffer.append(")");
             return buffer.toString();
         } else {
+            if (isUyirezhuththu()) {
+                if (this == O) {
+                    // not an ஔ
+                    StringBuffer buffer = new StringBuffer("(?:");
+                    buffer.append(super.toUnicodeStringRepresentation());
+                    buffer.append("(?!");
+                    buffer.append("\\u0BD7");
+                    buffer.append(")");
+                    buffer.append(")");
+                    return buffer.toString();
+                }
+            }
             return super.toUnicodeStringRepresentation();
         }
     }

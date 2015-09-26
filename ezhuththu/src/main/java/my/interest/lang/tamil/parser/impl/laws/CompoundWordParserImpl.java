@@ -67,13 +67,13 @@ public class CompoundWordParserImpl implements CompoundWordParser {
                             }
                         }
                         last = trial.removeLast();
-                        codepointssize -= last.getCodePointsCount();
+                        codepointssize -= last.getMinCodePointsCount();
 
 
                     } else {
                         for (ParserResult re : ret.getList()) {
                             re.setParsed(false);
-                            re.setParseHint(new ParserResult.PARSE_HINT(trial.size(), trial.size() + 1, codepointssize, codepointssize + last.getCodePointsCount(), null));
+                            re.setParseHint(new ParserResult.PARSE_HINT(trial.size(), trial.size() + 1, codepointssize, codepointssize + last.getMinCodePointsCount(), null));
 
                         }
                         break;
@@ -82,7 +82,7 @@ public class CompoundWordParserImpl implements CompoundWordParser {
                 }
                 if (ret == null) {
                     ret = new ParserResultCollection();
-                    hint = new ParserResult.PARSE_HINT(trial.size(), trial.size() + 1, codepointssize, codepointssize + last.getCodePointsCount(), null);
+                    hint = new ParserResult.PARSE_HINT(trial.size(), trial.size() + 1, codepointssize, codepointssize + last.getMinCodePointsCount(), null);
                     ret.add(new ParserResult(trial, null, hint));
 
                 }

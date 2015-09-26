@@ -1,5 +1,6 @@
 package my.interest.lang.tamil.impl.rx.asai1;
 
+import my.interest.lang.tamil.impl.FeatureSet;
 import my.interest.lang.tamil.impl.yaappu.YaappuBaseRx;
 
 /**
@@ -18,7 +19,7 @@ public   class NtiraibuRx extends YaappuBaseRx {
         super("நிரைபு");
     }
 
-    public String generate() {
-        return  "(${ntirai}${valiyugaravarisai})";
+    public String generate(FeatureSet featureSet) {
+        return  "(?:${ntirai}${valiyugaravarisai})";
     }
 }

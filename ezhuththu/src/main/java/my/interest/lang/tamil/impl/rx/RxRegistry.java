@@ -2,7 +2,7 @@ package my.interest.lang.tamil.impl.rx;
 
 import common.lang.impl.AbstractCharacter;
 import my.interest.lang.tamil.EzhuththuUtils;
-import my.interest.lang.tamil.TamilUtils;
+import my.interest.lang.tamil.impl.FeatureSet;
 import my.interest.lang.tamil.impl.rx.asai1.*;
 import my.interest.lang.tamil.impl.rx.asai2.Karuvilham;
 import my.interest.lang.tamil.impl.rx.asai2.KoovilhamRx;
@@ -10,6 +10,9 @@ import my.interest.lang.tamil.impl.rx.asai2.PulhimaRx;
 import my.interest.lang.tamil.impl.rx.asai2.TheamaRx;
 import my.interest.lang.tamil.impl.rx.asai3.*;
 import my.interest.lang.tamil.impl.rx.cir.*;
+import my.interest.lang.tamil.impl.rx.maaththirai.HalfRx;
+import my.interest.lang.tamil.impl.rx.maaththirai.OneRx;
+import my.interest.lang.tamil.impl.rx.maaththirai.TwoRx;
 import my.interest.lang.tamil.impl.rx.paa.KurralRx;
 import my.interest.lang.tamil.impl.rx.paa.KurralhCirRx;
 import my.interest.lang.tamil.impl.rx.paa.KurralhThalaiRx;
@@ -21,9 +24,10 @@ import tamil.lang.TamilCharacter;
 import tamil.lang.TamilFactory;
 import tamil.lang.TamilWord;
 import tamil.lang.api.ezhuththu.EzhuththuSetDescription;
+import tamil.lang.api.regex.RXOverrideSysDefnFeature;
 import tamil.lang.exception.TamilPlatformException;
 import tamil.util.IPropertyFinder;
-import tamil.util.regx.TamilPatternSyntaxException;
+import tamil.util.regex.TamilPatternSyntaxException;
 import tamil.yaappu.asai.AbstractAsai;
 
 import java.util.HashMap;
@@ -42,9 +46,11 @@ public class RxRegistry implements IPropertyFinder {
     public static final Map<String, PatternGenerator> map = new HashMap<String, PatternGenerator>();
 
     IPropertyFinder parent = null;
+    FeatureSet featureSet = null;
 
-    public RxRegistry(IPropertyFinder parent) {
+    public RxRegistry(IPropertyFinder parent, FeatureSet featureSet) {
         this.parent = parent;
+        this.featureSet = featureSet;
     }
 
 
@@ -118,13 +124,36 @@ public class RxRegistry implements IPropertyFinder {
         map.put("குறளின் தளையமைப்பு", new KurralhThalaiRx());
         map.put("குறள்", new KurralRx());
 
+        map.put("அரைமாத்திரை", new HalfRx());
+        map.put("ஒருமாத்திரை", new OneRx());
+        map.put("இருமாத்திரை", new TwoRx());
+
 
     }
 
     public String findProperty(String p1) {
-        PatternGenerator gen = map.get(p1);
+        String translit = null;
+        PatternGenerator gen = null;
+        if (parent != null && featureSet.isFeatureEnabled(RXOverrideSysDefnFeature.class)) {
+            String alias = parent.findProperty(p1);
+            if (alias != null) {
+                return alias;
+            }
+            translit =  TamilFactory.getTransliterator(null).transliterate(p1).toString();
+            alias = parent.findProperty(translit);
+            if (alias != null) {
+                return alias;
+            }
+
+        }
+
+        gen = map.get(p1);
+
         if (gen == null) {
-            p1 = TamilFactory.getTransliterator(null).transliterate(p1).toString();
+            if (translit == null) {
+                translit =  TamilFactory.getTransliterator(null).transliterate(p1).toString();
+            }
+            p1 = translit;
             gen = map.get(p1);
         }
         if (gen == null) {
@@ -171,7 +200,7 @@ public class RxRegistry implements IPropertyFinder {
                 StringBuffer buffer = new StringBuffer();
                 // buffer.append("(?<=(${" + first +"}))\\s+");
                 // buffer.append("(?<=(" + contextFirst +"))\\s+");
-                buffer.append("${" + first + "}\\s+");
+                buffer.append("${" + first + "}${idaivelhi}");
                 buffer.append("(?=(${" + second + "}))");
                 String ret = buffer.toString();
 
@@ -212,7 +241,7 @@ public class RxRegistry implements IPropertyFinder {
                         }
 
                     } else {
-                        for (int j = 0; j < ch.getCodePointsCount(); j++) {
+                        for (int j = 0; j < ch.getMinCodePointsCount(); j++) {
                             buffer.append(".");
                         }
                     }
@@ -240,7 +269,7 @@ public class RxRegistry implements IPropertyFinder {
                         }
 
                     } else {
-                        for (int j = 0; j < ch.getCodePointsCount(); j++) {
+                        for (int j = 0; j < ch.getMinCodePointsCount(); j++) {
                             buffer.append(".");
                         }
                     }
@@ -273,7 +302,7 @@ public class RxRegistry implements IPropertyFinder {
                         }
 
                     } else {
-                        for (int j = 0; j < ch.getCodePointsCount(); j++) {
+                        for (int j = 0; j < ch.getMinCodePointsCount(); j++) {
                             buffer.append(".");
                         }
                     }
@@ -297,7 +326,7 @@ public class RxRegistry implements IPropertyFinder {
             }
             gen = new AnyOneInTamilLetterSetRx(p1, chars);
         }
-        return  gen.generate();
+        return gen.generate(featureSet);
 //        String groupName = TamilUtils.toRxGroupName(TamilWord.from(gen.getName(), true).translitToEnglish());
 //        if (generatedPatterns.containsKey(gen.getName())) {
 //            return "(\\k<" + groupName + ">)";

@@ -80,6 +80,17 @@ public final class FeatureSet {
 
     }
 
+    /**
+     * Parses the number list into a  feature set
+     * @param cls
+     * @param numberlist
+     * @return
+     */
+    public static FeatureSet parse(Class<? extends  Feature>  cls ,String numberlist) {
+        List<? extends  Feature> list = findFeatures(cls, numberlist);
+        return  new FeatureSet(list.toArray(new Feature[0]));
+    }
+
     public static final FeatureSet EMPTY = new FeatureSet(null);
     // Feature[] features = null;
     Map<Class<? extends Feature>, Feature> quickmap = null;

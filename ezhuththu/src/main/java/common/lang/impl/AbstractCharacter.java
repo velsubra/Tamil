@@ -4,6 +4,8 @@ import tamil.lang.CharacterDigest;
 import tamil.lang.TamilCharacter;
 import tamil.lang.exception.TamilPlatformException;
 
+import java.util.List;
+
 /**
  * <p>
  * Represents an abstract character.  It could be Unicode character.
@@ -93,8 +95,6 @@ public abstract class AbstractCharacter implements common.lang.Character, Compar
     }
 
 
-
-
     /**
      * Generic method to get the value of a digest
      *
@@ -132,18 +132,35 @@ public abstract class AbstractCharacter implements common.lang.Character, Compar
         return "_00_";
     }
 
-   public abstract int getCodePointsCount();
+    public abstract int getMinCodePointsCount();
 
-    public abstract int[] getCodePoints();
+    public abstract List<int[]> getCodePoints();
 
-    public  String toUnicodeStringRepresentation() {
+    public String toUnicodeStringRepresentation() {
         StringBuffer buffer = new StringBuffer("(?:");
-        for (int code : getCodePoints()) {
-            String val =   Integer.toHexString(code);
-            while (val.length()< 4) {
-                val = "0" +val ;
+        List<int[]> codepointslist = getCodePoints();
+        boolean first = true;
+        if (codepointslist.size() > 1) {
+            buffer.append("(");
+        }
+        for (int[] codepoints : codepointslist) {
+            if (!first) {
+                buffer.append("|");
             }
-            buffer.append("\\u" + val);
+            first = false;
+            buffer.append("(");
+            for (int code : codepoints) {
+                String val = Integer.toHexString(code);
+                while (val.length() < 4) {
+                    val = "0" + val;
+                }
+                buffer.append("\\u" + val);
+            }
+            buffer.append(")");
+
+        }
+        if (codepointslist.size() > 1) {
+            buffer.append(")");
         }
         buffer.append(")");
         return buffer.toString();
@@ -152,9 +169,10 @@ public abstract class AbstractCharacter implements common.lang.Character, Compar
 
     /**
      * Translit the character to roman letter(s)
-     * @return  returns roman letters
+     *
+     * @return returns roman letters
      */
-    public abstract  String translitToEnglish();
+    public abstract String translitToEnglish();
 
 
 }

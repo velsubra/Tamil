@@ -1,5 +1,6 @@
 package my.interest.lang.tamil.impl.yaappu;
 
+import my.interest.lang.tamil.impl.FeatureSet;
 import my.interest.lang.tamil.internal.api.PatternGenerator;
 import tamil.lang.TamilCharacter;
 
@@ -13,7 +14,7 @@ import java.util.Set;
  * @author velsubra
  */
 public abstract class AbstractCirCollectionRx implements PatternGenerator {
-    public String generate() {
+    public String generate(FeatureSet set) {
         StringBuffer buffer = new StringBuffer("(?:");
         boolean first = true;
         for (String cir : getAllCirs()) {

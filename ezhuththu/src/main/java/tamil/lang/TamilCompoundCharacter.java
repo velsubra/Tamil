@@ -878,14 +878,23 @@ public final class TamilCompoundCharacter extends TamilCharacter implements Comp
     }
 
     @Override
-    public int[] getCodePoints() {
+    public List<int[]> getCodePoints() {
+        List<int[]> list = new ArrayList<int[]>();
         int[] ret = Arrays.copyOf(this.consonants, this.consonants.length + 1);
         ret[this.consonants.length] = getVowel();
-        return ret;
+        list.add(ret);
+        if (vowelDecomposed != null && vowelDecomposed.length > 1) {
+            ret = Arrays.copyOf(this.consonants, this.consonants.length + vowelDecomposed.length);
+            for (int i = 0; i < vowelDecomposed.length; i++) {
+                ret[this.consonants.length + i] = vowelDecomposed[i];
+            }
+            list.add(ret);
+        }
+        return list;
     }
 
     @Override
-    public int getCodePointsCount() {
+    public int getMinCodePointsCount() {
         return consonants.length + 1;
     }
 
@@ -933,6 +942,36 @@ public final class TamilCompoundCharacter extends TamilCharacter implements Comp
     @Override
     public String translitToEnglish() {
         return eng;
+    }
+
+    @Override
+    public String toUnicodeStringRepresentation() {
+        if (isUyirMeyyezhuththu()) {
+            if (isAA()) {
+                //Not a koa
+                StringBuffer buffer = new StringBuffer("(?:");
+                buffer.append(super.toUnicodeStringRepresentation());
+                buffer.append("(?!");
+                buffer.append("\\u0BBE");
+                buffer.append(")");
+                buffer.append(")");
+                return buffer.toString();
+            } else if (isA()) {
+                //Not a koa or kou
+                StringBuffer buffer = new StringBuffer("(?:");
+                buffer.append(super.toUnicodeStringRepresentation());
+                buffer.append("(?!");
+                buffer.append("[\\u0BBE\\u0BD7]");
+                buffer.append(")");
+                buffer.append(")");
+                return buffer.toString();
+            } else {
+                return super.toUnicodeStringRepresentation();
+            }
+        } else {
+            return super.toUnicodeStringRepresentation();
+        }
+
     }
 
 

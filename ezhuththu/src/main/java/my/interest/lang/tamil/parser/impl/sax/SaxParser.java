@@ -2,7 +2,6 @@ package my.interest.lang.tamil.parser.impl.sax;
 
 import common.lang.impl.AbstractCharacter;
 import my.interest.lang.tamil.impl.FeatureSet;
-import my.interest.lang.tamil.impl.NumberDictionary;
 import my.interest.lang.tamil.parser.impl.sax.context.ParsingContext;
 import my.interest.lang.tamil.punar.TamilWordPartContainer;
 import tamil.lang.TamilCharacter;
@@ -107,13 +106,13 @@ public class SaxParser implements CompoundWordParser {
                             }
                         }
                         last = trial.removeLast();
-                        codepointssize -= last.getCodePointsCount();
+                        codepointssize -= last.getMinCodePointsCount();
 
 
                     } else {
                         for (ParserResult re : collection.getList()) {
                             re.setParsed(false);
-                            re.setParseHint(new ParserResult.PARSE_HINT(trial.size(), trial.size() + 1, codepointssize, codepointssize + last.getCodePointsCount(), null));
+                            re.setParseHint(new ParserResult.PARSE_HINT(trial.size(), trial.size() + 1, codepointssize, codepointssize + last.getMinCodePointsCount(), null));
 
                         }
                         break;
@@ -122,7 +121,7 @@ public class SaxParser implements CompoundWordParser {
                 }
                 if (collection.isEmpty()) {
 
-                    hint = new ParserResult.PARSE_HINT(trial.size(), trial.size() + 1, codepointssize, codepointssize + last.getCodePointsCount(), null);
+                    hint = new ParserResult.PARSE_HINT(trial.size(), trial.size() + 1, codepointssize, codepointssize + last.getMinCodePointsCount(), null);
                     collection.add(new ParserResult(trial, null, hint));
                     if (collection.size() == maxReturn) {
                         return collection;
