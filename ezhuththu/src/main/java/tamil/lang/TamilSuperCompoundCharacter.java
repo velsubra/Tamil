@@ -102,15 +102,25 @@ public class TamilSuperCompoundCharacter extends TamilCharacter implements Chara
         return count;
     }
 
+
+    public boolean isUnicodeSequenceUnique() {
+//        for (TamilCharacter t : sequence) {
+//            if (!t.isUnicodeSequenceUnique()) {
+//                return false;
+//            }
+//        }
+        return true;
+    }
+
     @Override
-    public List<int[]> getCodePoints() {
+    public List<int[]> getCodePoints(boolean includeCanonEq) {
         PathBuilder<int[]> pathBuilder = new PathBuilder<int[]>();
 
         for (TamilCharacter t : sequence) {
             if (pathBuilder.getPaths().isEmpty()) {
-                pathBuilder.includeNewPathFromRoot(t.getCodePoints());
+                pathBuilder.includeNewPathFromRoot(t.getCodePoints(includeCanonEq));
             } else {
-                pathBuilder.multiplyPathsWithNodes(t.getCodePoints());
+                pathBuilder.multiplyPathsWithNodes(t.getCodePoints(includeCanonEq));
             }
 
         }

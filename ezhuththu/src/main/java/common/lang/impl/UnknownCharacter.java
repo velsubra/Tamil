@@ -53,7 +53,7 @@ public class UnknownCharacter extends AbstractCharacter implements SimpleCharact
 
 
     @Override
-    public List<int[]> getCodePoints() {
+    public List<int[]> getCodePoints(boolean includeCanonEq) {
         List<int[]> list = new ArrayList<int[]>();
         int[] ret = new int[1];
         ret[0] = getValue();

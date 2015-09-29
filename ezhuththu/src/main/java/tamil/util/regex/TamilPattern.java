@@ -65,8 +65,9 @@ public final class TamilPattern {
         StringUtils.IndexContext context = StringUtils.replaceWithContext("${", "}", pattern, new RxRegistry(aliasFinder, (features == null || features.length == 0) ? FeatureSet.EMPTY : new FeatureSet(features)), true, true, true);
         if (context.finalString.length() > 10*1024) {
             System.out.println("----"+pattern+"-----> Generated Pattern size in KB:" + context.finalString.length() /1000);
+        } else {
+            System.out.println("pattern:" + pattern + " =>Real RX:" + context.finalString);
         }
-        // System.out.println("pattern:" + pattern + " =>Real RX:" + context.finalString);
         return new TamilPattern(pattern, context, flags);
 
 

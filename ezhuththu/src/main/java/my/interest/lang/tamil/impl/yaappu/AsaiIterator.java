@@ -1,6 +1,7 @@
 package my.interest.lang.tamil.impl.yaappu;
 
 import common.lang.impl.AbstractCharacter;
+import my.interest.lang.tamil.impl.FeatureSet;
 import tamil.lang.TamilCharacter;
 import tamil.lang.TamilWord;
 import tamil.lang.exception.TamilPlatformException;
@@ -19,11 +20,16 @@ import java.util.Iterator;
 public class AsaiIterator implements Iterator<AbstractAsai> {
     int index = 0;
     TamilWord w = null;
+    private FeatureSet featureSet = null;
 
-    public AsaiIterator(TamilWord w) {
+    public AsaiIterator(TamilWord w, FeatureSet set) {
         this.w = w;
         if (this.w == null) {
             this.w = TamilWord.from("");
+        }
+        this.featureSet = set;
+        if (this.featureSet == null) {
+            this.featureSet = FeatureSet.EMPTY;
         }
     }
 

@@ -4,9 +4,7 @@ import tamil.lang.api.dictionary.*;
 import tamil.lang.api.number.IgnoreNonDigitFeature;
 import tamil.lang.api.number.PunharchiFeature;
 import tamil.lang.api.parser.*;
-import tamil.lang.api.regex.RXAythamAsKurrilFeature;
-import tamil.lang.api.regex.RXKuttuFeature;
-import tamil.lang.api.regex.RXOverrideSysDefnFeature;
+import tamil.lang.api.regex.*;
 import tamil.lang.api.trans.JoinFeature;
 import tamil.lang.api.trans.NounLookupFeature;
 
@@ -66,8 +64,10 @@ public final class FeatureConstants {
 
 
     public static final RXKuttuFeature RX_TEAT_KUTTU_AS_ONE_LETTER_VAL_185 = RXKuttuFeature.FEATURE;
+    public static final RXKuttuAcrossCirFeature RX_TEAT_SPLIT_KUTTU_AS_ONE_MEI_VAL_182 = RXKuttuAcrossCirFeature.FEATURE;
     public static final RXAythamAsKurrilFeature RX_TEAT_AAYTHAM_AS_KURRIL_VAL_186 = RXAythamAsKurrilFeature.FEATURE;
     public static final RXOverrideSysDefnFeature RX_OVERRIDE_SYS_DEFN_VAL_188 = RXOverrideSysDefnFeature.FEATURE;
+    public static final RXIncludeCanonicalEquivalenceFeature RX_INCLUDE_UNICODE_CANON_EQUIVALENCE_VAL_189 = RXIncludeCanonicalEquivalenceFeature.FEATURE;
 
 
 

@@ -65,33 +65,33 @@ public class EzhuththuTest {
     @Test
     public void testCodePoints() {
 
-        String rep = toString(TamilSimpleCharacter.a.getCodePoints());
+        String rep = toString(TamilSimpleCharacter.a.getCodePoints(true));
         System.out.print(rep);
         Assert.assertEquals("\\u0b85,", rep);
 
-        rep = toString(TamilSimpleCharacter.OU.getCodePoints());
+        rep = toString(TamilSimpleCharacter.OU.getCodePoints(true));
         System.out.print(rep);
         Assert.assertEquals("\\u0b94,\\u0b92\\u0bd7,", rep);
 
-        rep = toString(TamilSuperCompoundCharacter.IKSH_OU.getCodePoints());
+        rep = toString(TamilSuperCompoundCharacter.IKSH_OU.getCodePoints(true));
         System.out.print(rep);
         Assert.assertEquals("\\u0b95\\u0bcd\\u0bb7\\u0bcc,\\u0b95\\u0bcd\\u0bb7\\u0bc6\\u0bd7,", rep);
 
-        rep = toString(TamilSuperCompoundCharacter.SHREE_.getCodePoints());
+        rep = toString(TamilSuperCompoundCharacter.SHREE_.getCodePoints(true));
         System.out.print(rep);
         Assert.assertEquals("\\u0bb8\\u0bcd\\u0bb0\\u0bc0,", rep);
 
 
-        rep = toString(TamilCompoundCharacter.IR_EE.getCodePoints());
+        rep = toString(TamilCompoundCharacter.IR_EE.getCodePoints(true));
         System.out.print(rep);
         Assert.assertEquals("\\u0bb0\\u0bc0,", rep);
 
 
-        rep = toString(TamilCompoundCharacter.IK_OO.getCodePoints());
+        rep = toString(TamilCompoundCharacter.IK_OO.getCodePoints(true));
         System.out.print(rep);
         Assert.assertEquals("\\u0b95\\u0bcb,\\u0b95\\u0bc7\\u0bbe,", rep);
 
-        rep = toString(TamilCompoundCharacter.IK_UU.getCodePoints());
+        rep = toString(TamilCompoundCharacter.IK_UU.getCodePoints(true));
         System.out.print(rep);
         Assert.assertEquals("\\u0b95\\u0bc2,", rep);
 
@@ -623,7 +623,7 @@ public class EzhuththuTest {
     @Test
     public void testUniCodeChar() {
         TamilWord tamil = TamilWord.from("தமிழ்");
-        String unicode = tamil.toUnicodeStringRepresentation();
+        String unicode = tamil.toUnicodeStringRepresentation(false);
         unicode = unicode.replace("\"", "\\\"");
         System.out.println(unicode);
         Pattern p = Pattern.compile(unicode, Pattern.CANON_EQ);

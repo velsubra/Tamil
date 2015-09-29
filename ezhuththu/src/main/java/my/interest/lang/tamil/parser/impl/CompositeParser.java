@@ -21,7 +21,7 @@ public class CompositeParser implements CompoundWordParser {
 
     public CompositeParser() {
         parsers.add(new SaxParser());
-        parsers.add(new CompoundWordParserImpl());
+       // parsers.add(new CompoundWordParserImpl());
     }
 
 

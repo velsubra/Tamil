@@ -134,11 +134,11 @@ public abstract class AbstractCharacter implements common.lang.Character, Compar
 
     public abstract int getMinCodePointsCount();
 
-    public abstract List<int[]> getCodePoints();
+    public abstract List<int[]> getCodePoints(boolean includeCanon);
 
-    public String toUnicodeStringRepresentation() {
+    public String toUnicodeRegEXRepresentation(boolean includeCanon) {
         StringBuffer buffer = new StringBuffer("(?:");
-        List<int[]> codepointslist = getCodePoints();
+        List<int[]> codepointslist = getCodePoints(includeCanon);
         boolean first = true;
         if (codepointslist.size() > 1) {
             buffer.append("(");

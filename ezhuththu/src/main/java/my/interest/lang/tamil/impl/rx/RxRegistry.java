@@ -12,6 +12,7 @@ import my.interest.lang.tamil.impl.rx.asai3.*;
 import my.interest.lang.tamil.impl.rx.cir.*;
 import my.interest.lang.tamil.impl.rx.maaththirai.HalfRx;
 import my.interest.lang.tamil.impl.rx.maaththirai.OneRx;
+import my.interest.lang.tamil.impl.rx.maaththirai.SplitKuttuRX;
 import my.interest.lang.tamil.impl.rx.maaththirai.TwoRx;
 import my.interest.lang.tamil.impl.rx.paa.KurralRx;
 import my.interest.lang.tamil.impl.rx.paa.KurralhCirRx;
@@ -24,6 +25,7 @@ import tamil.lang.TamilCharacter;
 import tamil.lang.TamilFactory;
 import tamil.lang.TamilWord;
 import tamil.lang.api.ezhuththu.EzhuththuSetDescription;
+import tamil.lang.api.regex.RXIncludeCanonicalEquivalenceFeature;
 import tamil.lang.api.regex.RXOverrideSysDefnFeature;
 import tamil.lang.exception.TamilPlatformException;
 import tamil.util.IPropertyFinder;
@@ -129,6 +131,10 @@ public class RxRegistry implements IPropertyFinder {
         map.put("இருமாத்திரை", new TwoRx());
 
 
+
+        map.put("பிரிக்கப்பட்ட குற்று", new SplitKuttuRX());
+
+
     }
 
     public String findProperty(String p1) {
@@ -175,7 +181,7 @@ public class RxRegistry implements IPropertyFinder {
             if (p1.startsWith("[") && p1.endsWith("]")) {
                 String inner = p1.substring(1, p1.length() - 1);
                 TamilWord literal = TamilWord.from(inner, true);
-                return literal.toUnicodeStringRepresentation();
+                return literal.toUnicodeStringRepresentation(featureSet.isFeatureEnabled(RXIncludeCanonicalEquivalenceFeature.class));
             }
 
             if (p1.startsWith("தளை[") && p1.endsWith("]")) {
@@ -209,7 +215,7 @@ public class RxRegistry implements IPropertyFinder {
             }
             if (p1.startsWith("அசை[") && p1.endsWith("]")) {
                 String inner = p1.substring(4, p1.length() - 1);
-                Iterator<AbstractAsai> it = new AsaiIterator(TamilWord.from(inner, true));
+                Iterator<AbstractAsai> it = new AsaiIterator(TamilWord.from(inner, true),featureSet);
                 StringBuffer buffer = new StringBuffer();
                 while (it.hasNext()) {
                     AbstractAsai s = it.next();

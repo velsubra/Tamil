@@ -1,9 +1,8 @@
 package my.interest.lang.tamil.impl.rx.maaththirai;
 
 import my.interest.lang.tamil.impl.FeatureSet;
-import my.interest.lang.tamil.internal.api.PatternGenerator;
+import my.interest.lang.tamil.impl.rx.ORPatternGenerator;
 import tamil.lang.TamilCharacter;
-import tamil.lang.api.regex.RXAythamAsKurrilFeature;
 import tamil.lang.api.regex.RXKuttuFeature;
 
 import java.util.ArrayList;
@@ -16,32 +15,15 @@ import java.util.Set;
  *
  * @author velsubra
  */
-public class TwoRx implements PatternGenerator {
-
-    public String generate(FeatureSet set) {
+public class TwoRx extends ORPatternGenerator {
+    public List<String> getList(FeatureSet set) {
         List<String> patterns = new ArrayList<String>();
-        patterns.add("நெடில்");
+        patterns.add("${நெடில்}");
 
         if (set.isFeatureEnabled(RXKuttuFeature.class)) {
-            patterns.add("குற்றுநெடில்");
+            patterns.add("${குற்றுநெடில்}");
         }
-        StringBuffer buffer = new StringBuffer();
-        if (patterns.size() > 1) {
-            buffer.append("(?:");
-        }
-        boolean first = true;
-        for (String rx : patterns) {
-            if (!first) {
-                buffer.append("|");
-            }
-            first = false;
-            buffer.append("${" + rx + "}");
-
-        }
-        if (patterns.size() > 1) {
-            buffer.append(")");
-        }
-        return buffer.toString();
+        return patterns;
     }
 
 

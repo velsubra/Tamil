@@ -629,6 +629,14 @@ public abstract class TamilCharacter extends AbstractCharacter {
         return vallinam;
     }
 
+    /**
+     * Tells if the  unicode sequence is unique
+     * @return  return true if no other sequence starts with the sequence of the current character, false otherwise.
+     * It will be false for {@link tamil.lang.TamilSimpleCharacter#O} as {@link tamil.lang.TamilSimpleCharacter#OU} can also with it.
+     *
+     */
+    public abstract boolean isUnicodeSequenceUnique();
+
 
 
 

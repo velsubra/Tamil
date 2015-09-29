@@ -1,7 +1,10 @@
 package test;
 
 import my.interest.lang.tamil.TamilUtils;
+import org.junit.Assert;
 import org.junit.Test;
+import tamil.lang.TamilFactory;
+import tamil.lang.api.regex.RXIncludeCanonicalEquivalenceFeature;
 import tamil.util.IPropertyFinder;
 import tamil.util.regex.TamilPattern;
 
@@ -21,13 +24,62 @@ import java.util.regex.Matcher;
  * @author velsubra
  */
 public class SearchTest {
+    static {
+        TamilFactory.init();
+    }
+
+
+    @Test
+    public void testBasicTests() {
+
+        TamilPattern pattern = TamilPattern.compile("${asai}");
+        Matcher matcher = pattern.matcher("று");
+        Assert.assertTrue(matcher.matches());
+
+         pattern = TamilPattern.compile("${ezhuththu}");
+         matcher = pattern.matcher("று");
+        Assert.assertTrue(matcher.matches());
+
+         pattern = TamilPattern.compile("${valiyugaravarisai}");
+         matcher = pattern.matcher("று");
+        Assert.assertTrue(matcher.matches());
+
+         pattern = TamilPattern.compile("${ntedil}");
+         matcher = pattern.matcher("கௌ");
+        Assert.assertTrue(matcher.matches());
+
+         pattern = TamilPattern.compile("${kurril}");
+         matcher = pattern.matcher("க");
+        Assert.assertTrue(matcher.matches());
+
+         pattern = TamilPattern.compile("${uyirmey}");
+         matcher = pattern.matcher("க");
+        Assert.assertTrue(matcher.matches());
+
+         pattern = TamilPattern.compile("${mei}", null, RXIncludeCanonicalEquivalenceFeature.FEATURE);
+         matcher = pattern.matcher("க்");
+        Assert.assertTrue(matcher.matches());
+
+
+        pattern = TamilPattern.compile("${uyir}");
+        matcher = pattern.matcher("அ");
+        Assert.assertTrue(matcher.matches());
+
+
+        pattern = TamilPattern.compile("${uyir}", null, RXIncludeCanonicalEquivalenceFeature.FEATURE);
+        matcher = pattern.matcher("ஔ");
+        Assert.assertTrue(matcher.matches());
+
+
+    }
+
 
     @Test
     public void testLocalKamba() throws Exception {
-        if (!new File("/Users/velsubra/Downloads/Kamba Ramayanam Unicode-A.txt").exists()) {
+        if (!new File("/Users/velsubra/Downloads/kambar-ramayanam.txt").exists()) {
             return;
         }
-        String data = new String(TamilUtils.readAllFromFile("/Users/velsubra/Downloads/Kamba Ramayanam Unicode-A.txt"), TamilUtils.ENCODING);
+        String data = new String(TamilUtils.readAllFromFile("/Users/velsubra/Downloads/kambar-ramayanam.txt"), TamilUtils.ENCODING);
 
         //  TamilPattern pattern = TamilPattern.compile("\\b(${எழுத்து})*?${வலியுகரவரிசை}${உயிர்}(${எழுத்து})*\\b" );
 
@@ -53,7 +105,7 @@ public class SearchTest {
         TamilPattern pattern = TamilPattern.compile("${எண்சீர்களைக்கொண்ட வரி}", new PropertyFinder(
                 "இடைவெளி = [ ]+\n" +
                         "சீர் = ${எழுத்து}+${இடைவெளி} \n" +
-                        "எண்சீர் = (${சீர்}){12,}${எழுத்து}+\n" +
+                        "எண்சீர் = (${சீர்}){8,}${எழுத்து}+\n" +
                         "எண்சீர்களைக்கொண்ட வரி = ${(எண்சீர்)} " +
                         ""));
 

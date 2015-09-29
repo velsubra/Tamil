@@ -1,6 +1,9 @@
 package test;
 
+import my.interest.lang.tamil.impl.FeatureSet;
 import tamil.lang.TamilWord;
+import tamil.lang.api.regex.RXIncludeCanonicalEquivalenceFeature;
+import tamil.lang.api.regex.RXKuttuAcrossCirFeature;
 import tamil.lang.api.regex.RXKuttuFeature;
 import tamil.util.IPropertyFinder;
 import my.interest.lang.util.Grid;
@@ -45,7 +48,7 @@ public class EzhuththuTest implements IPropertyFinder {
     @Test
     public void test_Asai() {
         TamilWord w = TamilWord.from("சேர்ந்தார்க்கு");
-        Iterator<AbstractAsai> it = w.asaiIterator();
+        Iterator<AbstractAsai> it = w.asaiIterator(FeatureSet.EMPTY);
         while(it.hasNext()) {
             AbstractAsai asai =  it.next();
             System.out.println(asai +":" + asai.getValue());
@@ -151,6 +154,11 @@ public class EzhuththuTest implements IPropertyFinder {
         Matcher matcher = pattern.matcher("அம்சு");
         Assert.assertTrue(matcher.matches());
 
+        pattern = TamilPattern.compile("${theamaa}");
+        matcher = pattern.matcher("ணோடா");
+        Assert.assertTrue(matcher.matches());
+
+
         pattern = TamilPattern.compile("${ntearbu}");
         matcher = pattern.matcher("காசு");
         Assert.assertTrue(matcher.matches());
@@ -205,6 +213,13 @@ public class EzhuththuTest implements IPropertyFinder {
         pattern = TamilPattern.compile("${[(தமிழ்)]}");
         matcher = pattern.matcher("(தமிழ்)");
         Assert.assertTrue(matcher.matches());
+
+
+        pattern = TamilPattern.compile("${குறள்}",null, RXKuttuAcrossCirFeature.FEATURE, RXIncludeCanonicalEquivalenceFeature.FEATURE);
+        matcher = pattern.matcher("ஓர்ந்துகண் ணோடாது இறைபுரிந்து யார்மாட்டும்\n" +
+                "தேர்ந்துசெய் வஃதே முறை");
+        Assert.assertTrue(matcher.matches());
+
 
 
     }

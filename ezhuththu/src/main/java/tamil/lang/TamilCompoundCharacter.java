@@ -878,12 +878,12 @@ public final class TamilCompoundCharacter extends TamilCharacter implements Comp
     }
 
     @Override
-    public List<int[]> getCodePoints() {
+    public List<int[]> getCodePoints(boolean includeCanonEq) {
         List<int[]> list = new ArrayList<int[]>();
         int[] ret = Arrays.copyOf(this.consonants, this.consonants.length + 1);
         ret[this.consonants.length] = getVowel();
         list.add(ret);
-        if (vowelDecomposed != null && vowelDecomposed.length > 1) {
+        if (includeCanonEq && vowelDecomposed != null && vowelDecomposed.length > 1) {
             ret = Arrays.copyOf(this.consonants, this.consonants.length + vowelDecomposed.length);
             for (int i = 0; i < vowelDecomposed.length; i++) {
                 ret[this.consonants.length + i] = vowelDecomposed[i];
@@ -944,32 +944,47 @@ public final class TamilCompoundCharacter extends TamilCharacter implements Comp
         return eng;
     }
 
+
+    public boolean isUnicodeSequenceUnique() {
+        if (isUyirMeyyezhuththu()) {
+            if (isAA()) {
+                // it could be koa
+                return false;
+            } else if (isA()) {
+                // it could be ko
+                return false;
+            }
+        }
+        return true;
+
+    }
+
     @Override
-    public String toUnicodeStringRepresentation() {
+    public String toUnicodeRegEXRepresentation(boolean includeCanonEq) {
         if (isUyirMeyyezhuththu()) {
             if (isAA()) {
                 //Not a koa
                 StringBuffer buffer = new StringBuffer("(?:");
-                buffer.append(super.toUnicodeStringRepresentation());
+                buffer.append(super.toUnicodeRegEXRepresentation(includeCanonEq));
                 buffer.append("(?!");
                 buffer.append("\\u0BBE");
                 buffer.append(")");
                 buffer.append(")");
                 return buffer.toString();
             } else if (isA()) {
-                //Not a koa or kou
+                //Not a ko or kou
                 StringBuffer buffer = new StringBuffer("(?:");
-                buffer.append(super.toUnicodeStringRepresentation());
+                buffer.append(super.toUnicodeRegEXRepresentation(includeCanonEq));
                 buffer.append("(?!");
                 buffer.append("[\\u0BBE\\u0BD7]");
                 buffer.append(")");
                 buffer.append(")");
                 return buffer.toString();
             } else {
-                return super.toUnicodeStringRepresentation();
+                return super.toUnicodeRegEXRepresentation(includeCanonEq);
             }
         } else {
-            return super.toUnicodeStringRepresentation();
+            return super.toUnicodeRegEXRepresentation(includeCanonEq);
         }
 
     }
