@@ -15,7 +15,8 @@ public class PulhimaanganiRx extends YaappuBaseRx {
         super("புளிமாங்கனி");
     }
     public String generate(FeatureSet featureSet) {
-        return  "(?:(?!(?:${karuvilham}))(?:${ntirai}${ntear}${ntirai}))";
+        return  "(?:${ntirai}${ntear}${ntirai})";
+        //return  "(?:(?!(?:${karuvilham}))(?:${ntirai}${ntear}${ntirai}))";
         //return  "(?:(?!(?:${karuvilham}))(?:${ntirai}${ntear}${ntirai})|(?:${ntirai}${kurril}${mey}+${ntirai}))";
     }
 }

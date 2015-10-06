@@ -16,7 +16,8 @@ public class TheamaanganiRx extends YaappuBaseRx {
     }
     public String generate(FeatureSet featureSet) {
 
-        return  "(?:(?!(?:${ntirai})|${koovilham})(?:${ntear}{2}${ntirai}))";
+        return  "(?:(?!${koovilham})(?:${ntear}{2}${ntirai}))";
+       // return  "(?:(?!(?:${ntirai})|${koovilham})(?:${ntear}{2}${ntirai}))";
         //return  "(?:(?!(?:${ntirai})|${koovilham})(?:${ntear}{2}${ntirai})|(?:${kurril}${mey}+${ntear}${ntirai}))";
     }
 }

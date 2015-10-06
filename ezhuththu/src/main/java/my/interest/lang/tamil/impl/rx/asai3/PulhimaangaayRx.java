@@ -16,6 +16,7 @@ public class PulhimaangaayRx extends YaappuBaseRx {
     }
     public String generate(FeatureSet featureSet) {
         //return  "(?:(?!(?:${karuvilham}))(?:${ntirai}${ntear}{2})|(?:${ntirai}${kurril}${mey}${ntear}))";
-        return  "(?:(?!(?:${karuvilham}))(?:${ntirai}${ntear}{2}))";
+        return  "(?:${ntirai}(?:${ntear}){2})";
+        //return  "(?:(?!(?:${karuvilham}))(?:${ntirai}${ntear}{2}))";
     }
 }

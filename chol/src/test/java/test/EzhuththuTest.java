@@ -32,7 +32,9 @@ import java.util.regex.Matcher;
  * @author velsubra
  */
 public class EzhuththuTest implements IPropertyFinder {
-
+            static  {
+                TamilFactory.init();
+            }
 
 //    @Test
 //    public void test_Asai() {
@@ -44,6 +46,20 @@ public class EzhuththuTest implements IPropertyFinder {
 //        }
 //    }
 
+
+    @Test
+    public void test_LetterSets() {
+        TamilCharacterSetCalculator calc =  TamilFactory.getTamilCharacterSetCalculator();
+        Set<TamilCharacter> set = calc.find("மொழிமுதல்மெலி");
+        System.out.println(set.size());
+        System.out.println(set);
+
+
+         set = calc.find("மொழிமுதலிடை");
+        System.out.println(set.size());
+        System.out.println(set);
+
+    }
 
     @Test
     public void test_Asai() {
@@ -80,9 +96,12 @@ public class EzhuththuTest implements IPropertyFinder {
             if (EzhuththuSetDescription.class.isAssignableFrom(rx.getClass())) {
                 EzhuththuSetDescription e = (EzhuththuSetDescription) rx;
                 if (e.getCharacterSet() == null) continue;
-                count1++;
-                int cols = 0;
 
+                int cols = 0;
+                if (rx.getName().startsWith("!")) {
+                    continue;
+                }
+                count1++;
                 Row r = grid1.createNewRow();
                 r.setValueAt(String.valueOf(count1), cols++);
                 r.setValueAt("${" + rx.getName() + "}", cols++);

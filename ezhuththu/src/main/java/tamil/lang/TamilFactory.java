@@ -175,7 +175,7 @@ public final class TamilFactory {
      *  expressions defined by {@link tamil.lang.api.regex.TamilRXCompiler}
      * </li>
      * </ol>
-     * The expression ${letter_set} means any single character from the character set letter_set when letter_set is the name of a letter set, be it fixed or calculated. For example ${குறில்}
+     * The expression ${letter_set} means any single character from the character set "letter_set" that could be basic or calculated. For example ${குறில்}
      * means any குறில் character.  ${குறில்}* mean 0 or more குறிலெழுத்துகள்     .
      *
      * @return the TamilRXCompiler.

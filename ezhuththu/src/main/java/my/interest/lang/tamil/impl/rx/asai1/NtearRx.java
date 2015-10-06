@@ -21,10 +21,7 @@ public  class NtearRx extends YaappuBaseRx {
     }
 
     public String generate(FeatureSet featureSet) {
-      //  if (!featureSet.isFeatureEnabled(RXKuttuFeature.class)) {
+
             return "(?!(${ntirai}))(?:(?:${irumaaththirai}${araimaaththirai}*)|(?:${orumaaththirai}${araimaaththirai}*))";
-//        } else {
-//            return "(?!(${ntirai}))(?:(?:${kuttukkurril}${mey}*)(?:${kuttuntedil}${mey}*)|(?:${ntedil}${mey}*)|(?:${kurril}${mey}*))";
-//        }
     }
 }

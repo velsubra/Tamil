@@ -16,6 +16,6 @@ public class KaruvilhangaayRx extends YaappuBaseRx {
     }
 
     public String generate(FeatureSet featureSet) {
-        return "(?:${ntirai}{2}${ntear})";
+        return "(?:(?:${ntirai}){2}${ntear})";
     }
 }

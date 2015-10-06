@@ -43,7 +43,9 @@ public abstract class TamilCharacter extends AbstractCharacter {
 
     protected static final int MOZHI_MUTHAL = 1024;
 
-    protected static final int MOZHI_LAST = 2048;
+    protected static final int MOZHI_IDAI = 2048;
+
+    protected static final int MOZHI_LAST = 2 * 2048;
 
 
     /**
@@ -52,7 +54,25 @@ public abstract class TamilCharacter extends AbstractCharacter {
     protected void postInit() {
         this.typeSpecification |= _isMozhimuthal() ? MOZHI_MUTHAL : 0;
         this.typeSpecification |= _isMozhiLast() ? MOZHI_LAST : 0;
+        this.typeSpecification |= _isMozhiIdai() ? MOZHI_IDAI : 0;
 
+    }
+
+    private boolean _isMozhiIdai() {
+        if (isPureTamilLetter()) {
+            if (isUyirezhuththu()) {
+                return false;
+            }
+//            else if (isUyirMeyyezhuththu()) {
+//                TamilCompoundCharacter mei = getMeiPart();
+//                if (mei == TamilCompoundCharacter.ING) {
+//                    return false;
+//                }
+//            }
+        } else {
+            return false;
+        }
+        return true;
     }
 
 
@@ -66,9 +86,10 @@ public abstract class TamilCharacter extends AbstractCharacter {
         if (isMeyyezhuththu()) {
             if (isVallinam()) return false;
 
-
-            if (this == TamilCompoundCharacter.INTH) return false;
+            if (this == TamilCompoundCharacter.ING) return false;
             if (this == TamilCompoundCharacter.INJ) return false;
+            if (this == TamilCompoundCharacter.INTH) return false;
+
             if (this == TamilCompoundCharacter.IV) return false;
             return true;
 
@@ -79,9 +100,9 @@ public abstract class TamilCharacter extends AbstractCharacter {
         if (mei == TamilCompoundCharacter.ING) return false;
 
         TamilSimpleCharacter uyir = getUyirPart();
-        if (uyir == TamilSimpleCharacter.A) return  false;
-        if (uyir == TamilSimpleCharacter.O) return  false;
-        if (uyir == TamilSimpleCharacter.OU) return  false;
+        if (uyir == TamilSimpleCharacter.A) return false;
+        if (uyir == TamilSimpleCharacter.O) return false;
+        if (uyir == TamilSimpleCharacter.OU) return false;
 
         return true;
 
@@ -105,13 +126,18 @@ public abstract class TamilCharacter extends AbstractCharacter {
             if (mei == TamilCompoundCharacter.IL) return false;
             if (mei == TamilCompoundCharacter.ILL) return false;
             if (mei == TamilCompoundCharacter.ILLL) return false;
-            if ((mei == TamilCompoundCharacter.IV)) {
+            if (mei == TamilCompoundCharacter.IV) {
                 //nothing starts with வு
-                if (uyir == TamilSimpleCharacter.U) {
+                if (uyir == TamilSimpleCharacter.U || uyir == TamilSimpleCharacter.UU || uyir == TamilSimpleCharacter.O || uyir == TamilSimpleCharacter.OO) {
                     return false;
 
                 }
+            } else if (mei == TamilCompoundCharacter.INJ) {
+                return uyir == TamilSimpleCharacter.a || uyir == TamilSimpleCharacter.aa || uyir == TamilSimpleCharacter.E || uyir == TamilSimpleCharacter.O;
+            } else if (mei == TamilCompoundCharacter.IY) {
+                return uyir == TamilSimpleCharacter.a || uyir == TamilSimpleCharacter.aa || uyir == TamilSimpleCharacter.U || uyir == TamilSimpleCharacter.UU || uyir == TamilSimpleCharacter.O || uyir == TamilSimpleCharacter.OU;
             }
+
         }
 
         return true;
@@ -141,11 +167,9 @@ public abstract class TamilCharacter extends AbstractCharacter {
      * @return true if the letter could be part of a word.
      */
     public boolean isWordToContain() {
-        if (isPureTamilLetter()) {
-            return !isUyirezhuththu();
-        } else {
-            return false;
-        }
+
+        return (typeSpecification & MOZHI_IDAI) != 0;
+
     }
 
 
@@ -426,6 +450,7 @@ public abstract class TamilCharacter extends AbstractCharacter {
     }
 
     private String soundDigest = null;
+
     public String getSoundSizeDigest() {
         if (soundDigest == null) {
 
@@ -631,13 +656,11 @@ public abstract class TamilCharacter extends AbstractCharacter {
 
     /**
      * Tells if the  unicode sequence is unique
-     * @return  return true if no other sequence starts with the sequence of the current character, false otherwise.
-     * It will be false for {@link tamil.lang.TamilSimpleCharacter#O} as {@link tamil.lang.TamilSimpleCharacter#OU} can also with it.
      *
+     * @return return true if no other sequence starts with the sequence of the current character, false otherwise.
+     * It will be false for {@link tamil.lang.TamilSimpleCharacter#O} as {@link tamil.lang.TamilSimpleCharacter#OU} can also with it.
      */
     public abstract boolean isUnicodeSequenceUnique();
-
-
 
 
 }

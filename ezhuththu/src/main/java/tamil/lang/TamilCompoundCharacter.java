@@ -889,6 +889,15 @@ public final class TamilCompoundCharacter extends TamilCharacter implements Comp
                 ret[this.consonants.length + i] = vowelDecomposed[i];
             }
             list.add(ret);
+//
+//            //if (vowelDecomposed.length > 2) {
+//                //Reversed form of the decomposition
+//                ret = Arrays.copyOf(this.consonants, this.consonants.length + vowelDecomposed.length);
+//                for (int i = 0; i < vowelDecomposed.length; i++) {
+//                    ret[this.consonants.length + i] = vowelDecomposed[vowelDecomposed.length - 1 - i];
+//                }
+//                list.add(ret);
+//           // }
         }
         return list;
     }

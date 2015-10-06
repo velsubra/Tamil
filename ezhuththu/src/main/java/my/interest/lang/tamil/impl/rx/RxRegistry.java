@@ -9,6 +9,7 @@ import my.interest.lang.tamil.impl.rx.asai2.KoovilhamRx;
 import my.interest.lang.tamil.impl.rx.asai2.PulhimaRx;
 import my.interest.lang.tamil.impl.rx.asai2.TheamaRx;
 import my.interest.lang.tamil.impl.rx.asai3.*;
+import my.interest.lang.tamil.impl.rx.asai4.*;
 import my.interest.lang.tamil.impl.rx.cir.*;
 import my.interest.lang.tamil.impl.rx.maaththirai.HalfRx;
 import my.interest.lang.tamil.impl.rx.maaththirai.OneRx;
@@ -105,14 +106,39 @@ public class RxRegistry implements IPropertyFinder {
         map.put("கூவிளங்கனி", new KoovilhanganiRx());
         map.put("கருவிளங்கனி", new KaruvilhanganiRx());
 
+
+        map.put("தேமாந்தண்பூ", new TheamaanthanhBooRx());
+        map.put("தேமாந்தண்ணிழல்", new TheamaanthanhnhizhalRx());
+        map.put("தேமாநறும்பூ", new TheamaaNtarrumBoo());
+        map.put("தேமாநறுநிழல்", new TheamaNtarruNtizhalRx());
+//
+        map.put("புளிமாந்தண்பூ", new PulhimaanthThanhBooRx());
+        map.put("புளிமாந்தண்ணிழல்", new PulhimaanthanhnhizhalRx());
+        map.put("புளிமாநறும்பூ", new PulhimaaNtarrumBooRx());
+        map.put("புளிமாநறுநிழல்", new PulhimaaNtarruNtizhalRx());
+//
+        map.put("கூவிளந்தண்பூ", new KoovilhanthanhBooRx());
+        map.put("கூவிளந்தண்ணிழல்", new KoovizhanthanhnhizhalRx());
+        map.put("கூவிளநறும்பூ", new KooVizhamNtarrumBooRx());
+        map.put("கூவிளநறுநிழல்", new KooVizhaNtarruNizhalRx());
+//
+        map.put("கருவிளந்தண்பூ", new KaruVilhanthanhnhBooRx());
+        map.put("கருவிளந்தண்ணிழல்", new KaruvilhantanhnhizhalRx());
+        map.put("கருவிளநறும்பூ", new KaruvilhaNtarrumBooRx());
+       map.put("கருவிளநறுநிழல்", new KaruvilhaNtarruNtizhalRx());
+
+
         map.put("அசை", new Asai());
         map.put("காய்ச்சீர்", new Kaaychcheer());
         map.put("கனிச்சீர்", new Kanichcheer());
         map.put("மாச்சீர்", new Maachcheer());
         map.put("விளச்சீர்", new Vilhachcheer());
+        map.put("பூச்சீர்", new Poochcheer());
+        map.put("நிழற்சீர்", new NtizharrSeer());
 
         map.put("ஈரசைச்சீர்", new Eerasaichcheer());
         map.put("மூவசைச்சீர்", new Moovasaichcheer());
+        map.put("நாலசைச்சீர்", new Ntaalasaichcheer());
 
         map.put("மாமுன் நிரை", new MaaMunNtiraiRx());
         map.put("விளம்முன் நேர்", new VilhamMunNtear());
@@ -131,7 +157,6 @@ public class RxRegistry implements IPropertyFinder {
         map.put("இருமாத்திரை", new TwoRx());
 
 
-
         map.put("பிரிக்கப்பட்ட குற்று", new SplitKuttuRX());
 
 
@@ -145,7 +170,7 @@ public class RxRegistry implements IPropertyFinder {
             if (alias != null) {
                 return alias;
             }
-            translit =  TamilFactory.getTransliterator(null).transliterate(p1).toString();
+            translit = TamilFactory.getTransliterator(null).transliterate(p1).toString();
             alias = parent.findProperty(translit);
             if (alias != null) {
                 return alias;
@@ -157,7 +182,7 @@ public class RxRegistry implements IPropertyFinder {
 
         if (gen == null) {
             if (translit == null) {
-                translit =  TamilFactory.getTransliterator(null).transliterate(p1).toString();
+                translit = TamilFactory.getTransliterator(null).transliterate(p1).toString();
             }
             p1 = translit;
             gen = map.get(p1);
@@ -215,7 +240,7 @@ public class RxRegistry implements IPropertyFinder {
             }
             if (p1.startsWith("அசை[") && p1.endsWith("]")) {
                 String inner = p1.substring(4, p1.length() - 1);
-                Iterator<AbstractAsai> it = new AsaiIterator(TamilWord.from(inner, true),featureSet);
+                Iterator<AbstractAsai> it = new AsaiIterator(TamilWord.from(inner, true), featureSet);
                 StringBuffer buffer = new StringBuffer();
                 while (it.hasNext()) {
                     AbstractAsai s = it.next();

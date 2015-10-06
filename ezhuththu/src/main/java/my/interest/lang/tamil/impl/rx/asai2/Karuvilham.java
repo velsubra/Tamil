@@ -15,6 +15,6 @@ public final class Karuvilham extends YaappuBaseRx {
         super("கருவிளம்");
     }
     public String generate(FeatureSet featureSet) {
-        return  "(?:${ntirai}{2})";
+        return  "(?:(?:${ntirai}){2})";
     }
 }

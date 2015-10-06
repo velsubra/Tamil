@@ -587,6 +587,44 @@ public class EzhuththuUtils {
         });
     }
 
+
+    public static Set<TamilCharacter> filterWithSingleCodePoint() {
+
+        return filterTamilCharacters(new TamilLetterFilter() {
+            public boolean filter(TamilCharacter tamil) {
+                return tamil.isPureTamilLetter() && tamil.isTamilSimpleCharacter();
+            }
+        });
+
+    }
+
+    public static Set<TamilCharacter> filterWithCodePointSeries(final int x) {
+        return filterTamilCharacters(new TamilLetterFilter() {
+            public boolean filter(TamilCharacter tamil) {
+                if (!tamil.isPureTamilLetter()) {
+                    return false;
+                }
+
+                for (int[] codepoints : tamil.getCodePoints(true)) {
+                    if (codepoints.length == x) {
+                        return  true;
+                    }
+                }
+
+                return  false;
+            }
+        });
+    }
+
+
+    public static Set<TamilCharacter> filterWithIndependentCodePoints() {
+        return filterTamilCharacters(new TamilLetterFilter() {
+            public boolean filter(TamilCharacter tamil) {
+                return tamil.isPureTamilLetter() && tamil.isUnicodeSequenceUnique();
+            }
+        });
+    }
+
     public static Set<TamilCharacter> filterMozhiMuthal() {
         return filterTamilCharacters(new TamilLetterFilter() {
             public boolean filter(TamilCharacter tamil) {

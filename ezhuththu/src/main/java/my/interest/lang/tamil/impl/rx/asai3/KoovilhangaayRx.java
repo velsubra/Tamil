@@ -17,6 +17,7 @@ public class KoovilhangaayRx extends YaappuBaseRx {
     public String generate(FeatureSet featureSet) {
 
        // return  "(?:(?!(?:${ntirai}))(?:${ntear}${ntirai}${ntear})|(?:${kurril}${mey}${ntirai}${ntear}))";
-        return  "(?:(?!(?:${ntirai}))(?:${ntear}${ntirai}${ntear}))";
+       // return  "(?:(?!(?:${ntirai}))(?:${ntear}${ntirai}${ntear}))";
+        return  "(?:${ntear}${ntirai}${ntear})";
     }
 }

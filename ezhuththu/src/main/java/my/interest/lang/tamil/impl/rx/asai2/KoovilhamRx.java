@@ -15,7 +15,8 @@ public final class KoovilhamRx  extends YaappuBaseRx {
         super("கூவிளம்");
     }
     public String generate(FeatureSet featureSet) {
-        return  "(?:(?!(?:${ntirai}))(?:${ntear}${ntirai}))";
+        //return  "(?:(?!(?:${ntirai}))(?:${ntear}${ntirai}))";
+        return  "(?:${ntear}${ntirai})";
         //return  "(?:(?!(?:${ntirai}))(?:${ntear}${ntirai})|(?:${kurril}${mey}+${ntirai})|(?:${ntedil}${mey}+${ntirai}))";
     }
 }

@@ -111,6 +111,32 @@ public class TamilEzhuththuSetCalculatorImpl implements TamilCharacterSetCalcula
 
 
 
+
+        map.put("!ஓரெண்", new AnyOneInTamilLetterSetRx("!ஓரெண்", "ஒருங்குறியில் (single code point) ஓரெண்கொண்டுவரையறுக்கப்படாத  எழுத்துகள்",EzhuththuUtils.filterOut(EzhuththuUtils.filterWithSingleCodePoint())));
+        map.put("ஓரெண்", new AnyOneInTamilLetterSetRx("ஓரெண்","ஒருங்குறியில்  (single code point) ஓரெண்கொண்டுவரையறுக்கப்பட்டுள்ள எழுத்துகள் ", EzhuththuUtils.filterWithSingleCodePoint()));
+
+
+//        map.put("!ஈரெண்", new AnyOneInTamilLetterSetRx("!ஈரெண்", "யூனிகோட்டில் (two code points) ஈரெண்கொண்டுவரையறுக்கப்படாத  எழுத்துகள்",EzhuththuUtils.filterOut(EzhuththuUtils.filterWithCodePointSeries(1))));
+//        map.put("ஈரெண்", new AnyOneInTamilLetterSetRx("ஈரெண்","யூனிகோட்டில் ஓரெண்கொண்டு (two code points) ஈரெண்கொண்டுவரையறுக்கப்பட்டுள்ள எழுத்துகள் ", EzhuththuUtils.filterWithCodePointSeries(1)));
+//
+
+
+
+        map.put("!ஓரெண்கொண்டவரிசை", new AnyOneInTamilLetterSetRx("!ஓரெண்கொண்டவரிசை", "ஒருங்குறியில் ஓரெண்ணைக்கொண்டிருக்கும்வரிசையால் குறிக்கப்படவியலாத எழுத்துகள்.",EzhuththuUtils.filterOut(EzhuththuUtils.filterWithCodePointSeries(1))));
+        map.put("ஓரெண்கொண்டவரிசை", new AnyOneInTamilLetterSetRx("ஓரெண்கொண்டவரிசை","ஒருங்குறியில் ஓரெண்ணைக்கொண்டிருக்கும்வரிசையால் குறிக்கப்படவல்ல எழுத்துகள்.", EzhuththuUtils.filterWithCodePointSeries(1)));
+
+
+        map.put("!ஈரெண்கள்கொண்டவரிசை", new AnyOneInTamilLetterSetRx("!ஈரெண்கள்கொண்டவரிசை", "ஒருங்குறியில்  ஈரெண்களைக்கொண்டிருக்கும்வரிசையால் குறிக்கப்படவியலாத  எழுத்துகள். ",EzhuththuUtils.filterOut(EzhuththuUtils.filterWithCodePointSeries(2))));
+        map.put("ஈரெண்கள்கொண்டவரிசை", new AnyOneInTamilLetterSetRx("ஈரெண்கள்கொண்டவரிசை","ஒருங்குறியில்  ஈரெண்களைக்கொண்டிருக்கும்வரிசையால் குறிக்கப்படவல்ல எழுத்துகள். ", EzhuththuUtils.filterWithCodePointSeries(2)));
+
+
+        map.put("!மூவெண்கள்கொண்டவரிசை", new AnyOneInTamilLetterSetRx("!மூவெண்கள்கொண்டவரிசை", "ஒருங்குறியில்  மூவெண்களைக்கொண்டிருக்கும்வரிசையால் குறிக்கப்படவியலாத  எழுத்துகள்.",EzhuththuUtils.filterOut(EzhuththuUtils.filterWithCodePointSeries(3))));
+        map.put("மூவெண்கள்கொண்டவரிசை", new AnyOneInTamilLetterSetRx("மூவெண்கள்கொண்டவரிசை","ஒருங்குறியில்  மூவெண்களைக்கொண்டிருக்கும்வரிசையால் குறிக்கப்படவல்ல   எழுத்துகள்.", EzhuththuUtils.filterWithCodePointSeries(3)));
+
+        map.put("!தனியெண்வரிசை", new AnyOneInTamilLetterSetRx("!தனியெண்வரிசை", "ஒருங்குறியில் தனது எண்வரிசையை வேறு எழுத்துகளுடன் பகிரும் எழுத்துகள். ",EzhuththuUtils.filterOut(EzhuththuUtils.filterWithIndependentCodePoints())));
+        map.put("தனியெண்வரிசை", new AnyOneInTamilLetterSetRx("தனியெண்வரிசை","ஒருங்குறியில் தனது எண்வரிசையை வேறெந்த எழுத்துகளுடனும் பகிராத எழுத்துகள்.", EzhuththuUtils.filterWithIndependentCodePoints()));
+
+
         Set<TamilCharacter> meis = EzhuththuUtils.filterMei();
         for (TamilCharacter mei : meis) {
             TamilWord karam = new TamilWord();

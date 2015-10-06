@@ -4,7 +4,7 @@ import tamil.lang.api.feature.Feature;
 
 /**
  * <p>
- *        The feature that allows to treat குற்றியலுகரம் that ends in a சீர்  when the next  சீர்  starts with an  உயிர் a மெய்
+ *        The feature  allows to treat குற்றியலுகரம் that a சீர் ends with, when the next  சீர்  starts with an  உயிர்,  a மெய்
  * </p>
  *
  * @author velsubra

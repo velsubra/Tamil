@@ -15,7 +15,8 @@ public class TheamaRx extends YaappuBaseRx {
         super("தேமா");
     }
     public String generate(FeatureSet featureSet) {
-        return  "(?:(?!(?:${ntirai}))(?:${ntear}{2}))";
+        return  "(?:(?:${ntear}){2})";
+       // return  "(?:(?!(?:${ntirai}))(?:${ntear}{2}))";
         //return  "(?:(?!(?:${ntirai}))(?:${ntear}{2})|(?:${kurril}${mey}+${ntear})|(?:${ntedil}${mey}+${ntear}))";
     }
 }

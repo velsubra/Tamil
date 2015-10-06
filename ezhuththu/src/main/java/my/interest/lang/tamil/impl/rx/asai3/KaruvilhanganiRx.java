@@ -15,6 +15,6 @@ public class KaruvilhanganiRx extends YaappuBaseRx {
         super("கருவிளங்கனி");
     }
     public String generate(FeatureSet featureSet) {
-        return  "(?:${ntirai}{3})";
+        return  "(?:(?:${ntirai}){3})";
     }
 }

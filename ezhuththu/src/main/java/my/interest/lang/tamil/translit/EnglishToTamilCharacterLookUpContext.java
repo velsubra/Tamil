@@ -196,7 +196,7 @@ public final class EnglishToTamilCharacterLookUpContext implements Transliterato
         map.put("ry ", new TamilWord(TamilCompoundCharacter.IR_I));
         map.put(" r", new TamilWord(TamilSimpleCharacter.E, TamilCompoundCharacter.IR));
         map.put("rr", new TamilWord(TamilCompoundCharacter.IRR));
-        map.put("rs", new TamilWord(TamilSimpleCharacter.RS));
+        map.put(" rs ", new TamilWord(TamilSimpleCharacter.RS));
         map.put("rh", new TamilWord(TamilCompoundCharacter.IRR));
         map.put("rrr", new TamilWord(TamilCompoundCharacter.IRR, TamilCompoundCharacter.IRR));
         map.put("rrrr", new TamilWord(TamilCompoundCharacter.IRR, TamilCompoundCharacter.IRR));

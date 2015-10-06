@@ -3,6 +3,11 @@ package test;
 
 import my.interest.lang.tamil.EzhuththuUtils;
 import my.interest.lang.tamil.StringUtils;
+import my.interest.lang.tamil.impl.rx.cir.Asai;
+import my.interest.lang.tamil.impl.rx.cir.Eerasaichcheer;
+import my.interest.lang.tamil.impl.rx.cir.Moovasaichcheer;
+import my.interest.lang.tamil.impl.rx.cir.Ntaalasaichcheer;
+import my.interest.lang.tamil.impl.yaappu.AbstractCirCollectionRx;
 import org.junit.Assert;
 import org.junit.Test;
 import tamil.lang.*;
@@ -21,10 +26,41 @@ import java.util.regex.Pattern;
  *
  * @author velsubra
  */
-public class EzhuththuTest {
+public class Ezhuththu_0Test {
 
     static {
         TamilFactory.init();
+    }
+
+
+
+    static void cirSelfTestUtility(List<String> collectionRx) {
+        for (String cir : collectionRx) {
+            TamilPattern pattern = TamilPattern.compile("${"+ cir +"}");
+
+            for (String cir1 : collectionRx) {
+                System.out.println("comparing:" + cir + " with " + cir1);
+                Matcher matcher = pattern.matcher(cir1);
+                if (cir.equals(cir1)) {
+                    Assert.assertTrue(matcher.matches());
+                } else {
+                    Assert.assertFalse(matcher.matches());
+                }
+            }
+
+        }
+    }
+
+
+    @Test
+    public void cirSelfTest() {
+        List<String>  cirs = new ArrayList<String>();
+        cirs.addAll(new Asai().getAllCirs());
+        cirs.addAll(new Eerasaichcheer().getAllCirs());
+        cirs.addAll(new Moovasaichcheer().getAllCirs());
+        cirs.addAll(new Ntaalasaichcheer().getAllCirs());
+
+        cirSelfTestUtility(cirs);
     }
 
 
@@ -41,7 +77,7 @@ public class EzhuththuTest {
         TamilCharacterSetCalculator calc = TamilFactory.getTamilCharacterSetCalculator();
 
         System.out.println("Size:" + calc.getEzhuththuSetDescriptions().size());
-        Assert.assertTrue(91 == calc.getEzhuththuSetDescriptions().size());
+        Assert.assertTrue(101 == calc.getEzhuththuSetDescriptions().size());
         Set<TamilCharacter> set = calc.find("யகரவரிசை");
         Assert.assertEquals(set.size(), 13);
 
@@ -202,6 +238,32 @@ public class EzhuththuTest {
         Matcher matcher = pattern.matcher("தமிழ்தமிழ்");
 
         Assert.assertTrue(matcher.matches());
+
+
+
+        pattern = TamilPattern.compile("${தேமாநறும்பூ}");
+        matcher = pattern.matcher("தேமாநறும்பூ");
+        Assert.assertTrue(matcher.matches());
+
+
+        pattern = TamilPattern.compile("${தேமாந்தண்ணிழல்}");
+        matcher = pattern.matcher("தேமாந்தண்ணிழல்");
+        Assert.assertTrue(matcher.matches());
+
+
+        pattern = TamilPattern.compile("${தேமாந்தண்பூ}");
+        matcher = pattern.matcher("தேமாந்தண்பூ");
+        Assert.assertTrue(matcher.matches());
+
+        matcher = pattern.matcher("ததேமாந்தண்பூ");
+        Assert.assertFalse(matcher.matches());
+
+
+        matcher = pattern.matcher("தேதமாந்தண்பூ");
+        Assert.assertFalse(matcher.matches());
+
+        matcher = pattern.matcher("தேமாந்ததண்பூ");
+        Assert.assertFalse(matcher.matches());
 
 
         pattern = TamilPattern.compile("${theamaangaay}");
