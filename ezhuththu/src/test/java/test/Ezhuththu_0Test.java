@@ -166,6 +166,8 @@ public class Ezhuththu_0Test {
         Assert.assertFalse(matcher.find());
 
 
+
+
         pattern = TamilPattern.compile("${அசை[தொற்]}");
         matcher = pattern.matcher("நேர்");
         Assert.assertTrue(matcher.matches());
@@ -237,6 +239,15 @@ public class Ezhuththu_0Test {
         TamilPattern pattern = TamilPattern.compile("${ezhuththuvadivam}*");
         Matcher matcher = pattern.matcher("தமிழ்தமிழ்");
 
+        Assert.assertTrue(matcher.matches());
+
+        pattern = TamilPattern.compile("${நாலசைச்சீர்}");
+        matcher = pattern.matcher("தேமாந்தண்பூ");
+        Assert.assertTrue(matcher.matches());
+
+
+        pattern = TamilPattern.compile("${அசையெண்ணிக்கை[8]}");
+        matcher = pattern.matcher("தேமாந்தண்பூதேமாந்தண்பூ");
         Assert.assertTrue(matcher.matches());
 
 

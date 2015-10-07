@@ -14,7 +14,7 @@ import java.util.Set;
  */
 public class IdaivelhiRx implements PatternGenerator {
     public String generate(FeatureSet featureSet) {
-        return "(?:\\s+)";
+        return "(?:[\\s-]+)";
     }
 
 

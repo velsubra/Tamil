@@ -209,6 +209,23 @@ public class RxRegistry implements IPropertyFinder {
                 return literal.toUnicodeStringRepresentation(featureSet.isFeatureEnabled(RXIncludeCanonicalEquivalenceFeature.class));
             }
 
+            if (p1.startsWith("அசையெண்ணிக்கை[") && p1.endsWith("]")) {
+                String inner = p1.substring(14, p1.length() - 1).trim();
+                String[] ranges = inner.split("-");
+                if (ranges.length ==0) {
+                    throw new TamilPlatformException("அசையெண்ணிக்கை misses ranges.");
+                }
+                int min = Integer.parseInt(ranges[0]);
+                int max = min;
+                if (ranges.length > 1) {
+                    max = Integer.parseInt(ranges[1]);
+                } else if (inner.endsWith("-")) {
+                    max = -1;
+                }
+
+                return new NAsaichCheer(min,max).generate(featureSet);
+            }
+
             if (p1.startsWith("தளை[") && p1.endsWith("]")) {
                 String inner = p1.substring(4, p1.length() - 1).trim();
                 int munIndex = inner.indexOf(" முன் ");

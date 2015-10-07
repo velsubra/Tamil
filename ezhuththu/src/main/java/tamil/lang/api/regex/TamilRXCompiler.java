@@ -32,7 +32,10 @@ import java.util.Set;
  *  குறிப்பு: இரண்டாஞ்சீரின் தன்மையை ஆராய்ந்துதான் தளை காணப்பட்டாலும், தளைக்கான பாங்கு முதற்சீரையும்(அதாவது  ex1) அதற்குப்பின்வரும் இடைவெளியையும்மட்டுமே   குறிக்கும், இரண்டாஞ்சீரை பாங்குடன் இணைக்காது.
  *  This expression will only match ex1 and the whitespaces following it.
  *  The expression ex2 is not part of the matching al though the correctness of the binding(தளை) is tested along with expression ex2.
- *  This is to facilitate the sub-sequent search that could involve the the expression ex2, the second cir.  </td> </tr>
+ *  This is to facilitate the sub-sequent search that could involve the the expression ex2, the second cir.  </td>
+ *  <tr><td>10</td><td>${<b>அசையெண்ணிக்கை</b>[m-n]}</td> <td> Pattern to match a Tamil word  with given number of அசைகள். m - minimum number of அசைகள். n - maximum number of அசைகள்.
+ *  ${அசையெண்ணிக்கை[2-2]} matches கூவிளம் as கூவிளம்   has  two அசைகள்</td> </tr>
+ *  </tr>
  * </table>
  * <p/>
  * </p>

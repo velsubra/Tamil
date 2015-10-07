@@ -1,5 +1,6 @@
 package my.interest.lang.tamil.impl.rx.cir;
 
+import my.interest.lang.tamil.impl.FeatureSet;
 import my.interest.lang.tamil.impl.yaappu.AbstractCirCollectionRx;
 
 import java.util.Arrays;
@@ -20,6 +21,10 @@ public class Moovasaichcheer extends AbstractCirCollectionRx {
 
     public String getName() {
         return "மூவசைச்சீர்";
+    }
+
+    public String generate(FeatureSet set) {
+        return new NAsaichCheer(3,3).generate(set);
     }
 
 

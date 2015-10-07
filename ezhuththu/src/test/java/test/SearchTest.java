@@ -102,12 +102,15 @@ public class SearchTest {
 //        });
 
 
-        TamilPattern pattern = TamilPattern.compile("${எண்சீர்களைக்கொண்ட வரி}", new PropertyFinder(
-                "இடைவெளி = [ ]+\n" +
-                        "சீர் = ${எழுத்து}+${இடைவெளி} \n" +
-                        "எண்சீர் = (${சீர்}){8,}${எழுத்து}+\n" +
-                        "எண்சீர்களைக்கொண்ட வரி = ${(எண்சீர்)} " +
-                        ""));
+        TamilPattern pattern = TamilPattern.compile("${(அசையெண்ணிக்கை[7-])}");
+
+
+//        TamilPattern pattern = TamilPattern.compile("${எண்சீர்களைக்கொண்ட வரி}", new PropertyFinder(
+//                "இடைவெளி = [ ]+\n" +
+//                        "சீர் = ${எழுத்து}+${இடைவெளி} \n" +
+//                        "எண்சீர் = (${சீர்}){8,}${எழுத்து}+\n" +
+//                        "எண்சீர்களைக்கொண்ட வரி = ${(எண்சீர்)} " +
+//                        ""));
 
 
         Matcher matcher = pattern.matcher(data);
