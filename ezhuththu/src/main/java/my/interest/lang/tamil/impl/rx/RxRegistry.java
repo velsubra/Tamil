@@ -26,10 +26,14 @@ import tamil.lang.TamilCharacter;
 import tamil.lang.TamilFactory;
 import tamil.lang.TamilWord;
 import tamil.lang.api.ezhuththu.EzhuththuSetDescription;
+import tamil.lang.api.feature.Feature;
+import tamil.lang.api.regex.RXFeature;
+import tamil.lang.api.regex.RXFixedLengthFeature;
 import tamil.lang.api.regex.RXIncludeCanonicalEquivalenceFeature;
 import tamil.lang.api.regex.RXOverrideSysDefnFeature;
 import tamil.lang.exception.TamilPlatformException;
 import tamil.util.IPropertyFinder;
+import tamil.util.regex.TamilPattern;
 import tamil.util.regex.TamilPatternSyntaxException;
 import tamil.yaappu.asai.AbstractAsai;
 
@@ -125,7 +129,7 @@ public class RxRegistry implements IPropertyFinder {
         map.put("கருவிளந்தண்பூ", new KaruVilhanthanhnhBooRx());
         map.put("கருவிளந்தண்ணிழல்", new KaruvilhantanhnhizhalRx());
         map.put("கருவிளநறும்பூ", new KaruvilhaNtarrumBooRx());
-       map.put("கருவிளநறுநிழல்", new KaruvilhaNtarruNtizhalRx());
+        map.put("கருவிளநறுநிழல்", new KaruvilhaNtarruNtizhalRx());
 
 
         map.put("அசை", new Asai());
@@ -191,8 +195,8 @@ public class RxRegistry implements IPropertyFinder {
 
             if (p1.startsWith("(")) {
                 String inner = p1.substring(1, p1.length());
-                if (p1.endsWith(")")) {
-                    inner = p1.substring(0, p1.length() - 1);
+                if (inner.endsWith(")")) {
+                    inner = inner.substring(0, inner.length() - 1);
                     return "\\b${" + inner + "}\\b";
 
                 } else {
@@ -212,7 +216,7 @@ public class RxRegistry implements IPropertyFinder {
             if (p1.startsWith("அசையெண்ணிக்கை[") && p1.endsWith("]")) {
                 String inner = p1.substring(14, p1.length() - 1).trim();
                 String[] ranges = inner.split("-");
-                if (ranges.length ==0) {
+                if (ranges.length == 0) {
                     throw new TamilPlatformException("அசையெண்ணிக்கை misses ranges.");
                 }
                 int min = Integer.parseInt(ranges[0]);
@@ -223,33 +227,50 @@ public class RxRegistry implements IPropertyFinder {
                     max = -1;
                 }
 
-                return new NAsaichCheer(min,max).generate(featureSet);
+                return new NAsaichCheer(min, max).generate(featureSet);
             }
 
             if (p1.startsWith("தளை[") && p1.endsWith("]")) {
                 String inner = p1.substring(4, p1.length() - 1).trim();
-                int munIndex = inner.indexOf(" முன் ");
-                if (munIndex < 1) {
-                    throw new TamilPatternSyntaxException("Invalid definition for தளை. It should be of the form ${தளை[(மாச்சீர்) முன் நேர்]} ", p1, 0);
+                int munOrPinIndex = inner.indexOf(" முன் ");
+                boolean mun = true;
+                if (munOrPinIndex < 1) {
+                    munOrPinIndex = inner.indexOf(" பின் ");
+                    if (munOrPinIndex < 1) {
+                        throw new TamilPatternSyntaxException("Invalid definition for தளை. It should be of the form ${தளை[(மாச்சீர்) முன் நேர்]}", p1, 0);
+                    } else {
+                        mun = false;
+                    }
                 }
-                String first = inner.substring(0, munIndex).trim();
-                String second = inner.substring(munIndex + 6).trim();
+                String first = inner.substring(0, munOrPinIndex).trim();
+                String second = inner.substring(munOrPinIndex + 6).trim();
                 if (second.length() == 0) {
                     throw new TamilPatternSyntaxException("Invalid definition for தளை. It should be of the form ${தளை[(மாச்சீர்) முன் நேர்]} ", p1, 0);
                 }
-                //            String contextFirst = StringUtils.replaceWithContext("${", "}", "${" + first +"}", this, true, true, true).finalString;
-//                String  contextSecond = StringUtils.replaceWithContext("${", "}", "${" + second +"}", this, true, true, true).finalString;
-                //     contextFirst = contextFirst.replaceAll("\\*", "{0,10}");
-                //   contextFirst = contextFirst.replaceAll("\\+", "{1,10}");
 
-//                contextSecond = contextSecond.replaceAll("\\*", "{0,10}");
-//                contextSecond = contextSecond.replaceAll("\\+", "{1,10}");
-                //  first ="ezhuththu";
                 StringBuffer buffer = new StringBuffer();
-                // buffer.append("(?<=(${" + first +"}))\\s+");
-                // buffer.append("(?<=(" + contextFirst +"))\\s+");
-                buffer.append("${" + first + "}${idaivelhi}");
-                buffer.append("(?=(${" + second + "}))");
+                if (mun) {
+                    //positive look ahead
+                    buffer.append("${" + first + "}${idaivelhi}");
+                    buffer.append("(?=(${" + second + "}))");
+                } else {
+                    //positive look behind
+
+
+                    FeatureSet fixedLength = null;
+                    if (!this.featureSet.isFeatureEnabled(RXFixedLengthFeature.class)) {
+                        fixedLength = new FeatureSet(this.featureSet.getFeatures(RXFeature.class).toArray(new Feature[0]));
+                        fixedLength.addFeature(RXFixedLengthFeature.FEATURE);
+                    } else {
+                        fixedLength = this.featureSet;
+                    }
+                    String javaex = TamilPattern.preProcess("(?<=(${" + first + "}${idaivelhi}))", 0, this, fixedLength.getFeatures(RXFeature.class).toArray(new RXFeature[0]));
+
+                    buffer.append(javaex);
+                   // buffer.append("(?:a)");
+
+                    buffer.append("(?:${" + second + "})");
+                }
                 String ret = buffer.toString();
 
                 return ret;
@@ -327,6 +348,51 @@ public class RxRegistry implements IPropertyFinder {
 
             }
 
+            if (p1.startsWith("தொடர்தொடக்கச்சோதனை[") && p1.endsWith("]")) {
+                String inner = p1.substring(19, p1.length() - 1);
+                int startIndex = inner.indexOf(" தொடங்குவதிலிருந்து ");
+                int nonStartIndex = inner.indexOf(" தொடங்காததிலிருந்து ");
+                boolean start = true;
+                if (startIndex < 1) {
+                    if (nonStartIndex < 1) {
+                        return "${" + inner + "}";
+                    }  else {
+                        start = false;
+                    }
+                }  else {
+                    if (nonStartIndex < 1)  {
+                        start = true;
+                    } else {
+                        start = startIndex < nonStartIndex;
+                    }
+
+                }
+
+                int starOrNonStartIndex = start ? startIndex : nonStartIndex;
+                String first = inner.substring(0, starOrNonStartIndex).trim();
+                String second = inner.substring(starOrNonStartIndex + 20).trim();
+                if (second.length() == 0) {
+                    throw new TamilPatternSyntaxException("Invalid definition for தொடர்சோதனை. It should be of the form ${தொடர்சோதனை[(மாச்சீர்) தொடங்குவதிலிருந்து (நேர்]}", p1, 0);
+                }
+
+                StringBuffer buffer = new StringBuffer();
+                if (start) {
+                    //positive look ahead
+                    buffer.append("(?=(?:${" + first + "}))");
+                    buffer.append("(${தொடர்தொடக்கச்சோதனை[" + second + "]})");
+                } else {
+                    //Negative look ahead
+                    buffer.append("(?!(?:${" + first + "}))");
+                    buffer.append("(${தொடர்தொடக்கச்சோதனை[" + second + "]})");
+                }
+              //  System.out.println(buffer.toString());
+                return buffer.toString();
+
+            }
+
+
+
+
             if (p1.startsWith("மெய்வகை[") && p1.endsWith("]")) {
                 String inner = p1.substring(8, p1.length() - 1);
                 StringBuffer buffer = new StringBuffer();
@@ -387,7 +453,7 @@ public class RxRegistry implements IPropertyFinder {
 
     }
 
-    private Map<String, PatternGenerator> generatedPatterns = new HashMap<String, PatternGenerator>();
+  //  private Map<String, PatternGenerator> generatedPatterns = new HashMap<String, PatternGenerator>();
 
 
 }

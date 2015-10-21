@@ -11,7 +11,9 @@ import my.interest.lang.tamil.impl.FeatureSet;
 import my.interest.lang.tamil.impl.FileBasedPersistence;
 import my.interest.lang.tamil.impl.PropertyFinderForResource;
 import my.interest.lang.tamil.impl.dictionary.DefaultPlatformDictionaryBase;
-import my.interest.lang.tamil.multi.ExecuteManager;
+import my.interest.lang.tamil.impl.job.ExecuteManager;
+import my.interest.lang.tamil.impl.persist.FileBasedPersistenceImpl;
+
 import my.interest.lang.tamil.multi.WordGeneratorFromIdai;
 import my.interest.lang.tamil.multi.WordGeneratorFromPeyar;
 import my.interest.lang.tamil.multi.WordGeneratorFromVinaiyadi;
@@ -113,24 +115,14 @@ public abstract class PersistenceInterface extends DefaultPlatformDictionaryBase
      * @return
      */
     public static boolean isOnCloud() {
-        return new File("/customer/scratch").exists();
+      return   FileBasedPersistenceImpl.isOnCloud();
     }
 
     static File WORK_DIR = null;
 
     public static File getWorkDir() {
         if (WORK_DIR == null) {
-            if (isOnCloud()) {
-                WORK_DIR = new File("/customer/scratch/i18n");
-            } else {
-
-                WORK_DIR = new File(System.getProperty("user.home"), "tamil-platform");
-                if (!WORK_DIR.exists()) {
-                    WORK_DIR.mkdirs();
-                }
-                System.out.println("Work Dir:" + WORK_DIR.getAbsolutePath());
-
-            }
+           WORK_DIR =  FileBasedPersistenceImpl.getWorkDir();
         }
         return WORK_DIR;
     }

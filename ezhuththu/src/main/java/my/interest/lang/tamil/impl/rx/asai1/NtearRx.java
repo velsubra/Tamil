@@ -2,7 +2,7 @@ package my.interest.lang.tamil.impl.rx.asai1;
 
 import my.interest.lang.tamil.impl.FeatureSet;
 import my.interest.lang.tamil.impl.yaappu.YaappuBaseRx;
-import tamil.lang.api.regex.RXKuttuFeature;
+import tamil.lang.api.regex.RXFixedLengthFeature;
 
 /**
  * <p>
@@ -10,7 +10,7 @@ import tamil.lang.api.regex.RXKuttuFeature;
  *
  * @author velsubra
  */
-public  class NtearRx extends YaappuBaseRx {
+public class NtearRx extends YaappuBaseRx {
 
     protected NtearRx(String name) {
         super(name);
@@ -21,7 +21,14 @@ public  class NtearRx extends YaappuBaseRx {
     }
 
     public String generate(FeatureSet featureSet) {
+        String fixed = null;
+        if (featureSet.isFeatureEnabled(RXFixedLengthFeature.class)) {
+            fixed = "{0,2}";
+        } else {
+            fixed = "*";
+        }
 
-            return "(?!(${ntirai}))(?:(?:${irumaaththirai}${araimaaththirai}*)|(?:${orumaaththirai}${araimaaththirai}*))";
+
+        return "(?!(${ntirai}))(?:(?:${irumaaththirai}${araimaaththirai}"+ fixed +")|(?:${orumaaththirai}${araimaaththirai}"+ fixed +"))";
     }
 }

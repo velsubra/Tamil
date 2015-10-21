@@ -12,6 +12,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import tamil.lang.*;
 import tamil.lang.api.ezhuththu.TamilCharacterSetCalculator;
+import tamil.lang.api.regex.RXIncludeCanonicalEquivalenceFeature;
 import tamil.lang.api.regex.RXOverrideSysDefnFeature;
 import tamil.util.IPropertyFinder;
 import tamil.util.regex.TamilPattern;
@@ -77,7 +78,7 @@ public class Ezhuththu_0Test {
         TamilCharacterSetCalculator calc = TamilFactory.getTamilCharacterSetCalculator();
 
         System.out.println("Size:" + calc.getEzhuththuSetDescriptions().size());
-        Assert.assertTrue(101 == calc.getEzhuththuSetDescriptions().size());
+        Assert.assertTrue(105 == calc.getEzhuththuSetDescriptions().size());
         Set<TamilCharacter> set = calc.find("யகரவரிசை");
         Assert.assertEquals(set.size(), 13);
 
@@ -95,6 +96,18 @@ public class Ezhuththu_0Test {
 
         set = calc.find("!நெடில்");
         Assert.assertEquals(set.size(), 114);
+
+
+        set = calc.find("இதழ்குவிவரிசை");
+        System.out.println(set);
+        Assert.assertEquals(set.size(), 95);
+
+        set = calc.find("இதழ்மூடுவரிசை");
+        Assert.assertEquals(set.size(), 26);
+
+
+        set = calc.find("இதழ்குவிவரிசை அல்லது வகரவரிசை அல்லது இதழ்மூடுவரிசை");
+        Assert.assertEquals(set.size(), 119);
     }
 
 
@@ -166,6 +179,138 @@ public class Ezhuththu_0Test {
         Assert.assertFalse(matcher.find());
 
 
+        pattern = TamilPattern.compile("${(theamaa)}");
+        matcher = pattern.matcher("தேமா  தேமா");
+        Assert.assertTrue(matcher.find());
+        System.out.println(matcher.start() + "--------:" + matcher.end());
+        Assert.assertEquals(0, matcher.start());
+        Assert.assertEquals(4, matcher.end());
+
+
+        pattern = TamilPattern.compile("${thodarthodakkachchoathanai[(theamaa) thodanguvathilirunthu  ezhuththu]}");
+        matcher = pattern.matcher("தேமா  தேமா");
+        Assert.assertTrue(matcher.find());
+        System.out.println(matcher.start() + "--------:" + matcher.end());
+        Assert.assertEquals(0, matcher.start());
+        Assert.assertEquals(2, matcher.end());
+
+
+        pattern = TamilPattern.compile("${thodarthodakkachchoathanai[(theamaa) thodanguvathilirunthu (ntedil thodanguvathilirunthu   (ezhuththu]}");
+        matcher = pattern.matcher("தேமா  தேமா");
+        Assert.assertTrue(matcher.find());
+        System.out.println(matcher.start() + "--------:" + matcher.end());
+        Assert.assertEquals(0, matcher.start());
+        Assert.assertEquals(2, matcher.end());
+
+
+        pattern = TamilPattern.compile("${thodarthodakkachchoathanai[(theamaa) thodangaathathilirunthu (ntedil thodanguvathilirunthu   (ezhuththu]}");
+        matcher = pattern.matcher("தேமா  தேமா");
+        Assert.assertFalse(matcher.find());
+
+
+
+
+        pattern = TamilPattern.compile("${thodarthodakkachchoathanai[(pulhimaa) thodangaathathilirunthu (ntedil thodanguvathilirunthu   (ezhuththu]}");
+        matcher = pattern.matcher("தேமா  தேமா");
+        Assert.assertTrue(matcher.find());
+        Assert.assertEquals(0, matcher.start());
+        Assert.assertEquals(2, matcher.end());
+
+
+        pattern = TamilPattern.compile("${thodarthodakkachchoathanai[(pulhimaa) thodangaathathilirunthu (kurril thodangaathathilirunthu   (ezhuththu]}");
+        matcher = pattern.matcher("தேமா  தேமா");
+        Assert.assertTrue(matcher.find());
+        Assert.assertEquals(0, matcher.start());
+        Assert.assertEquals(2, matcher.end());
+
+
+
+        pattern = TamilPattern.compile("${(குறள்)}",null, RXIncludeCanonicalEquivalenceFeature.FEATURE);
+        String kurralh = "அணியன்றோ நாணுடைமை சான்றோர்க்கஃ தின்றேல்\n" +
+                "பிணிஅன்றோ பீடு நடை";
+        matcher = pattern.matcher(kurralh);
+        Assert.assertTrue(matcher.matches());
+
+
+        pattern = TamilPattern.compile("${thodarthodakkachchoathanai[(ezhuththu thodanguvathilirunthu theamaa thodangaathathilirunthu ntedil]}",null, RXIncludeCanonicalEquivalenceFeature.FEATURE);
+        matcher = pattern.matcher(kurralh);
+        Assert.assertTrue(matcher.find());
+        System.out.println(matcher.start() + "-----------:" + matcher.end() +": "+  kurralh.substring(matcher.start(), matcher.end()));
+
+        Assert.assertEquals(9, matcher.start());
+        Assert.assertEquals(11, matcher.end());
+
+
+
+        pattern = TamilPattern.compile("${thodarthodakkachchoathanai[(moovasaichcheer) thodanguvathilirunthu pulhimaa  thodangaathathilirunthu ntedil]}",null, RXIncludeCanonicalEquivalenceFeature.FEATURE);
+        matcher = pattern.matcher(kurralh);
+        Assert.assertTrue(matcher.find());
+        System.out.println(matcher.start() + "-----------:" + matcher.end() +": "+  kurralh.substring(matcher.start(), matcher.end()));
+
+        Assert.assertEquals(9, matcher.start());
+        Assert.assertEquals(11, matcher.end());
+
+
+
+
+
+
+        pattern = TamilPattern.compile("${thodarthodakkachchoathanai[(kurralh) thodanguvathilirunthu (pulhimaangaay)]}",null, RXIncludeCanonicalEquivalenceFeature.FEATURE);
+        matcher = pattern.matcher(kurralh);
+        Assert.assertTrue(matcher.find());
+        Assert.assertEquals(0, matcher.start());
+        Assert.assertEquals(8, matcher.end());
+
+
+
+        pattern = TamilPattern.compile("${thodarthodakkachchoathanai[(theamaa) thodanguvathilirunthu ntedil]}",null, RXIncludeCanonicalEquivalenceFeature.FEATURE);
+        matcher = pattern.matcher(kurralh);
+        Assert.assertTrue(matcher.find());
+        Assert.assertEquals(50, matcher.start());
+        Assert.assertEquals(52, matcher.end());
+
+
+
+        pattern = TamilPattern.compile("${thodarthodakkachchoathanai[(kaaychcheer) thodanguvathilirunthu (kurralh)]}",null, RXIncludeCanonicalEquivalenceFeature.FEATURE);
+        matcher = pattern.matcher(kurralh);
+        Assert.assertTrue(matcher.find());
+
+
+        Assert.assertEquals(0, matcher.start());
+        Assert.assertEquals(58, matcher.end());
+
+
+
+
+
+
+
+        pattern = TamilPattern.compile("${தளை[irumaaththirai பின்  நேர்]}");
+        matcher = pattern.matcher("தேமா  தேமா");
+        Assert.assertTrue(matcher.find());
+        System.out.println(matcher.start() + "--------:" + matcher.end());
+        Assert.assertEquals(6, matcher.start());
+        Assert.assertEquals(8, matcher.end());
+
+
+//        pattern = TamilPattern.compile("${தளை[நேர் பின்  நேர்]}");
+//        matcher = pattern.matcher("தேமா  தேமா");
+//        Assert.assertTrue(matcher.find());
+//        System.out.println(matcher.start() + "--------:" + matcher.end());
+//        Assert.assertEquals(6, matcher.start());
+//        Assert.assertEquals(8, matcher.end());
+
+
+
+
+
+        pattern = TamilPattern.compile("${தளை[[க] பின்  நேர்]}");
+        matcher = pattern.matcher("தேமாக தேமா");
+        Assert.assertTrue(matcher.find());
+        System.out.println(matcher.start() + "--------:" + matcher.end());
+        Assert.assertEquals(6, matcher.start());
+        Assert.assertEquals(8, matcher.end());
+
 
 
         pattern = TamilPattern.compile("${அசை[தொற்]}");
@@ -191,13 +336,16 @@ public class Ezhuththu_0Test {
 
 
         pattern = TamilPattern.compile("${தளை[(மாச்சீர்) முன் நேர்]}");
-        matcher = pattern.matcher("தேமா தேமா");
+        matcher = pattern.matcher("தேமா      தேமா");
         Assert.assertTrue(matcher.find());
-        System.out.println(matcher.start() + ":" + matcher.end());
+        System.out.println(matcher.start() + "--------:" + matcher.end());
+        Assert.assertEquals(0, matcher.start());
+        Assert.assertEquals(10, matcher.end());
 
         pattern =  TamilPattern.compile("${தளை[மாச்சீர் முன் நேர்]}");
         matcher = pattern.matcher("தேமா விளம்");
         Assert.assertFalse(matcher.find());
+
 
 
 
@@ -371,6 +519,10 @@ public class Ezhuththu_0Test {
 
         pattern = TamilPattern.compile("${mozhi}");
         matcher = pattern.matcher("அம்மா");
+        Assert.assertTrue(matcher.matches());
+
+        pattern = TamilPattern.compile("${(oarezhuththumozhi)}");
+        matcher = pattern.matcher("மா");
         Assert.assertTrue(matcher.matches());
 
         pattern = TamilPattern.compile("${(mozhi)}");

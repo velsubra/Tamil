@@ -1,4 +1,4 @@
-package my.interest.lang.tamil.multi;
+package my.interest.lang.tamil.impl.job;
 
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
@@ -18,7 +18,7 @@ public class ExecuteManager extends ThreadPoolExecutor {
 
     private static final ExecuteManager manager = new ExecuteManager(TOTAL_JOBS_ALLOWED /2 , TOTAL_JOBS_ALLOWED, 0, TimeUnit.MINUTES, new ArrayBlockingQueue<Runnable>(QCAPACITY));
 
-    public ExecuteManager(int corePoolSize, int maximumPoolSize, long keepAliveTime, TimeUnit unit, BlockingQueue<Runnable> workQueue) {
+    private ExecuteManager(int corePoolSize, int maximumPoolSize, long keepAliveTime, TimeUnit unit, BlockingQueue<Runnable> workQueue) {
         super(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue);
     }
 
@@ -33,7 +33,7 @@ public class ExecuteManager extends ThreadPoolExecutor {
                 Thread.currentThread().sleep(5);
                 //System.out.println(PersistenceInterface.totalWordsSize());
             } catch (InterruptedException ie) {
-               ie.printStackTrace();
+                ie.printStackTrace();
             }
         }
         manager.submit(run);

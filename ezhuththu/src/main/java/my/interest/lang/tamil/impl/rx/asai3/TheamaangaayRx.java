@@ -15,9 +15,7 @@ public class TheamaangaayRx extends YaappuBaseRx {
         super("தேமாங்காய்");
     }
     public String generate(FeatureSet featureSet) {
-       // return  "(?:(?!(?:${ntirai})|${koovilham})(?:${ntear}{3})|(?:${kurril}${mey}+${ntear}{2})|(?:${ntedil}${mey}+${ntear}{2}))";
-        //return  "(?:(?!(?:(?:${ntirai})|${koovilham}).*)(?:${ntear}{3}))";
-       // return  "(?:(?!(${koovilham}).*)(?:${ntear}{3}))";
+
         return  "(?:(?:${ntear}){3})";
     }
 }

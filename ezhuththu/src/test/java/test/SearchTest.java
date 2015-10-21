@@ -81,7 +81,7 @@ public class SearchTest {
         }
         String data = new String(TamilUtils.readAllFromFile("/Users/velsubra/Downloads/kambar-ramayanam.txt"), TamilUtils.ENCODING);
 
-        //  TamilPattern pattern = TamilPattern.compile("\\b(${எழுத்து})*?${வலியுகரவரிசை}${உயிர்}(${எழுத்து})*\\b" );
+    //      TamilPattern pattern = TamilPattern.compile("\\b(${எழுத்து})*?${வலியுகரவரிசை}${உயிர்}(${எழுத்து})*\\b" );
 
 //        TamilPattern pattern = TamilPattern.compile("${அரிதுஅரோ ஐப்போன்ற சொல்}", new IPropertyFinder() {
 //            public String findProperty(String p1) {
@@ -102,7 +102,13 @@ public class SearchTest {
 //        });
 
 
-        TamilPattern pattern = TamilPattern.compile("${(அசையெண்ணிக்கை[7-])}");
+        //  TamilPattern pattern = TamilPattern.compile("${(அசையெண்ணிக்கை[5-])}");
+          //TamilPattern pattern = TamilPattern.compile("(\\*\\*.*)");
+          //TamilPattern pattern = TamilPattern.compile("((\\*\\*.*))|(${எழுத்து}*(${[ழ்]}|${[ள்]})${!எழுத்து}+${தகரவரிசையுயிர்மெய்}${எழுத்து})");
+        //  TamilPattern pattern = TamilPattern.compile("((\\*\\*.*))|(${எழுத்து}*${[ழ்]}${இடைவெளி}${தகரவரிசையுயிர்மெய்}${எழுத்து}*)");
+        TamilPattern pattern = TamilPattern.compile("((\\*\\*.*)|${[ஔ]}${எழுத்து}+)",null, RXIncludeCanonicalEquivalenceFeature.FEATURE);
+          //TamilPattern pattern = TamilPattern.compile("((\\*\\*.*))|(${எழுத்து}*${[ழ்]}${இடைவெளி}${தகரவரிசையுயிர்மெய்}${எழுத்து}*)",null, RXIncludeCanonicalEquivalenceFeature.FEATURE);
+//          TamilPattern pattern = TamilPattern.compile("((\\*\\*.*))|(${எழுத்து}*(${[ள்]})${!எழுத்து}+${தகரவரிசையுயிர்மெய்}${எழுத்து})");
 
 
 //        TamilPattern pattern = TamilPattern.compile("${எண்சீர்களைக்கொண்ட வரி}", new PropertyFinder(
@@ -116,9 +122,21 @@ public class SearchTest {
         Matcher matcher = pattern.matcher(data);
         int count = 0;
         Date start = new Date();
+        String heading = null;
         while (matcher.find()) {
-            count++;
-            System.out.println(count + "\t:" + data.substring(matcher.start(), matcher.end()));
+            String found = data.substring(matcher.start(), matcher.end());
+            if (!found.startsWith("*")) {
+                count++;
+                if (heading != null) {
+                    System.out.println(heading);
+                    heading = null;
+                }
+                System.out.print( "\t" + count + "\t");
+                System.out.println(found);
+            }  else {
+                heading = found;
+            }
+
         }
 
         System.out.println("Time taken:" + TamilUtils.millisToLongDHMS(new Date().getTime() - start.getTime()));

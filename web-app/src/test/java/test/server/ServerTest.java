@@ -5,7 +5,7 @@ import com.sun.jersey.api.container.grizzly2.servlet.GrizzlyWebContainerFactory;
 import com.sun.jersey.api.json.JSONConfiguration;
 import my.interest.lang.tamil.TamilUtils;
 import tamil.lang.*;
-import my.interest.lang.tamil.multi.ExecuteManager;
+import my.interest.lang.tamil.impl.job.ExecuteManager;
 import my.interest.lang.tamil.translit.EnglishToTamilCharacterLookUpContext;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.junit.Assert;

@@ -13,9 +13,14 @@
                 <jxb:javaType name="my.interest.lang.tamil.xml.AppCache" xmlType="AppCache"
                               parseMethod="my.interest.lang.tamil.xml.AppCache.serialize"
                               printMethod="my.interest.lang.tamil.xml.AppCache.deserialize"/>
+
+                <jxb:javaType name="java.util.Date" xmlType="xs:dateTime"/>
             </jxb:globalBindings>
         </xs:appinfo>
+
+
     </xs:annotation>
+
 
 
     <xs:simpleType name="AppCache">
@@ -123,6 +128,46 @@
     </xs:complexType>
 
 
+    <xs:complexType name="JobResultBean">
+        <xs:sequence>
+            <xs:element name="id" type="xs:long"/>
+            <xs:element name="name" type="xs:string"/>
+            <xs:element name="status" type="JobStatus"/>
+            <xs:element name="percentOfCompletion" type="xs:int"/>
+            <xs:element name="statusMessage" type="xs:string"/>
+            <xs:element name="created" type="xs:dateTime"/>
+            <xs:element name="updated" type="xs:dateTime"/>
+            <xs:element name="finished" type="xs:dateTime"/>
+            <xs:element name="chunks" type="JobResultChunk" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="exception" type="JobException"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="JobResultChunk">
+        <xs:sequence>
+            <xs:element name="when" type="xs:dateTime"/>
+            <xs:element name="id" type="xs:int"/>
+            <xs:element name="data" type="xs:base64Binary"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="JobException">
+        <xs:sequence>
+            <xs:element name="messages" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="trace" type="xs:string"/>
+
+        </xs:sequence>
+    </xs:complexType>
+
+
+    <xs:simpleType name="JobStatus">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="SUBMITTED"/>
+            <xs:enumeration value="RUNNING"/>
+            <xs:enumeration value="FAILED"/>
+            <xs:enumeration value="FINISHED"/>
+        </xs:restriction>
+    </xs:simpleType>
 
 
     <xs:complexType name="RootVerbsDescription">

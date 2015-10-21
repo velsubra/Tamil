@@ -189,6 +189,18 @@ public class EzhuththuUtils {
         }
     }
 
+
+    public static Object deSerialize(JAXBContext context, ClassLoader cl, InputStream in) throws Exception {
+        ClassLoader loader = Thread.currentThread().getContextClassLoader();
+        try {
+            Thread.currentThread().setContextClassLoader(cl);
+            return context.createUnmarshaller().unmarshal(in);
+        } finally {
+            Thread.currentThread().setContextClassLoader(loader);
+        }
+    }
+
+
     public static <T> T deepCopyJAXB(T object, Class<T> clazz) {
         if (object == null) return null;
         try {
@@ -616,11 +628,60 @@ public class EzhuththuUtils {
         });
     }
 
+    public static Set<TamilCharacter> filterWithLipsSpread() {
+        return filterTamilCharacters(new TamilLetterFilter() {
+            public boolean filter(TamilCharacter tamil) {
+                if (!tamil.isPureTamilLetter()) {
+                    return false;
+                }
+
+                TamilSimpleCharacter uyir = null;
+                if (tamil.isUyirezhuththu()) {
+                    uyir = (TamilSimpleCharacter)tamil;
+                } else if (tamil.isUyirMeyyezhuththu()) {
+                    uyir = tamil.getUyirPart();
+                }
+
+                if (uyir == null) {
+                    return false;
+                }
+
+                return  uyir == TamilSimpleCharacter.U ||  uyir == TamilSimpleCharacter.UU ||
+                        uyir == TamilSimpleCharacter.O ||  uyir == TamilSimpleCharacter.OO ||
+                        uyir == TamilSimpleCharacter.OU;
+            }
+        });
+    }
 
     public static Set<TamilCharacter> filterWithIndependentCodePoints() {
         return filterTamilCharacters(new TamilLetterFilter() {
             public boolean filter(TamilCharacter tamil) {
                 return tamil.isPureTamilLetter() && tamil.isUnicodeSequenceUnique();
+            }
+        });
+    }
+
+
+    public static Set<TamilCharacter> filterWithLipsClosed() {
+        return filterTamilCharacters(new TamilLetterFilter() {
+            public boolean filter(TamilCharacter tamil) {
+                if (!tamil.isPureTamilLetter()) {
+                    return false;
+                }
+
+                TamilCompoundCharacter mei = null;
+                if (tamil.isMeyyezhuththu()) {
+                    mei = (TamilCompoundCharacter)tamil;
+                } else if (tamil.isUyirMeyyezhuththu()) {
+                    mei = tamil.getMeiPart();
+                }
+
+                if (mei == null) {
+                    return false;
+                }
+
+                return  mei == TamilCompoundCharacter.IP ||  mei == TamilCompoundCharacter.IM;
+
             }
         });
     }

@@ -23,9 +23,12 @@ public final class TamilPattern {
 
     private TamilPattern(String given, StringUtils.IndexContext context, int flags) {
         try {
-            innerPattern = Pattern.compile(context.finalString, flags | Pattern.CANON_EQ | Pattern.UNICODE_CHARACTER_CLASS);
+          //  innerPattern = Pattern.compile(context.finalString, flags);
+          innerPattern = Pattern.compile(context.finalString, flags | Pattern.UNICODE_CHARACTER_CLASS);
+        //  innerPattern = Pattern.compile(context.finalString, flags | Pattern.CANON_EQ | Pattern.UNICODE_CHARACTER_CLASS);
         } catch (PatternSyntaxException pe) {
-            // pe.printStackTrace();
+            //throw pe;
+            pe.printStackTrace();
             StringUtils.IndexContext.Range range = context.getSourceIndex(pe.getIndex());
             throw new TamilPatternSyntaxException("Errors in the generated rx: " + context.finalString + pe.getDescription(), given, range.from);
 
@@ -64,7 +67,7 @@ public final class TamilPattern {
     public static TamilPattern compile(String pattern, int flags, IPropertyFinder aliasFinder, RXFeature ... features) {
         StringUtils.IndexContext context = StringUtils.replaceWithContext("${", "}", pattern, new RxRegistry(aliasFinder, (features == null || features.length == 0) ? FeatureSet.EMPTY : new FeatureSet(features)), true, true, true);
         if (context.finalString.length() > 10*1024) {
-            System.out.println("----"+pattern+"-----> Generated Pattern size in KB:" + context.finalString.length() /1000);
+            System.out.println("----"+pattern+"-----> Compiled Pattern size in KB:" + context.finalString.length() /1000);
         } else {
             System.out.println("pattern:" + pattern + " =>Real RX:" + context.finalString);
         }
@@ -72,6 +75,21 @@ public final class TamilPattern {
 
 
     }
+
+
+    /**
+     * API for pre-processing Tamil Expression
+     * @param pattern
+     * @param flags
+     * @param aliasFinder
+     * @param features
+     * @return  standard java expression
+     */
+    public static String preProcess(String pattern, int flags, IPropertyFinder aliasFinder, RXFeature ... features) {
+        StringUtils.IndexContext context = StringUtils.replaceWithContext("${", "}", pattern, new RxRegistry(aliasFinder, (features == null || features.length == 0) ? FeatureSet.EMPTY : new FeatureSet(features)), true, true, true);
+        return context.finalString;
+    }
+
 
     /**
      * Returns standard Java Matcher for the given character sequence.  The matcher works off of the java CharSequence such that the indices it returns point the java character positions.

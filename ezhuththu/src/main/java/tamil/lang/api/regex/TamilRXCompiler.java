@@ -28,14 +28,17 @@ import java.util.Set;
  * <tr><td>6</td><td>${<b>வகை</b>[சொல்]}</td> <td> Pattern to match the same list of வகை (உயிர், உயிர்மெய் மெய், ஆய்தம்) of each character  as in the given சொல். ${வகை[தமிழ்]} matches with பாகம்</td> </tr>
  *  <tr><td>7</td><td>${<b>மெய்வகை</b>[சொல்]}</td> <td> Pattern to match the same list of மெய்வகை (வலி,மெலி,இடை) of each character  as in the given சொல். ${மெய்வகை[அங்கு] matches with அந்தி</td> </tr>
  *  <tr><td>8</td><td>${[தமிழ்]}</td> <td> Pattern to match the literal text தமிழ்</td> </tr>
- *  <tr><td>9</td><td>${<b>தளை</b>[ex1 முன் ex2]}</td> <td> Pattern to match தளை. ${தளை[(மாச்சீர்) முன் நிரை]}  என்பது இயற்சீர்வெண்டளையை குறிக்கும்.
+ *  <tr><td>9</td><td>${<b>தளை</b>[ex1 <b>முன்</b> ex2]}</td> <td> Pattern to match தளை. ${தளை[(மாச்சீர்) </b>முன்</b> நிரை]}  என்பது இயற்சீர்வெண்டளையை குறிக்கும்.
  *  குறிப்பு: இரண்டாஞ்சீரின் தன்மையை ஆராய்ந்துதான் தளை காணப்பட்டாலும், தளைக்கான பாங்கு முதற்சீரையும்(அதாவது  ex1) அதற்குப்பின்வரும் இடைவெளியையும்மட்டுமே   குறிக்கும், இரண்டாஞ்சீரை பாங்குடன் இணைக்காது.
  *  This expression will only match ex1 and the whitespaces following it.
  *  The expression ex2 is not part of the matching al though the correctness of the binding(தளை) is tested along with expression ex2.
  *  This is to facilitate the sub-sequent search that could involve the the expression ex2, the second cir.  </td>
  *  <tr><td>10</td><td>${<b>அசையெண்ணிக்கை</b>[m-n]}</td> <td> Pattern to match a Tamil word  with given number of அசைகள். m - minimum number of அசைகள். n - maximum number of அசைகள்.
  *  ${அசையெண்ணிக்கை[2-2]} matches கூவிளம் as கூவிளம்   has  two அசைகள்</td> </tr>
- *  </tr>
+ *   <tr><td>11</td><td>${<b>தொடர்தொடக்கச்சோதனை</b>[ex1 தொடங்குவதிலிருந்து ex2]}</td> <td> Pattern to match ext2 at the same place ex1 also started from.
+ *   E.g  ${தொடர்தொடக்கச்சோதனை[(தேமா)  தொடங்குவதிலிருந்து  (நெடில்  தொடங்குவதிலிருந்து (எழுத்து]} matches the first letter of a word after making sure that that letter is நெடில் and the word(சீர்) has the same  வாய்ப்பாடு as தேமா.<br/>
+ * ${தொடர்தொடக்கச்சோதனை[(மூவசைச்சீர்) தொடங்குவதிலிருந்து  புளிமா   தொடங்காததிலிருந்து  நெடில்]}  matches a  letter that is நெடில்  which is at the start of a  மூவசைச்சீர் that does not start with  the வாய்ப்பாடு புளிமா.
+ *   </td> </tr>
  * </table>
  * <p/>
  * </p>

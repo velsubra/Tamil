@@ -136,6 +136,13 @@ public class TamilEzhuththuSetCalculatorImpl implements TamilCharacterSetCalcula
         map.put("!தனியெண்வரிசை", new AnyOneInTamilLetterSetRx("!தனியெண்வரிசை", "ஒருங்குறியில் தனது எண்வரிசையை வேறு எழுத்துகளுடன் பகிரும் எழுத்துகள். ",EzhuththuUtils.filterOut(EzhuththuUtils.filterWithIndependentCodePoints())));
         map.put("தனியெண்வரிசை", new AnyOneInTamilLetterSetRx("தனியெண்வரிசை","ஒருங்குறியில் தனது எண்வரிசையை வேறெந்த எழுத்துகளுடனும் பகிராத எழுத்துகள்.", EzhuththuUtils.filterWithIndependentCodePoints()));
 
+        map.put("!இதழ்குவிவரிசை", new AnyOneInTamilLetterSetRx("!இதழ்குவிவரிசை", "இதழ்களின் குவிப்பு தேவையில்லாமல் ஒலிக்கப்படும் எழுத்துகள். ",EzhuththuUtils.filterOut(EzhuththuUtils.filterWithLipsSpread())));
+        map.put("இதழ்குவிவரிசை", new AnyOneInTamilLetterSetRx("இதழ்குவிவரிசை","இதழ்களை குவித்து ஒலிக்கப்படும் எழுத்துகள்.", EzhuththuUtils.filterWithLipsSpread()));
+
+        map.put("!இதழ்மூடுவரிசை", new AnyOneInTamilLetterSetRx("!இதழ்மூடுவரிசை", "இதழ்களை மூடாமல் ஒலிக்கப்படும் எழுத்துகள். ",EzhuththuUtils.filterOut(EzhuththuUtils.filterWithLipsClosed())));
+        map.put("இதழ்மூடுவரிசை", new AnyOneInTamilLetterSetRx("இதழ்மூடுவரிசை","இதழ்களை மூடிக்கொண்டு ஒலிக்கப்படும் எழுத்துகள்.", EzhuththuUtils.filterWithLipsClosed()));
+
+
 
         Set<TamilCharacter> meis = EzhuththuUtils.filterMei();
         for (TamilCharacter mei : meis) {

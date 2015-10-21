@@ -3,12 +3,14 @@ package tamil.lang;
 import my.interest.lang.tamil.impl.DefaultNumberReader;
 import my.interest.lang.tamil.impl.TamilEzhuththuSetCalculatorImpl;
 import my.interest.lang.tamil.impl.dictionary.DictionaryCollection;
+import my.interest.lang.tamil.impl.job.JobManagerImpl;
 import my.interest.lang.tamil.impl.rx.RXCompilerImpl;
 import my.interest.lang.tamil.punar.handler.KnownWordsJoinerImpl;
 import my.interest.lang.tamil.punar.handler.WordsJoinHandler;
 import my.interest.lang.tamil.translit.EnglishToTamilCharacterLookUpContext;
 import tamil.lang.api.dictionary.TamilDictionary;
 import tamil.lang.api.ezhuththu.TamilCharacterSetCalculator;
+import tamil.lang.api.job.JobManager;
 import tamil.lang.api.join.KnownWordsJoiner;
 import tamil.lang.api.join.WordsJoiner;
 import tamil.lang.api.number.NumberReader;
@@ -47,6 +49,7 @@ public final class TamilFactory {
     private static TamilDictionary systemDictionary = null;
     private static CompoundWordParserProvider parserprovider = null;
     private static PersistenceManager persistenceManager = null;
+    private static JobManager jobManager = new JobManagerImpl();
 
     private TamilFactory() {
 
@@ -198,6 +201,15 @@ public final class TamilFactory {
         } else {
             return persistenceManager;
         }
+    }
+
+    /**
+     * Returns the job manger used to submit background jobs
+     * @return the job manager
+     * @throws ServiceException
+     */
+    public static JobManager getJobManager() throws ServiceException {
+        return jobManager;
     }
 
 }
