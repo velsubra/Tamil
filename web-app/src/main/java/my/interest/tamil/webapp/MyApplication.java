@@ -47,7 +47,7 @@ public class MyApplication extends Application {
         set.add(PersistenceResource.class);
         set.add(EzhuththuResource.class);
         set.add(NounQuestionTreeResource.class);
-
+        set.add(JobResource.class);
 
 
 

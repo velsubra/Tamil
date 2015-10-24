@@ -1,5 +1,7 @@
 package tamil.lang.api.job;
 
+import tamil.lang.api.persist.object.ObjectSerializer;
+
 /**
  * <p>
  *     Represents a snapshot of job result object.
@@ -22,6 +24,37 @@ public interface JobResultSnapShot<T> {
      * @return  the job status.
      */
     public JobStatus getStatus();
+
+    /**
+     * Gets the object serializer associated with this instance
+     * @return  the object serializer
+     */
+    public ObjectSerializer<T> getSerializer();
+
+    /**
+     * Gets the type of the serialization of unit work.
+     * @return the original type
+     */
+    public ObjectSerializer.SERIALIZED_TYPE getSerializedType();
+
+
+    /**
+     * says if the job is done
+     * @return true if the job is done else false;
+     */
+    public boolean isDone();
+
+    /**
+     * Returns the title message of this job
+     * @return the title string. It could be null.
+     */
+    public String getTitleMessage();
+
+    /**
+     * Returns the title id of this job
+     * @return the title string. It could be null.
+     */
+    public String getTitleId();
 
 
 

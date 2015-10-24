@@ -16,6 +16,7 @@ import tamil.lang.exception.service.ServiceException;
 import javax.xml.bind.JAXBContext;
 import java.io.ByteArrayInputStream;
 import java.util.Date;
+import java.util.List;
 
 /**
  * <p>
@@ -27,20 +28,33 @@ public class JobManagerImpl implements JobManager {
 
     static ObjectPersistenceInterface persist = new FileBasedPersistenceImpl("xml");
     static ObjectSerializerManager manager = new ObjectSerializerManagerImpl();
-    private static final String JOB_PATH = "jobs/id";
+    private static final String JOB_PATH_DEF = "jobs/id";
+    String categoryName = null;
+
+    public JobManagerImpl(String category) {
+        if (category == null) {
+            category = JOB_PATH_DEF;
+        }
+        this.categoryName = category;
+    }
 
     public <T> JobResultSnapShot<T> findJobResultSnapShot(long id, Class<T> resultType) {
+        byte[] data = null;
         try {
-            byte[] data = persist.get(id, JOB_PATH);
-            JAXBContext jaxbContext = JAXBContext.newInstance(JobResultBean.class);
-            JobResultBean job = (JobResultBean) TamilUtils.deSerialize(jaxbContext, JobResultBean.class.getClassLoader(), new ByteArrayInputStream(data));
+            data = persist.get(id, categoryName);
+
+
+            JobResultBean job =  TamilUtils.deserializeJAXB(new ByteArrayInputStream(data), JobResultBean.class);
             ObjectSerializer<T> serializer = manager.findSerializer(resultType);
             if (serializer == null) {
                 throw new ServiceException("Serializer not found for:" + resultType);
             }
             return new JobResultImpl<T>(job, serializer);
         } catch (Exception se) {
+            se.printStackTrace();
+            if (data != null) {
 
+            }
             return null;
         }
 
@@ -55,14 +69,15 @@ public class JobManagerImpl implements JobManager {
                 throw new ServiceException("Serializer not found for:" + resultType);
             }
             JobResultBean bean = new JobResultBean();
-            long id = persist.create(JOB_PATH, TamilUtils.toXMLJAXBData(bean));
+            long id = persist.create(categoryName, TamilUtils.toXMLJAXBData(bean));
             bean.setId(id);
+            bean.setChunkType(serializer.getSerializedType().toString());
             bean.setStatus(JobStatus.SUBMITTED);
             bean.setCreated(new Date());
             bean.setUpdated(bean.getCreated());
-            bean.setName(JOB_PATH);
+            bean.setCategoryName(categoryName);
             bean.setPercentOfCompletion(-1);
-            persist.update(id, JOB_PATH, TamilUtils.toXMLJAXBData(bean));
+            persist.update(id, categoryName, TamilUtils.toXMLJAXBData(bean));
             JobContextImpl<T> context = new JobContextImpl<T>(bean, persist, serializer);
             InnerJobRunnable innerJobRunnable = new InnerJobRunnable(runnable, context);
             ExecuteManager.fire(innerJobRunnable);
@@ -72,5 +87,10 @@ public class JobManagerImpl implements JobManager {
         }
 
 
+    }
+
+
+    public List<Long> listJobIds() {
+        return persist.list(categoryName);
     }
 }

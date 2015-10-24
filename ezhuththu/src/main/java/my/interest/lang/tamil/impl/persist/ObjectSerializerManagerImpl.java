@@ -1,5 +1,6 @@
 package my.interest.lang.tamil.impl.persist;
 
+import org.json.JSONObject;
 import tamil.lang.api.persist.object.ObjectSerializer;
 import tamil.lang.api.persist.object.ObjectSerializerManager;
 import tamil.lang.known.IKnownWord;
@@ -9,6 +10,7 @@ import java.util.Map;
 
 /**
  * <p>
+ *     The Object Serializer manager
  * </p>
  *
  * @author velsubra
@@ -19,7 +21,8 @@ public class ObjectSerializerManagerImpl implements ObjectSerializerManager {
     static {
         map.put(IKnownWord.class, new KnownWordSerializer());
         map.put(Long.class, new CountSerializer());
-        map.put(SearchResultSnippet.class, new SearchSnippetSerializer());
+        map.put(JSONObject.class, new JSONObjectSerializer());
+        map.put(String.class, new StringSerializer());
     }
 
 

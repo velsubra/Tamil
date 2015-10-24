@@ -1,5 +1,7 @@
 package tamil.lang.api.job;
 
+import java.util.List;
+
 /**
  * <p>
  *     Job Manager interface that can be used to submit asynchronous process.
@@ -9,7 +11,7 @@ package tamil.lang.api.job;
  * </p>
  *
  * @author velsubra
- * @see tamil.lang.TamilFactory#getJobManager()
+ * @see tamil.lang.TamilFactory#getJobManager(String)
  */
 public interface JobManager {
 
@@ -30,4 +32,11 @@ public interface JobManager {
      * @return  the job id that can be used to find the job result using {@link #findJobResultSnapShot(long, Class)}
      */
     public <T> long submit(JobRunnable<T> runnable, Class<T> resultType);
+
+
+    /**
+     * Lists all jobs known to this job manager.
+     * @return the list of job ids. Empty list when there is no job found.
+     */
+    public List<Long> listJobIds();
 }

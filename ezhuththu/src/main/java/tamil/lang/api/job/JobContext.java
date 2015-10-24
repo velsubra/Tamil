@@ -15,6 +15,21 @@ public interface JobContext<T> {
      */
     public long getJobId();
 
+    /**
+     * Sets the title id for this job. This can be typically used to identify if two jobs are doing the same work.
+     * This mostly an internal field.
+     * @param titleId  to be treated as hash code for this job.
+     */
+    public void setTitleId(String titleId);
+
+
+    /**
+     * Sets the title message for this job.
+     *
+     * @param titleMessage
+     */
+    public void setTitleMessage(String titleMessage);
+
 
     /**
      * Adds a unit of work

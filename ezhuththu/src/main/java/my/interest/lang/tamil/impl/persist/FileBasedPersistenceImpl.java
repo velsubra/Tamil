@@ -32,7 +32,7 @@ public final class FileBasedPersistenceImpl implements ObjectPersistenceInterfac
     private File mapToFile(long id, String name) {
         File file = mapToFile(name);
         String idstr = String.valueOf(id);
-        while (idstr.length() < 10) {
+        while (idstr.length() < 20) {
             idstr = "0" + idstr;
         }
         return new File(file, idstr + "." + extension);
@@ -75,7 +75,7 @@ public final class FileBasedPersistenceImpl implements ObjectPersistenceInterfac
             if (!file.createNewFile()) {
                 throw new ServiceException("Please retry with different id: File might got just created at:" + file.getAbsolutePath());
             }
-            TamilUtils.writeToFile(file, data);
+          update(id, name, data);
         } catch (TamilPlatformException tpe) {
             throw tpe;
         } catch (Exception e) {
@@ -101,40 +101,102 @@ public final class FileBasedPersistenceImpl implements ObjectPersistenceInterfac
 
     public void update(long id, String name, byte[] data) throws TamilPlatformException {
         File file = mapToFile(id, name);
-        if (!file.exists()) {
-            throw new ServiceException("Data does not exists at:" + file.getAbsolutePath());
+        File r_filelck = new File(file.getAbsolutePath() + ".r_lck");
+        File filelck = new File(file.getAbsolutePath() + ".w_lck");
+        if (filelck.exists()) {
+            throw new ServiceException("Lock file already exists at:" + file.getAbsolutePath());
         }
         try {
-            TamilUtils.writeToFile(file, data);
-        } catch (TamilPlatformException tpe) {
-            throw tpe;
+
+            if (!file.exists()) {
+                throw new ServiceException("Data does not exists at:" + file.getAbsolutePath());
+            }
+
+            int retry = 0;
+            while (r_filelck.exists()) {
+                if (retry == 1000) {
+                    throw new ServiceException("Read seems to be busy. please retry after some time.");
+                }
+                retry++;
+
+                Thread.currentThread().sleep(100);
+
+            }
+
+            try {
+               // System.out.println("Writing size:" + data.length +":" + new String(data));
+                TamilUtils.writeToFile(file, data);
+            } catch (TamilPlatformException tpe) {
+                throw tpe;
+            }
         } catch (Exception e) {
             e.printStackTrace();
 
             throw new ServiceException(e.getMessage());
+        } finally {
+            if (filelck.exists()) {
+                filelck.delete();
+            }
         }
     }
 
     public byte[] get(long id, String name) throws TamilPlatformException {
         File file = mapToFile(id, name);
-        if (!file.exists()) {
-            throw new ServiceException("Data does not exists");
-        }
+        File r_filelck = new File(file.getAbsolutePath() + ".r_lck");
         try {
-            return TamilUtils.readAllFromFile(file.getAbsolutePath());
-        } catch (TamilPlatformException tpe) {
-            throw tpe;
+
+            r_filelck.createNewFile();
+
+            File w_filelck = new File(file.getAbsolutePath() + ".w_lck");
+            int retry = 0;
+            while (w_filelck.exists()) {
+                if (retry == 1000) {
+                    throw new ServiceException("Update seems to be busy. please retry after some time.");
+                }
+                retry++;
+
+                Thread.currentThread().sleep(100);
+
+            }
+
+            if (!file.exists()) {
+                throw new ServiceException("Data does not exists");
+            }
+
+            try {
+
+                byte[] data = null;
+                for (int i =0; i < 10; i++) {
+                    data = TamilUtils.readAllFromFile(file.getAbsolutePath());
+                    if (data.length ==0) {
+                        Thread.currentThread().sleep(100);
+                    } else {
+                        break;
+                    }
+                }
+              //  System.out.println("Reading size:" + data.length +":" + new String(data));
+                if (data.length == 0) {
+                    throw new Exception("Empty file");
+                }
+                return data;
+            } catch (TamilPlatformException tpe) {
+                throw tpe;
+            }
         } catch (Exception e) {
             e.printStackTrace();
 
             throw new ServiceException(e.getMessage());
+        } finally {
+            if (r_filelck.exists()) {
+                r_filelck.delete();
+            }
         }
     }
 
     public void delete(long id, String name) throws TamilPlatformException {
         File file = mapToFile(id, name);
         if (!file.exists()) {
-            throw new ServiceException("Data does not exists");
+            throw new ServiceException("Data does not exists:" + file.getAbsolutePath());
         }
         try {
             if (!file.delete()) {

@@ -946,7 +946,7 @@ var TamilFactory = new function () {
                 id = typeof id !== 'undefined' ? id.trim() : "definition.type";
                 jQuery.ajax({
                     type: 'get',
-                    url: thi.get_noun_tree_url + id,
+                    url: this.get_noun_tree_url + id,
 
                     contentType: "text/plain; charset=utf-8",
                     async: true,
@@ -989,6 +989,101 @@ var TamilFactory = new function () {
 
 
         return this;
+    }
+
+
+
+
+
+    /**
+     * Gets  Job Manager
+     * <p>
+     * <b>Usage: {@link TamilFactory}.createJobManager()</b>
+     * </p>
+     * @constructor
+     *
+     *
+     */
+    this.getJobManager = function (category) {
+
+
+        this.job_poll_url = this.context + "/api/jobs/id/";
+        this.job_list_url = this.context + "/api/jobs/list/";
+
+
+        /**
+         * Polls for a job
+         *
+         * @param callback
+         * @param id
+         * @param continuation_id
+         */
+        this.poll = function (callback, id, continuation_id) {
+            continuation_id = typeof continuation_id !== 'undefined' ? continuation_id : 0;
+            category = typeof category !== 'undefined' ? category.trim() : "";
+            if (category.indexOf("/") != 0) {
+                category = "/" + category;
+            }
+                jQuery.ajax({
+                    type: 'get',
+                    url: this.job_poll_url + id + "/category" + category +"/?last-continuation-id="+continuation_id,
+
+                    contentType: "text/plain; charset=utf-8",
+                    async: true,
+                    success: function (data, status, jqXHR) {
+
+                        if (status != 'success') {
+                            alert("Error status:" + status);
+                            return;
+                        }
+
+                        callback(data);
+                        // console.log("Passing async response ..---------*****---------." + data.splitways);
+                        return;
+                    }
+                }, 100);
+            }
+
+        /**
+         * list jobs
+         *
+         * @param callback
+         * @param includeUnitWorks
+         *
+         */
+        this.list = function (callback,includeUnitWorks) {
+            if (!includeUnitWorks) {
+                includeUnitWorks = false;
+            }
+            category = typeof category !== 'undefined' ? category.trim() : "";
+            if (category.indexOf("/") != 0) {
+                category = "/" + category;
+            }
+
+            jQuery.ajax({
+                type: 'get',
+                url: this.job_list_url + "category" +  category +"/?includeUnits="+includeUnitWorks,
+
+                contentType: "text/plain; charset=utf-8",
+                async: true,
+                success: function (data, status, jqXHR) {
+
+                    if (status != 'success') {
+                        alert("Error status:" + status);
+                        return;
+                    }
+
+                    callback(data);
+                    // console.log("Passing async response ..---------*****---------." + data.splitways);
+                    return;
+                }
+            }, 100);
+        }
+
+            return this;
+
+
+
     }
 
 

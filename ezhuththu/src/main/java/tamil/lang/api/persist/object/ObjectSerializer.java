@@ -9,6 +9,16 @@ package tamil.lang.api.persist.object;
  * @see tamil.lang.api.job.JobManager
  */
 public interface ObjectSerializer<T> {
+
+    public static enum SERIALIZED_TYPE {
+        COUNT, STRING, JSON
+    }
+
+    /**
+     * Gives the hint to the content of serialized data
+     * @return  SERIALIZED_TYPE
+     */
+    public SERIALIZED_TYPE getSerializedType();
     /**
      * The class type that this can serialize and  de-serialize
      * @return   the class

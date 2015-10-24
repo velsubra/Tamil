@@ -21,6 +21,7 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.util.JAXBSource;
 import javax.xml.namespace.QName;
+import javax.xml.transform.stream.StreamSource;
 import java.io.*;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -201,6 +202,19 @@ public class EzhuththuUtils {
     }
 
 
+    public static <T> T deserializeJAXB( InputStream in, Class<T> clazz) {
+
+        try {
+            JAXBContext jaxbContext = JAXBContext.newInstance(clazz);
+            JAXBElement elm = jaxbContext.createUnmarshaller().unmarshal(new StreamSource(
+                    in), clazz);
+            return (T)elm.getValue();
+        } catch (JAXBException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
     public static <T> T deepCopyJAXB(T object, Class<T> clazz) {
         if (object == null) return null;
         try {
@@ -258,6 +272,7 @@ public class EzhuththuUtils {
 
 
     public static byte[] readAllFrom(InputStream in, boolean chunked) {
+
         if (in == null)
             throw new RuntimeException("Stream can't be null");
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
@@ -266,7 +281,7 @@ public class EzhuththuUtils {
             int len;
             len = in.read(buf);
             //System.out.println("READ: " + len + "bytes for the first time");
-            while (len > 0) {
+            while (len >= 0) {
 
                 bos.write(buf, 0, len);
                 if (chunked) {
@@ -290,6 +305,8 @@ public class EzhuththuUtils {
                 len = in.read(buf);
 
             }
+            bos.flush();
+            return bos.toByteArray();
         } catch (Exception e) {
             throw new RuntimeException("Unable to read:", e);
         } finally {
@@ -300,7 +317,8 @@ public class EzhuththuUtils {
             }
 
         }
-        return bos.toByteArray();
+
+
 
     }
 
@@ -309,6 +327,7 @@ public class EzhuththuUtils {
 
         if (content == null)
             return;
+
         //   System.out.println("-->Writing file at:" + file.getAbsolutePath());
         FileOutputStream out = null;
 

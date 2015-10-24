@@ -131,13 +131,16 @@
     <xs:complexType name="JobResultBean">
         <xs:sequence>
             <xs:element name="id" type="xs:long"/>
-            <xs:element name="name" type="xs:string"/>
+            <xs:element name="titleMessage" type="xs:string"/>
+            <xs:element name="titleId" type="xs:string"/>
+            <xs:element name="categoryName" type="xs:string"/>
             <xs:element name="status" type="JobStatus"/>
             <xs:element name="percentOfCompletion" type="xs:int"/>
             <xs:element name="statusMessage" type="xs:string"/>
             <xs:element name="created" type="xs:dateTime"/>
             <xs:element name="updated" type="xs:dateTime"/>
             <xs:element name="finished" type="xs:dateTime"/>
+            <xs:element name="chunkType" type="xs:string"/>
             <xs:element name="chunks" type="JobResultChunk" minOccurs="0" maxOccurs="unbounded"/>
             <xs:element name="exception" type="JobException"/>
         </xs:sequence>

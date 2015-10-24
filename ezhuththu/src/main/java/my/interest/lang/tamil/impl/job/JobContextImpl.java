@@ -35,11 +35,21 @@ public class JobContextImpl<T> implements JobContext<T> {
     }
 
 
+    public void setTitleId(String titleiId) {
+         bean.setTitleId(titleiId);
+    }
+
+
+    public void setTitleMessage(String titleMessage) {
+      bean.setTitleMessage(titleMessage);
+    }
+
+
     public void addResult(T result) {
         try {
             bean.setUpdated(new Date());
             JobResultChunk chunk = new JobResultChunk();
-            bean.getChunks().add(chunk);
+
             chunk.setData(serializer.serialize(result));
             chunk.setWhen(new Date());
             if (bean.getChunks().isEmpty()) {
@@ -48,6 +58,7 @@ public class JobContextImpl<T> implements JobContext<T> {
                 int lastID = bean.getChunks().get(bean.getChunks().size() - 1).getId();
                 chunk.setId(1 + lastID);
             }
+            bean.getChunks().add(chunk);
         } catch (Exception e) {
             throw new ServiceException(e.getMessage());
         }
@@ -82,7 +93,7 @@ public class JobContextImpl<T> implements JobContext<T> {
     }
 
     public void setPercentOfCompletion(int percent) {
-        if (percent > 0) {
+        if (percent >100) {
             percent = percent % 100;
         }
         bean.setPercentOfCompletion(percent);
@@ -116,6 +127,7 @@ public class JobContextImpl<T> implements JobContext<T> {
     }
 
     public void flush() {
-        persist.update(bean.getId(), bean.getName(), TamilUtils.toXMLJAXBData(bean));
+        persist.update(bean.getId(), bean.getCategoryName(), TamilUtils.toXMLJAXBData(bean));
+      //  System.out.println(bean.getPercentOfCompletion());
     }
 }

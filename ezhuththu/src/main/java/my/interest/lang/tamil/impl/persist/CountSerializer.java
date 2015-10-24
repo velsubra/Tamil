@@ -11,6 +11,11 @@ import tamil.lang.api.persist.object.ObjectSerializer;
  */
 public class CountSerializer implements ObjectSerializer<Long> {
 
+
+    public SERIALIZED_TYPE getSerializedType() {
+        return SERIALIZED_TYPE.COUNT;
+    }
+
     public Class<Long> getTypeToSerialize() {
         return Long.class;
     }

@@ -36,22 +36,38 @@ public interface ObjectPersistenceInterface {
     /**
      * Gets the object data
      *
-     * @param id    the id of the object
+     * @param id       the id of the object
      * @param category the category of the object
-     * @return
+     * @return the data representing persisted object
      * @throws TamilPlatformException
      */
     public byte[] get(long id, String category) throws TamilPlatformException;
 
     /**
      * Deletes the object that was persisted earlier
-     * @param id
-     * @param category
+     *
+     * @param id       the object id
+     * @param category the category of the object
      * @throws TamilPlatformException
      */
     public void delete(long id, String category) throws TamilPlatformException;
 
+    /**
+     * Checks if the object exists
+     *
+     * @param id       the object id
+     * @param category the category of the object
+     * @return
+     * @throws TamilPlatformException
+     */
     public boolean exists(long id, String category) throws TamilPlatformException;
 
+    /**
+     * Lists all the available objects under a category.
+     *
+     * @param category the category of the object
+     * @return the list of object ids. It could be empty
+     * @throws TamilPlatformException
+     */
     public List<Long> list(String category) throws TamilPlatformException;
 }

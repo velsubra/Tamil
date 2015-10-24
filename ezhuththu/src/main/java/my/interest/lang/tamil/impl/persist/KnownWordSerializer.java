@@ -21,6 +21,12 @@ public class KnownWordSerializer implements ObjectSerializer<IKnownWord> {
         return IKnownWord.class;
     }
 
+
+
+    public SERIALIZED_TYPE getSerializedType() {
+        return SERIALIZED_TYPE.JSON;
+    }
+
     public IKnownWord deserialize(byte[] data) {
         try {
             JSONObject json = new JSONObject(new String(data, TamilUtils.ENCODING));

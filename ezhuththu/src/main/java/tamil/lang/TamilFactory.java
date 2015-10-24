@@ -49,7 +49,7 @@ public final class TamilFactory {
     private static TamilDictionary systemDictionary = null;
     private static CompoundWordParserProvider parserprovider = null;
     private static PersistenceManager persistenceManager = null;
-    private static JobManager jobManager = new JobManagerImpl();
+    private static JobManager jobManager = new JobManagerImpl(null);
 
     private TamilFactory() {
 
@@ -204,12 +204,20 @@ public final class TamilFactory {
     }
 
     /**
-     * Returns the job manger used to submit background jobs
+     * Gets the job manger used to submit background jobs.
+     * @param category the category of the jobs that are going to be performed by the job manager.
+     *                 The value can be null to mean the default job manager. The value can be path like.
+     *                 E.g)  jobs/search. Providing meaningful category will isolate the jobs such that searching the job with the job id will be faster.
+     *
      * @return the job manager
      * @throws ServiceException
      */
-    public static JobManager getJobManager() throws ServiceException {
-        return jobManager;
+    public static JobManager getJobManager(String category) throws ServiceException {
+        if (category ==null || category.trim().equals("")) {
+            return jobManager;
+        } else {
+           return new JobManagerImpl(category);
+        }
     }
 
 }

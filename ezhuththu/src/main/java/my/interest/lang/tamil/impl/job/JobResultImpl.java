@@ -32,6 +32,16 @@ public class JobResultImpl<T> implements JobResultSnapShot {
 
     }
 
+    public ObjectSerializer<T> getSerializer() {
+        return  serializer;
+    }
+
+
+    public ObjectSerializer.SERIALIZED_TYPE getSerializedType() {
+        return ObjectSerializer.SERIALIZED_TYPE.valueOf(bean.getChunkType());
+    }
+
+
     public JobResultChunk<T> getNewResults(int continuousQueryId) throws Exception {
 
 
@@ -40,12 +50,13 @@ public class JobResultImpl<T> implements JobResultSnapShot {
 
 
         for (my.interest.lang.tamil.generated.types.JobResultChunk chunk : bean.getChunks()) {
+            lastId = chunk.getId();
             if (chunk.getId() <= continuousQueryId) {
                 continue;
             }
             byte[] data = chunk.getData();
             chunks.add(serializer.deserialize(data));
-            lastId = chunk.getId();
+
 
         }
         return new JobResultChunk<T>(bean.getId(), lastId, chunks);
@@ -65,5 +76,21 @@ public class JobResultImpl<T> implements JobResultSnapShot {
             status.setExceptionMessages(bean.getException().getMessages());
         }
         return status;
+    }
+
+
+    public boolean isDone() {
+        JobStatus status = getStatus();
+
+        return status.getStatus() == JobStatus.STATUS.FAILED ||  status.getStatus() == JobStatus.STATUS.FINISHED ;
+    }
+
+
+    public String getTitleMessage() {
+        return bean.getTitleMessage();
+    }
+
+    public String getTitleId() {
+        return bean.getTitleId();
     }
 }
