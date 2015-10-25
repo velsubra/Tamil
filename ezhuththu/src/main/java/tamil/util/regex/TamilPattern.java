@@ -135,16 +135,18 @@ public final class TamilPattern {
                 }
             }
         }
-        int loopLength = alter.size() ^ 2;
+        int loopLength = (int) Math.pow(2, alter.size());
         List<TamilPattern> patternlist = new ArrayList<TamilPattern>(loopLength);
         for (int i =0 ;i < loopLength; i++) {
             FeatureSet bcloned = new FeatureSet( baseFeatureSet.getFeatures(Feature.class).toArray(new Feature[0]));
             for (int j = 0; j < alter.size(); j++) {
-               boolean toIncude = ((2^j) & i) != 0;
+                int bitposition = (int) Math.pow(  2, j);
+               boolean toIncude = (bitposition & i) != 0;
                 if (toIncude) {
                     bcloned.addFeature(alter.get(j));
                 }
             }
+        //    System.out.println(bcloned.getFeatures(RXFeature.class).size());
 
            patternlist.add(compile(pattern, flags,aliasFinder, bcloned.getFeatures(RXFeature.class).toArray(new RXFeature[0])));
         }

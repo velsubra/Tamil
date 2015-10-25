@@ -4,9 +4,10 @@ import my.interest.lang.tamil.TamilUtils;
 import org.junit.Assert;
 import org.junit.Test;
 import tamil.lang.TamilFactory;
-import tamil.lang.api.regex.RXIncludeCanonicalEquivalenceFeature;
-import tamil.lang.api.regex.TamilRXCompiler;
+import tamil.lang.api.regex.*;
 import tamil.util.IPropertyFinder;
+import tamil.util.regex.FeaturedMatchersList;
+import tamil.util.regex.FeaturedPatternsList;
 import tamil.util.regex.TamilPattern;
 
 import java.io.BufferedReader;
@@ -32,7 +33,33 @@ public class SearchTest {
 
     @Test
     public void testWithAlternatives() {
-       // TamilRXCompiler compiler = TamilFactory.getRegEXCompiler().compileToPatternsList("${()}");
+        TamilRXCompiler compiler = TamilFactory.getRegEXCompiler();
+        FeaturedPatternsList list = compiler.compileToPatternsList("${(kurralh)}", null, null, RXKuttuAcrossCirFeature.FEATURE, RXAythamAsKurrilFeature.FEATURE, RXKuttuFeature.FEATURE, RXIncludeCanonicalEquivalenceFeature.FEATURE);
+        //FeaturedPatternsList list = compiler.compileToPatternsList("${(kurralh)}", null, null,  RXAythamAsKurrilFeature.FEATURE,RXKuttuAcrossCirFeature.FEATURE);
+        System.out.println(list.getPatternsListSize());
+        Assert.assertEquals(list.getPatternsListSize(), 16);
+        String allKurralh = "\n" +
+                "இருள்சேர் இருவினையும் சேரா இறைவன்\n" +
+                "பொருள்சேர் புகழ்புரிந்தார் மாட்டு \n" +
+                "\n" +
+                "அணியன்றோ நாணுடைமை சான்றோர்க்கஃ தின்றேல்\n" +
+                "பிணிஅன்றோ பீடு நடை\n" +
+                "//அன்றோ needs  the option ற + ே + ா = றோ  be checked to be correctly recognized \n" +
+                "\n" +
+                "இன்பங் கடல்மற்றுக் காம மஃதடுங்கால்\n" +
+                "துன்ப மதனிற் பெரிது\n" +
+                "\n" +
+                "ஓர்ந்துகண் ணோடாது இறைபுரிந்து யார்மாட்டும்\n" +
+                "தேர்ந்துசெய் வஃதே முறை";
+        FeaturedMatchersList matcher = list.matchersList(allKurralh);
+        int count = 0;
+        while(matcher.find()) {
+            count ++;
+            System.out.println(allKurralh.substring(matcher.start(), matcher.end()));
+        }
+        System.out.println(count);
+        Assert.assertEquals(count, 4);
+
     }
 
 
