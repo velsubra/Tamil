@@ -20,6 +20,7 @@ public class BaseResource {
         e.printStackTrace();
         obj.put("error", true);
         obj.put("emessage", e.getMessage());
+        obj.put("etype", e.getClass().getName());
     }
 
 

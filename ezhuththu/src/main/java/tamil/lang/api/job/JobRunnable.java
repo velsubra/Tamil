@@ -8,7 +8,7 @@ package tamil.lang.api.job;
  * @author velsubra
  * @see tamil.lang.api.job.JobManager
  */
-public abstract class JobRunnable<T> {
+public interface  JobRunnable<T> {
 
     /**
      * The run method to be implemented by the user

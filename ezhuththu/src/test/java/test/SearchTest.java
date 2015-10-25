@@ -5,6 +5,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import tamil.lang.TamilFactory;
 import tamil.lang.api.regex.RXIncludeCanonicalEquivalenceFeature;
+import tamil.lang.api.regex.TamilRXCompiler;
 import tamil.util.IPropertyFinder;
 import tamil.util.regex.TamilPattern;
 
@@ -30,6 +31,13 @@ public class SearchTest {
 
 
     @Test
+    public void testWithAlternatives() {
+        TamilRXCompiler compiler = TamilFactory.getRegEXCompiler().compileToPatternsList("${()}");
+    }
+
+
+
+        @Test
     public void testBasicTests() {
 
         TamilPattern pattern = TamilPattern.compile("${asai}");

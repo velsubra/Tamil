@@ -192,7 +192,7 @@ public class AppAccessResource {
 
 
             } else {
-                content = StringUtils.replaceFor$(new String(content), new PropertyFinderForResource(app, resource, bindingMap), false).getBytes();
+                content = StringUtils.replaceFor$(new String(content), new PropertyFinderForResource(app, resource, bindingMap), false, true).getBytes();
                 content = StringUtils.replaceForT(new String(content)).getBytes();
 
                 String type = null;

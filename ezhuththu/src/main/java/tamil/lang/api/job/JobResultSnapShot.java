@@ -19,6 +19,15 @@ public interface JobResultSnapShot<T> {
      */
     public JobResultChunk<T> getNewResults(int continuousQueryId) throws Exception;
 
+
+    /**
+     * Gets the last list of unit work
+     * @param maxChunks  max number of last list of unit work
+     * @return  the result chunk
+     * @throws Exception
+     */
+    public JobResultChunk<T> getLastResults(int maxChunks) throws Exception;
+
     /**
      * Returns the status on the job.
      * @return  the job status.

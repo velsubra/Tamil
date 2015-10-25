@@ -41,6 +41,9 @@ public class PropertyFinderForResource implements IPropertyFinder {
 
     @Override
     public String findProperty(String p1) {
+//        if (p1.startsWith("skip:")) {
+//            return "${" + p1.substring(5) +"}";
+//        }
 
         if ("R_PLATFORM_CONTEXT".equals(p1)) {
             if (local.equals("")) {

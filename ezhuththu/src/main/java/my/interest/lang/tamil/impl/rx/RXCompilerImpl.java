@@ -6,10 +6,12 @@ import tamil.util.IPropertyFinder;
 import tamil.lang.api.regex.RxDescription;
 import tamil.lang.api.regex.TamilRXCompiler;
 import tamil.lang.exception.service.ServiceException;
+import tamil.util.regex.FeaturedPatternsList;
 import tamil.util.regex.TamilPattern;
 
 import java.util.Collections;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 
@@ -34,5 +36,10 @@ public class RXCompilerImpl implements TamilRXCompiler {
 
     public Set<? extends RxDescription> getRegXDescriptions() throws ServiceException {
         return Collections.unmodifiableSet(new LinkedHashSet<RxDescription>(RxRegistry.map.values()));
+    }
+
+
+    public FeaturedPatternsList compileToPatternsList(String pattern, IPropertyFinder aliasFinder, List<RXFeature> base, RXFeature... alternatives) {
+        return TamilPattern.compileToPatternsList(pattern,0,aliasFinder, base, alternatives);
     }
 }

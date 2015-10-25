@@ -264,7 +264,7 @@ public class RxRegistry implements IPropertyFinder {
                     } else {
                         fixedLength = this.featureSet;
                     }
-                    String javaex = TamilPattern.preProcess("(?<=(${" + first + "}${idaivelhi}))", 0, this, fixedLength.getFeatures(RXFeature.class).toArray(new RXFeature[0]));
+                    String javaex = TamilPattern.preProcess("(?<=(${" + first + "}${idaivelhi}))", this, fixedLength.getFeatures(RXFeature.class).toArray(new RXFeature[0]));
 
                     buffer.append(javaex);
                    // buffer.append("(?:a)");

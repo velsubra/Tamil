@@ -52,7 +52,7 @@ public class JobTest {
         }
     }
 
-    static class VerbSearcher extends JobRunnable<Long> {
+    static class VerbSearcher implements JobRunnable<Long> {
 
 
         @Override

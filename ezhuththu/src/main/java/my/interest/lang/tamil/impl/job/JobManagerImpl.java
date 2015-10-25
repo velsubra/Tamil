@@ -13,8 +13,9 @@ import tamil.lang.api.persist.object.ObjectSerializer;
 import tamil.lang.api.persist.object.ObjectSerializerManager;
 import tamil.lang.exception.service.ServiceException;
 
-import javax.xml.bind.JAXBContext;
 import java.io.ByteArrayInputStream;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -44,7 +45,7 @@ public class JobManagerImpl implements JobManager {
             data = persist.get(id, categoryName);
 
 
-            JobResultBean job =  TamilUtils.deserializeJAXB(new ByteArrayInputStream(data), JobResultBean.class);
+            JobResultBean job = TamilUtils.deserializeJAXB(new ByteArrayInputStream(data), JobResultBean.class);
             ObjectSerializer<T> serializer = manager.findSerializer(resultType);
             if (serializer == null) {
                 throw new ServiceException("Serializer not found for:" + resultType);
@@ -90,7 +91,21 @@ public class JobManagerImpl implements JobManager {
     }
 
 
-    public List<Long> listJobIds() {
-        return persist.list(categoryName);
+    public List<Long> listJobIds(int limit) {
+        if (limit < 0) {
+            return persist.list(categoryName);
+        } else {
+            List<Long> list = persist.list(categoryName);
+            if (list.size() <= limit) {
+                return list;
+            } else {
+                List<Long> ret = new ArrayList<Long>();
+                Collections.sort(list);
+                for( int i = list.size() - limit ;i < list.size(); i++) {
+                    ret.add(list.get(i));
+                }
+                return ret;
+            }
+        }
     }
 }

@@ -36,7 +36,8 @@ public interface JobManager {
 
     /**
      * Lists all jobs known to this job manager.
+     * @param maxlimit the maximum number of latest jobs to return, Negative value indicates to return all the job ids.
      * @return the list of job ids. Empty list when there is no job found.
      */
-    public List<Long> listJobIds();
+    public List<Long> listJobIds(int maxlimit);
 }

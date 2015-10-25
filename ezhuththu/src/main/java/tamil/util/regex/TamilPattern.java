@@ -3,10 +3,14 @@ package tamil.util.regex;
 import my.interest.lang.tamil.StringUtils;
 import my.interest.lang.tamil.impl.FeatureSet;
 import my.interest.lang.tamil.impl.rx.RxRegistry;
+import tamil.lang.api.feature.Feature;
 import tamil.lang.api.regex.RXFeature;
 import tamil.util.IPropertyFinder;
 import tamil.lang.TamilWord;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
@@ -23,9 +27,9 @@ public final class TamilPattern {
 
     private TamilPattern(String given, StringUtils.IndexContext context, int flags) {
         try {
-          //  innerPattern = Pattern.compile(context.finalString, flags);
+
           innerPattern = Pattern.compile(context.finalString, flags | Pattern.UNICODE_CHARACTER_CLASS);
-        //  innerPattern = Pattern.compile(context.finalString, flags | Pattern.CANON_EQ | Pattern.UNICODE_CHARACTER_CLASS);
+
         } catch (PatternSyntaxException pe) {
             //throw pe;
             pe.printStackTrace();
@@ -80,12 +84,12 @@ public final class TamilPattern {
     /**
      * API for pre-processing Tamil Expression
      * @param pattern
-     * @param flags
+     *
      * @param aliasFinder
      * @param features
      * @return  standard java expression
      */
-    public static String preProcess(String pattern, int flags, IPropertyFinder aliasFinder, RXFeature ... features) {
+    public static String preProcess(String pattern, IPropertyFinder aliasFinder, RXFeature ... features) {
         StringUtils.IndexContext context = StringUtils.replaceWithContext("${", "}", pattern, new RxRegistry(aliasFinder, (features == null || features.length == 0) ? FeatureSet.EMPTY : new FeatureSet(features)), true, true, true);
         return context.finalString;
     }
@@ -108,5 +112,44 @@ public final class TamilPattern {
 
     public TamilMatcher matcher(TamilWord word) {
         return new TamilMatcher(innerPattern.matcher(word.toString()), word);
+    }
+
+
+    public static FeaturedPatternsList compileToPatternsList(String pattern,   RXFeature ... alternatives) {
+        return compileToPatternsList(pattern, null, alternatives);
+    }
+    public static FeaturedPatternsList compileToPatternsList(String pattern,  List<RXFeature> base,  RXFeature ... alternatives) {
+        return compileToPatternsList(pattern, 0, null, base, alternatives);
+    }
+
+    public static FeaturedPatternsList compileToPatternsList(String pattern, int flags, IPropertyFinder aliasFinder, List<RXFeature> base,  RXFeature ... alternatives) {
+       if (base == null) {
+           base = Collections.emptyList();
+       }
+        FeatureSet baseFeatureSet =  new FeatureSet(base.toArray(new RXFeature[0]));
+        List<RXFeature> alter = new ArrayList<RXFeature>();
+        if (alternatives != null) {
+            for (RXFeature rx : alternatives) {
+                if (!baseFeatureSet.isFeatureEnabled(rx.getClass())) {
+                    alter.add(rx);
+                }
+            }
+        }
+        int loopLength = alter.size() ^ 2;
+        List<TamilPattern> patternlist = new ArrayList<TamilPattern>(loopLength);
+        for (int i =0 ;i < loopLength; i++) {
+            FeatureSet bcloned = new FeatureSet( baseFeatureSet.getFeatures(Feature.class).toArray(new Feature[0]));
+            for (int j = 0; j < alter.size(); j++) {
+               boolean toIncude = ((2^j) & i) != 0;
+                if (toIncude) {
+                    bcloned.addFeature(alter.get(j));
+                }
+            }
+
+           patternlist.add(compile(pattern, flags,aliasFinder, bcloned.getFeatures(RXFeature.class).toArray(new RXFeature[0])));
+        }
+
+        return new FeaturedPatternsList(patternlist);
+
     }
 }

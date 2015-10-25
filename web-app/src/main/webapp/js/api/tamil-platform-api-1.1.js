@@ -1026,7 +1026,7 @@ var TamilFactory = new function () {
             }
                 jQuery.ajax({
                     type: 'get',
-                    url: this.job_poll_url + id + "/category" + category +"/?last-continuation-id="+continuation_id,
+                    url: this.job_poll_url + id + "/category" + category +"/?includeUnits=true&last-continuation-id="+continuation_id,
 
                     contentType: "text/plain; charset=utf-8",
                     async: true,

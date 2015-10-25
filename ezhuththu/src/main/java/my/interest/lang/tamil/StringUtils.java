@@ -133,6 +133,10 @@ public class StringUtils {
         return replace("${", "}", origString, keys, exceptionWhenNotAllResolved, false, false);
     }
 
+    public static String replaceFor$(String origString, IPropertyFinder keys, boolean exceptionWhenNotAllResolved, boolean keepUnresolved) {
+        return replace("${", "}", origString, keys, exceptionWhenNotAllResolved, false, keepUnresolved);
+    }
+
     public static String replaceForT(String origString) {
         return replace("T{", "}", origString, EnglishToTamilPropertyFinder.FINDER, false, false, false);
     }

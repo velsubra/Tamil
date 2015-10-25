@@ -64,7 +64,16 @@ public interface JobContext<T> {
     /**
      * Updates are made available to other threads that may be polling for job results.
      * @see tamil.lang.api.job.JobManager#findJobResultSnapShot(long, Class)
+     *
+     * @see #setAutoFlush(boolean)
      */
     public void flush();
+
+    /**
+     * Sets auto flash.
+     * @param flush  when true every update is visible to the client. The default value is false.
+     * @ee #flush
+     */
+    public void setAutoFlush(boolean flush);
 
 }

@@ -41,6 +41,15 @@ public class JobResultImpl<T> implements JobResultSnapShot {
         return ObjectSerializer.SERIALIZED_TYPE.valueOf(bean.getChunkType());
     }
 
+    public JobResultChunk<T> getLastResults(int maxChunks) throws Exception {
+        int total = bean.getChunks().size();
+        int continuation_id = 0;
+        if (maxChunks < total) {
+            continuation_id = total - maxChunks;
+        }
+        return  getNewResults(continuation_id);
+    }
+
 
     public JobResultChunk<T> getNewResults(int continuousQueryId) throws Exception {
 

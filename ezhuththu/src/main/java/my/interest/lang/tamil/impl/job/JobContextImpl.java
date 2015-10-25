@@ -23,6 +23,7 @@ public class JobContextImpl<T> implements JobContext<T> {
     JobResultBean bean = null;
     ObjectPersistenceInterface persist = null;
     ObjectSerializer<T> serializer = null;
+    boolean autoFlush = false;
 
     public JobContextImpl(JobResultBean bean, ObjectPersistenceInterface persist, ObjectSerializer<T> serializer) {
         this.bean = bean;
@@ -37,11 +38,13 @@ public class JobContextImpl<T> implements JobContext<T> {
 
     public void setTitleId(String titleiId) {
          bean.setTitleId(titleiId);
+        if (autoFlush) flush();
     }
 
 
     public void setTitleMessage(String titleMessage) {
       bean.setTitleMessage(titleMessage);
+        if (autoFlush) flush();
     }
 
 
@@ -61,6 +64,8 @@ public class JobContextImpl<T> implements JobContext<T> {
             bean.getChunks().add(chunk);
         } catch (Exception e) {
             throw new ServiceException(e.getMessage());
+        }  finally {
+            if (autoFlush) flush();
         }
     }
 
@@ -78,17 +83,21 @@ public class JobContextImpl<T> implements JobContext<T> {
             }
         } catch (Exception e) {
             throw new ServiceException(e.getMessage());
+        } finally {
+            if (autoFlush) flush();
         }
     }
 
     public void resetResults() {
         bean.setUpdated(new Date());
         bean.getChunks().clear();
+        if (autoFlush) flush();
     }
 
     public void setStatusMessage(String message) {
         bean.setUpdated(new Date());
         bean.setStatusMessage(message);
+        if (autoFlush) flush();
 
     }
 
@@ -98,12 +107,14 @@ public class JobContextImpl<T> implements JobContext<T> {
         }
         bean.setPercentOfCompletion(percent);
         bean.setUpdated(new Date());
+        if (autoFlush) flush();
 
     }
 
     public void setRunning() {
         bean.setUpdated(new Date());
         bean.setStatus(JobStatus.RUNNING);
+        if (autoFlush) flush();
     }
 
     public void setCompleted() {
@@ -129,5 +140,9 @@ public class JobContextImpl<T> implements JobContext<T> {
     public void flush() {
         persist.update(bean.getId(), bean.getCategoryName(), TamilUtils.toXMLJAXBData(bean));
       //  System.out.println(bean.getPercentOfCompletion());
+    }
+
+    public void setAutoFlush(boolean flush) {
+       autoFlush = flush;
     }
 }

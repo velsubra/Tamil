@@ -14,7 +14,7 @@ import java.util.regex.Matcher;
  *
  * @author velsubra
  */
-public final class TamilMatcher implements MatchResult {
+public final class TamilMatcher implements MatchResult, SimpleMatcher {
     Matcher javaMatcher = null;
     TamilWord tamilWord = null;
 
@@ -38,6 +38,10 @@ public final class TamilMatcher implements MatchResult {
     public int end() {
         int end = javaMatcher.end();
         return tamilWord.getIndexForCodepointIndex(end -1) + 1;
+    }
+
+    public boolean matches() {
+        return javaMatcher.matches();
     }
 
     public boolean find() {

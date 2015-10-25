@@ -2,8 +2,10 @@ package tamil.lang.api.regex;
 
 import tamil.util.IPropertyFinder;
 import tamil.lang.exception.service.ServiceException;
+import tamil.util.regex.FeaturedPatternsList;
 import tamil.util.regex.TamilPattern;
 
+import java.util.List;
 import java.util.Set;
 
 
@@ -92,4 +94,16 @@ public interface TamilRXCompiler {
      * @see tamil.lang.api.ezhuththu.TamilCharacterSetCalculator#getEzhuththuSetDescriptions()
      */
     public Set<? extends RxDescription> getRegXDescriptions() throws ServiceException;
+
+
+    /**
+     * Compiles a pattern into  multiple {@link tamil.util.regex.TamilPattern} by alternating given alternative features.
+     * @param pattern the pattern to be found
+     * @param aliasFinder the alias definitions for custom pattern definitions. It could be null.
+     * @param base the base set of features to be used in every compiled pattern
+     * @param alternatives the list of alternative features used. There is n alternatives that are not already available in the base features, then there are 2 power n
+     *           {@link tamil.util.regex.TamilPattern} generated.  {@link tamil.util.regex.FeaturedMatchersList}  can be created against the returned {@link FeaturedPatternsList}.
+     * @return the list of possible compiled patterns.
+     */
+    public FeaturedPatternsList compileToPatternsList(String pattern, IPropertyFinder aliasFinder, List<RXFeature> base,  RXFeature ... alternatives);
 }
