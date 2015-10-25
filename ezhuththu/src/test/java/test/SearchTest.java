@@ -32,7 +32,7 @@ public class SearchTest {
 
     @Test
     public void testWithAlternatives() {
-        TamilRXCompiler compiler = TamilFactory.getRegEXCompiler().compileToPatternsList("${()}");
+       // TamilRXCompiler compiler = TamilFactory.getRegEXCompiler().compileToPatternsList("${()}");
     }
 
 
