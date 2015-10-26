@@ -31,7 +31,7 @@ public class JobTest {
     @Test
     public void testSearch() throws Exception {
         try {
-
+            ExecuteManager.start();
             JobManager manager = TamilFactory.getJobManager("jobs/custom/category");
             long id = manager.submit(new VerbSearcher(), Long.class);
             JobResultSnapShot<Long> resultSnapShot = manager.findJobResultSnapShot(id, Long.class);

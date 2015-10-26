@@ -16,10 +16,16 @@ public class ExecuteManager extends ThreadPoolExecutor {
     private static final int TOTAL_JOBS_ALLOWED = 5;
     private static final int QCAPACITY = TOTAL_JOBS_ALLOWED * 1000;
 
-    private static final ExecuteManager manager = new ExecuteManager(TOTAL_JOBS_ALLOWED /2 , TOTAL_JOBS_ALLOWED, 0, TimeUnit.MINUTES, new ArrayBlockingQueue<Runnable>(QCAPACITY));
+    private static  ExecuteManager manager = new ExecuteManager(TOTAL_JOBS_ALLOWED /2 , TOTAL_JOBS_ALLOWED, 0, TimeUnit.MINUTES, new ArrayBlockingQueue<Runnable>(QCAPACITY));
 
     private ExecuteManager(int corePoolSize, int maximumPoolSize, long keepAliveTime, TimeUnit unit, BlockingQueue<Runnable> workQueue) {
         super(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue);
+    }
+    public static void start() {
+        if (manager.isShutdown()) {
+            manager = new ExecuteManager(TOTAL_JOBS_ALLOWED /2 , TOTAL_JOBS_ALLOWED, 0, TimeUnit.MINUTES, new ArrayBlockingQueue<Runnable>(QCAPACITY));
+
+        }
     }
 
     public static void stop() {

@@ -1,14 +1,19 @@
 package test;
 
 import my.interest.lang.tamil.TamilUtils;
+import my.interest.lang.tamil.impl.job.ExecuteManager;
+import org.json.JSONObject;
 import org.junit.Assert;
 import org.junit.Test;
 import tamil.lang.TamilFactory;
+import tamil.lang.api.job.JobManager;
+import tamil.lang.api.job.JobResultSnapShot;
 import tamil.lang.api.regex.*;
 import tamil.util.IPropertyFinder;
 import tamil.util.regex.FeaturedMatchersList;
 import tamil.util.regex.FeaturedPatternsList;
 import tamil.util.regex.TamilPattern;
+import tamil.util.regex.impl.YaappuPatternFinderJob;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
@@ -32,7 +37,7 @@ public class SearchTest {
 
 
     @Test
-    public void testWithAlternatives() {
+    public void testWithAlternatives() throws Exception {
         TamilRXCompiler compiler = TamilFactory.getRegEXCompiler();
         FeaturedPatternsList list = compiler.compileToPatternsList("${(kurralh)}", null, null, RXKuttuAcrossCirFeature.FEATURE, RXAythamAsKurrilFeature.FEATURE, RXKuttuFeature.FEATURE, RXIncludeCanonicalEquivalenceFeature.FEATURE);
         //FeaturedPatternsList list = compiler.compileToPatternsList("${(kurralh)}", null, null,  RXAythamAsKurrilFeature.FEATURE,RXKuttuAcrossCirFeature.FEATURE);
@@ -53,46 +58,70 @@ public class SearchTest {
                 "தேர்ந்துசெய் வஃதே முறை";
         FeaturedMatchersList matcher = list.matchersList(allKurralh);
         int count = 0;
-        while(matcher.find()) {
-            count ++;
+        while (matcher.find()) {
+            count++;
             System.out.println(allKurralh.substring(matcher.start(), matcher.end()));
         }
         System.out.println(count);
         Assert.assertEquals(count, 4);
 
+
+        try {
+            ExecuteManager.start();
+            YaappuPatternFinderJob job = new YaappuPatternFinderJob(allKurralh, "${(kurralh)}");
+            JobManager manager = TamilFactory.getJobManager("jobs/kurralh/category");
+            long id = manager.submit(job, JSONObject.class);
+            JobResultSnapShot<JSONObject> resultSnapShot = manager.findJobResultSnapShot(id, JSONObject.class);
+
+            while (true) {
+                if (resultSnapShot == null) {
+                    throw new Exception("Not found");
+                }
+                System.out.println(resultSnapShot.getStatus().getCompletionPercent() +" %");
+
+                if (resultSnapShot.isDone()) break;
+                Thread.currentThread().sleep(100);
+                resultSnapShot = manager.findJobResultSnapShot(id, JSONObject.class);
+
+            }
+            System.out.println(resultSnapShot.getNewResults(0).getChunk());
+            Assert.assertEquals(4,resultSnapShot.getNewResults(0).getChunk().size() );
+        } finally {
+            ExecuteManager.stop();
+        }
+
     }
 
 
-
-        @Test
+    @Test
     public void testBasicTests() {
 
         TamilPattern pattern = TamilPattern.compile("${asai}");
         Matcher matcher = pattern.matcher("று");
         Assert.assertTrue(matcher.matches());
 
-         pattern = TamilPattern.compile("${ezhuththu}");
-         matcher = pattern.matcher("று");
+        pattern = TamilPattern.compile("${ezhuththu}");
+        matcher = pattern.matcher("று");
         Assert.assertTrue(matcher.matches());
 
-         pattern = TamilPattern.compile("${valiyugaravarisai}");
-         matcher = pattern.matcher("று");
+        pattern = TamilPattern.compile("${valiyugaravarisai}");
+        matcher = pattern.matcher("று");
         Assert.assertTrue(matcher.matches());
 
-         pattern = TamilPattern.compile("${ntedil}");
-         matcher = pattern.matcher("கௌ");
+        pattern = TamilPattern.compile("${ntedil}");
+        matcher = pattern.matcher("கௌ");
         Assert.assertTrue(matcher.matches());
 
-         pattern = TamilPattern.compile("${kurril}");
-         matcher = pattern.matcher("க");
+        pattern = TamilPattern.compile("${kurril}");
+        matcher = pattern.matcher("க");
         Assert.assertTrue(matcher.matches());
 
-         pattern = TamilPattern.compile("${uyirmey}");
-         matcher = pattern.matcher("க");
+        pattern = TamilPattern.compile("${uyirmey}");
+        matcher = pattern.matcher("க");
         Assert.assertTrue(matcher.matches());
 
-         pattern = TamilPattern.compile("${mei}", null, RXIncludeCanonicalEquivalenceFeature.FEATURE);
-         matcher = pattern.matcher("க்");
+        pattern = TamilPattern.compile("${mei}", null, RXIncludeCanonicalEquivalenceFeature.FEATURE);
+        matcher = pattern.matcher("க்");
         Assert.assertTrue(matcher.matches());
 
 
@@ -116,7 +145,7 @@ public class SearchTest {
         }
         String data = new String(TamilUtils.readAllFromFile("/Users/velsubra/Downloads/kambar-ramayanam.txt"), TamilUtils.ENCODING);
 
-    //      TamilPattern pattern = TamilPattern.compile("\\b(${எழுத்து})*?${வலியுகரவரிசை}${உயிர்}(${எழுத்து})*\\b" );
+        //      TamilPattern pattern = TamilPattern.compile("\\b(${எழுத்து})*?${வலியுகரவரிசை}${உயிர்}(${எழுத்து})*\\b" );
 
 //        TamilPattern pattern = TamilPattern.compile("${அரிதுஅரோ ஐப்போன்ற சொல்}", new IPropertyFinder() {
 //            public String findProperty(String p1) {
@@ -138,11 +167,11 @@ public class SearchTest {
 
 
         //  TamilPattern pattern = TamilPattern.compile("${(அசையெண்ணிக்கை[5-])}");
-          //TamilPattern pattern = TamilPattern.compile("(\\*\\*.*)");
-          //TamilPattern pattern = TamilPattern.compile("((\\*\\*.*))|(${எழுத்து}*(${[ழ்]}|${[ள்]})${!எழுத்து}+${தகரவரிசையுயிர்மெய்}${எழுத்து})");
+        //TamilPattern pattern = TamilPattern.compile("(\\*\\*.*)");
+        //TamilPattern pattern = TamilPattern.compile("((\\*\\*.*))|(${எழுத்து}*(${[ழ்]}|${[ள்]})${!எழுத்து}+${தகரவரிசையுயிர்மெய்}${எழுத்து})");
         //  TamilPattern pattern = TamilPattern.compile("((\\*\\*.*))|(${எழுத்து}*${[ழ்]}${இடைவெளி}${தகரவரிசையுயிர்மெய்}${எழுத்து}*)");
-        TamilPattern pattern = TamilPattern.compile("((\\*\\*.*)|${[ஔ]}${எழுத்து}+)",null, RXIncludeCanonicalEquivalenceFeature.FEATURE);
-          //TamilPattern pattern = TamilPattern.compile("((\\*\\*.*))|(${எழுத்து}*${[ழ்]}${இடைவெளி}${தகரவரிசையுயிர்மெய்}${எழுத்து}*)",null, RXIncludeCanonicalEquivalenceFeature.FEATURE);
+        TamilPattern pattern = TamilPattern.compile("((\\*\\*.*)|${[ஔ]}${எழுத்து}+)", null, RXIncludeCanonicalEquivalenceFeature.FEATURE);
+        //TamilPattern pattern = TamilPattern.compile("((\\*\\*.*))|(${எழுத்து}*${[ழ்]}${இடைவெளி}${தகரவரிசையுயிர்மெய்}${எழுத்து}*)",null, RXIncludeCanonicalEquivalenceFeature.FEATURE);
 //          TamilPattern pattern = TamilPattern.compile("((\\*\\*.*))|(${எழுத்து}*(${[ள்]})${!எழுத்து}+${தகரவரிசையுயிர்மெய்}${எழுத்து})");
 
 
@@ -166,9 +195,9 @@ public class SearchTest {
                     System.out.println(heading);
                     heading = null;
                 }
-                System.out.print( "\t" + count + "\t");
+                System.out.print("\t" + count + "\t");
                 System.out.println(found);
-            }  else {
+            } else {
                 heading = found;
             }
 

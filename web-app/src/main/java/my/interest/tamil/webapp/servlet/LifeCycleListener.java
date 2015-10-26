@@ -19,6 +19,7 @@ public class LifeCycleListener implements ServletContextListener {
     public void contextInitialized(ServletContextEvent sce) {
         //To change body of implemented methods use File | Settings | File Templates.
         TamilCharacterLookUpContext.lookup(0);
+        ExecuteManager.start();
     }
 
     @Override
