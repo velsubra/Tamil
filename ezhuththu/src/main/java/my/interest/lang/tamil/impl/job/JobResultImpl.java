@@ -43,12 +43,24 @@ public class JobResultImpl<T> implements JobResultSnapShot {
 
     public JobResultChunk<T> getLastResults(int maxChunks) throws Exception {
         int total = bean.getChunks().size();
-        int continuation_id = 0;
+        int index = 0;
         if (maxChunks < total) {
-            continuation_id = total - maxChunks;
+            index = total - maxChunks;
         }
-        return  getNewResults(continuation_id);
+
+        List<T> chunks = new ArrayList<T>();
+        int lastId = 0;
+        for (int i = index ; i < total; i++) {
+            my.interest.lang.tamil.generated.types.JobResultChunk chunk = bean.getChunks().get(i);
+            lastId = chunk.getId();
+            byte[] data = chunk.getData();
+            chunks.add(serializer.deserialize(data));
+        }
+
+        return new JobResultChunk<T>(bean.getId(), lastId, chunks);
     }
+
+
 
 
     public JobResultChunk<T> getNewResults(int continuousQueryId) throws Exception {

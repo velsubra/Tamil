@@ -22,10 +22,13 @@ public class TamilGlyphRx implements PatternGenerator {
     public Set<TamilCharacter> getCharacterSet() {
         return null;
     }
-  public String getName() {
+    public String getName() {
         return "கொக்கி";
     }
     public String getDescription() {
         return "Represent Tamil Glyph";
     }
+
+
+
 }

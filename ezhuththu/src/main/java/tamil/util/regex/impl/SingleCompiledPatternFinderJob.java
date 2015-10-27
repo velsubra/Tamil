@@ -14,7 +14,7 @@ import java.util.regex.Matcher;
  *
  * @author velsubra
  */
-public class CompiledPatternFinderJob extends SimpleMatcherBasedJob {
+public class SingleCompiledPatternFinderJob extends AbstractSimpleMatcherBasedJob {
     private TamilPattern pattern = null;
 
     /**
@@ -23,14 +23,14 @@ public class CompiledPatternFinderJob extends SimpleMatcherBasedJob {
      * @param source  the source text search
      * @param pattern the pattern to be found
      */
-    public CompiledPatternFinderJob(String source, TamilPattern pattern, String title) {
+    public SingleCompiledPatternFinderJob(String source, TamilPattern pattern, String title) {
         super(source, title);
         this.pattern = pattern;
     }
 
     @Override
     public SimpleMatcher getMatcher() {
-        return new SimpleMatcher0(pattern.matcher(source));
+        return new SimpleMatcher0(pattern.matcher(source),this.pattern.getTamilPattern());
     }
 
     protected void config(JobContext<JSONObject> context) {
@@ -40,9 +40,11 @@ public class CompiledPatternFinderJob extends SimpleMatcherBasedJob {
 
     private static class SimpleMatcher0 implements SimpleMatcher {
         private Matcher matcher = null;
+        private String pattern = null;
 
-        SimpleMatcher0(Matcher matcher) {
+        SimpleMatcher0(Matcher matcher,String pattern) {
             this.matcher = matcher;
+            this.pattern = pattern;
         }
 
         public boolean find() {
@@ -55,6 +57,10 @@ public class CompiledPatternFinderJob extends SimpleMatcherBasedJob {
 
         public int end() {
             return matcher.end();
+        }
+
+        public String getPattern() {
+            return this.pattern;
         }
     }
 

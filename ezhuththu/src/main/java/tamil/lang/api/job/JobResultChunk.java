@@ -5,7 +5,8 @@ import java.util.List;
 
 /**
  * <p>
- *    Represents Chunk of fresh work that has been finished from last poll.   Please see {@link tamil.lang.api.job.JobResultSnapShot#getNewResults(int)}
+ *    Represents chunk of work (work unit) that has been finished from last poll.
+ *    Please see {@link tamil.lang.api.job.JobResultSnapShot#getNewResults(int)}
  * </p>
  *
  * @author velsubra

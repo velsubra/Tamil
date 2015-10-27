@@ -14,8 +14,10 @@ import java.util.regex.Matcher;
 public final class FeaturedPatternsList {
 
     List<TamilPattern> patternlist = null;
-    FeaturedPatternsList(List<TamilPattern> patternlist) {
+    private String basePattern = null;
+    FeaturedPatternsList(String basePattern, List<TamilPattern> patternlist) {
         this.patternlist = patternlist;
+        this.basePattern = basePattern;
     }
     public FeaturedMatchersList matchersList(CharSequence source)  {
 
@@ -23,7 +25,7 @@ public final class FeaturedPatternsList {
         for (TamilPattern p : patternlist) {
             list.add(p.matcher(source));
         }
-        return new FeaturedMatchersList(list);
+        return new FeaturedMatchersList(basePattern,list);
 
     }
 

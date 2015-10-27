@@ -25,10 +25,21 @@ public final class TamilPattern {
 
     Pattern innerPattern = null;
 
+    /**
+     * Gets the tamil Pattern associated with this object
+     * @return the tamil pattern
+     */
+    public String getTamilPattern() {
+        return tamilPattern;
+    }
+
+    private String tamilPattern = null;
+
     private TamilPattern(String given, StringUtils.IndexContext context, int flags) {
         try {
 
           innerPattern = Pattern.compile(context.finalString, flags | Pattern.UNICODE_CHARACTER_CLASS);
+          this.tamilPattern = given;
 
         } catch (PatternSyntaxException pe) {
             //throw pe;
@@ -107,11 +118,11 @@ public final class TamilPattern {
 
     public TamilMatcher tamilMatcher(String sequence) {
         TamilWord word = TamilWord.from(sequence, true);
-        return new TamilMatcher(innerPattern.matcher(sequence), word);
+        return new TamilMatcher(tamilPattern,innerPattern.matcher(sequence), word);
     }
 
     public TamilMatcher matcher(TamilWord word) {
-        return new TamilMatcher(innerPattern.matcher(word.toString()), word);
+        return new TamilMatcher(tamilPattern,innerPattern.matcher(word.toString()), word);
     }
 
 
@@ -151,7 +162,7 @@ public final class TamilPattern {
            patternlist.add(compile(pattern, flags,aliasFinder, bcloned.getFeatures(RXFeature.class).toArray(new RXFeature[0])));
         }
 
-        return new FeaturedPatternsList(patternlist);
+        return new FeaturedPatternsList( pattern,patternlist);
 
     }
 }

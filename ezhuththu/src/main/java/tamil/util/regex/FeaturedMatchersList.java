@@ -19,10 +19,12 @@ import java.util.regex.Matcher;
 public final class FeaturedMatchersList implements SimpleMatcher {
 
     List<Matcher> list = null;
+    private String basePattern;
     private Matcher shortDistantMatcher = null;
 
-    FeaturedMatchersList(List<Matcher> list) {
+    FeaturedMatchersList(String basePattern,List<Matcher> list) {
         this.list = list;
+        this.basePattern = basePattern;
     }
 
 
@@ -99,6 +101,10 @@ public final class FeaturedMatchersList implements SimpleMatcher {
             throw new TamilPlatformException("No match was found");
         }
         return shortDistantMatcher.end();
+    }
+
+    public String getPattern() {
+        return basePattern;
     }
 
 

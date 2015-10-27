@@ -13,4 +13,6 @@ public interface SimpleMatcher {
     public int start();
     public int end();
 
+    public String getPattern();
+
 }

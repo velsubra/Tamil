@@ -7,9 +7,28 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Finds a pattern in the background.   It applies all possible feature alternatives that are applicable in யாப்பு context
+ * <br/>
+ * E.g)
+ * <pre>
+ *   source: இருள்சேர் இருவினையும் சேரா இறைவன்
+ *   pattern: ${தேமா}
+ *
+ *   The job does 4 units of work
+ *   [{"preSkippedCount":0,"match":"ருள்சேர்","preMatch":"இ"},
+ *   {"preSkippedCount":0,"match":"னையும்","preMatch":" இருவி"},
+ *   {"preSkippedCount":0,"match":"சேரா","preMatch":" "},
+ *   {"preSkippedCount":0,"match":"றைவன்","preMatch":" இ"}]
+ *
+ * </pre>
+ *
+ *
  * Created by vjhp on 10/25/2015.
  */
-public class YaappuPatternFinderJob extends FeaturedPatternsFinderJob {
+public class YaappuPatternFinderJob extends AbstractFeaturedPatternFinderJob {
+
+    IPropertyFinder aliasFinder = null;
+
     @Override
     public List<RXFeature> getBaseFeatures() {
         List<RXFeature> list = new ArrayList<RXFeature>();
@@ -29,10 +48,15 @@ public class YaappuPatternFinderJob extends FeaturedPatternsFinderJob {
 
     @Override
     public IPropertyFinder getAliasFinder() {
-        return null;
+        return aliasFinder;
     }
 
     public YaappuPatternFinderJob(String source, String pattern) {
         super(source, pattern);
+    }
+
+    public YaappuPatternFinderJob(String source, String pattern, IPropertyFinder aliasFinder) {
+        super(source, pattern);
+        this.aliasFinder = aliasFinder;
     }
 }

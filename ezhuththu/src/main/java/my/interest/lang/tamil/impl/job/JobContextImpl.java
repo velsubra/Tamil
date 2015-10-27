@@ -108,6 +108,7 @@ public class JobContextImpl<T> implements JobContext<T> {
         if (percent > 100) {
             percent = percent % 100;
         }
+
         bean.setPercentOfCompletion(percent);
         bean.setUpdated(new Date());
         if (autoFlush) flush();

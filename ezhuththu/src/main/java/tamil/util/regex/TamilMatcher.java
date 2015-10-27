@@ -17,10 +17,12 @@ import java.util.regex.Matcher;
 public final class TamilMatcher implements MatchResult, SimpleMatcher {
     Matcher javaMatcher = null;
     TamilWord tamilWord = null;
+    String tamilPattern = null;
 
-    public TamilMatcher(Matcher javaMatcher, TamilWord tamilWord) {
+    public TamilMatcher( String tamilPattern, Matcher javaMatcher, TamilWord tamilWord) {
         this.javaMatcher = javaMatcher;
         this.tamilWord = tamilWord;
+        this.tamilPattern = tamilPattern;
     }
 
     public int start() {
@@ -38,6 +40,10 @@ public final class TamilMatcher implements MatchResult, SimpleMatcher {
     public int end() {
         int end = javaMatcher.end();
         return tamilWord.getIndexForCodepointIndex(end -1) + 1;
+    }
+
+    public String getPattern() {
+        return tamilPattern;
     }
 
     public boolean matches() {

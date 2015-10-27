@@ -16,10 +16,32 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * A background character counter.
+ * <p>
+ *     Job to count the number of characters  that belong to a given list of character sets  at the given input source.
+ *     E.g
+ *     <pre>
+ *         source :aஇருள்சேர் இருவினையும் சேரா இறைவன்
+ *
+ *         The job produces the following JSON . This contains only a single work unit that gets updated.
+ *         [{"labels":["எழுத்து","வலியுகரவரிசை","அகரவரிசை"],"counts":[17,0,1]]}]
+ *
+ *         where,
+ *         labels - Array, the given list of character set names   . See {@link #PROP_LABELS_ARRAY}
+ *         counts - Array, the list counts of characters  from the respective character sets, in the same order as the labels    See {@link #PROP_COUNTS_ARRAY}
+ *
+ *         "எழுத்து","வலியுகரவரிசை","அகரவரிசை" are the given list of character set names.
+ *
+ *     </pre>
+ *
+ * </p>
+ *
  * Created by vjhp on 10/25/2015.
  */
-public class CharacterCounterJob  implements JobRunnable<JSONObject> {
+public class CharacterCounterJob implements JobRunnable<JSONObject> {
+
+    public static final String PROP_LABELS_ARRAY = "labels";
+    public static final String PROP_COUNTS_ARRAY = "counts";
+
     TamilWord source = null;
     List<String> characterSetNames = null;
 
@@ -71,12 +93,13 @@ public class CharacterCounterJob  implements JobRunnable<JSONObject> {
     }
 
     protected void continuousUpdate(JobContext<JSONObject> context, int characterCount, JSONObject json) {
+        boolean toUpdate = true;
         if (source.size() > 100) {
-            boolean toUpdate = characterCount % (source.size()/100)  == 0;
-            if (toUpdate) {
-                context.setPercentOfCompletion((int)(characterCount/source.size() * 100.0));
-                context.updateLastResult(json);
-            }
+            toUpdate = characterCount % (source.size() / 100) == 0;
+        }
+        if (toUpdate) {
+            context.setPercentOfCompletion((int) (1.0* characterCount / source.size() * 100.0));
+            context.updateLastResult(json);
         }
     }
 

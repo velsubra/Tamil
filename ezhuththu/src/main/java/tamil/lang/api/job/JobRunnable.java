@@ -2,13 +2,14 @@ package tamil.lang.api.job;
 
 /**
  * <p>
- * The runnable object that can be submitted for execution.    User would implement this interface.
+ * The runnable object that can be submitted for execution.
+ * User would implement this interface and summit of background execution using {@link tamil.lang.api.job.JobManager#submit(JobRunnable, Class)}
  * </p>
  *
  * @author velsubra
  * @see tamil.lang.api.job.JobManager
  */
-public interface  JobRunnable<T> {
+public interface JobRunnable<T> {
 
     /**
      * The run method to be implemented by the user
