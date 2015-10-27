@@ -998,12 +998,13 @@ var TamilFactory = new function () {
     /**
      * Gets  Job Manager
      * <p>
-     * <b>Usage: {@link TamilFactory}.createJobManager()</b>
+     * <b>Usage: {@link TamilFactory}.createJobManager(category)</b>
      * </p>
      * @constructor
-     *
+     * @param category the job category with which the  JobManager was acquired while submitting the job.
      *
      */
+
     this.getJobManager = function (category) {
 
 
@@ -1014,9 +1015,9 @@ var TamilFactory = new function () {
         /**
          * Polls for a job
          *
-         * @param callback
-         * @param id
-         * @param continuation_id
+         * @param callback - the call back to received the results
+         * @param id - the id of the job
+         * @param continuation_id - the continuation id after which, the units created to be returned.
          */
         this.poll = function (callback, id, continuation_id) {
             continuation_id = typeof continuation_id !== 'undefined' ? continuation_id : 0;
@@ -1044,11 +1045,44 @@ var TamilFactory = new function () {
                 }, 100);
             }
 
+             /**
+             * Polls for a job
+             *
+             * @param callback - the call back to received the results
+             * @param id - the id of the job
+             * @param unitCount - the max number of last unit counts requested.
+             */
+            this.getLastUnits = function (callback, id, unitCount) {
+                unitCount = typeof unitCount !== 'undefined' ? unitCount : 1;
+                category = typeof category !== 'undefined' ? category.trim() : "";
+                if (category.indexOf("/") != 0) {
+                    category = "/" + category;
+                }
+                    jQuery.ajax({
+                        type: 'get',
+                        url: this.job_poll_url + id + "/category" + category +"/?includeUnits=true&last-unit-work-count="+unitCount,
+
+                        contentType: "text/plain; charset=utf-8",
+                        async: true,
+                        success: function (data, status, jqXHR) {
+
+                            if (status != 'success') {
+                                alert("Error status:" + status);
+                                return;
+                            }
+
+                            callback(data);
+                            // console.log("Passing async response ..---------*****---------." + data.splitways);
+                            return;
+                        }
+                    }, 100);
+                }
+
         /**
          * list jobs
          *
-         * @param callback
-         * @param includeUnitWorks
+         * @param callback - the callback to receive the results
+         * @param includeUnitWorks - boolean to indicate if the results are to be included in the response.
          *
          */
         this.list = function (callback,includeUnitWorks) {

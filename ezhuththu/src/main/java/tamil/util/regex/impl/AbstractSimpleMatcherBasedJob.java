@@ -152,6 +152,9 @@ public abstract class AbstractSimpleMatcherBasedJob implements JobRunnable<JSONO
         if (source.length() > 0) {
             context.setPercentOfCompletion((int) (1.0 * matcher.start() / source.length() * 100.0));
         }
+//        try {
+//            Thread.currentThread().sleep(5000);
+//        } catch (Exception e) {}
     }
 
     protected void config(JobContext<JSONObject> context) {

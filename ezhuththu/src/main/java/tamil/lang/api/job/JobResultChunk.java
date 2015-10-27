@@ -13,15 +13,22 @@ import java.util.List;
  */
 public final class JobResultChunk<T> implements Serializable {
 
-    public JobResultChunk(long jobid, int lastQueryId, List<T> chunk) {
+    public JobResultChunk(long jobid, int currentQueryId,  int lastQueryId, List<T> chunk) {
         this.jobid = jobid;
         this.latestContinuousQueryId = lastQueryId;
         this.chunk = chunk;
+        this.currentContinuousQueryId = currentQueryId;
     }
 
     List<T> chunk;
     long jobid;
     int latestContinuousQueryId;
+
+    public int getCurrentContinuousQueryId() {
+        return currentContinuousQueryId;
+    }
+
+    int currentContinuousQueryId;
 
     /**
      * Returns the job id associated with the result

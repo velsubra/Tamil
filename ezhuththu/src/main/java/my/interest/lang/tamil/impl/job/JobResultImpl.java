@@ -50,18 +50,25 @@ public class JobResultImpl<T> implements JobResultSnapShot {
 
         List<T> chunks = new ArrayList<T>();
         int lastId = 0;
+        int currentId = 0;
+        if (index > 0) {
+          currentId =  bean.getChunks().get(index - 1).getId();
+        }
         for (int i = index ; i < total; i++) {
             my.interest.lang.tamil.generated.types.JobResultChunk chunk = bean.getChunks().get(i);
+
             lastId = chunk.getId();
             byte[] data = chunk.getData();
             chunks.add(serializer.deserialize(data));
         }
 
-        return new JobResultChunk<T>(bean.getId(), lastId, chunks);
+        return new JobResultChunk<T>(bean.getId(), currentId, lastId, chunks);
     }
 
 
-
+    public int getTotalUnitsDone() {
+        return bean.getChunks().size();
+    }
 
     public JobResultChunk<T> getNewResults(int continuousQueryId) throws Exception {
 
@@ -80,7 +87,7 @@ public class JobResultImpl<T> implements JobResultSnapShot {
 
 
         }
-        return new JobResultChunk<T>(bean.getId(), lastId, chunks);
+        return new JobResultChunk<T>(bean.getId(),continuousQueryId, lastId, chunks);
 
     }
 

@@ -79,7 +79,7 @@ public class JobContextImpl<T> implements JobContext<T> {
                 addResult(result);
             } else {
                 JobResultChunk chunk = bean.getChunks().get(bean.getChunks().size() - 1);
-                chunk.setId(1 + chunk.getId());
+               // chunk.setId(1 + chunk.getId());
                 chunk.setData(serializer.serialize(result));
                 chunk.setWhen(new Date());
 
@@ -142,7 +142,26 @@ public class JobContextImpl<T> implements JobContext<T> {
     }
 
     public void flush() {
-        persist.update(bean.getId(), bean.getCategoryName(), TamilUtils.toXMLJAXBData(bean));
+        int count = 0;
+        while(true) {
+
+            try {
+                count ++;
+                persist.update(bean.getId(), bean.getCategoryName(), TamilUtils.toXMLJAXBData(bean));
+                break;
+            } catch (Throwable t) {
+                t.printStackTrace();
+                if (count == 10 ) {
+                    break;
+                }
+                try {
+                    Thread.currentThread().sleep(count * 1000);
+                } catch (Exception e) {
+
+                }
+            }
+        }
+
         //  System.out.println(bean.getPercentOfCompletion());
     }
 

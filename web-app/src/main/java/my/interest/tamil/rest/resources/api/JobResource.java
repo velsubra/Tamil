@@ -99,6 +99,7 @@ public class JobResource extends BaseResource {
             }
             obj.put("percent", status.getCompletionPercent());
             obj.put("unitType", result.getSerializedType().toString());
+            obj.put("totalUnitCount", result.getTotalUnitsDone());
             obj.put("startedDesc", TimeUtils.millisToLongDHMS(new Date().getTime() - status.getStartTime().getTime(), false));
             obj.put("updatedDesc", TimeUtils.millisToLongDHMS(new Date().getTime() - status.getLastUpdatedTime().getTime(), false));
             JobResultChunk<String> chunks = null;
@@ -110,8 +111,9 @@ public class JobResource extends BaseResource {
 
 
             obj.put("latestContinuationId", chunks.getLatestContinuousQueryId());
-            obj.put("currentContinuationId", continuation_id);
+
             if (includeUnits) {
+                obj.put("currentContinuationId", chunks.getCurrentContinuousQueryId());
                 JSONArray array = new JSONArray();
                 obj.put("units", array);
                 for (String chunk : chunks.getChunk()) {

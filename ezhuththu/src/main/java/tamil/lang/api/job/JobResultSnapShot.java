@@ -12,6 +12,12 @@ import tamil.lang.api.persist.object.ObjectSerializer;
 public interface JobResultSnapShot<T> {
 
     /**
+     * Returns the total number of units done in this snapshot.
+     * @return total number of units
+     */
+    public int getTotalUnitsDone();
+
+    /**
      * Returns new chunk of work for the given  continuousQueryId.
      * @param continuousQueryId  the continuous id that could be 0 or that  which  was earlier  returned by {@link JobResultChunk#getLatestContinuousQueryId()}
      * @return  the result chunk.
