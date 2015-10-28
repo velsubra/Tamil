@@ -57,6 +57,7 @@ public class YaappuPatternsCounterJob extends AbstractPatternsCounterJob {
         List<RXFeature> list = new ArrayList<RXFeature>();
         list.add(RXIncludeCanonicalEquivalenceFeature.FEATURE);
         list.add(RXKuttuFeature.FEATURE);
+        list.add(RXOverrideSysDefnFeature.FEATURE);
         return list;
     }
 
