@@ -1,5 +1,8 @@
 package my.interest.lang.tamil;
 
+import tamil.lang.exception.TamilPlatformException;
+import tamil.util.regex.SimpleMatcher;
+
 import java.util.List;
 
 /**
@@ -28,12 +31,12 @@ public class TamilUtils extends EzhuththuUtils {
 
     }
 
-    public static int[]  flattenList(List<int []> list) {
+    public static int[] flattenList(List<int[]> list) {
         int length = 0;
-        for (int [] representation : list) {
+        for (int[] representation : list) {
             length += representation.length;
         }
-        int [] full = new int[length];
+        int[] full = new int[length];
         int index = 0;
         for (int[] representation : list) {
             for (int codepoint : representation) {
@@ -145,5 +148,75 @@ public class TamilUtils extends EzhuththuUtils {
 //        return isUyarthinai;
 //    }
 
+
+    public static SimpleMatcher transpose(SimpleMatcher matcher) {
+        return new SimpleMatcherTransposed0(matcher);
+    }
+
+    private static class SimpleMatcherTransposed0 implements SimpleMatcher {
+
+        SimpleMatcher wrapped = null;
+        private int lastMatchPointerStart = 0;
+        private int lastMatchPointerEnd = 0;
+
+        private int previousStart = 0;
+        private boolean finished = false;
+
+        SimpleMatcherTransposed0(SimpleMatcher wrapped) {
+            this.wrapped = wrapped;
+        }
+
+        @Override
+        public boolean find() {
+            while (!finished) {
+
+                boolean yes = wrapped.find();
+                lastMatchPointerStart = previousStart;
+                if (yes) {
+
+                    previousStart = wrapped.end();
+                    if (lastMatchPointerStart == wrapped.start()) {
+
+                        continue;
+                    } else {
+
+                        lastMatchPointerEnd = wrapped.start();
+                        return true;
+                    }
+                } else {
+                    finished = true;
+                    lastMatchPointerEnd = getSourceLength();
+                    return lastMatchPointerStart < lastMatchPointerEnd;
+                }
+            }
+            lastMatchPointerStart = lastMatchPointerEnd;
+            return false;
+        }
+
+        @Override
+        public int start() {
+
+            return lastMatchPointerStart;
+        }
+
+        @Override
+        public int end() {
+
+            return lastMatchPointerEnd;
+        }
+        @Override
+        public String getPattern() {
+            return wrapped.getPattern();
+        }
+        @Override
+        public boolean isTransposed() {
+            return !wrapped.isTransposed();
+        }
+
+
+        public int getSourceLength() {
+            return wrapped.getSourceLength();
+        }
+    }
 
 }

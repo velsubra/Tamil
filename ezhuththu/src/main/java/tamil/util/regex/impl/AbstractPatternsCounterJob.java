@@ -20,8 +20,8 @@ import java.util.List;
  *         [{"labels":["${எழுத்து}","${(மொழி)}","${(தேமா)}","${இடைவெளி}${எழுத்து}","${வலியுகரவரிசை}","${அகரவரிசை}"],"counts":[17,3,1,3,0,1]}]
  *
  *         where,
- *         labels - Array, the given list of patterns whose matchers are returned by {@link #getMatchers()}      .See {@link #PROP_LABELS_ARRAY}
- *         counts - Array, the list counts of patterns in the same order as in the labels.       See {@link #PROP_COUNTS_ARRAY}
+ *         labels - Array, the given list of patterns whose matchers are returned by {@link #getMatchers()}. See {@link #PROP_LABELS_ARRAY}
+ *         counts - Array, the list counts of patterns in the same order as in the labels. See {@link #PROP_COUNTS_ARRAY}
  *
  *         "${எழுத்து}","${(மொழி)}","${(தேமா)}","${இடைவெளி}${எழுத்து}","${வலியுகரவரிசை}","${அகரவரிசை} are the given list of patterns to be counted on the source.
  *
@@ -47,7 +47,7 @@ public abstract class AbstractPatternsCounterJob implements JobRunnable<JSONObje
 
     /**
      * Creates an un-submitted job.
-     * @param source the source to search in
+     * @param source the source or the pointer to the source text that needs to be processed. Please see {@link #resolveSource(tamil.lang.api.job.JobContext, String)}
      * @param title the title message for the job.
      */
     public AbstractPatternsCounterJob(String source, String title) {
@@ -56,7 +56,19 @@ public abstract class AbstractPatternsCounterJob implements JobRunnable<JSONObje
     }
 
 
-    public void run(JobContext<JSONObject> context) {
+    /**
+     * Method that gets called as the first operation from the job. This method allows override the actual input source with in the the job context.
+     * One use case is that users can pass an URL in the constructor and read that url in this method and return the content of the url for the processing.
+     * @param context  the job context
+     * @param inputSource  the input source that was passed in the constructor.
+     * @return the input source that will actually be processed. The default implementation is to return the same source.
+     */
+    protected String resolveSource(JobContext<JSONObject> context, String inputSource) {
+        return inputSource;
+    }
+
+
+    public final void run(JobContext<JSONObject> context) {
         try {
             context.setTitleMessage(title);
             context.setTitleId(title);

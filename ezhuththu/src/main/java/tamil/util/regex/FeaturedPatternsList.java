@@ -25,7 +25,7 @@ public final class FeaturedPatternsList {
         for (TamilPattern p : patternlist) {
             list.add(p.matcher(source));
         }
-        return new FeaturedMatchersList(basePattern,list);
+        return new FeaturedMatchersList(basePattern,list, source);
 
     }
 

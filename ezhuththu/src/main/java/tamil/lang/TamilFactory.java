@@ -1,5 +1,6 @@
 package tamil.lang;
 
+import my.interest.lang.tamil.TamilUtils;
 import my.interest.lang.tamil.impl.DefaultNumberReader;
 import my.interest.lang.tamil.impl.TamilEzhuththuSetCalculatorImpl;
 import my.interest.lang.tamil.impl.dictionary.DictionaryCollection;
@@ -23,6 +24,7 @@ import tamil.lang.known.IKnownWord;
 import tamil.lang.spi.CompoundWordParserProvider;
 import tamil.lang.spi.PersistenceManagerProvider;
 import tamil.lang.spi.TamilDictionaryProvider;
+import tamil.util.regex.SimpleMatcher;
 
 import java.util.Iterator;
 import java.util.ServiceLoader;
@@ -219,5 +221,16 @@ public final class TamilFactory {
            return new JobManagerImpl(category);
         }
     }
+
+
+    /**
+     * Transposes a matcher
+     * @param matcher the matcher to be transposed
+     * @return the transposed matcher
+     */
+    public static SimpleMatcher transpose(SimpleMatcher matcher) {
+        return TamilUtils.transpose(matcher);
+    }
+
 
 }

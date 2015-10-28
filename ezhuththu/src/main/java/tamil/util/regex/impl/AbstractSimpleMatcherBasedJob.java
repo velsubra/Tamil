@@ -15,32 +15,52 @@ import tamil.util.regex.SimpleMatcher;
  *     {"preSkippedCount":0,"match":"ருள்சேர்","preMatch":"இ","postMatch":""} where
  *
  *     match - the actual text matched by the given pattern against which the matcher {@link #getMatcher()} was created.
- *                 This property will be present.  See {@link #PROP_MATCH_TEXT}
+ *                 This property will be present. See {@link #PROP_MATCH_TEXT}
  *     preMatch - the text that was not matched. The match follows immediately this text.
  *                preMatch does not contain all the unmatched text.
  *                The size never exceed the shoulder size returned by {@link #getShoulderSize()}
- *                This may not be present to indicate null string.   See {@link #PROP_PRE_MATCH_TEXT}
+ *                This may not be present to indicate null string. See {@link #PROP_PRE_MATCH_TEXT}
  *     preSkippedCount - The number of characters that were skipped.
  *                These many characters are not available as part of the preMatch.
  *                This count does not include the length of preMatch.
  *                This may not be present to indicate a value of 0 . See {@link #PROP_PRE_SKIPPED_COUNT}
  *     postMatch - the text that was not matched. This follows immediately the matched text. This could be null.
- *                This may not be present to indicate null string.   See {@link #PROP_POST_MATCH_TEXT}
+ *                This may not be present to indicate null string. See {@link #PROP_POST_MATCH_TEXT}
  *     postSkippedCount - this may be in the last unit of match.
  *                This returns the last number of characters that were not matched. This count does not include the length of postMatch.
- *                This property may not be present.     See {@link #PROP_POST_SKIPPED_COUNT}
+ *                This property may not be present. See {@link #PROP_POST_SKIPPED_COUNT}
  * </pre>
- *
+ * <p/>
  * <p>
  * While presenting the search result, The result may be presented in the end user application in the following order
  * <pre>
  *
+ * StringBuffer buffer = new StringBuffer();
+ * for (JSONObject json : resultSnapShot.getNewResults(0).getChunk()) {
+ *   if (json.has(AbstractSimpleMatcherBasedJob.{@link #PROP_PRE_SKIPPED_COUNT})) {
+ *      buffer.append("\n.... " + json.getInt(AbstractSimpleMatcherBasedJob.PROP_PRE_SKIPPED_COUNT) + " code points skipped...\n");
+ *   }
+ *   if (json.has(AbstractSimpleMatcherBasedJob.{@link #PROP_PRE_MATCH_TEXT})) {
+ *       buffer.append(json.getString(AbstractSimpleMatcherBasedJob.{@link #PROP_PRE_MATCH_TEXT}));
+ *   }
+ *   buffer.append("\n\n");  //Match starts
+ *   buffer.append(json.getString(AbstractSimpleMatcherBasedJob.{@link #PROP_MATCH_TEXT));
+ *   //Match ends
+ *   buffer.append("\n\n");
+ *   if (json.has(AbstractSimpleMatcherBasedJob.{@link #PROP_MATCH_TEXT))) {
+ *      buffer.append(json.getString(AbstractSimpleMatcherBasedJob.PROP_POST_MATCH_TEXT));
+ *   }
+ *   if (json.has(AbstractSimpleMatcherBasedJob.{@link #PROP_POST_SKIPPED_COUNT})) {
+ *     buffer.append("\n.... " + json.getInt(AbstractSimpleMatcherBasedJob.{@link #PROP_POST_SKIPPED_COUNT}) + " code points skipped...\n");
+ *   }
+ * }
+ *  System.out.println(buffer.toString());
  *
  * </pre>
- *
- *
+ * <p/>
+ * <p/>
  * </p>
- *
+ * <p/>
  * Created by vjhp on 10/25/2015.
  */
 public abstract class AbstractSimpleMatcherBasedJob implements JobRunnable<JSONObject> {
@@ -53,6 +73,7 @@ public abstract class AbstractSimpleMatcherBasedJob implements JobRunnable<JSONO
 
     /**
      * Method that returns the matcher
+     *
      * @return the matcher
      */
     protected abstract SimpleMatcher getMatcher();
@@ -66,22 +87,43 @@ public abstract class AbstractSimpleMatcherBasedJob implements JobRunnable<JSONO
      * The size of the text around any match that need to be included in each work unit.
      * The length of the fields preMatch and postMatch never exceeds this value. If the size of the text around a match is more than this value, that part is skipped and not included in the work unit.
      * The skipped length is represented in the fields  preSkippedCount and  postSkippedCount
-     * @return  the max size of the  text that need to be included around a match.
+     *
+     * @return the max size of the  text that need to be included around a match.
      */
     protected int getShoulderSize() {
         return shoulderSize;
     }
 
+
+    /**
+     * Method that gets called as the first operation from the job. This method allows override the actual input source with in the the job context.
+     * One use case is that users can pass an URL in the constructor and read that url in this method and return the content of the url for the processing.
+     *
+     * @param context     the job context
+     * @param inputSource the input source that was passed in the constructor.
+     * @return the input source that will actually be processed. The default implementation is to return the same source.
+     */
+    protected String resolveSource(JobContext<JSONObject> context, String inputSource) {
+        return inputSource;
+    }
+
     private int shoulderSize = 200;
 
 
+    /**
+     * Constructor for a job.
+     *
+     * @param source the source or the pointer to the source text that needs to be processed. Please see {@link #resolveSource(tamil.lang.api.job.JobContext, String)}
+     * @param title  the title for the job
+     */
     public AbstractSimpleMatcherBasedJob(String source, String title) {
         this.source = source;
         this.title = title;
     }
 
-    public void run(JobContext<JSONObject> context) {
+    public final void run(JobContext<JSONObject> context) {
         try {
+            this.source = resolveSource(context, this.source);
             context.setTitleMessage(title);
             context.setTitleId(title);
             config(context);
@@ -90,6 +132,9 @@ public abstract class AbstractSimpleMatcherBasedJob implements JobRunnable<JSONO
             JSONObject previousMatch = null;
             matcher = getMatcher();
             while (matcher.find()) {
+                if (previousMatch != null) {
+                    insertPreviousMatch(context, previousMatch, true);
+                }
                 JSONObject match = new JSONObject();
                 String nonMatchText = source.substring(lastEnd, matcher.start());
                 String matchText = source.substring(matcher.start(), matcher.end());
@@ -122,19 +167,20 @@ public abstract class AbstractSimpleMatcherBasedJob implements JobRunnable<JSONO
 
                 //update looping context
                 lastEnd = matcher.end();
-                matchFound(context, match);
+
                 previousMatch = match;
             }
-             if (previousMatch != null) {
-                 String lastNonMatchText = source.substring(lastEnd, source.length());
-                 if (lastNonMatchText.length() > 0) {
-                     if (lastNonMatchText.length() > shoulderSize) {
-                         previousMatch.put("postSkippedCount", lastNonMatchText.length() - shoulderSize);
-                         lastNonMatchText = lastNonMatchText.substring(0, shoulderSize);
-                     }
-                     previousMatch.put("postMatch", lastNonMatchText);
-                 }
-             }
+            if (previousMatch != null) {
+                String lastNonMatchText = source.substring(lastEnd, source.length());
+                if (lastNonMatchText.length() > 0) {
+                    if (lastNonMatchText.length() > shoulderSize) {
+                        previousMatch.put("postSkippedCount", lastNonMatchText.length() - shoulderSize);
+                        lastNonMatchText = lastNonMatchText.substring(0, shoulderSize);
+                    }
+                    previousMatch.put("postMatch", lastNonMatchText);
+                }
+                insertPreviousMatch(context, previousMatch, false);
+            }
 
 
         } catch (Exception e) {
@@ -147,9 +193,9 @@ public abstract class AbstractSimpleMatcherBasedJob implements JobRunnable<JSONO
         context.updateLastResult(previousMatch);
     }
 
-    protected void matchFound(JobContext<JSONObject> context, JSONObject match) {
-        context.addResult(match);
-        if (source.length() > 0) {
+    protected void insertPreviousMatch(JobContext<JSONObject> context, JSONObject previousMatch, boolean currentMatchAvailable) {
+        context.addResult(previousMatch);
+        if (currentMatchAvailable && source.length() > 0) {
             context.setPercentOfCompletion((int) (1.0 * matcher.start() / source.length() * 100.0));
         }
 //        try {

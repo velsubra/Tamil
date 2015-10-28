@@ -16,6 +16,7 @@ public abstract class AbstractFeaturedPatternFinderJob extends AbstractSimpleMat
 
     private String pattern = null;
 
+
     /**
      * The base list of features that are applied. The alternative features are applied on top of these.
      * @return  the list of Base features.
@@ -35,9 +36,20 @@ public abstract class AbstractFeaturedPatternFinderJob extends AbstractSimpleMat
     public abstract IPropertyFinder getAliasFinder();
 
 
+    /**
+     * Returns if the matcher should be transposed to match what the given pattern would not match
+     * @return true of the matcher needs to be transposed, false otherwise.
+     */
+    public abstract boolean isToTransposeMatcher();
+
     protected SimpleMatcher getMatcher() {
         List<RXFeature> alternatives = getAlternatives();
-        return TamilFactory.getRegEXCompiler().compileToPatternsList(pattern, getAliasFinder(), getBaseFeatures(), alternatives == null ? null : alternatives.toArray(new RXFeature[0])).matchersList(source);
+        SimpleMatcher matcher = TamilFactory.getRegEXCompiler().compileToPatternsList(pattern, getAliasFinder(), getBaseFeatures(), alternatives == null ? null : alternatives.toArray(new RXFeature[0])).matchersList(source);
+        if (!isToTransposeMatcher()) {
+            return matcher;
+        } else {
+            return TamilFactory.transpose(matcher);
+        }
 
     }
 

@@ -24,7 +24,7 @@ import java.util.List;
  *         labels - Array, the given list of patterns
  *         counts - Array, the list counts of  patterns, in the same order as the labels
  *
- *       "${எழுத்து}","${(மொழி)}","${(தேமா)}","${இடைவெளி}${எழுத்து}","${வலியுகரவரிசை}","${அகரவரிசை}" are the given list of character set nam
+ *       "${எழுத்து}","${(மொழி)}","${(தேமா)}","${இடைவெளி}${எழுத்து}","${வலியுகரவரிசை}","${அகரவரிசை}" are the given list patterns.
  *
  *
  * </pre>

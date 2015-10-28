@@ -28,6 +28,7 @@ import java.util.List;
 public class YaappuPatternFinderJob extends AbstractFeaturedPatternFinderJob {
 
     IPropertyFinder aliasFinder = null;
+    boolean transpose = false;
 
     @Override
     public List<RXFeature> getBaseFeatures() {
@@ -51,12 +52,19 @@ public class YaappuPatternFinderJob extends AbstractFeaturedPatternFinderJob {
         return aliasFinder;
     }
 
+
+    @Override
+    public boolean isToTransposeMatcher() {
+        return transpose;
+    }
+
     public YaappuPatternFinderJob(String source, String pattern) {
         super(source, pattern);
     }
 
-    public YaappuPatternFinderJob(String source, String pattern, IPropertyFinder aliasFinder) {
+    public YaappuPatternFinderJob(String source, String pattern, IPropertyFinder aliasFinder, boolean transpose) {
         super(source, pattern);
         this.aliasFinder = aliasFinder;
+        this.transpose = transpose;
     }
 }

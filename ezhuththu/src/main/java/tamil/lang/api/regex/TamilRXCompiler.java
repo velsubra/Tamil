@@ -97,8 +97,8 @@ public interface TamilRXCompiler {
 
 
     /**
-     * Compiles a pattern into  multiple {@link tamil.util.regex.TamilPattern} by alternating given alternative features.
-     * @param pattern the pattern to be found
+     * Compiles a pattern into  multiple {@link tamil.util.regex.TamilPattern}s by alternating given alternative features. However, You can get a single matcher against the patterns list.
+     * @param pattern the pattern to be found .
      * @param aliasFinder the alias definitions for custom pattern definitions. It could be null.
      * @param base the base set of features to be used in every compiled pattern
      * @param alternatives the list of alternative features used. There is n alternatives that are not already available in the base features, then there are 2 power n

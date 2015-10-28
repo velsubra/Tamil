@@ -26,8 +26,8 @@ import java.util.Set;
  *         [{"labels":["எழுத்து","வலியுகரவரிசை","அகரவரிசை"],"counts":[17,0,1]]}]
  *
  *         where,
- *         labels - Array, the given list of character set names   . See {@link #PROP_LABELS_ARRAY}
- *         counts - Array, the list counts of characters  from the respective character sets, in the same order as the labels    See {@link #PROP_COUNTS_ARRAY}
+ *         labels - Array, the given list of character set names. See {@link #PROP_LABELS_ARRAY}
+ *         counts - Array, the list counts of characters  from the respective character sets, in the same order as the labels See {@link #PROP_COUNTS_ARRAY}.
  *
  *         "எழுத்து","வலியுகரவரிசை","அகரவரிசை" are the given list of character set names.
  *
@@ -50,8 +50,20 @@ public class CharacterCounterJob implements JobRunnable<JSONObject> {
         this.characterSetNames = characterSetNames;
     }
 
-    public void run(JobContext<JSONObject> context) {
+    /**
+     * Method that gets called as the first operation from the job. This method allows override the actual input source with in the the job context.
+     * One use case is that users can pass an URL in the constructor and read that url in this method and return the content of the url for the processing.
+     * @param context  the job context
+     * @param inputSource  the input source that was passed in the constructor.
+     * @return the input source that will actually be processed. The default implementation is to return the same source.
+     */
+    protected TamilWord resolveSource(JobContext<JSONObject> context, TamilWord inputSource) {
+        return inputSource;
+    }
+
+    public final  void run(JobContext<JSONObject> context) {
         try {
+            this.source = resolveSource(context, source);
             config(context);
             TamilCharacterSetCalculator calc = TamilFactory.getTamilCharacterSetCalculator();
             List<Set<TamilCharacter>> sets = new ArrayList<Set<TamilCharacter>>(characterSetNames.size());

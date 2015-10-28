@@ -46,6 +46,15 @@ public final class TamilMatcher implements MatchResult, SimpleMatcher {
         return tamilPattern;
     }
 
+    public boolean isTransposed() {
+        return false;
+    }
+
+
+    public int getSourceLength() {
+        return tamilWord.size();
+    }
+
     public boolean matches() {
         return javaMatcher.matches();
     }

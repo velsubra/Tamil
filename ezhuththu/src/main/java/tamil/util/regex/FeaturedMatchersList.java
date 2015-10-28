@@ -21,10 +21,12 @@ public final class FeaturedMatchersList implements SimpleMatcher {
     List<Matcher> list = null;
     private String basePattern;
     private Matcher shortDistantMatcher = null;
+    private CharSequence source = null;
 
-    FeaturedMatchersList(String basePattern,List<Matcher> list) {
+    FeaturedMatchersList(String basePattern,List<Matcher> list, CharSequence source) {
         this.list = list;
         this.basePattern = basePattern;
+        this.source = source;
     }
 
 
@@ -105,6 +107,14 @@ public final class FeaturedMatchersList implements SimpleMatcher {
 
     public String getPattern() {
         return basePattern;
+    }
+
+    public boolean isTransposed() {
+        return false;
+    }
+
+    public int getSourceLength() {
+        return source.length();
     }
 
 

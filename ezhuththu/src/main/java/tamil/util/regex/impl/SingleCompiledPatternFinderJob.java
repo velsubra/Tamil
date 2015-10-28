@@ -30,7 +30,7 @@ public class SingleCompiledPatternFinderJob extends AbstractSimpleMatcherBasedJo
 
     @Override
     public SimpleMatcher getMatcher() {
-        return new SimpleMatcher0(pattern.matcher(source),this.pattern.getTamilPattern());
+        return new SimpleMatcher0(pattern.matcher(source),this.pattern.getTamilPattern(), this.source);
     }
 
     protected void config(JobContext<JSONObject> context) {
@@ -41,10 +41,12 @@ public class SingleCompiledPatternFinderJob extends AbstractSimpleMatcherBasedJo
     private static class SimpleMatcher0 implements SimpleMatcher {
         private Matcher matcher = null;
         private String pattern = null;
+        private String source = null;
 
-        SimpleMatcher0(Matcher matcher,String pattern) {
+        SimpleMatcher0(Matcher matcher,String pattern, String source) {
             this.matcher = matcher;
             this.pattern = pattern;
+            this.source = source;
         }
 
         public boolean find() {
@@ -61,6 +63,15 @@ public class SingleCompiledPatternFinderJob extends AbstractSimpleMatcherBasedJo
 
         public String getPattern() {
             return this.pattern;
+        }
+
+        public boolean isTransposed() {
+            return false;
+        }
+
+
+        public int getSourceLength() {
+            return source.length();
         }
     }
 
