@@ -22,8 +22,9 @@ public final class FeaturedMatchersList implements SimpleMatcher {
     private String basePattern;
     private Matcher shortDistantMatcher = null;
     private CharSequence source = null;
+    private int lastIndex = 0;
 
-    FeaturedMatchersList(String basePattern,List<Matcher> list, CharSequence source) {
+    FeaturedMatchersList(String basePattern, List<Matcher> list, CharSequence source) {
         this.list = list;
         this.basePattern = basePattern;
         this.source = source;
@@ -59,7 +60,9 @@ public final class FeaturedMatchersList implements SimpleMatcher {
 
             for (Matcher m : list) {
                 if (m.find()) {
-
+                    if (m.start()< lastIndex) {
+                        continue;
+                    }
                     listFound.add(m);
                 }
             }
@@ -76,7 +79,10 @@ public final class FeaturedMatchersList implements SimpleMatcher {
                 return true;
             }
         } else {
-            shortDistantMatcher = nextUnConsumedMatcher();
+            lastIndex = shortDistantMatcher.end();
+            Matcher next = nextUnConsumedMatcher();
+
+            shortDistantMatcher = next;
             if (shortDistantMatcher == null) {
                 return find();
             } else {

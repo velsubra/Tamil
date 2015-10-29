@@ -29,7 +29,7 @@ public class SingleCompiledPatternFinderJob extends AbstractSimpleMatcherBasedJo
     }
 
     @Override
-    public SimpleMatcher getMatcher() {
+    public SimpleMatcher createMatcher() {
         return new SimpleMatcher0(pattern.matcher(source),this.pattern.getTamilPattern(), this.source);
     }
 

@@ -60,11 +60,11 @@ public class YaappuPatternFinderJob extends AbstractFeaturedPatternFinderJob {
     }
 
     public YaappuPatternFinderJob(String source, String pattern) {
-        super(source, pattern);
+        this(source, pattern, null, false);
     }
 
     public YaappuPatternFinderJob(String source, String pattern, IPropertyFinder aliasFinder, boolean transpose) {
-        super(source, pattern);
+        super(source, pattern,"Finding the  pattern:" + pattern + " with possible combinations of features. Search Negated:" + transpose);
         this.aliasFinder = aliasFinder;
         this.transpose = transpose;
     }

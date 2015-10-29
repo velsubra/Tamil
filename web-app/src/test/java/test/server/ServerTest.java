@@ -4,12 +4,15 @@ package test.server;
 import com.sun.jersey.api.container.grizzly2.servlet.GrizzlyWebContainerFactory;
 import com.sun.jersey.api.json.JSONConfiguration;
 import my.interest.lang.tamil.TamilUtils;
-import tamil.lang.*;
 import my.interest.lang.tamil.impl.job.ExecuteManager;
 import my.interest.lang.tamil.translit.EnglishToTamilCharacterLookUpContext;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.junit.Assert;
 import org.junit.Test;
+import tamil.lang.TamilCompoundCharacter;
+import tamil.lang.TamilFactory;
+import tamil.lang.TamilSimpleCharacter;
+import tamil.lang.TamilWord;
 
 import java.io.File;
 import java.util.HashMap;
@@ -40,7 +43,7 @@ public class ServerTest {
         System.out.println("getPositionDigest\t\t: " + w.getPositionDigest().toString());
 
 
-      w = TamilWord.from("தமிழ்");
+        w = TamilWord.from("தமிழ்");
         System.out.println(w.suggestionHashCode());
 
         w = TamilWord.from("தமில்");
@@ -66,26 +69,26 @@ public class ServerTest {
         System.out.println();
 
         System.out.println(TamilSimpleCharacter.AKTHU.getNumericStrength());
-        Assert.assertEquals(1,TamilSimpleCharacter.AKTHU.getNumericStrength());
+        Assert.assertEquals(1, TamilSimpleCharacter.AKTHU.getNumericStrength());
         System.out.println(TamilSimpleCharacter.a.getNumericStrength());
-        Assert.assertEquals(201,TamilSimpleCharacter.a.getNumericStrength());
+        Assert.assertEquals(201, TamilSimpleCharacter.a.getNumericStrength());
         System.out.println(TamilSimpleCharacter.aa.getNumericStrength());
         System.out.println(TamilSimpleCharacter.OU.getNumericStrength());
-        Assert.assertEquals(1701,TamilSimpleCharacter.OU.getNumericStrength());
+        Assert.assertEquals(1701, TamilSimpleCharacter.OU.getNumericStrength());
 
         System.out.println();
 
         System.out.println(TamilCompoundCharacter.IK.getNumericStrength());
         Assert.assertEquals(1800, TamilCompoundCharacter.IK.getNumericStrength());
         System.out.println(TamilSimpleCharacter.KA.getNumericStrength());
-        Assert.assertEquals(1801,TamilSimpleCharacter.KA.getNumericStrength());
+        Assert.assertEquals(1801, TamilSimpleCharacter.KA.getNumericStrength());
 
         System.out.println(TamilCompoundCharacter.IK_aa.getNumericStrength());
         System.out.println(TamilCompoundCharacter.IK_OU.getNumericStrength());
-        Assert.assertEquals(1816,TamilCompoundCharacter.IK_OU.getNumericStrength());
+        Assert.assertEquals(1816, TamilCompoundCharacter.IK_OU.getNumericStrength());
 
         System.out.println(TamilCompoundCharacter.IN_OU.getNumericStrength());
-        Assert.assertEquals(3816,TamilCompoundCharacter.IN_OU.getNumericStrength());
+        Assert.assertEquals(3816, TamilCompoundCharacter.IN_OU.getNumericStrength());
 
     }
 
@@ -93,9 +96,10 @@ public class ServerTest {
     public void testStartServer() throws Exception {
 
 
-   //  if (true) return;
+          if (true) return;
 
-//       System.setProperty("http.proxyPort", "80");
+        System.setProperty("http.proxyHost", "www-proxy.us.oracle.com");
+        System.setProperty("http.proxyPort", "80");
         final String baseUri = "http://localhost:8080/xyz";
         final Map<String, String> initParams =
                 new HashMap<String, String>();
@@ -110,10 +114,10 @@ public class ServerTest {
         threadSelector.start();
         //This work-around is required for running the server locally on grizzly.
         File service_consumer = new File("src/main/webapp/service-consumer.js");
-        String text = new String ( TamilUtils.readAllFromFile(service_consumer.getAbsolutePath()), TamilUtils.ENCODING);
+        String text = new String(TamilUtils.readAllFromFile(service_consumer.getAbsolutePath()), TamilUtils.ENCODING);
         text = text.replaceAll("//server = \"\";", "server = \"\";");
         TamilUtils.writeToFile(service_consumer, text.getBytes(TamilUtils.ENCODING));
-      //  System.out.println(text);
+        //  System.out.println(text);
         System.in.read();
         ExecuteManager.stop();
         threadSelector.stop();

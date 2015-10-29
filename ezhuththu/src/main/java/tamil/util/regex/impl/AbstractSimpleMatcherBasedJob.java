@@ -1,11 +1,14 @@
 package tamil.util.regex.impl;
 
 
+import my.interest.lang.tamil.TamilUtils;
 import org.json.JSONObject;
 import tamil.lang.api.job.JobContext;
 import tamil.lang.api.job.JobRunnable;
 import tamil.lang.exception.TamilPlatformException;
 import tamil.util.regex.SimpleMatcher;
+
+import java.util.Date;
 
 
 /**
@@ -14,7 +17,7 @@ import tamil.util.regex.SimpleMatcher;
  * <pre>
  *     {"preSkippedCount":0,"match":"ருள்சேர்","preMatch":"இ","postMatch":""} where
  *
- *     match - the actual text matched by the given pattern against which the matcher {@link #getMatcher()} was created.
+ *     match - the actual text matched by the given pattern against which the matcher {@link #createMatcher()} was created.
  *                 This property will be present. See {@link #PROP_MATCH_TEXT}
  *     preMatch - the text that was not matched. The match follows immediately this text.
  *                preMatch does not contain all the unmatched text.
@@ -76,7 +79,7 @@ public abstract class AbstractSimpleMatcherBasedJob implements JobRunnable<JSONO
      *
      * @return the matcher
      */
-    protected abstract SimpleMatcher getMatcher();
+    public abstract SimpleMatcher createMatcher();
 
 
     protected String source = null;
@@ -123,26 +126,36 @@ public abstract class AbstractSimpleMatcherBasedJob implements JobRunnable<JSONO
 
     public final void run(JobContext<JSONObject> context) {
         try {
+            String actualInput = this.source;
             this.source = resolveSource(context, this.source);
             context.setTitleMessage(title);
-            context.setTitleId(title);
             config(context);
             shoulderSize = getShoulderSize();
             int lastEnd = 0;
             JSONObject previousMatch = null;
-            matcher = getMatcher();
+            matcher = createMatcher();
+            boolean longSource = source.length() -lastEnd > 1024 * 100;
+
+            if (!longSource) {
+                context.setStatusMessage("Entering the search ...");
+            } else {
+                context.setStatusMessage("Entering the search in a  long source of data at " + new Date().toString() + ". It might take a while to find the first match ...");
+            }
+            int matches = 0;
             while (matcher.find()) {
+                matches ++;
                 if (previousMatch != null) {
                     insertPreviousMatch(context, previousMatch, true);
                 }
                 JSONObject match = new JSONObject();
+               // System.out.println("Last end:" + lastEnd + " start:" + matcher.start() + " End:" + matcher.end());
                 String nonMatchText = source.substring(lastEnd, matcher.start());
                 String matchText = source.substring(matcher.start(), matcher.end());
 
 
                 if (nonMatchText.length() > shoulderSize) {
                     int skipped = nonMatchText.length() - shoulderSize;
-
+                    match.put("preSkippedCount", skipped);
                     match.put("preMatch", nonMatchText.substring(skipped));
                     if (previousMatch != null) {
                         if (skipped <= shoulderSize) {
@@ -169,6 +182,14 @@ public abstract class AbstractSimpleMatcherBasedJob implements JobRunnable<JSONO
                 lastEnd = matcher.end();
 
                 previousMatch = match;
+
+                longSource = (source.length() - lastEnd) > 1024 * 100;
+
+                if (!longSource) {
+                    context.setStatusMessage(matches + " match(es) found. We are almost there. Continuing to find the next match ...");
+                } else {
+                    context.setStatusMessage(matches + " match(es) found. Continuing to find the next match. The source is still long (" + (source.length() - lastEnd)/ 1024 +" KB). It might take a while to find the next match ...");
+                }
             }
             if (previousMatch != null) {
                 String lastNonMatchText = source.substring(lastEnd, source.length());
@@ -181,6 +202,7 @@ public abstract class AbstractSimpleMatcherBasedJob implements JobRunnable<JSONO
                 }
                 insertPreviousMatch(context, previousMatch, false);
             }
+            context.setStatusMessage("Total matches found:" + matches);
 
 
         } catch (Exception e) {

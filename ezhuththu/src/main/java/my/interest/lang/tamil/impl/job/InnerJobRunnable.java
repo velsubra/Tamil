@@ -29,6 +29,7 @@ public class InnerJobRunnable implements Runnable {
             contextImpl.setPercentOfCompletion(100);
             contextImpl.setCompleted();
         } catch (Throwable t) {
+            t.printStackTrace();
             contextImpl.setFailed(t);
         }
     }

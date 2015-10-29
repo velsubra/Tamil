@@ -90,6 +90,7 @@ public class JobResource extends BaseResource {
             if (result.getTitleMessage() != null) {
                 obj.put("titleMessage", result.getTitleMessage());
             }
+            obj.put("titleId", result.getTitleId());
             obj.put("status", status.getStatus().toString());
             if (status.getStatusMessage() != null) {
                 obj.put("statusMessage", status.getStatusMessage());

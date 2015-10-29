@@ -42,7 +42,7 @@ public abstract class AbstractFeaturedPatternFinderJob extends AbstractSimpleMat
      */
     public abstract boolean isToTransposeMatcher();
 
-    protected SimpleMatcher getMatcher() {
+    public SimpleMatcher createMatcher() {
         List<RXFeature> alternatives = getAlternatives();
         SimpleMatcher matcher = TamilFactory.getRegEXCompiler().compileToPatternsList(pattern, getAliasFinder(), getBaseFeatures(), alternatives == null ? null : alternatives.toArray(new RXFeature[0])).matchersList(source);
         if (!isToTransposeMatcher()) {
@@ -60,8 +60,8 @@ public abstract class AbstractFeaturedPatternFinderJob extends AbstractSimpleMat
      * @param source  the source to search in.
      * @param pattern the pattern to be searched for.
      */
-    public AbstractFeaturedPatternFinderJob(String source, String pattern) {
-        super(source, "Finding the  pattern:" + pattern + " with possible combinations of features.");
+    public AbstractFeaturedPatternFinderJob(String source, String pattern, String title) {
+        super(source, title);
         this.pattern = pattern;
     }
 }

@@ -64,7 +64,7 @@ public final class FileBasedPersistenceImpl implements ObjectPersistenceInterfac
 
     private void createInternal(long id, String name, byte[] data) throws TamilPlatformException {
         File file = mapToFile(id, name);
-        if (file.exists()) {
+        if (TamilUtils.isFileExistingNFS(file)) {
             throw new ServiceException("Retry with different id. Data already exists:" + file.getAbsolutePath());
         }
         try {
@@ -103,17 +103,17 @@ public final class FileBasedPersistenceImpl implements ObjectPersistenceInterfac
         File file = mapToFile(id, name);
         File r_filelck = new File(file.getAbsolutePath() + ".r_lck");
         File filelck = new File(file.getAbsolutePath() + ".w_lck");
-        if (filelck.exists()) {
+        if (TamilUtils.isFileExistingNFS(filelck)) {
             throw new ServiceException("Lock file already exists at:" + file.getAbsolutePath());
         }
         try {
 
-            if (!file.exists()) {
+            if (!TamilUtils.isFileExistingNFS(file)) {
                 throw new ServiceException("Data does not exists at:" + file.getAbsolutePath());
             }
 
             int retry = 0;
-            while (r_filelck.exists()) {
+            while (TamilUtils.isFileExistingNFS(r_filelck)) {
                 if (retry == 1000) {
                     throw new ServiceException("Read seems to be busy. please retry after some time.");
                 }
@@ -134,7 +134,7 @@ public final class FileBasedPersistenceImpl implements ObjectPersistenceInterfac
 
             throw new ServiceException(e.getMessage());
         } finally {
-            if (filelck.exists()) {
+            if (TamilUtils.isFileExistingNFS(filelck)) {
                 filelck.delete();
             }
         }
@@ -149,7 +149,7 @@ public final class FileBasedPersistenceImpl implements ObjectPersistenceInterfac
 
             File w_filelck = new File(file.getAbsolutePath() + ".w_lck");
             int retry = 0;
-            while (w_filelck.exists()) {
+            while (TamilUtils.isFileExistingNFS(w_filelck)) {
                 if (retry == 1000) {
                     throw new ServiceException("Update seems to be busy. please retry after some time.");
                 }
@@ -159,7 +159,7 @@ public final class FileBasedPersistenceImpl implements ObjectPersistenceInterfac
 
             }
 
-            if (!file.exists()) {
+            if (!TamilUtils.isFileExistingNFS(file)) {
                 throw new ServiceException("Data does not exists");
             }
 
@@ -187,7 +187,7 @@ public final class FileBasedPersistenceImpl implements ObjectPersistenceInterfac
 
             throw new ServiceException(e.getMessage());
         } finally {
-            if (r_filelck.exists()) {
+            if (TamilUtils.isFileExistingNFS(r_filelck)) {
                 r_filelck.delete();
             }
         }
@@ -195,7 +195,7 @@ public final class FileBasedPersistenceImpl implements ObjectPersistenceInterfac
 
     public void delete(long id, String name) throws TamilPlatformException {
         File file = mapToFile(id, name);
-        if (!file.exists()) {
+        if (!TamilUtils.isFileExistingNFS(file)) {
             throw new ServiceException("Data does not exists:" + file.getAbsolutePath());
         }
         try {
@@ -213,7 +213,7 @@ public final class FileBasedPersistenceImpl implements ObjectPersistenceInterfac
 
     public boolean exists(long id, String name) throws TamilPlatformException {
         File file = mapToFile(id, name);
-        return file.exists();
+        return TamilUtils.isFileExistingNFS(file);
     }
 
     public List<Long> list(String name) throws TamilPlatformException {

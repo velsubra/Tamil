@@ -1,8 +1,11 @@
 package my.interest.lang.tamil;
 
-import tamil.lang.exception.TamilPlatformException;
 import tamil.util.regex.SimpleMatcher;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.List;
 
 /**
@@ -29,6 +32,24 @@ public class TamilUtils extends EzhuththuUtils {
 
     private TamilUtils() {
 
+    }
+
+
+    public static boolean isFileExistingNFS(File f) {
+
+        try {
+            InputStream in = new FileInputStream(f);
+            try {
+                in.close();
+            } catch (Exception e) {
+
+            }
+            return true;
+        } catch (FileNotFoundException fne) {
+            return false;
+        } catch (Exception e) {
+            return f.exists();
+        }
     }
 
     public static int[] flattenList(List<int[]> list) {
@@ -204,10 +225,12 @@ public class TamilUtils extends EzhuththuUtils {
 
             return lastMatchPointerEnd;
         }
+
         @Override
         public String getPattern() {
             return wrapped.getPattern();
         }
+
         @Override
         public boolean isTransposed() {
             return !wrapped.isTransposed();
