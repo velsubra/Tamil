@@ -2,10 +2,7 @@ package tamil.util.regex;
 
 import tamil.lang.exception.TamilPlatformException;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 import java.util.regex.Matcher;
 
 /**
@@ -19,15 +16,60 @@ import java.util.regex.Matcher;
 public final class FeaturedMatchersList implements SimpleMatcher {
 
     List<Matcher> list = null;
+    LinkedList<Matcher> foundUnused = null;
     private String basePattern;
     private Matcher shortDistantMatcher = null;
     private CharSequence source = null;
     private int lastIndex = 0;
 
     FeaturedMatchersList(String basePattern, List<Matcher> list, CharSequence source) {
-        this.list = list;
+        this.list = new ArrayList<Matcher>(list);
         this.basePattern = basePattern;
         this.source = source;
+
+    }
+
+
+    private void searchAgain() {
+        LinkedList<Matcher> temp = new LinkedList<Matcher>();
+        shortDistantMatcher = null;
+
+        for (Matcher m : list) {
+            while (true) {
+                if (m.find()) {
+                    if (m.start() < lastIndex) {
+                        continue;
+                    }
+                    temp.add(m);
+                    break;
+                } else {
+                    break;
+                }
+            }
+        }
+        if (temp.isEmpty()) return;
+        Collections.sort(temp, new Comparator<Matcher>() {
+            public int compare(Matcher o1, Matcher o2) {
+                return o1.start() - o2.start();
+            }
+        });
+        this.list = new ArrayList<Matcher>(temp);
+
+
+        shortDistantMatcher = temp.remove(0);
+        this.foundUnused = temp;
+    }
+
+
+    private void disCardFoundMatchers() {
+        LinkedList<Matcher> temp = new LinkedList<Matcher>();
+        for (Matcher m : foundUnused) {
+            if (m.start() >= lastIndex) {
+                temp.add(m);
+            }
+
+        }
+        this.foundUnused = temp;
     }
 
 
@@ -53,42 +95,60 @@ public final class FeaturedMatchersList implements SimpleMatcher {
         return false;
     }
 
-    public boolean find() {
-        if (shortDistantMatcher == null) {
-            List<Matcher> listFound = new ArrayList<Matcher>();
+    private void insertCurrentMatcher() {
 
+        int count = -1;
+        int index = -1;
+        for (Matcher m : foundUnused) {
+            count ++;
+            if (m.start() < shortDistantMatcher.start()) {
+                continue;
+            }  else {
 
-            for (Matcher m : list) {
-                if (m.find()) {
-                    if (m.start()< lastIndex) {
-                        continue;
-                    }
-                    listFound.add(m);
-                }
-            }
-            list = listFound;
-            Collections.sort(list, new Comparator<Matcher>() {
-                public int compare(Matcher o1, Matcher o2) {
-                    return o1.start() - o2.start();
-                }
-            });
-            if (list.isEmpty()) {
-                return false;
-            } else {
-                shortDistantMatcher = list.get(0);
-                return true;
-            }
-        } else {
-            lastIndex = shortDistantMatcher.end();
-            Matcher next = nextUnConsumedMatcher();
-
-            shortDistantMatcher = next;
-            if (shortDistantMatcher == null) {
-                return find();
-            } else {
-                return true;
+                index = count;
+                break;
             }
         }
+        if (index < 0) {
+            foundUnused.addLast(shortDistantMatcher);
+        }  else {
+            foundUnused.add(index, shortDistantMatcher);
+        }
+    }
+
+    public boolean find() {
+        if (shortDistantMatcher == null) {
+            searchAgain();
+
+        } else {
+            lastIndex = shortDistantMatcher.end();
+            disCardFoundMatchers();
+            if (foundUnused.isEmpty()) {
+                searchAgain();
+            } else {
+                Matcher next = foundUnused.get(0);
+                if (shortDistantMatcher.find()) {
+                    if (shortDistantMatcher.start() <= next.start()) {
+                        // Retain  shortDistantMatcher
+                    } else {
+
+                        //Insert
+                        insertCurrentMatcher();
+                        // get the first one.
+                        shortDistantMatcher = foundUnused.remove(0);
+                    }
+                } else {
+                    list.remove(shortDistantMatcher);
+                    shortDistantMatcher = foundUnused.remove(0);
+                }
+            }
+
+        }
+
+
+        return shortDistantMatcher != null;
+
+
     }
 
     private Matcher nextUnConsumedMatcher() {

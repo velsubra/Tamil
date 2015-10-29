@@ -39,6 +39,182 @@ public class SearchTest {
     }
 
 
+
+    @Test
+    public void testContinuous() throws Exception {
+        String kurralh ="1.அகர முதல எழுத்தெல்லாம் ஆதி\n" +
+                "பகவன் முதற்றே உலகு.\n" +
+                "\n" +
+                "2.கற்றதனால் ஆய பயனென்கொல் வாலறிவன்\n" +
+                "நற்றாள் தொழாஅர் எனின்.\n" +
+                "\n" +
+                "3.மலர்மிசை ஏகினான் மாணடி சேர்ந்தார்\n" +
+                "நிலமிசை நீடுவாழ் வார்.\n" +
+                "\n" +
+                "4.வேண்டுதல் வேண்டாமை இலானடி சேர்ந்தார்க்கு\n" +
+                "யாண்டும் இடும்பை இல.\n" +
+                "\n" +
+                "5.இருள்சேர் இருவினையும் சேரா இறைவன்\n" +
+                "பொருள்சேர் புகழ்புரிந்தார் மாட்டு.\n" +
+                "\n" +
+                "6.பொறிவாயில் ஐந்தவித்தான் பொய்தீர் ஒழுக்க\n" +
+                "நெறிநின்றார் நீடுவாழ் வார்.\n" +
+                "\n" +
+                "7.தனக்குவமை இல்லாதான் தாள்சேர்ந்தார்க் கல்லால்\n" +
+                "மனக்கவலை மாற்றல் அரிது.\n" +
+                "\n" +
+                "8.அறவாழி அந்தணன் தாள்சேர்ந்தார்க் கல்லால்\n" +
+                "பிறவாழி நீந்தல் அரிது.\n" +
+                "\n" +
+                "9.கோளில் பொறியின் குணமிலவே எண்குணத்தான்\n" +
+                "தாளை வணங்காத் தலை.\n" +
+                "\n" +
+                "10.பிறவிப் பெருங்கடல் நீந்துவர் நீந்தார்\n" +
+                "இறைவன் அடிசேரா தார்.\n" +
+                "\n" +
+                "11.வான்நின்று உலகம் வழங்கி வருதலால்\n" +
+                "தான்அமிழ்தம் என்றுணரற் பாற்று.\n" +
+                "\n" +
+                "12.துப்பார்க்குத் துப்பாய துப்பாக்கித் துப்பார்க்குத்\n" +
+                "துப்பாய தூஉம் மழை.\n" +
+                "\n" +
+                "13.விண்இன்று பொய்ப்பின் விரிநீர் வியனுலகத்து\n" +
+                "உள்நின்று உடற்றும் பசி.\n" +
+                "\n" +
+                "14.ஏரின் உழாஅர் உழவர் புயல்என்னும்\n" +
+                "வாரி வளங்குன்றிக் கால்.\n" +
+                "\n" +
+                "15.கெடுப்பதூஉம் கெட்டார்க்குச் சார்வாய்மற் றாங்கே\n" +
+                "எடுப்பதூஉம் எல்லாம் மழை.\n" +
+                "\n" +
+                "16.விசும்பின் துளிவீழின் அல்லால்மற் றாங்கே\n" +
+                "பசும்புல் தலைகாண்பு அரிது.\n" +
+                "\n" +
+                "17.நெடுங்கடலும் தன்நீர்மை குன்றும் தடிந்தெழிலி\n" +
+                "தான்நல்கா தாகி விடின்.\n" +
+                "\n" +
+                "18.சிறப்பொடு பூசனை செல்லாது வானம்\n" +
+                "வறக்குமேல் வானோர்க்கும் ஈண்டு.\n" +
+                "\n" +
+                "19.தானம் தவம்இரண்டும் தங்கா வியன்உலகம்\n" +
+                "வானம் வழங்கா தெனின்.\n" +
+                "\n" +
+                "20.நீர்இன்று அமையாது உலகெனின் யார்யார்க்கும்\n" +
+                "வான்இன்று அமையாது ஒழுக்கு.\n" +
+                "\n" +
+                "21.ஒழுக்கத்து நீத்தார் பெருமை விழுப்பத்து\n" +
+                "வேண்டும் பனுவல் துணிவு.\n" +
+                "\n" +
+                "22.துறந்தார் பெருமை துணைக்கூறின் வையத்து\n" +
+                "இறந்தாரை எண்ணிக்கொண் டற்று.\n" +
+                "\n" +
+                "23.இருமை வகைதெரிந்து ஈண்டுஅறம் பூண்டார்\n" +
+                "பெருமை பிறங்கிற்று உலகு.\n" +
+                "\n" +
+                "24.உரனென்னும் தோட்டியான் ஓரைந்தும் காப்பான்\n" +
+                "வரனென்னும் வைப்பிற்கோர் வித்து.\n" +
+                "\n" +
+                "25.ஐந்தவித்தான் ஆற்றல் அகல்விசும்பு ளார்கோமான்\n" +
+                "இந்திரனே சாலுங் கரி.\n" +
+                "\n" +
+                "26.செயற்கரிய செய்வார் பெரியர் சிறியர்\n" +
+                "செயற்கரிய செய்கலா தார்.\n" +
+                "\n" +
+                "27.சுவைஒளி ஊறுஓசை நாற்றமென ஐந்தின்\n" +
+                "வகைதெரிவான் கட்டே உலகு.\n" +
+                "\n" +
+                "28.நிறைமொழி மாந்தர் பெருமை நிலத்து\n" +
+                "மறைமொழி காட்டி விடும்.\n" +
+                "\n" +
+                "29.குணமென்னும் குன்றேறி நின்றார் வெகுளி\n" +
+                "கணமேயும் காத்தல் அரிது.\n" +
+                "\n" +
+                "30.அந்தணர் என்போர் அறவோர்மற் றெவ்வுயிர் க்கும்\n" +
+                "செந்தண்மை பூண்டொழுக லான்.\n" +
+                "\n" +
+                "31.சிறப்பு ஈனும் செல்வமும் ஈனும் அறத்தினூஉங்கு\n" +
+                "ஆக்கம் எவனோ உயிர்க்கு.\n" +
+                "\n" +
+                "32.அறத்தினூஉங்கு ஆக்கமும் இல்லை அதனை\n" +
+                "மறத்தலின் ஊங்கில்லை கேடு.\n" +
+                "\n" +
+                "33.ஒல்லும் வகையான் அறவினை ஓவாதே\n" +
+                "செல்லும்வாய் எல்லாஞ் செயல்.\n" +
+                "\n" +
+                "34.மனத்துக்கண் மாசிலன் ஆதல் அனைத்து அறன்\n" +
+                "ஆகுல நீர பிற.\n" +
+                "\n" +
+                "35.அழுக்காறு அவாவெகுளி இன்னாச்சொல் நான்கும்\n" +
+                "இழுக்கா இயன்றது அறம்.";
+
+        String pattern = "${(குறள்)}";
+        YaappuPatternFinderJob nottranposed = new YaappuPatternFinderJob(kurralh, pattern);
+        YaappuPatternFinderJob transposed = new YaappuPatternFinderJob(kurralh, pattern, null, true);
+
+        List<YaappuPatternFinderJob> list = new ArrayList<YaappuPatternFinderJob>();
+        list.add(nottranposed);
+        list.add(transposed);
+        try {
+            ExecuteManager.start();
+            for (YaappuPatternFinderJob job : list) {
+
+
+                JobManager manager = TamilFactory.getJobManager("jobs/search/simple/category");
+                long id = manager.submit(job, JSONObject.class);
+                JobResultSnapShot<JSONObject> resultSnapShot = manager.findJobResultSnapShot(id, JSONObject.class);
+
+                while (true) {
+                    if (resultSnapShot == null) {
+                        throw new Exception("Not found");
+                    }
+                    System.out.println(resultSnapShot.getStatus().getCompletionPercent() + " %");
+
+                    if (resultSnapShot.isDone()) break;
+                    Thread.currentThread().sleep(100);
+                    resultSnapShot = manager.findJobResultSnapShot(id, JSONObject.class);
+
+                }
+
+
+                StringBuffer buffer = new StringBuffer();
+                for (JSONObject json : resultSnapShot.getNewResults(0).getChunk()) {
+                    if (json.has(AbstractSimpleMatcherBasedJob.PROP_PRE_SKIPPED_COUNT)) {
+                        buffer.append("\n.... " + json.getInt(AbstractSimpleMatcherBasedJob.PROP_PRE_SKIPPED_COUNT) + " code points skipped...\n");
+                    }
+                    if (json.has(AbstractSimpleMatcherBasedJob.PROP_PRE_MATCH_TEXT)) {
+                        buffer.append(json.getString(AbstractSimpleMatcherBasedJob.PROP_PRE_MATCH_TEXT));
+                    }
+                    buffer.append("\n\n");
+                    buffer.append(json.getString(AbstractSimpleMatcherBasedJob.PROP_MATCH_TEXT));
+                    buffer.append("\n\n");
+                    if (json.has(AbstractSimpleMatcherBasedJob.PROP_POST_MATCH_TEXT)) {
+                        buffer.append(json.getString(AbstractSimpleMatcherBasedJob.PROP_POST_MATCH_TEXT));
+                    }
+                    if (json.has(AbstractSimpleMatcherBasedJob.PROP_POST_SKIPPED_COUNT)) {
+                        buffer.append("\n.... " + json.getInt(AbstractSimpleMatcherBasedJob.PROP_POST_SKIPPED_COUNT) + " code points skipped...\n");
+                    }
+                }
+
+                System.out.println(buffer.toString());
+                Assert.assertEquals(job ==nottranposed ? 30 : 31, resultSnapShot.getNewResults(0).getChunk().size());
+
+                JobResultChunk<JSONObject> lastResults = resultSnapShot.getLastResults(2);
+                Assert.assertEquals(2, lastResults.getChunk().size());
+
+                System.out.print("===>Job id:" + id);
+                Assert.assertEquals("FINISHED", resultSnapShot.getStatus().getStatus().toString());
+
+
+            }
+
+        } finally {
+            ExecuteManager.stop();
+        }
+
+
+    }
+
+
     @Test
     public void testFindKurralh() throws Exception {
         String kurralh =
