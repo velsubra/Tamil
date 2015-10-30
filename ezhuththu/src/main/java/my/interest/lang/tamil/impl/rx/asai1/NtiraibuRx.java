@@ -20,6 +20,6 @@ public   class NtiraibuRx extends YaappuBaseRx {
     }
 
     public String generate(FeatureSet featureSet) {
-        return  "(?:${ntirai}${valiyugaravarisai})";
+        return  "(?:${ntirai}${ugaravarisaiyuyirmei})";
     }
 }
