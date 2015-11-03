@@ -70,6 +70,8 @@ public abstract class AbstractPatternsCounterJob implements JobRunnable<JSONObje
 
     public final void run(JobContext<JSONObject> context) {
         try {
+            String actualInput = this.source;
+            source = resolveSource(context, source);
             context.setTitleMessage(title);
             context.setTitleId(title);
             config(context);

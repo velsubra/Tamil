@@ -45,7 +45,7 @@ import java.util.Set;
  * <li><b>Negation</b></li>    <p>
  * - There are two types of negations <br/>
  * - 1.1 Using prefix ! - This negates the letter set that follows it. The returned set for a Tamil letter set is the closure of given set over the 247 letters. ${!உயிர்} matches any of the 247-12 = 235 letters. This can appear only at the beginning of a letter set (basic or computed)<br/>
- * - 1.2 Using the literal அல்லாதது - This just negates the letter set that it follows. This can appear in the middle or at the end of a letter set. ${உயிரல்லாதது} and ${!உயிர்} means the same letter set.
+ * - 1.2 Using the literal அல்லாதது - This just negates the letter set that it  it is appended with. This can appear at the end of a letter set. ${உயிரல்லாதது} and ${!உயிர்} means the same letter set.
  * <p/>
  * <li><b>Union</b> </li>
  * <p/>

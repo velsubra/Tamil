@@ -211,12 +211,21 @@ public class TamilEzhuththuSetCalculatorImpl implements TamilCharacterSetCalcula
             return Collections.emptySet();
         }
         query = query.replaceAll("\\s+", " ");
+        boolean negate = false;
+        if (query.startsWith("!")) {
+            query = query.substring(1, query.length());
+            negate = true;
+        }
         String[] ors = query.split(" அல்லது ");
         Set<TamilCharacter> ret = new LinkedHashSet<TamilCharacter>();
         for (String or : ors) {
             ret.addAll(  resolve(or));
         }
-        return ret;
+        if (negate) {
+            return  EzhuththuUtils.filterOut(ret);
+        }  else {
+            return ret;
+        }
 
     }
 
