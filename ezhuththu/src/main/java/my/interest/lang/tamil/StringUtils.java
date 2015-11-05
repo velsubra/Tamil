@@ -255,6 +255,7 @@ public class StringUtils {
         return replaceWithContext(null, openmarker, closeMarker, origString, keys,exceptionWhenNotAllResolved, esecapeUnresolved, keepUnresolved, 0);
     }
     public static IndexContext replaceWithContext(IndexContext parent, String openmarker, String closeMarker, String origString, IPropertyFinder keys, boolean exceptionWhenNotAllResolved, boolean esecapeUnresolved, boolean keepUnresolved, int depth) {
+     //  System.out.println("Resolving:" + origString);
         if (closeMarker == null) {
             openmarker = null;
         }
@@ -272,6 +273,7 @@ public class StringUtils {
         int i = 0;
         String key = null;
         // CheckStyle:MagicNumber OFF
+        boolean atleastOneResolvedLast = false;
         while ((index = origString.indexOf(openmarker, i)) > -1) {
            // String remaining = origString.substring(index + openmarker.length());
            // String resolved =  origString.substring(0,index + openmarker.length());
@@ -289,6 +291,7 @@ public class StringUtils {
             finalString.append(origString.substring(i, index));
             String val = keys.findProperty(key);
             if (val != null) {
+                atleastOneResolvedLast = true;
                 endrange = new IndexContext.Range(finalString.length(), finalString.length() + val.length());
                 finalString.append(val);
                 if (!context.moreToResolve) {
@@ -318,6 +321,9 @@ public class StringUtils {
             }
             context.ranges.put(endrange, sourcerange);
             i = index + openmarker.length() + closeMarker.length() + key.length();
+        }
+        if (!atleastOneResolvedLast && keepUnresolved) {
+           context.moreToResolve = false;
         }
 
         finalString.append(origString.substring(i));

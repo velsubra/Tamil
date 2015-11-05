@@ -11,10 +11,7 @@ import my.interest.lang.tamil.impl.rx.asai2.TheamaRx;
 import my.interest.lang.tamil.impl.rx.asai3.*;
 import my.interest.lang.tamil.impl.rx.asai4.*;
 import my.interest.lang.tamil.impl.rx.cir.*;
-import my.interest.lang.tamil.impl.rx.maaththirai.HalfRx;
-import my.interest.lang.tamil.impl.rx.maaththirai.OneRx;
-import my.interest.lang.tamil.impl.rx.maaththirai.SplitKuttuRX;
-import my.interest.lang.tamil.impl.rx.maaththirai.TwoRx;
+import my.interest.lang.tamil.impl.rx.maaththirai.*;
 import my.interest.lang.tamil.impl.rx.paa.KurralRx;
 import my.interest.lang.tamil.impl.rx.paa.KurralhCirRx;
 import my.interest.lang.tamil.impl.rx.paa.KurralhThalaiRx;
@@ -163,6 +160,14 @@ public class RxRegistry implements IPropertyFinder {
 
 
         map.put("பிரிக்கப்பட்ட குற்று", new SplitKuttuRX());
+        map.put("பிரிக்கப்பட்ட குற்றியலிகரம்", new SplitKuttiyaIigaramRx());
+        map.put("பிரிக்கப்பட்ட குற்றியலுகரம்", new SplitKuttiyaLugaramRx());
+
+        map.put("உகரக்குற்றுக்குறில்", new Ugarakkuttukkurril());
+        map.put("உகரக்குற்றுநெடில்", new UgarakkuttuNtedil());
+
+        map.put("இகரக்குற்றுக்குறில்", new Igarakkuttukkurril());
+        map.put("இகரக்குற்றுநெடில்", new IgarakkuttuNtedil());
 
         map.put("இலக்கம்", new IlakkamRx());
 

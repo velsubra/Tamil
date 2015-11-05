@@ -56,7 +56,6 @@ public class YaappuPatternsCounterJob extends AbstractPatternsCounterJob {
     protected List<RXFeature> getBaseFeatures() {
         List<RXFeature> list = new ArrayList<RXFeature>();
         list.add(RXIncludeCanonicalEquivalenceFeature.FEATURE);
-        list.add(RXKuttuFeature.FEATURE);
         list.add(RXOverrideSysDefnFeature.FEATURE);
         return list;
     }
@@ -67,6 +66,7 @@ public class YaappuPatternsCounterJob extends AbstractPatternsCounterJob {
         List<RXFeature> list = new ArrayList<RXFeature>();
         list.add(RXAythamAsKurrilFeature.FEATURE);
         list.add(RXKuttuAcrossCirFeature.FEATURE);
+        list.add(RXKuttuFeature.FEATURE);
         return list;
     }
 

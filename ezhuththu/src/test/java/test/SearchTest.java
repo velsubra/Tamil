@@ -39,6 +39,78 @@ public class SearchTest {
     }
 
 
+    @Test
+    public void test_Hari_Corrected() throws Exception {
+       String kurralh =  new String (TamilUtils.readAllFrom(SearchTest.class.getResourceAsStream("/test/data/Hari_corrected_kuRaL.txt"), false), TamilUtils.ENCODING);
+
+        String pattern = "${(குறள்)}";
+        YaappuPatternFinderJob nottranposed = new YaappuPatternFinderJob(kurralh, pattern);
+        YaappuPatternFinderJob transposed = new YaappuPatternFinderJob(kurralh, pattern, null, true);
+
+        List<YaappuPatternFinderJob> list = new ArrayList<YaappuPatternFinderJob>();
+        list.add(nottranposed);
+        list.add(transposed);
+        try {
+            ExecuteManager.start();
+            for (YaappuPatternFinderJob job : list) {
+
+
+                JobManager manager = TamilFactory.getJobManager("jobs/search/simple/category");
+                long id = manager.submit(job, JSONObject.class);
+                JobResultSnapShot<JSONObject> resultSnapShot = manager.findJobResultSnapShot(id, JSONObject.class);
+
+                while (true) {
+                    if (resultSnapShot == null) {
+                        throw new Exception("Not found");
+                    }
+                    System.out.println(resultSnapShot.getStatus().getCompletionPercent() + " %");
+
+                    if (resultSnapShot.isDone()) break;
+                    Thread.currentThread().sleep(100);
+                    resultSnapShot = manager.findJobResultSnapShot(id, JSONObject.class);
+
+                }
+
+
+                StringBuffer buffer = new StringBuffer();
+                for (JSONObject json : resultSnapShot.getNewResults(0).getChunk()) {
+                    if (json.has(AbstractSimpleMatcherBasedJob.PROP_PRE_SKIPPED_COUNT)) {
+                        buffer.append("\n.... " + json.getInt(AbstractSimpleMatcherBasedJob.PROP_PRE_SKIPPED_COUNT) + " code points skipped...\n");
+                    }
+                    if (json.has(AbstractSimpleMatcherBasedJob.PROP_PRE_MATCH_TEXT)) {
+                        buffer.append(json.getString(AbstractSimpleMatcherBasedJob.PROP_PRE_MATCH_TEXT));
+                    }
+                    buffer.append("{");
+                    buffer.append(json.getString(AbstractSimpleMatcherBasedJob.PROP_MATCH_TEXT));
+                    buffer.append("}\n\n");
+                    if (json.has(AbstractSimpleMatcherBasedJob.PROP_POST_MATCH_TEXT)) {
+                        buffer.append(json.getString(AbstractSimpleMatcherBasedJob.PROP_POST_MATCH_TEXT));
+                    }
+                    if (json.has(AbstractSimpleMatcherBasedJob.PROP_POST_SKIPPED_COUNT)) {
+                        buffer.append("\n.... " + json.getInt(AbstractSimpleMatcherBasedJob.PROP_POST_SKIPPED_COUNT) + " code points skipped...\n");
+                    }
+                }
+
+                System.out.println(buffer.toString());
+                Assert.assertEquals(job ==nottranposed ? 114 : 115, resultSnapShot.getNewResults(0).getChunk().size());
+
+                JobResultChunk<JSONObject> lastResults = resultSnapShot.getLastResults(2);
+                Assert.assertEquals(2, lastResults.getChunk().size());
+
+                System.out.print("===>Job id:" + id);
+                Assert.assertEquals("FINISHED", resultSnapShot.getStatus().getStatus().toString());
+
+
+            }
+
+        } finally {
+            ExecuteManager.stop();
+        }
+
+
+    }
+
+
 
     @Test
     public void testContinuous() throws Exception {
@@ -51,8 +123,7 @@ public class SearchTest {
                 "3.மலர்மிசை ஏகினான் மாணடி சேர்ந்தார்\n" +
                 "நிலமிசை நீடுவாழ் வார்.\n" +
                 "\n" +
-                "4.வேண்டுதல் வேண்டாமை இலானடி சேர்ந்தார்க்கு\n" +
-                "யாண்டும் இடும்பை இல.\n" +
+
                 "\n" +
                 "5.இருள்சேர் இருவினையும் சேரா இறைவன்\n" +
                 "பொருள்சேர் புகழ்புரிந்தார் மாட்டு.\n" +
@@ -129,11 +200,9 @@ public class SearchTest {
                 "29.குணமென்னும் குன்றேறி நின்றார் வெகுளி\n" +
                 "கணமேயும் காத்தல் அரிது.\n" +
                 "\n" +
-                "30.அந்தணர் என்போர் அறவோர்மற் றெவ்வுயிர் க்கும்\n" +
-                "செந்தண்மை பூண்டொழுக லான்.\n" +
+
                 "\n" +
-                "31.சிறப்பு ஈனும் செல்வமும் ஈனும் அறத்தினூஉங்கு\n" +
-                "ஆக்கம் எவனோ உயிர்க்கு.\n" +
+
                 "\n" +
                 "32.அறத்தினூஉங்கு ஆக்கமும் இல்லை அதனை\n" +
                 "மறத்தலின் ஊங்கில்லை கேடு.\n" +
@@ -141,8 +210,7 @@ public class SearchTest {
                 "33.ஒல்லும் வகையான் அறவினை ஓவாதே\n" +
                 "செல்லும்வாய் எல்லாஞ் செயல்.\n" +
                 "\n" +
-                "34.மனத்துக்கண் மாசிலன் ஆதல் அனைத்து அறன்\n" +
-                "ஆகுல நீர பிற.\n" +
+
                 "\n" +
                 "35.அழுக்காறு அவாவெகுளி இன்னாச்சொல் நான்கும்\n" +
                 "இழுக்கா இயன்றது அறம்.";
@@ -176,17 +244,19 @@ public class SearchTest {
                 }
 
 
+                int count = 0;
                 StringBuffer buffer = new StringBuffer();
                 for (JSONObject json : resultSnapShot.getNewResults(0).getChunk()) {
+                    count ++;
                     if (json.has(AbstractSimpleMatcherBasedJob.PROP_PRE_SKIPPED_COUNT)) {
                         buffer.append("\n.... " + json.getInt(AbstractSimpleMatcherBasedJob.PROP_PRE_SKIPPED_COUNT) + " code points skipped...\n");
                     }
                     if (json.has(AbstractSimpleMatcherBasedJob.PROP_PRE_MATCH_TEXT)) {
                         buffer.append(json.getString(AbstractSimpleMatcherBasedJob.PROP_PRE_MATCH_TEXT));
                     }
-                    buffer.append("\n\n");
+                    buffer.append("{");
                     buffer.append(json.getString(AbstractSimpleMatcherBasedJob.PROP_MATCH_TEXT));
-                    buffer.append("\n\n");
+                    buffer.append("}"+ count +"\n\n");
                     if (json.has(AbstractSimpleMatcherBasedJob.PROP_POST_MATCH_TEXT)) {
                         buffer.append(json.getString(AbstractSimpleMatcherBasedJob.PROP_POST_MATCH_TEXT));
                     }

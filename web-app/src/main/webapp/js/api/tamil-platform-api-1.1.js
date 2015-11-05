@@ -992,16 +992,15 @@ var TamilFactory = new function () {
     }
 
 
-
-
-
     /**
      * Gets  Job Manager
      * <p>
-     * <b>Usage: {@link TamilFactory}.createJobManager(category)</b>
+     * <b>Usage: {@link TamilFactory}.getJobManager(category)</b>
      * </p>
      * @constructor
      * @param category the job category with which the  JobManager was acquired while submitting the job.
+     *
+     *
      *
      */
 
@@ -1015,7 +1014,7 @@ var TamilFactory = new function () {
         /**
          * Polls for a job
          *
-         * @param callback - the call back to received the results
+         * @param callback - the call back to received the results . The callback method takes a single argument that represents the job. Please see the list operation for the job structure.
          * @param id - the id of the job
          * @param continuation_id - the continuation id after which, the units created to be returned.
          */
@@ -1025,78 +1024,9 @@ var TamilFactory = new function () {
             if (category.indexOf("/") != 0) {
                 category = "/" + category;
             }
-                jQuery.ajax({
-                    type: 'get',
-                    url: this.job_poll_url + id + "/category" + category +"/?includeUnits=true&last-continuation-id="+continuation_id,
-
-                    contentType: "text/plain; charset=utf-8",
-                    async: true,
-                    success: function (data, status, jqXHR) {
-
-                        if (status != 'success') {
-                            alert("Error status:" + status);
-                            return;
-                        }
-
-                        callback(data);
-                        // console.log("Passing async response ..---------*****---------." + data.splitways);
-                        return;
-                    }
-                }, 100);
-            }
-
-             /**
-             * Polls for a job
-             *
-             * @param callback - the call back to received the results
-             * @param id - the id of the job
-             * @param unitCount - the max number of last unit counts requested.
-             */
-            this.getLastUnits = function (callback, id, unitCount) {
-                unitCount = typeof unitCount !== 'undefined' ? unitCount : 1;
-                category = typeof category !== 'undefined' ? category.trim() : "";
-                if (category.indexOf("/") != 0) {
-                    category = "/" + category;
-                }
-                    jQuery.ajax({
-                        type: 'get',
-                        url: this.job_poll_url + id + "/category" + category +"/?includeUnits=true&last-unit-work-count="+unitCount,
-
-                        contentType: "text/plain; charset=utf-8",
-                        async: true,
-                        success: function (data, status, jqXHR) {
-
-                            if (status != 'success') {
-                                alert("Error status:" + status);
-                                return;
-                            }
-
-                            callback(data);
-                            // console.log("Passing async response ..---------*****---------." + data.splitways);
-                            return;
-                        }
-                    }, 100);
-                }
-
-        /**
-         * list jobs
-         *
-         * @param callback - the callback to receive the results
-         * @param includeUnitWorks - boolean to indicate if the results are to be included in the response.
-         *
-         */
-        this.list = function (callback,includeUnitWorks) {
-            if (!includeUnitWorks) {
-                includeUnitWorks = false;
-            }
-            category = typeof category !== 'undefined' ? category.trim() : "";
-            if (category.indexOf("/") != 0) {
-                category = "/" + category;
-            }
-
             jQuery.ajax({
                 type: 'get',
-                url: this.job_list_url + "category" +  category +"/?includeUnits="+includeUnitWorks,
+                url: this.job_poll_url + id + "/category" + category + "/?includeUnits=true&last-continuation-id=" + continuation_id,
 
                 contentType: "text/plain; charset=utf-8",
                 async: true,
@@ -1114,8 +1044,99 @@ var TamilFactory = new function () {
             }, 100);
         }
 
-            return this;
+        /**
+         * Polls for a job
+         *
+         * @param callback - the call back to received the results  . The callback method takes a single argument that represents the job.   Please see the list operation for the job structure.
+         * @param id - the id of the job
+         * @param unitCount - the max number of last unit counts requested.
+         */
+        this.getLastUnits = function (callback, id, unitCount) {
+            unitCount = typeof unitCount !== 'undefined' ? unitCount : 1;
+            category = typeof category !== 'undefined' ? category.trim() : "";
+            if (category.indexOf("/") != 0) {
+                category = "/" + category;
+            }
+            jQuery.ajax({
+                type: 'get',
+                url: this.job_poll_url + id + "/category" + category + "/?includeUnits=true&last-unit-work-count=" + unitCount,
 
+                contentType: "text/plain; charset=utf-8",
+                async: true,
+                success: function (data, status, jqXHR) {
+
+                    if (status != 'success') {
+                        alert("Error status:" + status);
+                        return;
+                    }
+
+                    callback(data);
+                    // console.log("Passing async response ..---------*****---------." + data.splitways);
+                    return;
+                }
+            }, 100);
+        }
+
+        /**
+         * list jobs.
+         * A single job result will have the following JSON structure.
+         * {
+              "currentContinuationId": 0,
+              "id": 16,
+              "latestContinuationId": 1,
+              "percent": 100,
+              "startedDesc": "1 hour, 35 minutes and 9 seconds",
+              "status": "FINISHED",
+              "statusMessage": "Current message",
+              "timeTaken": "2 minutes and 52 seconds",
+              "titleId": "Finding Patterns at ..",
+              "titleMessage": "Finding Patterns at https:// ..",
+              "totalUnitCount": 1,
+              "unitType": "JSON",
+              "units": [
+                {
+                     //job specific unit work objects
+                }
+              ],
+              "updatedDesc": "1 hour, 32 minutes and 17 seconds"
+            }
+
+         *
+         * @param callback - the callback to receive the results . The callback method takes a single argument that represents the array of job results.
+         *
+         * @param includeUnitWorks - boolean to indicate if the results are to be included in the response.
+         *
+         */
+        this.list = function (callback, includeUnitWorks) {
+            if (!includeUnitWorks) {
+                includeUnitWorks = false;
+            }
+            category = typeof category !== 'undefined' ? category.trim() : "";
+            if (category.indexOf("/") != 0) {
+                category = "/" + category;
+            }
+
+            jQuery.ajax({
+                type: 'get',
+                url: this.job_list_url + "category" + category + "/?includeUnits=" + includeUnitWorks,
+
+                contentType: "text/plain; charset=utf-8",
+                async: true,
+                success: function (data, status, jqXHR) {
+
+                    if (status != 'success') {
+                        alert("Error status:" + status);
+                        return;
+                    }
+
+                    callback(data);
+                    // console.log("Passing async response ..---------*****---------." + data.splitways);
+                    return;
+                }
+            }, 100);
+        }
+
+        return this;
 
 
     }
@@ -1139,27 +1160,27 @@ $(document).ready(function () {
 
     $(".tamil-text").on('focus', function () {
         // console.log($(this).val());
-        SYS_TRANSLIT.transliterateAsync(new _object_wrapper($(this))._translit_tamil_text_callback , $(this).val(), "110");
+        SYS_TRANSLIT.transliterateAsync(new _object_wrapper($(this))._translit_tamil_text_callback, $(this).val(), "110");
         // console.log(tamil);
 
     });
 
-     function _object_wrapper(obj) {
-         this._translit_tamil_text_callback =  function (tamilout) {
-             var tamil = tamilout.tamil;
-             obj.$popupDiv("#tamil_text");
-             if (tamil) {
-                 if (tamil.indexOf("\n") >= 0) {
-                     $('#tamil_text').html("<pre>" + tamil + "</pre>");
-                 } else {
-                     $('#tamil_text').html(tamil);
-                 }
-             }
-         }
-     }
+    function _object_wrapper(obj) {
+        this._translit_tamil_text_callback = function (tamilout) {
+            var tamil = tamilout.tamil;
+            obj.$popupDiv("#tamil_text");
+            if (tamil) {
+                if (tamil.indexOf("\n") >= 0) {
+                    $('#tamil_text').html("<pre>" + tamil + "</pre>");
+                } else {
+                    $('#tamil_text').html(tamil);
+                }
+            }
+        }
+    }
 
     $(".tamil-text").on('input', function () {
-        SYS_TRANSLIT.transliterateAsync(new _object_wrapper($(this))._translit_tamil_text_callback , $(this).val(), "110") ;
+        SYS_TRANSLIT.transliterateAsync(new _object_wrapper($(this))._translit_tamil_text_callback, $(this).val(), "110");
 
     });
 

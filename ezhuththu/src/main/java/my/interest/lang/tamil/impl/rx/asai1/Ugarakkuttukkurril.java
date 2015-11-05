@@ -12,9 +12,9 @@ import java.util.Set;
  *
  * @author velsubra
  */
-public class Kuttukkurril implements PatternGenerator {
+public class Ugarakkuttukkurril implements PatternGenerator {
     public String generate(FeatureSet featureSet) {
-        return "(?:"+new Ugarakkuttukkurril().generate(featureSet) +"|"+ new Igarakkuttukkurril().generate(featureSet) + ")";
+        return "(?:${வலியுகரவரிசை}${குறிலுயிர்})";
     }
 
 
@@ -24,11 +24,11 @@ public class Kuttukkurril implements PatternGenerator {
 
 
     public String getName() {
-        return "குற்றுக்குறில்";
+        return "உகரக்குற்றுக்குறில்";
     }
 
 
     public String getDescription() {
-        return "உகரக்குற்றுக்குறில் அல்லது இகரக்குற்றுக்குறில்";
+        return "குஅ to be treated as a single character  க";
     }
 }

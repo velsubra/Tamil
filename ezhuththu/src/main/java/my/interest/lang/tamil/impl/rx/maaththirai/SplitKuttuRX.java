@@ -15,7 +15,7 @@ import java.util.Set;
 public class SplitKuttuRX implements PatternGenerator {
 
     public String generate(FeatureSet set) {
-        return "(?:${valiyugaravarisai}(?=(?:${idaivelhi}${uyir})))";
+        return "(?:"+ new SplitKuttiyaLugaramRx().generate(set) +"|"+ new SplitKuttiyaIigaramRx().generate(set)+")";
     }
 
     public Set<TamilCharacter> getCharacterSet() {
@@ -28,7 +28,7 @@ public class SplitKuttuRX implements PatternGenerator {
     }
 
     public String getDescription() {
-        return "உயிரெழுத்துடன் தொடங்கும் சொல்லின் முன்னாலிருக்குஞ்சொல்லின் முடிவிலிருக்கும் குற்றியலுகரம்  ";
+        return "பிரிக்கப்பட்ட குற்றியலிகரம் அல்லது   பிரிக்கப்பட்ட குற்றியலுகரம்";
     }
 
 }

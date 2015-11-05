@@ -32,6 +32,8 @@ public class HalfRx extends ORPatternGenerator {
         if (set.isFeatureEnabled(RXKuttuAcrossCirFeature.class)) {
             patterns.add("${பிரிக்கப்பட்ட குற்று}");
         }
+
+
         return patterns;
 
 

@@ -34,7 +34,6 @@ public class YaappuPatternFinderJob extends AbstractFeaturedPatternFinderJob {
     public List<RXFeature> getBaseFeatures() {
         List<RXFeature> list = new ArrayList<RXFeature>();
         list.add(RXIncludeCanonicalEquivalenceFeature.FEATURE);
-        list.add(RXKuttuFeature.FEATURE);
         list.add(RXOverrideSysDefnFeature.FEATURE);
         return list;
     }
@@ -45,6 +44,7 @@ public class YaappuPatternFinderJob extends AbstractFeaturedPatternFinderJob {
         List<RXFeature> list = new ArrayList<RXFeature>();
         list.add(RXAythamAsKurrilFeature.FEATURE);
         list.add(RXKuttuAcrossCirFeature.FEATURE);
+        list.add(RXKuttuFeature.FEATURE);
         return list;
     }
 

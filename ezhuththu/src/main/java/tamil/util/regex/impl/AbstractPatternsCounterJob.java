@@ -93,7 +93,7 @@ public abstract class AbstractPatternsCounterJob implements JobRunnable<JSONObje
                 context.setStatusMessage("Counting pattern:" + matcher.getPattern());
                 while (matcher.find()) {
                     int singlePercent =  (int) (1.0 / source.length() * matcher.end() *100);
-                    int overallPercent = (int) (1.0 * i * singleLabelWeight + singlePercent /100 * singleLabelWeight);
+                    int overallPercent = (int) (1.0 * i * singleLabelWeight + singlePercent /100.0 * singleLabelWeight);
                     int count = counts.getInt(i);
                     count++;
                     counts.put(i, count);

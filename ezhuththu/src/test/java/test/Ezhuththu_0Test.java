@@ -12,7 +12,9 @@ import org.junit.Assert;
 import org.junit.Test;
 import tamil.lang.*;
 import tamil.lang.api.ezhuththu.TamilCharacterSetCalculator;
+import tamil.lang.api.regex.RXFeature;
 import tamil.lang.api.regex.RXIncludeCanonicalEquivalenceFeature;
+import tamil.lang.api.regex.RXKuttuFeature;
 import tamil.lang.api.regex.RXOverrideSysDefnFeature;
 import tamil.util.IPropertyFinder;
 import tamil.util.regex.TamilPattern;
@@ -384,8 +386,15 @@ public class Ezhuththu_0Test {
 
     @Test
     public void testPatterns() {
-        TamilPattern pattern = TamilPattern.compile("${ezhuththuvadivam}*");
-        Matcher matcher = pattern.matcher("தமிழ்தமிழ்");
+
+        TamilPattern pattern = TamilPattern.compile("${koovilham}",null, RXKuttuFeature.FEATURE);
+        Matcher matcher = pattern.matcher("துயாழ்இனி");
+        Assert.assertTrue(matcher.matches());
+
+
+
+        pattern = TamilPattern.compile("${ezhuththuvadivam}*");
+         matcher = pattern.matcher("தமிழ்தமிழ்");
 
         Assert.assertTrue(matcher.matches());
 

@@ -126,6 +126,7 @@ public abstract class AbstractSimpleMatcherBasedJob implements JobRunnable<JSONO
 
     public final void run(JobContext<JSONObject> context) {
         try {
+            int longSourceKB = 10;
             String actualInput = this.source;
             this.source = resolveSource(context, this.source);
             context.setTitleMessage(title);
@@ -134,7 +135,7 @@ public abstract class AbstractSimpleMatcherBasedJob implements JobRunnable<JSONO
             int lastEnd = 0;
             JSONObject previousMatch = null;
             matcher = createMatcher();
-            boolean longSource = source.length() -lastEnd > 1024 * 100;
+            boolean longSource = source.length() -lastEnd > 1024 * longSourceKB;
 
             if (!longSource) {
                 context.setStatusMessage("Entering the search ...");
@@ -183,7 +184,7 @@ public abstract class AbstractSimpleMatcherBasedJob implements JobRunnable<JSONO
 
                 previousMatch = match;
 
-                longSource = (source.length() - lastEnd) > 1024 * 100;
+                longSource = (source.length() - lastEnd) > 1024 * longSourceKB;
 
                 if (!longSource) {
                     context.setStatusMessage(matches + " match(es) found. We are almost there. Continuing to find the next match ...");

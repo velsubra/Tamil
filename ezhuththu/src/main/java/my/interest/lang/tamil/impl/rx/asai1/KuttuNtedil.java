@@ -14,7 +14,7 @@ import java.util.Set;
  */
 public class KuttuNtedil implements PatternGenerator {
     public String generate(FeatureSet featureSet) {
-        return "(?:${வலியுகரவரிசை}${நெடிலுயிர்})";
+        return "(?:"+new UgarakkuttuNtedil().generate(featureSet) +"|"+ new IgarakkuttuNtedil().generate(featureSet) + ")";
     }
 
 
@@ -29,6 +29,6 @@ public class KuttuNtedil implements PatternGenerator {
 
 
     public String getDescription() {
-        return "குஔ to be treated as a single character  கௌ";
+        return "உகரக்குற்றுநெடில் அல்லது இகரக்குற்றுநெடில்";
     }
 }
