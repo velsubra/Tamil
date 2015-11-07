@@ -45,6 +45,7 @@ public class YaappuPatternFinderJob extends AbstractFeaturedPatternFinderJob {
         list.add(RXAythamAsKurrilFeature.FEATURE);
         list.add(RXKuttuAcrossCirFeature.FEATURE);
         list.add(RXKuttuFeature.FEATURE);
+        list.add(RXDesolvedKuttialigaramFeature.FEATURE);
         return list;
     }
 

@@ -92,7 +92,7 @@ public class SearchTest {
                 }
 
                 System.out.println(buffer.toString());
-                Assert.assertEquals(job ==nottranposed ? 114 : 115, resultSnapShot.getNewResults(0).getChunk().size());
+                Assert.assertEquals(job ==nottranposed ? 122 : 123, resultSnapShot.getNewResults(0).getChunk().size());
 
                 JobResultChunk<JSONObject> lastResults = resultSnapShot.getLastResults(2);
                 Assert.assertEquals(2, lastResults.getChunk().size());
