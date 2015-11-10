@@ -1,9 +1,12 @@
 package my.interest.lang.tamil.impl.rx.maaththirai;
 
 import my.interest.lang.tamil.impl.FeatureSet;
+import my.interest.lang.tamil.impl.rx.ORPatternGenerator;
 import my.interest.lang.tamil.internal.api.PatternGenerator;
 import tamil.lang.TamilCharacter;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -12,10 +15,16 @@ import java.util.Set;
  *
  * @author velsubra
  */
-public class SplitKuttiyaLugaramRx implements PatternGenerator {
-    public String generate(FeatureSet set) {
-        return "(?:${valiyugaravarisai}(?=(?:${idaivelhi}${uyir})))";
+public class SplitKuttiyaLugaramRx extends  ORPatternGenerator {
+    @Override
+    public List<String> getList(FeatureSet set) {
+        List<String> list = new ArrayList<String>();
+        list.add("(?:${valiyugaravarisai}(?=(?:${idaivelhi}${uyir})))");
+        list.add("(?:\\(${valiyugaravarisai}\\)(?=(?:${idaivelhi}${uyir})))");
+        return list;
     }
+
+
 
     public Set<TamilCharacter> getCharacterSet() {
         return null;

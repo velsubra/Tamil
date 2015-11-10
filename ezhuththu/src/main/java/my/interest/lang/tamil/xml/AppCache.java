@@ -5,7 +5,7 @@ import my.interest.lang.tamil.generated.types.AppDescription;
 import my.interest.lang.tamil.generated.types.AppResource;
 import my.interest.lang.tamil.generated.types.ResourceInheritanceOrder;
 import my.interest.lang.tamil.generated.types.TamilRootWords;
-import my.interest.lang.tamil.impl.ApplicationClassLoader;
+import my.interest.lang.tamil.impl.ApplicationClassloader;
 
 import java.lang.ref.SoftReference;
 import java.util.*;
@@ -24,7 +24,7 @@ public class AppCache {
     public List<String> buildClassloader(AppDescription current) {
         String paths = current.getLibraryDependencies();
         this.groovyScriptEngine = null;
-        this.appClassLoader = new ApplicationClassLoader(AppResource.class.getClassLoader());
+        this.appClassLoader = new ApplicationClassloader(AppResource.class.getClassLoader());
         if (paths == null || paths.trim().equals("")) {
 
             return Collections.emptyList();
@@ -65,11 +65,11 @@ public class AppCache {
 
     List<AppDescription> inheritanceList = new ArrayList<AppDescription>();
 
-    public ApplicationClassLoader getAppClassLoader() {
+    public ApplicationClassloader getAppClassLoader() {
         return appClassLoader;
     }
 
-    ApplicationClassLoader appClassLoader = null;
+    ApplicationClassloader appClassLoader = null;
 
     public Object getGroovyScriptEngine() {
         return groovyScriptEngine;

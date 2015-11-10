@@ -17,7 +17,7 @@ import java.util.*;
  *
  * @author velsubra
  */
-public class ApplicationClassLoader extends URLClassLoader {
+public class ApplicationClassloader extends URLClassLoader {
 
     // private URLClassLoader resourceProvider = null;
     Set<String> poms = new HashSet<String>();
@@ -26,12 +26,12 @@ public class ApplicationClassLoader extends URLClassLoader {
     PropertyTypeResolver resolver = new PropertyTypeResolver(null, "project.");
 
 
-    public ApplicationClassLoader(ClassLoader cl) {
+    public ApplicationClassloader(ClassLoader cl) {
         super(new URL[]{}, cl);
 
     }
 
-    public ApplicationClassLoader(URL[] urls, ClassLoader cl) {
+    public ApplicationClassloader(URL[] urls, ClassLoader cl) {
         this( cl);
         addUrls(urls);
 
