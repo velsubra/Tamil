@@ -74,6 +74,7 @@ public abstract class AbstractSimpleMatcherBasedJob implements JobRunnable<JSONO
     public static final String PROP_POST_MATCH_TEXT = "postMatch";
     public static final String PROP_POST_SKIPPED_COUNT = "postSkippedCount";
 
+
     /**
      * Method that returns the matcher
      *
@@ -82,9 +83,23 @@ public abstract class AbstractSimpleMatcherBasedJob implements JobRunnable<JSONO
     public abstract SimpleMatcher createMatcher();
 
 
+    /**
+     * Just gets the previously created matcher
+     * @return matcher if it was created already or creates a new one
+     */
+    public SimpleMatcher getMatcher() {
+        if (createdMatcher == null) {
+
+            createdMatcher = createMatcher();
+        }
+        return  createdMatcher;
+    }
+
+
+
     protected String source = null;
     protected String title = null;
-    private SimpleMatcher matcher = null;
+    private SimpleMatcher createdMatcher = null;
 
     /**
      * The size of the text around any match that need to be included in each work unit.
@@ -134,7 +149,7 @@ public abstract class AbstractSimpleMatcherBasedJob implements JobRunnable<JSONO
             shoulderSize = getShoulderSize();
             int lastEnd = 0;
             JSONObject previousMatch = null;
-            matcher = createMatcher();
+            SimpleMatcher  matcher = getMatcher();
             boolean longSource = source.length() -lastEnd > 1024 * longSourceKB;
 
             if (!longSource) {
@@ -219,7 +234,7 @@ public abstract class AbstractSimpleMatcherBasedJob implements JobRunnable<JSONO
     protected void insertPreviousMatch(JobContext<JSONObject> context, JSONObject previousMatch, boolean currentMatchAvailable) {
         context.addResult(previousMatch);
         if (currentMatchAvailable && source.length() > 0) {
-            context.setPercentOfCompletion((int) (1.0 * matcher.start() / source.length() * 100.0));
+            context.setPercentOfCompletion((int) (1.0 * createdMatcher.start() / source.length() * 100.0));
         }
 //        try {
 //            Thread.currentThread().sleep(5000);

@@ -31,6 +31,7 @@ public class OneRx extends ORPatternGenerator {
         }
         if (set.isFeatureEnabled(RXKuttuFeature.class)) {
             patterns.add("${குற்றுக்குறில்}");
+            //KurRil shold not start with kuttukkuRil or kuttuNtedil
             tobeNotStartingWith.add("${குற்றுக்குறில்}");
             tobeNotStartingWith.add("${குற்றுநெடில்}");
         }

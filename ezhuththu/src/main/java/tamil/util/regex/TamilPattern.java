@@ -82,7 +82,7 @@ public final class TamilPattern {
     public static TamilPattern compile(String pattern, int flags, IPropertyFinder aliasFinder, RXFeature ... features) {
         StringUtils.IndexContext context = StringUtils.replaceWithContext("${", "}", pattern, new RxRegistry(aliasFinder, (features == null || features.length == 0) ? FeatureSet.EMPTY : new FeatureSet(features)), true, true, true);
         if (context.finalString.length() > 10*1024) {
-          //  System.out.println("----"+pattern+"-----> Compiled Pattern size in KB:" + context.finalString.length() /1000);
+            System.out.println("----"+pattern+"-----> Compiled Pattern size in KB:" + context.finalString.length() /1000);
         } else {
            // System.out.println("pattern:" + pattern + " =>Real RX:" + context.finalString);
         }
@@ -157,7 +157,7 @@ public final class TamilPattern {
                     bcloned.addFeature(alter.get(j));
                 }
             }
-        //    System.out.println(bcloned.getFeatures(RXFeature.class).size());
+          //  System.out.println(bcloned.getFeatures(RXFeature.class).size());
 
            patternlist.add(compile(pattern, flags,aliasFinder, bcloned.getFeatures(RXFeature.class).toArray(new RXFeature[0])));
         }

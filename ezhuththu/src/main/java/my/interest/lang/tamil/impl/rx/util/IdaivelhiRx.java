@@ -22,6 +22,8 @@ public class IdaivelhiRx implements PatternGenerator {
         }
     }
 
+//    private String getSingleSpace()
+
 
     public Set<TamilCharacter> getCharacterSet() {
         return null;

@@ -19,8 +19,9 @@ public class SplitKuttiyaLugaramRx extends  ORPatternGenerator {
     @Override
     public List<String> getList(FeatureSet set) {
         List<String> list = new ArrayList<String>();
-        list.add("(?:${valiyugaravarisai}(?=(?:${idaivelhi}${uyir})))");
         list.add("(?:\\(${valiyugaravarisai}\\)(?=(?:${idaivelhi}${uyir})))");
+        list.add("(?:${valiyugaravarisai}(?=(?:${idaivelhi}${uyir})))");
+
         return list;
     }
 

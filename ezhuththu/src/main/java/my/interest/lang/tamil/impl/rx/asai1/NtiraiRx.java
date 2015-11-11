@@ -28,6 +28,6 @@ public  class NtiraiRx  extends YaappuBaseRx {
         } else {
             fixed = "*";
         }
-            return "(?:(?:${orumaaththirai}${irumaaththirai}${araimaaththirai}"+fixed+")|(?:${orumaaththirai}${orumaaththirai}${araimaaththirai}"+fixed+"))";
+            return "(?:(?:${orumaaththirai}${irumaaththirai}${araimaaththirai}"+fixed+")|(?:(${orumaaththirai}){2}${araimaaththirai}"+fixed+"))";
     }
 }

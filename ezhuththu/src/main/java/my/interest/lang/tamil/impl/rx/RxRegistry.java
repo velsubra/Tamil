@@ -173,6 +173,9 @@ public class RxRegistry implements IPropertyFinder {
 
 
     }
+    private String getWordBoundary(FeatureSet set) {
+        return "(?:\\b|(?:(?=" + new IdaivelhiRx().generate(set)+")))";
+    }
 
     public String findProperty(String p1) {
         String translit = null;
@@ -205,14 +208,14 @@ public class RxRegistry implements IPropertyFinder {
                 String inner = p1.substring(1, p1.length());
                 if (inner.endsWith(")")) {
                     inner = inner.substring(0, inner.length() - 1);
-                    return "\\b${" + inner + "}\\b";
+                    return  getWordBoundary(featureSet) + "${" + inner + "}" + getWordBoundary(featureSet);
 
                 } else {
-                    return "\\b${" + inner + "}";
+                    return getWordBoundary(featureSet) + "${" + inner + "}";
                 }
             } else if (p1.endsWith(")")) {
                 String inner = p1.substring(0, p1.length() - 1);
-                return "${" + inner + "}\\b";
+                return "${" + inner + "}" + getWordBoundary(featureSet) ;
 
             }
             if (p1.startsWith("[") && p1.endsWith("]")) {

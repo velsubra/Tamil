@@ -14,7 +14,7 @@ import java.util.List;
 public interface JobStatus {
 
     public static enum STATUS {
-        SUBMITTED, RUNNING, FAILED, FINISHED
+        SUBMITTED, RUNNING, PAUSED, FAILED,  FINISHED
     }
 
     /**

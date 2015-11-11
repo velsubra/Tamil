@@ -167,6 +167,7 @@
         <xs:restriction base="xs:string">
             <xs:enumeration value="SUBMITTED"/>
             <xs:enumeration value="RUNNING"/>
+            <xs:enumeration value="PAUSED"/>
             <xs:enumeration value="FAILED"/>
             <xs:enumeration value="FINISHED"/>
         </xs:restriction>

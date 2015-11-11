@@ -46,9 +46,21 @@ public class JobManagerImpl implements JobManager {
 
 
             JobResultBean job = TamilUtils.deserializeJAXB(new ByteArrayInputStream(data), JobResultBean.class);
+
             ObjectSerializer<T> serializer = manager.findSerializer(resultType);
             if (serializer == null) {
                 throw new ServiceException("Serializer not found for:" + resultType);
+            }
+
+            if (job.getStatus() == JobStatus.RUNNING) {
+                Date lastUpdatedTime = job.getUpdated() == null ? job.getCreated() : job.getCreated();
+                if (new Date().getTime() - lastUpdatedTime.getTime() > 3600000) {
+                    job.setStatus(JobStatus.PAUSED);
+                    job.setUpdated(new Date());
+                    JobContextImpl<T> context = new JobContextImpl<T>(job, persist, serializer);
+                    context.flush();
+                }
+
             }
             return new JobResultImpl<T>(job, serializer);
         } catch (Exception se) {
@@ -101,7 +113,7 @@ public class JobManagerImpl implements JobManager {
             } else {
                 List<Long> ret = new ArrayList<Long>();
                 Collections.sort(list);
-                for( int i = list.size() - limit ;i < list.size(); i++) {
+                for (int i = list.size() - limit; i < list.size(); i++) {
                     ret.add(list.get(i));
                 }
                 return ret;

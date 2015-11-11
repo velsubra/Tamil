@@ -14,6 +14,7 @@ import tamil.lang.api.regex.*;
 import tamil.util.IPropertyFinder;
 import tamil.util.regex.FeaturedMatchersList;
 import tamil.util.regex.FeaturedPatternsList;
+import tamil.util.regex.SimpleMatcher;
 import tamil.util.regex.TamilPattern;
 import tamil.util.regex.impl.AbstractSimpleMatcherBasedJob;
 import tamil.util.regex.impl.CharacterCounterJob;
@@ -36,6 +37,77 @@ import java.util.regex.Matcher;
 public class SearchTest {
     static {
         TamilFactory.init();
+    }
+
+
+    @Test
+    public void testKuRALWitDesolved() throws Exception {
+        try {
+
+            String pattern = "${kurralh)}";
+          //  TamilPattern pattern1= TamilPattern.compile(pattern, null, RXKuttuAcrossCirFeature.FEATURE);
+            // TamilPattern pattern1= TamilPattern.compile(pattern);
+            String kuRalh ="துன்பத்திற் கியாரே துணையாவார் தாமுடைய\n" +
+                    "நெஞ்சந் துணையல் வழி";
+            YaappuPatternFinderJob job = new YaappuPatternFinderJob(kuRalh, pattern);
+            SimpleMatcher matcher = job.createMatcher();
+            //Matcher matcher = pattern1.matcher(kuRalh);
+            System.out.println("Pattern:" + pattern);
+            if (matcher.find()) {
+                System.out.println("'"+kuRalh.substring(matcher.start(), matcher.end())+"'");
+            } else {
+                throw new Exception("Kurral could not be matched");
+            }
+
+        } finally {
+
+        }
+    }
+
+    @Test
+    public void testKuRALWithBracket() throws Exception {
+        try {
+
+            String pattern = "${kurralh)}";
+            TamilPattern pattern1= TamilPattern.compile(pattern, null, RXKuttuAcrossCirFeature.FEATURE);
+           // TamilPattern pattern1= TamilPattern.compile(pattern);
+            String kuRalh ="யானென(து) என்னும் செருக்கறுப்பான் வானோர்க்(கு)\n" +
+                    "உயர்ந்த உலகம் புகும்";
+           // YaappuPatternFinderJob job = new YaappuPatternFinderJob(kuRalh, pattern);
+            //SimpleMatcher matcher = job.createMatcher();
+            Matcher matcher = pattern1.matcher(kuRalh);
+            System.out.println("Pattern:" + pattern);
+            if (matcher.find()) {
+                System.out.println("'"+kuRalh.substring(matcher.start(), matcher.end())+"'");
+            } else {
+                throw new Exception("Kurral could not be matched");
+            }
+
+        } finally {
+
+        }
+    }
+
+
+    @Test
+    public void testKuRALWithAk() throws Exception {
+        try {
+
+            String pattern = "${kurralh}";
+            String kuRalh ="அஃகாமை செல்வத்திற் கியாதெனின் வெஃகாமை\n" +
+                    "வேண்டும் பிறன்கைப் பொருள்";
+            YaappuPatternFinderJob job = new YaappuPatternFinderJob(kuRalh, pattern);
+            SimpleMatcher matcher = job.createMatcher();
+            if (matcher.find()) {
+                System.out.println(kuRalh.substring(matcher.start(), matcher.end()));
+            } else {
+                throw new Exception("Kurralh did not match");
+            }
+
+
+        } finally {
+
+        }
     }
 
 

@@ -36,6 +36,7 @@ public abstract class AbstractFeaturedPatternFinderJob extends AbstractSimpleMat
     public abstract IPropertyFinder getAliasFinder();
 
 
+
     /**
      * Returns if the matcher should be transposed to match what the given pattern would not match
      * @return true of the matcher needs to be transposed, false otherwise.
