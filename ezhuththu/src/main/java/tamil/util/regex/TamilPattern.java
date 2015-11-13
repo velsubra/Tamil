@@ -149,11 +149,13 @@ public final class TamilPattern {
         int loopLength = (int) Math.pow(2, alter.size());
         List<TamilPattern> patternlist = new ArrayList<TamilPattern>(loopLength);
         for (int i =0 ;i < loopLength; i++) {
+           // System.out.println("starting collection :" + i);
             FeatureSet bcloned = new FeatureSet( baseFeatureSet.getFeatures(Feature.class).toArray(new Feature[0]));
             for (int j = 0; j < alter.size(); j++) {
                 int bitposition = (int) Math.pow(  2, j);
                boolean toIncude = (bitposition & i) != 0;
                 if (toIncude) {
+                 //   System.out.println("------------------Including:" + alter.get(j));
                     bcloned.addFeature(alter.get(j));
                 }
             }

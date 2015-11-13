@@ -16,11 +16,11 @@ import java.util.regex.Matcher;
 public final class FeaturedMatchersList implements SimpleMatcher {
 
     List<Matcher> list = null;
-    LinkedList<Matcher> foundUnused = null;
+   // LinkedList<Matcher> foundUnused = null;
     private String basePattern;
     private Matcher shortDistantMatcher = null;
     private CharSequence source = null;
-    private int lastIndex = 0;
+
 
     FeaturedMatchersList(String basePattern, List<Matcher> list, CharSequence source) {
         this.list = new ArrayList<Matcher>(list);
@@ -30,16 +30,13 @@ public final class FeaturedMatchersList implements SimpleMatcher {
     }
 
 
-    private void searchAgain() {
+    private void searchFirst() {
         LinkedList<Matcher> temp = new LinkedList<Matcher>();
         shortDistantMatcher = null;
 
         for (Matcher m : list) {
             while (true) {
                 if (m.find()) {
-                    if (m.start() < lastIndex) {
-                        continue;
-                    }
                     temp.add(m);
                     break;
                 } else {
@@ -55,22 +52,45 @@ public final class FeaturedMatchersList implements SimpleMatcher {
         });
         this.list = new ArrayList<Matcher>(temp);
 
+        shortDistantMatcher = list.remove(0);
 
-        shortDistantMatcher = temp.remove(0);
-        this.foundUnused = temp;
     }
 
 
-    private void disCardFoundMatchers() {
+    private void searchAgainAndAdjust() {
         LinkedList<Matcher> temp = new LinkedList<Matcher>();
-        for (Matcher m : foundUnused) {
-            if (m.start() >= lastIndex) {
-                temp.add(m);
-            }
-
+        int lastIndex = shortDistantMatcher.end();
+        if (shortDistantMatcher.find()) {
+            list.add(shortDistantMatcher);
         }
-        this.foundUnused = temp;
+        shortDistantMatcher = null;
+        for (Matcher m : list) {
+            while (true) {
+                if ( m.start() < lastIndex) {
+                    if (m.find()) {
+                        continue;
+                    } else {
+                        break;
+                    }
+                } else {
+                    temp.add(m);
+                    break;
+                }
+
+            }
+        }
+        if (temp.isEmpty()) return;
+        Collections.sort(temp, new Comparator<Matcher>() {
+            public int compare(Matcher o1, Matcher o2) {
+                return o1.start() - o2.start();
+            }
+        });
+        this.list = new ArrayList<Matcher>(temp);
+        shortDistantMatcher = list.remove(0);
+
     }
+
+
 
 
     /**
@@ -95,74 +115,35 @@ public final class FeaturedMatchersList implements SimpleMatcher {
         return false;
     }
 
-    private void insertCurrentMatcher() {
-
-        int count = -1;
-        int index = -1;
-        for (Matcher m : foundUnused) {
-            count ++;
-            if (m.start() < shortDistantMatcher.start()) {
-                continue;
-            }  else {
-
-                index = count;
-                break;
-            }
-        }
-        if (index < 0) {
-            foundUnused.addLast(shortDistantMatcher);
-        }  else {
-            foundUnused.add(index, shortDistantMatcher);
-        }
-    }
 
     public boolean find() {
         if (shortDistantMatcher == null) {
-            searchAgain();
-
-        } else {
-            lastIndex = shortDistantMatcher.end();
-            disCardFoundMatchers();
-            if (foundUnused.isEmpty()) {
-                searchAgain();
-            } else {
-                Matcher next = foundUnused.get(0);
-                if (shortDistantMatcher.find()) {
-                    if (shortDistantMatcher.start() <= next.start()) {
-                        // Retain  shortDistantMatcher
-                    } else {
-
-                        //Insert
-                        insertCurrentMatcher();
-                        // get the first one.
-                        shortDistantMatcher = foundUnused.remove(0);
-                    }
-                } else {
-                    list.remove(shortDistantMatcher);
-                    shortDistantMatcher = foundUnused.remove(0);
-                }
+            if (!list.isEmpty()) {
+                searchFirst();
             }
 
+        } else {
+
+            searchAgainAndAdjust();
+
         }
-
-
         return shortDistantMatcher != null;
 
 
     }
 
-    private Matcher nextUnConsumedMatcher() {
-        int index = list.indexOf(shortDistantMatcher);
-        if (index < list.size() - 1) {
-            for (int i = index + 1; i < list.size(); i++) {
-                if (list.get(i).start() >= shortDistantMatcher.end()) {
-                    return list.get(i);
-                }
-            }
-        }
-        return null;
-
-    }
+//    private Matcher nextUnConsumedMatcher() {
+//        int index = list.indexOf(shortDistantMatcher);
+//        if (index < list.size() - 1) {
+//            for (int i = index + 1; i < list.size(); i++) {
+//                if (list.get(i).start() >= shortDistantMatcher.end()) {
+//                    return list.get(i);
+//                }
+//            }
+//        }
+//        return null;
+//
+//    }
 
     public int end() {
         if (shortDistantMatcher == null) {

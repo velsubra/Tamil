@@ -14,7 +14,7 @@ import java.util.List;
  */
 public abstract class AbstractFeaturedPatternFinderJob extends AbstractSimpleMatcherBasedJob {
 
-    private String pattern = null;
+    protected String pattern = null;
 
 
     /**

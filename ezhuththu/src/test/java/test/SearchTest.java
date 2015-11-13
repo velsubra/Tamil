@@ -39,6 +39,34 @@ public class SearchTest {
         TamilFactory.init();
     }
 
+    @Test
+    public void testKuRALWithAkAndDescolved() throws Exception {
+        try {
+
+            String pattern = "${(kurralh)}";
+            //  TamilPattern pattern1= TamilPattern.compile(pattern, null, RXKuttuAcrossCirFeature.FEATURE);
+            // TamilPattern pattern1= TamilPattern.compile(pattern);
+            String kuRalh ="\n" +
+                    "அஃகாமை செல்வத்திற் கியாதெனின் வெஃகாமை\n" +
+                    "வேண்டும் பிறன்கைப் பொருள்.\n" ;
+
+            YaappuPatternFinderJob job = new YaappuPatternFinderJob(kuRalh, pattern);
+            SimpleMatcher matcher = job.createMatcher();
+            //Matcher matcher = pattern1.matcher(kuRalh);
+            System.out.println("Pattern:" + pattern);
+            if (matcher.find()) {
+                do {
+                    System.out.println("\n\n------" + kuRalh.substring(matcher.start(), matcher.end()) + "----\n\n");
+                } while(matcher.find());
+            } else {
+                throw new Exception("Kurral could not be matched");
+            }
+
+        } finally {
+
+        }
+    }
+
 
     @Test
     public void testKuRALWitDesolved() throws Exception {
@@ -164,7 +192,7 @@ public class SearchTest {
                 }
 
                 System.out.println(buffer.toString());
-                Assert.assertEquals(job ==nottranposed ? 122 : 123, resultSnapShot.getNewResults(0).getChunk().size());
+                Assert.assertEquals(job ==nottranposed ? 123 : 124, resultSnapShot.getNewResults(0).getChunk().size());
 
                 JobResultChunk<JSONObject> lastResults = resultSnapShot.getLastResults(2);
                 Assert.assertEquals(2, lastResults.getChunk().size());
