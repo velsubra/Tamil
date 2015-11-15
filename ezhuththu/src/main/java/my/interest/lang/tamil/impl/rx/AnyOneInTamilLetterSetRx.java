@@ -60,7 +60,7 @@ public final class AnyOneInTamilLetterSetRx implements PatternGenerator {
                 buffer.append("|");
             }
             // buffer.append("(?:");
-            buffer.append(ch.toUnicodeRegEXRepresentation(featureSet.isFeatureEnabled(RXIncludeCanonicalEquivalenceFeature.class)));
+            buffer.append(ch.toUnicodeRegEXRepresentation(featureSet));
             // buffer.append(")");
 
             first = false;

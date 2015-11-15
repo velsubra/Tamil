@@ -2,6 +2,9 @@ package tamil.lang;
 
 
 import common.lang.CompoundCharacter;
+import my.interest.lang.tamil.impl.FeatureSet;
+import tamil.lang.api.regex.RXIncludeCanonicalEquivalenceFeature;
+import tamil.lang.api.regex.RXKeLaAsKouFeature;
 import tamil.lang.exception.NoUyirPartException;
 
 import java.util.ArrayList;
@@ -878,12 +881,13 @@ public final class TamilCompoundCharacter extends TamilCharacter implements Comp
     }
 
     @Override
-    public List<int[]> getCodePoints(boolean includeCanonEq) {
+    public List<int[]> getCodePoints(FeatureSet set) {
+        boolean includeCanon = set.isFeatureEnabled(RXIncludeCanonicalEquivalenceFeature.class);
         List<int[]> list = new ArrayList<int[]>();
         int[] ret = Arrays.copyOf(this.consonants, this.consonants.length + 1);
         ret[this.consonants.length] = getVowel();
         list.add(ret);
-        if (includeCanonEq && vowelDecomposed != null && vowelDecomposed.length > 1) {
+        if (includeCanon && vowelDecomposed != null && vowelDecomposed.length > 1) {
             ret = Arrays.copyOf(this.consonants, this.consonants.length + vowelDecomposed.length);
             for (int i = 0; i < vowelDecomposed.length; i++) {
                 ret[this.consonants.length + i] = vowelDecomposed[i];
@@ -969,31 +973,51 @@ public final class TamilCompoundCharacter extends TamilCharacter implements Comp
     }
 
     @Override
-    public String toUnicodeRegEXRepresentation(boolean includeCanonEq) {
+    public String toUnicodeRegEXRepresentation(FeatureSet set ) {
+        boolean olhaAsOu = set.isFeatureEnabled(RXKeLaAsKouFeature.class);
         if (isUyirMeyyezhuththu()) {
-            if (isAA()) {
-                //Not a koa
+            if (isAA()) { // it is kaa
+                //But Not a koa
                 StringBuffer buffer = new StringBuffer("(?:");
-                buffer.append(super.toUnicodeRegEXRepresentation(includeCanonEq));
+                buffer.append(super.toUnicodeRegEXRepresentation(set));
                 buffer.append("(?!");
                 buffer.append("\\u0BBE");
                 buffer.append(")");
                 buffer.append(")");
                 return buffer.toString();
-            } else if (isA()) {
+            } else if (isA()) { // it is A
                 //Not a ko or kou
                 StringBuffer buffer = new StringBuffer("(?:");
-                buffer.append(super.toUnicodeRegEXRepresentation(includeCanonEq));
+                buffer.append(super.toUnicodeRegEXRepresentation(set));
                 buffer.append("(?!");
                 buffer.append("[\\u0BBE\\u0BD7]");
+                if (olhaAsOu) {
+                    buffer.append("|");
+                    buffer.append(TamilSimpleCharacter.LLA.toUnicodeRegEXRepresentation(FeatureSet.EMPTY));
+                }
                 buffer.append(")");
                 buffer.append(")");
                 return buffer.toString();
-            } else {
-                return super.toUnicodeRegEXRepresentation(includeCanonEq);
+            }   else if (isOU()) {
+                if (olhaAsOu) {
+                    StringBuffer buffer = new StringBuffer("(?:");
+                    buffer.append(super.toUnicodeRegEXRepresentation(set));
+                    buffer.append("|");
+                    TamilCompoundCharacter egaram = (TamilCompoundCharacter)this.getMeiPart().addUyir(TamilSimpleCharacter.A);
+                    buffer.append(egaram.toUnicodeRegEXRepresentation(FeatureSet.EMPTY));
+                    buffer.append(TamilSimpleCharacter.LLA.toUnicodeRegEXRepresentation(FeatureSet.EMPTY));
+                    buffer.append(")");
+                    buffer.append(")");
+                    return buffer.toString();
+                } else {
+                    return super.toUnicodeRegEXRepresentation(set);
+                }
+            }
+            else {
+                return super.toUnicodeRegEXRepresentation(set);
             }
         } else {
-            return super.toUnicodeRegEXRepresentation(includeCanonEq);
+            return super.toUnicodeRegEXRepresentation(set);
         }
 
     }

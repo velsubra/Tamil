@@ -45,24 +45,24 @@ public class RXCalcForLetterSeries {
 
 
     public void insertTamilCharacter(TamilCharacter ch, FeatureSet set) {
-        boolean includeCanonEq = set.isFeatureEnabled(RXIncludeCanonicalEquivalenceFeature.class);
+
         if (!ch.isUnicodeSequenceUnique()) {
             appendLastRange();
-            appendRx(ch.toUnicodeRegEXRepresentation(includeCanonEq));
+            appendRx(ch.toUnicodeRegEXRepresentation(set));
             return;
         }
-        List<int[]> reps = ch.getCodePoints(includeCanonEq);
+        List<int[]> reps = ch.getCodePoints(set);
 
 
         if (reps.size() > 1) {
             appendLastRange();
-            appendRx(ch.toUnicodeRegEXRepresentation(includeCanonEq));
+            appendRx(ch.toUnicodeRegEXRepresentation(set));
             return;
         }
         int[] rep = reps.get(0);
         if (rep.length > 2) {
             appendLastRange();
-            appendRx(ch.toUnicodeRegEXRepresentation(includeCanonEq));
+            appendRx(ch.toUnicodeRegEXRepresentation(set));
             return;
         }
 

@@ -221,7 +221,7 @@ public class RxRegistry implements IPropertyFinder {
             if (p1.startsWith("[") && p1.endsWith("]")) {
                 String inner = p1.substring(1, p1.length() - 1);
                 TamilWord literal = TamilWord.from(inner, true);
-                return literal.toUnicodeStringRepresentation(featureSet.isFeatureEnabled(RXIncludeCanonicalEquivalenceFeature.class));
+                return literal.toUnicodeStringRepresentation(featureSet);
             }
 
             if (p1.startsWith("அசையெண்ணிக்கை[") && p1.endsWith("]")) {

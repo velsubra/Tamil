@@ -3,6 +3,7 @@ package test;
 
 import my.interest.lang.tamil.EzhuththuUtils;
 import my.interest.lang.tamil.StringUtils;
+import my.interest.lang.tamil.impl.FeatureSet;
 import my.interest.lang.tamil.impl.rx.cir.Asai;
 import my.interest.lang.tamil.impl.rx.cir.Eerasaichcheer;
 import my.interest.lang.tamil.impl.rx.cir.Moovasaichcheer;
@@ -54,6 +55,11 @@ public class Ezhuththu_0Test {
         }
     }
 
+    @Test
+    public void kouvaiTest() {
+       TamilWord w = TamilWord.from("கெளவை");
+        Assert.assertEquals(3, w.size());
+    }
 
     @Test
     public void cirSelfTest() {
@@ -116,33 +122,37 @@ public class Ezhuththu_0Test {
     @Test
     public void testCodePoints() {
 
-        String rep = toString(TamilSimpleCharacter.a.getCodePoints(true));
+        String rep = toString(TamilCompoundCharacter.IK_OU.getCodePoints(new FeatureSet(RXIncludeCanonicalEquivalenceFeature.FEATURE)));
+        System.out.print(rep);
+        Assert.assertEquals("\\u0b95\\u0bcc,\\u0b95\\u0bc6\\u0bd7,", rep);
+
+         rep = toString(TamilSimpleCharacter.a.getCodePoints(new FeatureSet(RXIncludeCanonicalEquivalenceFeature.FEATURE)));
         System.out.print(rep);
         Assert.assertEquals("\\u0b85,", rep);
 
-        rep = toString(TamilSimpleCharacter.OU.getCodePoints(true));
+        rep = toString(TamilSimpleCharacter.OU.getCodePoints(new FeatureSet(RXIncludeCanonicalEquivalenceFeature.FEATURE)));
         System.out.print(rep);
         Assert.assertEquals("\\u0b94,\\u0b92\\u0bd7,", rep);
 
-        rep = toString(TamilSuperCompoundCharacter.IKSH_OU.getCodePoints(true));
+        rep = toString(TamilSuperCompoundCharacter.IKSH_OU.getCodePoints(new FeatureSet(RXIncludeCanonicalEquivalenceFeature.FEATURE)));
         System.out.print(rep);
         Assert.assertEquals("\\u0b95\\u0bcd\\u0bb7\\u0bcc,\\u0b95\\u0bcd\\u0bb7\\u0bc6\\u0bd7,", rep);
 
-        rep = toString(TamilSuperCompoundCharacter.SHREE_.getCodePoints(true));
+        rep = toString(TamilSuperCompoundCharacter.SHREE_.getCodePoints(new FeatureSet(RXIncludeCanonicalEquivalenceFeature.FEATURE)));
         System.out.print(rep);
         Assert.assertEquals("\\u0bb8\\u0bcd\\u0bb0\\u0bc0,", rep);
 
 
-        rep = toString(TamilCompoundCharacter.IR_EE.getCodePoints(true));
+        rep = toString(TamilCompoundCharacter.IR_EE.getCodePoints(new FeatureSet(RXIncludeCanonicalEquivalenceFeature.FEATURE)));
         System.out.print(rep);
         Assert.assertEquals("\\u0bb0\\u0bc0,", rep);
 
 
-        rep = toString(TamilCompoundCharacter.IK_OO.getCodePoints(true));
+        rep = toString(TamilCompoundCharacter.IK_OO.getCodePoints(new FeatureSet(RXIncludeCanonicalEquivalenceFeature.FEATURE)));
         System.out.print(rep);
         Assert.assertEquals("\\u0b95\\u0bcb,\\u0b95\\u0bc7\\u0bbe,", rep);
 
-        rep = toString(TamilCompoundCharacter.IK_UU.getCodePoints(true));
+        rep = toString(TamilCompoundCharacter.IK_UU.getCodePoints(new FeatureSet(RXIncludeCanonicalEquivalenceFeature.FEATURE)));
         System.out.print(rep);
         Assert.assertEquals("\\u0b95\\u0bc2,", rep);
 
@@ -857,7 +867,7 @@ public class Ezhuththu_0Test {
     @Test
     public void testUniCodeChar() {
         TamilWord tamil = TamilWord.from("தமிழ்");
-        String unicode = tamil.toUnicodeStringRepresentation(false);
+        String unicode = tamil.toUnicodeStringRepresentation(FeatureSet.EMPTY);
         unicode = unicode.replace("\"", "\\\"");
         System.out.println(unicode);
         Pattern p = Pattern.compile(unicode, Pattern.CANON_EQ);

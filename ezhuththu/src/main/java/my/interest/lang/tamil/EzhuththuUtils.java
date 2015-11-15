@@ -3,6 +3,7 @@ package my.interest.lang.tamil;
 import common.lang.impl.AbstractCharacter;
 import my.interest.lang.tamil.generated.types.*;
 import my.interest.lang.tamil.generated.types.Properties;
+import my.interest.lang.tamil.impl.FeatureSet;
 import my.interest.lang.tamil.internal.api.TamilCharacterParserListener;
 import my.interest.lang.tamil.internal.api.TamilLetterFilter;
 import my.interest.lang.tamil.internal.api.TamilSoundParserListener;
@@ -10,6 +11,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import tamil.lang.*;
+import tamil.lang.api.regex.RXIncludeCanonicalEquivalenceFeature;
 import tamil.lang.known.IKnownWord;
 import tamil.lang.known.non.derived.IPeyarchchol;
 import tamil.lang.sound.AtomicSound;
@@ -636,7 +638,7 @@ public class EzhuththuUtils {
                     return false;
                 }
 
-                for (int[] codepoints : tamil.getCodePoints(true)) {
+                for (int[] codepoints : tamil.getCodePoints(new FeatureSet(RXIncludeCanonicalEquivalenceFeature.FEATURE))) {
                     if (codepoints.length == x) {
                         return  true;
                     }

@@ -1,6 +1,8 @@
 package common.lang.impl;
 
 import common.lang.SimpleCharacter;
+import my.interest.lang.tamil.impl.FeatureSet;
+import tamil.lang.api.regex.RXIncludeCanonicalEquivalenceFeature;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,7 +55,8 @@ public class UnknownCharacter extends AbstractCharacter implements SimpleCharact
 
 
     @Override
-    public List<int[]> getCodePoints(boolean includeCanonEq) {
+    public List<int[]> getCodePoints(FeatureSet set) {
+      //  boolean includeCanon = set.isFeatureEnabled(RXIncludeCanonicalEquivalenceFeature.class);
         List<int[]> list = new ArrayList<int[]>();
         int[] ret = new int[1];
         ret[0] = getValue();

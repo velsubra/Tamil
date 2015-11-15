@@ -1,7 +1,9 @@
 package common.lang.impl;
 
+import my.interest.lang.tamil.impl.FeatureSet;
 import tamil.lang.CharacterDigest;
 import tamil.lang.TamilCharacter;
+import tamil.lang.api.regex.RXIncludeCanonicalEquivalenceFeature;
 import tamil.lang.exception.TamilPlatformException;
 
 import java.util.List;
@@ -134,11 +136,12 @@ public abstract class AbstractCharacter implements common.lang.Character, Compar
 
     public abstract int getMinCodePointsCount();
 
-    public abstract List<int[]> getCodePoints(boolean includeCanon);
+    public abstract List<int[]> getCodePoints(FeatureSet set) ;
 
-    public String toUnicodeRegEXRepresentation(boolean includeCanon) {
+    public String toUnicodeRegEXRepresentation(FeatureSet set) {
+        boolean includeCanon = set.isFeatureEnabled(RXIncludeCanonicalEquivalenceFeature.class);
         StringBuffer buffer = new StringBuffer("(?:");
-        List<int[]> codepointslist = getCodePoints(includeCanon);
+        List<int[]> codepointslist = getCodePoints(set);
         boolean first = true;
         if (codepointslist.size() > 1) {
             buffer.append("(");

@@ -4,6 +4,8 @@ package tamil.lang;
 import common.lang.SimpleCharacter;
 import my.interest.lang.tamil.impl.FeatureSet;
 import my.interest.lang.tamil.impl.rx.TamilGlyphRx;
+import tamil.lang.api.regex.RXIncludeCanonicalEquivalenceFeature;
+import tamil.lang.api.regex.RXKeLaAsKouFeature;
 import tamil.lang.exception.NoMeiPartException;
 import tamil.lang.exception.NoUyirPartException;
 
@@ -678,13 +680,14 @@ public final class TamilSimpleCharacter extends TamilCharacter implements Simple
 
 
     @Override
-    public List<int[]> getCodePoints(boolean includeCanonEq) {
+    public List<int[]> getCodePoints(FeatureSet set) {
+        boolean includeCanon = set.isFeatureEnabled(RXIncludeCanonicalEquivalenceFeature.class);
 
         List<int[]> list = new ArrayList<int[]>();
         int[] ret = new int[1];
         ret[0] = getValue();
         list.add(ret);
-        if (includeCanonEq && this == TamilSimpleCharacter.OU) {
+        if (includeCanon && this == TamilSimpleCharacter.OU) {
             ret = new int[2];
             ret[0] = TamilSimpleCharacter.O.getValue();
             ret[1] = TamilCompoundCharacter.OU_;
@@ -799,9 +802,9 @@ public final class TamilSimpleCharacter extends TamilCharacter implements Simple
         return true;
     }
 
-    public String toUnicodeRegEXRepresentation(boolean includeCanonEq) {
+    public String toUnicodeRegEXRepresentation(FeatureSet set) {
 
-
+        boolean olhaAsOu = set.isFeatureEnabled(RXKeLaAsKouFeature.class);
         if (isUyirMeyyezhuththu()) {
             StringBuffer buffer = new StringBuffer("(?:");
 
@@ -820,15 +823,34 @@ public final class TamilSimpleCharacter extends TamilCharacter implements Simple
                 if (this == O) {
                     // not an ஔ
                     StringBuffer buffer = new StringBuffer("(?:");
-                    buffer.append(super.toUnicodeRegEXRepresentation(includeCanonEq));
+                    buffer.append(super.toUnicodeRegEXRepresentation(set));
                     buffer.append("(?!");
+                    if (olhaAsOu) {
+                        buffer.append("(?:");
+                    }
                     buffer.append("\\u0BD7");
+                    if (olhaAsOu) {
+                        buffer.append("|");
+                        buffer.append(TamilSimpleCharacter.LLA.toUnicodeRegEXRepresentation(FeatureSet.EMPTY));
+                        buffer.append(")");
+                    }
                     buffer.append(")");
                     buffer.append(")");
                     return buffer.toString();
+                } else if (this == OU) {
+                    if (olhaAsOu) {
+                        StringBuffer buffer = new StringBuffer("(?:");
+                        buffer.append(super.toUnicodeRegEXRepresentation(set));
+                        buffer.append("|");
+                        buffer.append(TamilSimpleCharacter.O.toUnicodeRegEXRepresentation(FeatureSet.EMPTY));
+                        buffer.append(TamilSimpleCharacter.LLA.toUnicodeRegEXRepresentation(FeatureSet.EMPTY));
+                        buffer.append(")");
+                        return buffer.toString();
+                    }
+
                 }
             }
-            return super.toUnicodeRegEXRepresentation(includeCanonEq);
+            return super.toUnicodeRegEXRepresentation(set);
         }
     }
 

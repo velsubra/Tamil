@@ -7,6 +7,7 @@ import my.interest.lang.tamil.EzhuththuUtils;
 import my.interest.lang.tamil.impl.FeatureSet;
 import my.interest.lang.tamil.impl.yaappu.AsaiIterator;
 import my.interest.lang.tamil.parser.impl.TamilWordListener;
+import tamil.lang.api.regex.RXIncludeCanonicalEquivalenceFeature;
 import tamil.lang.exception.TamilPlatformException;
 import tamil.yaappu.asai.AbstractAsai;
 
@@ -806,11 +807,12 @@ public final class TamilWord extends AbstractWord<AbstractCharacter> implements 
      * @return  the unicode representation of the tamil word.
      */
     //todo:needs revisit.
-    public  String toUnicodeStringRepresentation(boolean includeCanonEq) {
+    public  String toUnicodeStringRepresentation(FeatureSet set) {
+       // boolean includeCanon = set.isFeatureEnabled(RXIncludeCanonicalEquivalenceFeature.class);
         StringBuffer buffer = new StringBuffer();
         Iterator<AbstractCharacter> it =  this.listIterator();
         while(it.hasNext()) {
-           buffer.append(it.next().toUnicodeRegEXRepresentation(includeCanonEq));
+           buffer.append(it.next().toUnicodeRegEXRepresentation(set));
         }
         return buffer.toString();
     }

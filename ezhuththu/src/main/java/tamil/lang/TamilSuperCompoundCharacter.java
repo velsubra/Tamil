@@ -2,6 +2,7 @@ package tamil.lang;
 
 import common.lang.CharacterSequenceCharacter;
 import my.interest.lang.tamil.TamilUtils;
+import my.interest.lang.tamil.impl.FeatureSet;
 import tamil.lang.exception.NoMeiPartException;
 import tamil.lang.exception.NoUyirPartException;
 import tamil.util.PathBuilder;
@@ -113,14 +114,15 @@ public class TamilSuperCompoundCharacter extends TamilCharacter implements Chara
     }
 
     @Override
-    public List<int[]> getCodePoints(boolean includeCanonEq) {
+    public List<int[]> getCodePoints(FeatureSet set) {
+         // boolean includeCanon = set.isFeatureEnabled(RXIncludeCanonicalEquivalenceFeature.class);
         PathBuilder<int[]> pathBuilder = new PathBuilder<int[]>();
 
         for (TamilCharacter t : sequence) {
             if (pathBuilder.getPaths().isEmpty()) {
-                pathBuilder.includeNewPathFromRoot(t.getCodePoints(includeCanonEq));
+                pathBuilder.includeNewPathFromRoot(t.getCodePoints(set));
             } else {
-                pathBuilder.multiplyPathsWithNodes(t.getCodePoints(includeCanonEq));
+                pathBuilder.multiplyPathsWithNodes(t.getCodePoints(set));
             }
 
         }

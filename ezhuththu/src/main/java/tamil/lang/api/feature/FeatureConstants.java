@@ -64,6 +64,7 @@ public final class FeatureConstants {
 
 
     public static final RXKuttuFeature RX_TEAT_KUTTU_AS_ONE_LETTER_VAL_185 = RXKuttuFeature.FEATURE;
+    public static final RXKeLaAsKouFeature RX_TEAT_KeLaAsKou_VAL_181 = RXKeLaAsKouFeature.FEATURE;
     public static final RXDesolvedKuttialigaramFeature RX_CONSIDER_DESOLVED_KUTTIYALIGARAM__VAL_184 = RXDesolvedKuttialigaramFeature.FEATURE;
     public static final RXKuttuAcrossCirFeature RX_TEAT_SPLIT_KUTTU_AS_ONE_MEI_VAL_182 = RXKuttuAcrossCirFeature.FEATURE;
     public static final RXAythamAsKurrilFeature RX_TEAT_AAYTHAM_AS_KURRIL_VAL_186 = RXAythamAsKurrilFeature.FEATURE;

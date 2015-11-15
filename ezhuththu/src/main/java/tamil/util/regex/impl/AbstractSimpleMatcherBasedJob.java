@@ -143,8 +143,8 @@ public abstract class AbstractSimpleMatcherBasedJob implements JobRunnable<JSONO
         try {
             int longSourceKB = 10;
             String actualInput = this.source;
-            this.source = resolveSource(context, this.source);
             context.setTitleMessage(title);
+            this.source = resolveSource(context, this.source);
             config(context);
             shoulderSize = getShoulderSize();
             int lastEnd = 0;
