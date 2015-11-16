@@ -1007,7 +1007,6 @@ public final class TamilCompoundCharacter extends TamilCharacter implements Comp
                     buffer.append(egaram.toUnicodeRegEXRepresentation(FeatureSet.EMPTY));
                     buffer.append(TamilSimpleCharacter.LLA.toUnicodeRegEXRepresentation(FeatureSet.EMPTY));
                     buffer.append(")");
-                    buffer.append(")");
                     return buffer.toString();
                 } else {
                     return super.toUnicodeRegEXRepresentation(set);
