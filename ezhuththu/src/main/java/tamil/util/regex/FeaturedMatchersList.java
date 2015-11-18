@@ -16,7 +16,7 @@ import java.util.regex.Matcher;
 public final class FeaturedMatchersList implements SimpleMatcher {
 
     List<Matcher> list = null;
-   // LinkedList<Matcher> foundUnused = null;
+    // LinkedList<Matcher> foundUnused = null;
     private String basePattern;
     private Matcher shortDistantMatcher = null;
     private CharSequence source = null;
@@ -35,14 +35,10 @@ public final class FeaturedMatchersList implements SimpleMatcher {
         shortDistantMatcher = null;
 
         for (Matcher m : list) {
-            while (true) {
-                if (m.find()) {
-                    temp.add(m);
-                    break;
-                } else {
-                    break;
-                }
+            if (m.find()) {
+                temp.add(m);
             }
+
         }
         if (temp.isEmpty()) return;
         Collections.sort(temp, new Comparator<Matcher>() {
@@ -66,9 +62,10 @@ public final class FeaturedMatchersList implements SimpleMatcher {
         shortDistantMatcher = null;
         for (Matcher m : list) {
             while (true) {
-                if ( m.start() < lastIndex) {
-                    if (m.find()) {
-                        continue;
+                if (m.start() < lastIndex) {
+                    if (m.find(lastIndex)) {
+                        temp.add(m);
+                        break;
                     } else {
                         break;
                     }
@@ -89,8 +86,6 @@ public final class FeaturedMatchersList implements SimpleMatcher {
         shortDistantMatcher = list.remove(0);
 
     }
-
-
 
 
     /**

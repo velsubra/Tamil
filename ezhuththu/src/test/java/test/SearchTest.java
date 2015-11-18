@@ -39,6 +39,102 @@ public class SearchTest {
         TamilFactory.init();
     }
 
+
+    @Test
+    public void testKuRALWithBracket2() throws Exception {
+        try {
+
+            String pattern = "${(vendalhai)}";
+            //  TamilPattern pattern1= TamilPattern.compile(pattern, null, RXKuttuAcrossCirFeature.FEATURE);
+            // TamilPattern pattern1= TamilPattern.compile(pattern);
+            String kuRalh ="\n" +
+                    "1291.அவர்நெஞ்(சு) அவர்க்காதல் கண்டும் எவன்நெஞ்சே\n" +
+                    "     நீஎமக்(கு) ஆகா தது." ;
+
+            YaappuPatternFinderJob job = new YaappuPatternFinderJob(kuRalh, pattern) {
+                public IPropertyFinder getAliasFinder() {
+                   return new IPropertyFinder() {
+                       public String findProperty(String p1) {
+                           if (p1.equals("இடைவெளி")) {
+                               return "${!எழுத்து}+";
+                           }
+                           return null;
+                       }
+                   };
+                }
+            };
+            SimpleMatcher matcher = job.createMatcher();
+            //Matcher matcher = pattern1.matcher(kuRalh);
+            System.out.println("Pattern:" + pattern);
+            if (matcher.find()) {
+                do {
+                    System.out.println("\n\n------" + kuRalh.substring(matcher.start(), matcher.end()) + "----\n\n");
+                } while(matcher.find());
+            } else {
+                throw new Exception("Kurral could not be matched");
+            }
+
+        } finally {
+
+        }
+    }
+
+    @Test
+    public void testKuRALWithBracket1() throws Exception {
+        try {
+
+            String pattern = "${(kurralh)}";
+            //  TamilPattern pattern1= TamilPattern.compile(pattern, null, RXKuttuAcrossCirFeature.FEATURE);
+            // TamilPattern pattern1= TamilPattern.compile(pattern);
+            String kuRalh ="\n" +
+                    "குன்றேறி யானைப்போர் கண்டற்றால் தன்கைத்தொன்(று)\n" +
+                    "    உண்டாகச் செய்வான் வினை.\n" ;
+
+            YaappuPatternFinderJob job = new YaappuPatternFinderJob(kuRalh, pattern);
+            SimpleMatcher matcher = job.createMatcher();
+            //Matcher matcher = pattern1.matcher(kuRalh);
+            System.out.println("Pattern:" + pattern);
+            if (matcher.find()) {
+                do {
+                    System.out.println("\n\n------" + kuRalh.substring(matcher.start(), matcher.end()) + "----\n\n");
+                } while(matcher.find());
+            } else {
+                throw new Exception("Kurral could not be matched");
+            }
+
+        } finally {
+
+        }
+    }
+
+    @Test
+    public void testKuRALWithKuttu() throws Exception {
+        try {
+
+            String pattern = "${(kurralh)}";
+            //  TamilPattern pattern1= TamilPattern.compile(pattern, null, RXKuttuAcrossCirFeature.FEATURE);
+            // TamilPattern pattern1= TamilPattern.compile(pattern);
+            String kuRalh ="\n" +
+                    "அன்பறிவு ஆராய்ந்த சொல்வன்மை தூதுரைப்பார்க்கு\n" +
+                    "    இன்றி யமையாத மூன்று.\n" ;
+
+            YaappuPatternFinderJob job = new YaappuPatternFinderJob(kuRalh, pattern);
+            SimpleMatcher matcher = job.createMatcher();
+            //Matcher matcher = pattern1.matcher(kuRalh);
+            System.out.println("Pattern:" + pattern);
+            if (matcher.find()) {
+                do {
+                    System.out.println("\n\n------" + kuRalh.substring(matcher.start(), matcher.end()) + "----\n\n");
+                } while(matcher.find());
+            } else {
+                throw new Exception("Kurral could not be matched");
+            }
+
+        } finally {
+
+        }
+    }
+
     @Test
     public void testKuRALWithAkAndDescolved() throws Exception {
         try {
@@ -192,7 +288,7 @@ public class SearchTest {
                 }
 
                 System.out.println(buffer.toString());
-                Assert.assertEquals(job ==nottranposed ? 127 : 128, resultSnapShot.getNewResults(0).getChunk().size());
+                Assert.assertEquals(job ==nottranposed ? 128 : 129, resultSnapShot.getNewResults(0).getChunk().size());
 
                 JobResultChunk<JSONObject> lastResults = resultSnapShot.getLastResults(2);
                 Assert.assertEquals(2, lastResults.getChunk().size());
