@@ -115,14 +115,14 @@ public abstract class PersistenceInterface extends DefaultPlatformDictionaryBase
      * @return
      */
     public static boolean isOnCloud() {
-      return   FileBasedPersistenceImpl.isOnCloud();
+        return FileBasedPersistenceImpl.isOnCloud();
     }
 
     static File WORK_DIR = null;
 
     public static File getWorkDir() {
         if (WORK_DIR == null) {
-           WORK_DIR =  FileBasedPersistenceImpl.getWorkDir();
+            WORK_DIR = FileBasedPersistenceImpl.getWorkDir();
         }
         return WORK_DIR;
     }
@@ -214,23 +214,29 @@ public abstract class PersistenceInterface extends DefaultPlatformDictionaryBase
 
     @Override
     public List<IKnownWord> suggest(TamilWord search, int max, List<Class<? extends IKnownWord>> includeTypes) {
-        List<IKnownWord> list = super.suggest(search, (int) (max / 3), includeTypes);
-        if (list.size() < max) {
-            List<IKnownWord> sug = suggestions.get(search.suggestionHashCode());
-            if (sug != null) {
-                if (sug.size() >= max - list.size()) {
-                    list.addAll(sug.subList(0, max - list.size()));
-                } else {
-                    list.addAll(sug);
+        rLock.lock();
+        try {
+            List<IKnownWord> list = super.suggest(search, (int) (max / 3), includeTypes);
+            if (list.size() < max) {
+                List<IKnownWord> sug = suggestions.get(search.suggestionHashCode());
+                if (sug != null) {
+                    if (sug.size() >= max - list.size()) {
+                        list.addAll(sug.subList(0, max - list.size()));
+                    } else {
+                        list.addAll(sug);
+                    }
                 }
+                list.addAll(findMatchingDerivedWords(consonantset, search, max - list.size() - 1, includeTypes, new FeatureSet(FeatureConstants.DICTIONARY_AUTO_SUGGEST_VAL_165)));
+                list.addAll(findMatchingDerivedWords(hashset, search, max - list.size(), includeTypes, new FeatureSet(FeatureConstants.DICTIONARY_AUTO_SUGGEST_VAL_165)));
+
+
             }
-            list.addAll(findMatchingDerivedWords(consonantset, search, max - list.size() - 1, includeTypes, new FeatureSet(FeatureConstants.DICTIONARY_AUTO_SUGGEST_VAL_165)));
-            list.addAll(findMatchingDerivedWords(hashset, search, max - list.size(), includeTypes, new FeatureSet(FeatureConstants.DICTIONARY_AUTO_SUGGEST_VAL_165)));
 
 
+            return list;
+        } finally {
+            rLock.unlock();
         }
-
-        return list;
     }
 
 
@@ -1523,9 +1529,7 @@ public abstract class PersistenceInterface extends DefaultPlatformDictionaryBase
     }
 
 
-
     public List<String> updateClassloader(String code, String name, String paths) {
-
 
 
         lock();
@@ -1554,8 +1558,7 @@ public abstract class PersistenceInterface extends DefaultPlatformDictionaryBase
             if (app.getCache() == null) {
                 app.setCache(new AppCache());
             }
-            return  app.getCache().buildClassloader(app);
-
+            return app.getCache().buildClassloader(app);
 
 
         } finally {
@@ -1565,13 +1568,13 @@ public abstract class PersistenceInterface extends DefaultPlatformDictionaryBase
     }
 
 
-
-   // static final GroovyScriptEngineImpl engine = new GroovyScriptEngineImpl();
+    // static final GroovyScriptEngineImpl engine = new GroovyScriptEngineImpl();
     static final Map<String, SoftReference<CompiledScript>> compiledScripts = new HashMap<String, SoftReference<CompiledScript>>();
 
 
     /**
      * Compiles only if needed.
+     *
      * @param app
      * @param resource
      * @param key
@@ -1597,7 +1600,7 @@ public abstract class PersistenceInterface extends DefaultPlatformDictionaryBase
             if (shell == null) {
                 app.getCache().setGroovyScriptEngine(new GroovyScriptEngineImpl(new GroovyClassLoader(app.getCache().getAppClassLoader())));
                 shell = (GroovyScriptEngineImpl) app.getCache().getGroovyScriptEngine();
-            }   else {
+            } else {
                 System.out.println("Reusing groovy shell!");
             }
             c = shell.compile(script);
@@ -1735,7 +1738,6 @@ public abstract class PersistenceInterface extends DefaultPlatformDictionaryBase
         AppResource res = findAppResourceFromApp(file, app, resource, local);
         return res;
     }
-
 
 
     public AppResource findAppResource(String name, String resource, boolean local) {

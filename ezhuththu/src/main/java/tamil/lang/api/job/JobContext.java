@@ -10,6 +10,12 @@ package tamil.lang.api.job;
 public interface JobContext<T> {
 
     /**
+     * Gets the total number of unit work added
+     * @return the number of unit of work performed.
+     */
+    public int getUnitResultCount();
+
+    /**
      * Returns the current job id
      * @return the job id;
      */

@@ -280,6 +280,7 @@
             <xs:element name="externalResources" type="ExternalResource" minOccurs="0" maxOccurs="unbounded"/>
             <xs:element name="resources" type="AppResources"/>
             <xs:element name="resourceInheritance" type="ResourceInheritance"/>
+            <xs:element name="properties" type="Properties"/>
         </xs:sequence>
     </xs:complexType>
 

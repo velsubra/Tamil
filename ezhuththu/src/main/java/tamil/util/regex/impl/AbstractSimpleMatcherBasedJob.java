@@ -155,7 +155,7 @@ public abstract class AbstractSimpleMatcherBasedJob implements JobRunnable<JSONO
             if (!longSource) {
                 context.setStatusMessage("Entering the search ...");
             } else {
-                context.setStatusMessage("Entering the search in a  long source of data at " + new Date().toString() + ". It might take a while to find the first match ...");
+                context.setStatusMessage("Entering the search in a  long source of data (" + (source.length() - lastEnd)/ 1024 +" KB)  at " + new Date().toString() + ". It might take a while to find the first match ...");
             }
             int matches = 0;
             while (matcher.find()) {
@@ -171,28 +171,31 @@ public abstract class AbstractSimpleMatcherBasedJob implements JobRunnable<JSONO
 
                 if (nonMatchText.length() > shoulderSize) {
                     int skipped = nonMatchText.length() - shoulderSize;
-                    match.put("preSkippedCount", skipped);
-                    match.put("preMatch", nonMatchText.substring(skipped));
+
+                    match.put(PROP_PRE_MATCH_TEXT, nonMatchText.substring(skipped));
                     if (previousMatch != null) {
                         if (skipped <= shoulderSize) {
 
-                            previousMatch.put("postMatch", nonMatchText.substring(0, skipped));
-
+                            previousMatch.put(PROP_POST_MATCH_TEXT, nonMatchText.substring(0, skipped));
+                            skipped = 0;
                         } else {
-                            previousMatch.put("postMatch", nonMatchText.substring(0, shoulderSize));
+                            previousMatch.put(PROP_POST_MATCH_TEXT, nonMatchText.substring(0, shoulderSize));
                             skipped = skipped - shoulderSize;
-                            match.put("preSkippedCount", skipped);
+
                         }
                         updatePreviousMatch(context, previousMatch);
 
                     }
+                    if (skipped > 0) {
+                        match.put(PROP_PRE_SKIPPED_COUNT, skipped);
+                    }
 
                 } else {
-                    match.put("preMatch", nonMatchText);
+                    match.put(PROP_PRE_MATCH_TEXT, nonMatchText);
 
                 }
 
-                match.put("match", matchText);
+                match.put(PROP_MATCH_TEXT, matchText);
 
                 //update looping context
                 lastEnd = matcher.end();
@@ -211,10 +214,10 @@ public abstract class AbstractSimpleMatcherBasedJob implements JobRunnable<JSONO
                 String lastNonMatchText = source.substring(lastEnd, source.length());
                 if (lastNonMatchText.length() > 0) {
                     if (lastNonMatchText.length() > shoulderSize) {
-                        previousMatch.put("postSkippedCount", lastNonMatchText.length() - shoulderSize);
+                        previousMatch.put(PROP_POST_SKIPPED_COUNT, lastNonMatchText.length() - shoulderSize);
                         lastNonMatchText = lastNonMatchText.substring(0, shoulderSize);
                     }
-                    previousMatch.put("postMatch", lastNonMatchText);
+                    previousMatch.put(PROP_POST_MATCH_TEXT, lastNonMatchText);
                 }
                 insertPreviousMatch(context, previousMatch, false);
             }

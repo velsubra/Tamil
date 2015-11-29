@@ -37,10 +37,12 @@ public abstract class AbstractKnownWord implements IKnownWord {
     public AbstractKnownWord(TamilWord word) {
         this.word = word;
         type = EnglishToTamilCharacterLookUpContext.getBestMatch(getClass().getSimpleName().toLowerCase());
-        int size = knownTypes.size();
-        knownTypes.add(this.getClass());
-        if (size != knownTypes.size()) {
-            System.out.println(knownTypes);
+        synchronized (knownTypes) {
+            int size = knownTypes.size();
+            knownTypes.add(this.getClass());
+            if (size != knownTypes.size()) {
+                System.out.println(knownTypes);
+            }
         }
     }
 

@@ -20,9 +20,11 @@ public class SplitKuttiyaIigaramRx extends ORPatternGenerator {
     @Override
     public List<String> getList(FeatureSet set) {
         List<String> list = new ArrayList<String>();
-        list.add("(?:(\\(${valiyigaravarisai}\\))(?=(?:${idaivelhi}${yagaravarisaiyuyirmei})))");
+        //list.add("(?:(\\(${valiyigaravarisai}\\))(?=(?:${idaivelhi}${mozhimuthalyagaravarisaiyuyirmei})))");
+        //list.add("(?:(\\(${valiyugaravarisai}\\))(?=(?:${idaivelhi}${mozhimuthalyagaravarisaiyuyirmei})))");
+        list.add("(?:(${valiyugaravarisai})(?=(?:${idaivelhi}${mozhimuthalyagaravarisaiyuyirmei})))");
         if (set.isFeatureEnabled(RXDesolvedKuttialigaramFeature.class)) {
-            list.add("(?:${valiyigaravarisai}(?=(?:${idaivelhi}${yagaravarisaiyuyirmei})))");
+            list.add("(?:${valiyigaravarisai}(?=(?:${idaivelhi}${mozhimuthalyagaravarisaiyuyirmei})))");
         }
 
         return list;

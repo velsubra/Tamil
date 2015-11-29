@@ -11,14 +11,20 @@ import my.interest.lang.tamil.punar.ThodarMozhiBuilder;
 import my.interest.lang.tamil.punar.ThodarMozhiBuilders;
 import my.interest.lang.tamil.translit.EnglishToTamilCharacterLookUpContext;
 import my.interest.lang.util.TimeUtils;
+import org.json.JSONObject;
 import org.junit.Assert;
 import org.junit.Test;
 import tamil.lang.TamilFactory;
 import tamil.lang.TamilWord;
+import tamil.lang.api.job.JobManager;
+import tamil.lang.api.job.JobResultSnapShot;
 import tamil.lang.known.IKnownWord;
 import tamil.lang.known.non.derived.Peyarchchol;
+import tamil.lang.known.non.derived.Vinaiyadi;
 import tamil.lang.known.non.derived.idai.Aththu;
 import tamil.lang.known.non.derived.idai.Ottu;
+import tamil.util.regex.impl.DictionaryRegExFinderJob;
+import tamil.util.regex.impl.YaappuPatternsCounterJob;
 
 import java.util.Date;
 
@@ -102,6 +108,40 @@ public class ParseTest {
                     System.out.println(count++ + ":" + s);
                 }
             }
+
+        } finally {
+            ExecuteManager.stop();
+        }
+    }
+
+    @Test
+    public void testDictionaryTest() throws Exception {
+        try {
+            ExecuteManager.start();
+            PersistenceInterface inter = PersistenceInterface.get();
+            inter.setAutoLoad(false);
+            System.out.print("Firing po: ...");
+
+            ExecuteManager.fire(new WordGeneratorFromVinaiyadi(inter.findRootVerbDescription("போ")));
+            Thread.currentThread().sleep(2000);
+            DictionaryRegExFinderJob job = new DictionaryRegExFinderJob("\\b${vali}${ezhuththu}*", Vinaiyadi.class);
+            JobManager manager = TamilFactory.getJobManager("jobs/search/dictionary/category");
+            long id = manager.submit(job, JSONObject.class);
+            JobResultSnapShot<JSONObject> resultSnapShot = manager.findJobResultSnapShot(id, JSONObject.class);
+
+            while (true) {
+                if (resultSnapShot == null) {
+                    throw new Exception("Not found");
+                }
+                System.out.println(resultSnapShot.getStatus().getCompletionPercent() + " %");
+
+                if (resultSnapShot.isDone()) break;
+                Thread.currentThread().sleep(100);
+                resultSnapShot = manager.findJobResultSnapShot(id, JSONObject.class);
+
+            }
+            System.out.println(resultSnapShot.getNewResults(0).getChunk());
+            Assert.assertEquals(1, resultSnapShot.getNewResults(0).getChunk().size());
 
         } finally {
             ExecuteManager.stop();

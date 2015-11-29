@@ -30,6 +30,9 @@ public class JobContextImpl<T> implements JobContext<T> {
         this.persist = persist;
         this.serializer = serializer;
     }
+    public int getUnitResultCount() {
+        return bean.getChunks().size();
+    }
 
     public long getJobId() {
         return bean.getId();

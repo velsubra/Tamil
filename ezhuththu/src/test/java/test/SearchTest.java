@@ -967,6 +967,11 @@ public class SearchTest {
             return;
         }
         String data = new String(TamilUtils.readAllFromFile("/Users/velsubra/Downloads/kambar-ramayanam.txt"), TamilUtils.ENCODING);
+       // data = data.replaceAll("\\s+", " ");
+        //data = data.replaceAll("\\r?\\n", "\\n");
+      //  data = data.replaceAll("\\n+", "\\r\\n");
+        data = data.replaceAll(">|-|\\d|\\?|\\(|\\)|!|<|:|;|,|\\.|\"|'", "");
+        TamilUtils.writeToFile(new File("/Users/velsubra/Downloads/kambar-ramayanam-modified.txt"), data.getBytes(TamilUtils.ENCODING));
 
         //      TamilPattern pattern = TamilPattern.compile("\\b(${எழுத்து})*?${வலியுகரவரிசை}${உயிர்}(${எழுத்து})*\\b" );
 
@@ -993,23 +998,26 @@ public class SearchTest {
         //TamilPattern pattern = TamilPattern.compile("(\\*\\*.*)");
         //TamilPattern pattern = TamilPattern.compile("((\\*\\*.*))|(${எழுத்து}*(${[ழ்]}|${[ள்]})${!எழுத்து}+${தகரவரிசையுயிர்மெய்}${எழுத்து})");
         //  TamilPattern pattern = TamilPattern.compile("((\\*\\*.*))|(${எழுத்து}*${[ழ்]}${இடைவெளி}${தகரவரிசையுயிர்மெய்}${எழுத்து}*)");
-        TamilPattern pattern = TamilPattern.compile("((\\*\\*.*)|${[ஔ]}${எழுத்து}+)", null, RXIncludeCanonicalEquivalenceFeature.FEATURE);
+      //  TamilPattern pattern = TamilPattern.compile("((\\*\\*.*)|${[ஔ]}${எழுத்து}+)", null, RXIncludeCanonicalEquivalenceFeature.FEATURE);
         //TamilPattern pattern = TamilPattern.compile("((\\*\\*.*))|(${எழுத்து}*${[ழ்]}${இடைவெளி}${தகரவரிசையுயிர்மெய்}${எழுத்து}*)",null, RXIncludeCanonicalEquivalenceFeature.FEATURE);
 //          TamilPattern pattern = TamilPattern.compile("((\\*\\*.*))|(${எழுத்து}*(${[ள்]})${!எழுத்து}+${தகரவரிசையுயிர்மெய்}${எழுத்து})");
 
 
-//        TamilPattern pattern = TamilPattern.compile("${எண்சீர்களைக்கொண்ட வரி}", new PropertyFinder(
-//                "இடைவெளி = [ ]+\n" +
-//                        "சீர் = ${எழுத்து}+${இடைவெளி} \n" +
-//                        "எண்சீர் = (${சீர்}){8,}${எழுத்து}+\n" +
-//                        "எண்சீர்களைக்கொண்ட வரி = ${(எண்சீர்)} " +
-//                        ""));
+        TamilPattern pattern = TamilPattern.compile("${எண்சீர்களைக்கொண்ட வரி}", new PropertyFinder(
+                "இடைவெளி = [ ]+\n" +
+                        "சீர் = ${எழுத்து}+${இடைவெளி} \n" +
+                        "எண்சீர் = (${சீர்}){9,}${எழுத்து}+\n" +
+                        "எண்சீர்களைக்கொண்ட வரி = ${(எண்சீர்)} " +
+                        ""),RXOverrideSysDefnFeature.FEATURE);
 
 
         Matcher matcher = pattern.matcher(data);
         int count = 0;
         Date start = new Date();
         String heading = null;
+        int lastLine =0 ;
+        int group = 0;
+        String candidate = "";
         while (matcher.find()) {
             String found = data.substring(matcher.start(), matcher.end());
             if (!found.startsWith("*")) {
@@ -1018,8 +1026,29 @@ public class SearchTest {
                     System.out.println(heading);
                     heading = null;
                 }
-                System.out.print("\t" + count + "\t");
-                System.out.println(found);
+                int nowline =  getLineNumber(data,matcher.end());
+                if (nowline > lastLine + 2)  {
+                    if (nowline % 100 == 0) {
+                        System.out.println(nowline);
+                    }
+                    group = 0;
+                    candidate = "";
+                } else {
+                    group ++;
+                    candidate += "\t" + count + "\t Line No:" + nowline +":\t";
+                    candidate += found +"\n";
+                    if (group == 4) {
+
+                        group = 0;
+                        System.out.println(candidate);
+                        System.out.println("\n------------------------*******************---------------------------\n\n\n\n");
+                        candidate = "";
+                    }
+
+                }
+               // System.out.print("\t" + count + "\t Line No:" + nowline +":\t");
+               // System.out.println(found);
+                lastLine = nowline;
             } else {
                 heading = found;
             }
@@ -1028,6 +1057,10 @@ public class SearchTest {
 
         System.out.println("Time taken:" + TamilUtils.millisToLongDHMS(new Date().getTime() - start.getTime()));
 
+    }
+
+    private static int getLineNumber(String text, int index) {
+        return text.substring(0,index).split("\r\n|\r|\n").length;
     }
 
 

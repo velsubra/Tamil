@@ -80,8 +80,8 @@ public abstract class AbstractPatternsCounterJob implements JobRunnable<JSONObje
             JSONObject json = new JSONObject();
             JSONArray labels = new JSONArray();
             JSONArray counts = new JSONArray();
-            json.put("labels", labels);
-            json.put("counts", counts);
+            json.put(PROP_LABELS_ARRAY, labels);
+            json.put(PROP_COUNTS_ARRAY, counts);
             for (SimpleMatcher matcher : matchers) {
 
                 counts.put(0);

@@ -2,14 +2,17 @@ package my.interest.lang.tamil.impl.dictionary;
 
 import tamil.lang.TamilWord;
 import tamil.lang.api.dictionary.DictionaryFeature;
+import tamil.lang.api.dictionary.DictionarySearchCallback;
 import tamil.lang.api.dictionary.TamilDictionary;
 import tamil.lang.known.IKnownWord;
 import tamil.lang.spi.TamilDictionaryProvider;
+import tamil.util.regex.TamilPattern;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.regex.Matcher;
 
 /**
  * <p>
@@ -61,6 +64,30 @@ public class DictionaryCollection implements TamilDictionary {
 
         }
         return list;
+    }
+
+    private static class DictionarySearchCallbackWrapped  implements DictionarySearchCallback {
+        public int baseCount = 0;
+        public  DictionarySearchCallback wrapped = null;
+
+        public boolean matchFound(int index, IKnownWord word, Matcher matcher) {
+            return wrapped.matchFound(baseCount + index, word, matcher);
+        }
+    }
+
+    public boolean search(final  DictionarySearchCallback callback, TamilPattern pattern) {
+        DictionarySearchCallbackWrapped wrapped =  new DictionarySearchCallbackWrapped();
+        wrapped.wrapped = callback;
+        for (TamilDictionary d : this.list) {
+            if (d == this) continue;
+            boolean toContinue = d.search(wrapped, pattern);
+            if (!toContinue) {
+                return false;
+            }
+            wrapped.baseCount += d.size();
+
+        }
+        return true;
     }
 
     /**

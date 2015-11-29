@@ -18,6 +18,7 @@ import my.interest.lang.tamil.impl.rx.paa.KurralhThalaiRx;
 import my.interest.lang.tamil.impl.rx.thalhai.*;
 import my.interest.lang.tamil.impl.rx.util.IdaivelhiRx;
 import my.interest.lang.tamil.impl.rx.util.IlakkamRx;
+import my.interest.lang.tamil.impl.rx.util.WordBoundaryRx;
 import my.interest.lang.tamil.impl.yaappu.AsaiIterator;
 import my.interest.lang.tamil.internal.api.PatternGenerator;
 import tamil.lang.TamilCharacter;
@@ -170,11 +171,12 @@ public class RxRegistry implements IPropertyFinder {
         map.put("இகரக்குற்றுநெடில்", new IgarakkuttuNtedil());
 
         map.put("இலக்கம்", new IlakkamRx());
+        map.put("சொல்லெல்லை", new WordBoundaryRx());
 
 
     }
     private String getWordBoundary(FeatureSet set) {
-        return "(?:\\b|(?:(?=" + new IdaivelhiRx().generate(set)+")))";
+        return new WordBoundaryRx().generate(set);
     }
 
     public String findProperty(String p1) {

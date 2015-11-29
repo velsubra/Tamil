@@ -47,7 +47,7 @@ public class AppManagementResource {
         ret.setRoot(app.getRoot());
         ret.setDescription(app.getDescription());
         ret.setResourceInheritance(app.getResourceInheritance());
-
+        ret.setProperties(app.getProperties());
         ret.setName(app.getName());
         ret.setCode("****");
         ret.getExternalResources().addAll(app.getExternalResources());

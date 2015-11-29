@@ -81,6 +81,11 @@ public class PropertyFinderForResource implements IPropertyFinder {
             return relativeParent + local + "../../../js/jquery/jquery-1.9.1.js";
         }
 
+        if ("R_ANGULAR_JS_PATH".equals(p1)) {
+            //rest/apps/resources/<app_name> -- needs four level parent.
+            return relativeParent + local + "../../../js/angularjs/angular.min-1.4.8.js";
+        }
+
         if ("R_INJECT_PLATFORM_APPLET".equals(p1)) {
             return "\n" +
                     "<object type=\"application/x-java-applet\"\n" +

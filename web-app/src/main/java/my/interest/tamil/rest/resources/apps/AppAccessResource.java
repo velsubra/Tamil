@@ -89,6 +89,7 @@ public class AppAccessResource {
             if (resource == null) {
                 return Response.status(404).build();
             }
+
             Map<String, Object> bindingMap = new HashMap<String, Object>();
             SimpleBindings map = new SimpleBindings(bindingMap);
 
@@ -103,6 +104,7 @@ public class AppAccessResource {
              if (resource.getContent() == null) {
                  resource.setContent(new byte[0]);
              }
+
             byte[] content = URLDecoder.decode(new String(resource.getContent()), "UTF-8").getBytes();
             if (AppResourceType.GROOVY.equals(resource.getType())) {
                 CompiledScript script = null;

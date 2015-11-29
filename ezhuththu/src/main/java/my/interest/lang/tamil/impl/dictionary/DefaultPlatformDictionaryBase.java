@@ -13,9 +13,13 @@ import tamil.lang.exception.TamilPlatformException;
 import tamil.lang.known.IKnownWord;
 import tamil.lang.known.derived.VinaiyadiDerivative;
 import tamil.lang.known.non.derived.*;
+import tamil.util.regex.TamilPattern;
 
 import java.util.*;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
 
 /**
  * <p>
@@ -28,6 +32,9 @@ public abstract class DefaultPlatformDictionaryBase implements TamilDictionary {
 
     static final Logger logger = Logger.getLogger(DefaultPlatformDictionaryBase.class.getName());
     Map<Class<? extends IKnownWord>, TamilDictionary> finalTypes = Collections.synchronizedMap(new HashMap<Class<? extends IKnownWord>, TamilDictionary>());
+    private final ReentrantReadWriteLock rwl = new ReentrantReadWriteLock();
+    protected final Lock rLock = rwl.readLock();
+    protected final Lock writeLock = rwl.writeLock();
 
     public DefaultPlatformDictionaryBase() {
 
@@ -48,7 +55,30 @@ public abstract class DefaultPlatformDictionaryBase implements TamilDictionary {
     @Override
     public int size() {
 
-        return set.size();
+        return this.set.size();
+    }
+
+    public boolean search(DictionarySearchCallback callback, TamilPattern pattern) {
+        rLock.lock();
+        try {
+            Iterator<IKnownWord> it = set.iterator();
+            int count = 0;
+            while (it.hasNext()) {
+                count ++;
+                IKnownWord w = it.next();
+                Matcher matcher = pattern.matcher(w.getWord().toString());
+                if (matcher.find()) {
+                    boolean toContinue = callback.matchFound(count, w, matcher);
+                    if (!toContinue) {
+                        return  false;
+                    }
+                }
+            }
+
+        } finally {
+            rLock.unlock();
+        }
+        return true;
     }
 
     @Override
@@ -111,18 +141,24 @@ public abstract class DefaultPlatformDictionaryBase implements TamilDictionary {
 //    }
 
     private List<IKnownWord> findMatchingDerivedWords(TamilWord search, boolean exact, int max, List<Class<? extends IKnownWord>> includeTypes) {
-
-        return findMatchingDerivedWords(set, search, exact, max, includeTypes);
+        rLock.lock();
+        try {
+            return findMatchingDerivedWords(this.set, search, exact, max, includeTypes);
+        } finally {
+            rLock.unlock();
+        }
     }
 
     private static List<IKnownWord> findMatchingDerivedWords(SortedSet<IKnownWord> thisset, TamilWord start, boolean exact, int max, List<Class<? extends IKnownWord>> includeTypes) {
         FeatureSet set = exact ? new FeatureSet(FeatureConstants.DICTIONARY_EXACT_MATCH_VAL_160) : FeatureSet.EMPTY;
+
         return findMatchingDerivedWords(thisset, start, max, includeTypes, set);
     }
 
 
     protected static List<IKnownWord> findMatchingDerivedWords(SortedSet<IKnownWord> thiset, TamilWord search, int max, List<Class<? extends IKnownWord>> includeTypes, FeatureSet set) {
         // System.out.println(start);
+
         boolean exact = set.isFeatureEnabled(ExactMatchSearch.class);
         boolean startwithHigerlength = exact ? false : set.isFeatureEnabled(StartsWithHigherLengthSearch.class);
         boolean suggest = set.isFeatureEnabled(AutoSuggestFeature.class);
@@ -132,55 +168,56 @@ public abstract class DefaultPlatformDictionaryBase implements TamilDictionary {
 
 
         Comparator<? super IKnownWord> comparator = thiset.comparator();
-        synchronized (thiset) {
-            IKnownWord base = new Theriyaachchol(search);
-            Iterator<IKnownWord> sub = thiset.tailSet(base).iterator();
 
-            if (max < 0) {
-                max = -max;
-            }
-            while (max > 0) {
+        // synchronized (thiset) {
+        IKnownWord base = new Theriyaachchol(search);
+        Iterator<IKnownWord> sub = thiset.tailSet(base).iterator();
 
-                if (sub.hasNext()) {
-                    IKnownWord re = sub.next();
-                    boolean add = false;
+        if (max < 0) {
+            max = -max;
+        }
+        while (max > 0) {
 
-                    if (!suggest) {
-                        if (exact) {
-                            add = re.getWord().equals(search);
+            if (sub.hasNext()) {
+                IKnownWord re = sub.next();
+                boolean add = false;
+
+                if (!suggest) {
+                    if (exact) {
+                        add = re.getWord().equals(search);
+                    } else {
+                        if (reversed) {
+                            add = re.getWord().endsWith(search, false);
                         } else {
-                            if (reversed) {
-                                add = re.getWord().endsWith(search, false);
-                            } else {
-                                add = re.getWord().startsWith(search, false);
-                            }
-
+                            add = re.getWord().startsWith(search, false);
                         }
-                    } else {
-                        if (comparator == null) {
-                            throw new RuntimeException("Comp is null");
-                        }
-                        //   System.out.println("Candidate:" + re.getWord().toString());
-                        add = comparator.compare(re, base) >= 0;
-                    }
-                    if (add) {
-                        if (includeTypes == null || includeTypes.isEmpty() || isInIncludeTypes(includeTypes, re.getClass())) {
-                            if (!startwithHigerlength || re.getWord().size() > search.size()) {
-                                max--;
-                                ret.add(re);
-                            }
-                        }
-                    } else {
 
-
-                        break;
                     }
                 } else {
+                    if (comparator == null) {
+                        throw new RuntimeException("Comp is null");
+                    }
+                    //   System.out.println("Candidate:" + re.getWord().toString());
+                    add = comparator.compare(re, base) >= 0;
+                }
+                if (add) {
+                    if (includeTypes == null || includeTypes.isEmpty() || isInIncludeTypes(includeTypes, re.getClass())) {
+                        if (!startwithHigerlength || re.getWord().size() > search.size()) {
+                            max--;
+                            ret.add(re);
+                        }
+                    }
+                } else {
+
+
                     break;
                 }
-
+            } else {
+                break;
             }
+
         }
+        // }
 
         return ret;
     }
@@ -221,7 +258,13 @@ public abstract class DefaultPlatformDictionaryBase implements TamilDictionary {
     public List<IKnownWord> search(final TamilWord word, int maxCount, List<Class<? extends IKnownWord>> includeTypes, DictionaryFeature... features) {
         FeatureSet set = new FeatureSet(features);
         boolean reversed = set.isFeatureEnabled(ReverseSearchFeature.class);
-        List<IKnownWord> list = findMatchingDerivedWords(reversed ? this.reversedset : this.set, word, maxCount, includeTypes, set);
+        List<IKnownWord> list = null;
+        rLock.lock();
+        try {
+            list = findMatchingDerivedWords(reversed ? this.reversedset : this.set, word, maxCount, includeTypes, set);
+        } finally {
+            rLock.unlock();
+        }
 
 
         boolean suggest = set.isFeatureEnabled(AutoSuggestFeature.class);
@@ -377,18 +420,20 @@ public abstract class DefaultPlatformDictionaryBase implements TamilDictionary {
 
 
     protected void addKnown(IKnownWord w) {
-        if (ITheriyaachchol.class.isAssignableFrom(w.getClass())) {
-            throw new TamilPlatformException(w + ":" + w.getClass().getName() + " can not be added");
-        }
-        if (type != null) {
-            if (!type.isAssignableFrom(w.getClass())) {
-                throw new TamilPlatformException(w + ":" + w.getClass().getName() + " can not be added. Dictionary is filtered for:" + type);
+        writeLock.lock();
+        try {
+            if (ITheriyaachchol.class.isAssignableFrom(w.getClass())) {
+                throw new TamilPlatformException(w + ":" + w.getClass().getName() + " can not be added");
             }
-        }
+            if (type != null) {
+                if (!type.isAssignableFrom(w.getClass())) {
+                    throw new TamilPlatformException(w + ":" + w.getClass().getName() + " can not be added. Dictionary is filtered for:" + type);
+                }
+            }
 
-        DefaultPlatformDictionaryBase sub = null;
-        if (!isFilteredFor(w.getClass())) {
-            synchronized (this) {
+            DefaultPlatformDictionaryBase sub = null;
+            if (!isFilteredFor(w.getClass())) {
+                //    synchronized (this) {
                 sub = (DefaultPlatformDictionaryBase) finalTypes.get(w.getClass());
                 if (sub == null) {
                     sub = new DefaultPlatformDictionaryBase(w.getClass()) {
@@ -399,19 +444,19 @@ public abstract class DefaultPlatformDictionaryBase implements TamilDictionary {
 
                 }
                 sub.addKnown(w);
+                //  }
+            } else {
+                if (finalTypes.isEmpty()) {
+                    finalTypes.put(w.getClass(), this);
+                }
             }
-        }  else {
-           if (finalTypes.isEmpty()) {
-               finalTypes.put(w.getClass(), this);
-           }
-        }
 
 
-        w.getWord().setLocked();
-        set.add(w);
-        reversedset.add(w);
+            w.getWord().setLocked();
+            this.set.add(w);
+            this.reversedset.add(w);
 
-        synchronized (suggestions) {
+            //  synchronized (suggestions) {
             int code = w.getWord().suggestionHashCode();
             List<IKnownWord> linked = suggestions.get(code);
             if (linked == null) {
@@ -422,37 +467,43 @@ public abstract class DefaultPlatformDictionaryBase implements TamilDictionary {
             if (!linked.contains(w)) {
                 linked.add(w);
             }
-        }
+            //  }
 
-        if (inSysDictionary() && VinaiyadiDerivative.class.isAssignableFrom(w.getClass())) {
-            TamilDictionary related = ((VinaiyadiDerivative) w).getVinaiyadi().getRelatedDictionary();
-            if (related != this) {
-                related.add(w);
+            if (inSysDictionary() && VinaiyadiDerivative.class.isAssignableFrom(w.getClass())) {
+                TamilDictionary related = ((VinaiyadiDerivative) w).getVinaiyadi().getRelatedDictionary();
+                if (related != this) {
+                    related.add(w);
+                }
             }
+        } finally {
+            writeLock.unlock();
         }
-
 
         // vowelset.appendNodesToAllPaths(w);
     }
 
 
     protected void removeKnown(IKnownWord w) {
-        if (w.getWord().toString().equals("அத்து")) {
-          //  System.out.println("Removing ------------------------------:" + w);
-            new RuntimeException("removing ").printStackTrace();
-
-        }
-        set.remove(w);
-        reversedset.remove(w);
-        synchronized (suggestions) {
+//        if (w.getWord().toString().equals("அத்து")) {
+//            //  System.out.println("Removing ------------------------------:" + w);
+//            new RuntimeException("removing ").printStackTrace();
+//
+//        }
+        writeLock.lock();
+        try {
+            set.remove(w);
+            reversedset.remove(w);
+            //  synchronized (suggestions) {
             int code = w.getWord().suggestionHashCode();
             List<IKnownWord> linked = suggestions.get(code);
             if (linked != null) {
                 linked.remove(w);
 
             }
+            //   }
+        } finally {
+            writeLock.unlock();
         }
-
 
     }
 

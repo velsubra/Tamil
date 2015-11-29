@@ -10,9 +10,7 @@ import tamil.lang.api.dictionary.TamilDictionary;
 import tamil.lang.known.IKnownWord;
 
 import javax.ws.rs.*;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 /**
  * <p>
@@ -67,8 +65,15 @@ public class DictionaryResource extends BaseResource {
         JSONObject obj = new JSONObject();
         try {
 
-            Collection<Class<? extends IKnownWord>> list = dictionary.getWordTypes();
+            List<Class<? extends IKnownWord>> list = new ArrayList<Class<? extends IKnownWord>>( dictionary.getWordTypes());
+
+            Collections.sort(list, new Comparator<Class<? extends IKnownWord>>() {
+                public int compare(Class<? extends IKnownWord> o1, Class<? extends IKnownWord> o2) {
+                    return o1.getSimpleName().compareTo(o2.getSimpleName());
+                }
+            });
             JSONArray array = new JSONArray();
+
             obj.put("list", array);
             for (Class cls : list) {
 

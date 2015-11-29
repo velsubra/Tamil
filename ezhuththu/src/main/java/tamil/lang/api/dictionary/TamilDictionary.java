@@ -2,9 +2,12 @@ package tamil.lang.api.dictionary;
 
 import tamil.lang.TamilWord;
 import tamil.lang.known.IKnownWord;
+import tamil.util.regex.TamilPattern;
 
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
+import java.util.regex.Matcher;
 
 /**
  * <p>
@@ -29,10 +32,19 @@ public interface TamilDictionary {
 
 
     /**
+     * Searches for a Patter
+     * @param callback the callback to receive the search results
+     * @return true if the search fully completed ; false if the callback stopped returning false. See {@link DictionarySearchCallback#matchFound(IKnownWord, Matcher)}
+     */
+    public boolean  search(DictionarySearchCallback callback, TamilPattern pattern);
+
+
+    /**
      * Gives a quick peek to see if there is any word.
      *
      * @param word to be looked up.
      * @return the first known word identified.
+     *
      */
     public IKnownWord peek(TamilWord word);
 
