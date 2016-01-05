@@ -590,7 +590,7 @@ public abstract class TamilCharacter extends AbstractCharacter {
     private TamilCompoundCharacter mellinam = null;
 
     /**
-     * Gets its inam which is a Mellinam
+     * Gets its  inam (mei) which is a Mellinam
      *
      * @return the mellinam
      * @throws NotAVallinamException when the character is not really vallinam

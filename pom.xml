@@ -16,6 +16,7 @@
     <modules>
 
         <module>ezhuththu</module>
+        <module>tts</module>
         <module>chol</module>
         <module>tools/gui</module>
         <module>web-app</module>

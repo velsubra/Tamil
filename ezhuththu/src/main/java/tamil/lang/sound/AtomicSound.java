@@ -1,9 +1,13 @@
 package tamil.lang.sound;
 
 import common.lang.impl.UnknownCharacter;
+import my.interest.lang.tamil.TamilUtils;
 import tamil.lang.TamilCompoundCharacter;
+import tamil.lang.TamilFactory;
 import tamil.lang.TamilSimpleCharacter;
 import tamil.lang.TamilWord;
+
+import java.io.InputStream;
 
 /**
  * <p>
@@ -12,18 +16,13 @@ import tamil.lang.TamilWord;
  *
  * @author velsubra
  */
-public final class AtomicSound implements  Comparable<AtomicSound>{
+public final class AtomicSound implements Comparable<AtomicSound> {
     private TamilWord word = null;
-    private byte[] data = null;
 
-    public AtomicSound(TamilWord word, byte[] data) {
+    public AtomicSound(TamilWord word) {
         this.word = word;
-        this.data = data;
 
-    }
 
-    private AtomicSound(TamilWord word) {
-        this(word, word.toString().getBytes());
     }
 
     public TamilWord getWord() {
@@ -31,8 +30,8 @@ public final class AtomicSound implements  Comparable<AtomicSound>{
     }
 
 
-    public byte[] getData() {
-        return data;
+    public InputStream getDataInputStream() {
+        return TamilFactory.class.getResourceAsStream("/sound/download/" + this.word.translitToEnglish() + ".wav");
     }
 
 
@@ -53,7 +52,6 @@ public final class AtomicSound implements  Comparable<AtomicSound>{
     public static final AtomicSound O = new AtomicSound(new TamilWord(TamilSimpleCharacter.O));
     public static final AtomicSound OO = new AtomicSound(new TamilWord(TamilSimpleCharacter.OO));
     public static final AtomicSound OU = new AtomicSound(new TamilWord(TamilSimpleCharacter.OU));
-
 
 
     public static final AtomicSound IK = new AtomicSound(new TamilWord(TamilCompoundCharacter.IK));
@@ -82,12 +80,6 @@ public final class AtomicSound implements  Comparable<AtomicSound>{
     public static final AtomicSound IH = new AtomicSound(new TamilWord(TamilCompoundCharacter.IH_));
 
 
-
-
-
-
-
-
     public static final AtomicSound KA = new AtomicSound(new TamilWord(TamilSimpleCharacter.KA));
     public static final AtomicSound NGA = new AtomicSound(new TamilWord(TamilSimpleCharacter.NGA));
     public static final AtomicSound SA = new AtomicSound(new TamilWord(TamilSimpleCharacter.SA));
@@ -112,11 +104,6 @@ public final class AtomicSound implements  Comparable<AtomicSound>{
     public static final AtomicSound SSSA_ = new AtomicSound(new TamilWord(TamilSimpleCharacter.SSSA_));
     public static final AtomicSound SHA_ = new AtomicSound(new TamilWord(TamilSimpleCharacter.SHA_));
     public static final AtomicSound HA_ = new AtomicSound(new TamilWord(TamilSimpleCharacter.HA_));
-
-
-
-
-
 
 
     public static final AtomicSound IK_aa = new AtomicSound(new TamilWord(TamilCompoundCharacter.IK_aa));
@@ -145,10 +132,6 @@ public final class AtomicSound implements  Comparable<AtomicSound>{
     public static final AtomicSound IH_aa = new AtomicSound(new TamilWord(TamilCompoundCharacter.IH_aa));
 
 
-
-
-
-
     public static final AtomicSound IK_E = new AtomicSound(new TamilWord(TamilCompoundCharacter.IK_E));
     public static final AtomicSound ING_E = new AtomicSound(new TamilWord(TamilCompoundCharacter.ING_E));
     public static final AtomicSound ICH_E = new AtomicSound(new TamilWord(TamilCompoundCharacter.ICH_E));
@@ -173,8 +156,6 @@ public final class AtomicSound implements  Comparable<AtomicSound>{
     public static final AtomicSound ISSS_E = new AtomicSound(new TamilWord(TamilCompoundCharacter.ISSS_E));
     public static final AtomicSound ISH_E = new AtomicSound(new TamilWord(TamilCompoundCharacter.ISH_E));
     public static final AtomicSound IH_E = new AtomicSound(new TamilWord(TamilCompoundCharacter.IH_E));
-
-
 
 
     public static final AtomicSound IK_EE = new AtomicSound(new TamilWord(TamilCompoundCharacter.IK_EE));
@@ -203,11 +184,6 @@ public final class AtomicSound implements  Comparable<AtomicSound>{
     public static final AtomicSound IH_EE = new AtomicSound(new TamilWord(TamilCompoundCharacter.IH_EE));
 
 
-
-
-
-
-
     public static final AtomicSound IK_U = new AtomicSound(new TamilWord(TamilCompoundCharacter.IK_U));
     public static final AtomicSound ING_U = new AtomicSound(new TamilWord(TamilCompoundCharacter.ING_U));
     public static final AtomicSound ICH_U = new AtomicSound(new TamilWord(TamilCompoundCharacter.ICH_U));
@@ -232,11 +208,6 @@ public final class AtomicSound implements  Comparable<AtomicSound>{
     public static final AtomicSound ISSS_U = new AtomicSound(new TamilWord(TamilCompoundCharacter.ISSS_U));
     public static final AtomicSound ISH_U = new AtomicSound(new TamilWord(TamilCompoundCharacter.ISH_U));
     public static final AtomicSound IH_U = new AtomicSound(new TamilWord(TamilCompoundCharacter.IH_U));
-
-
-
-
-
 
 
     public static final AtomicSound IK_UU = new AtomicSound(new TamilWord(TamilCompoundCharacter.IK_UU));
@@ -265,11 +236,6 @@ public final class AtomicSound implements  Comparable<AtomicSound>{
     public static final AtomicSound IH_UU = new AtomicSound(new TamilWord(TamilCompoundCharacter.IH_UU));
 
 
-
-
-
-
-
     public static final AtomicSound IK_A = new AtomicSound(new TamilWord(TamilCompoundCharacter.IK_A));
     public static final AtomicSound ING_A = new AtomicSound(new TamilWord(TamilCompoundCharacter.ING_A));
     public static final AtomicSound ICH_A = new AtomicSound(new TamilWord(TamilCompoundCharacter.ICH_A));
@@ -294,10 +260,6 @@ public final class AtomicSound implements  Comparable<AtomicSound>{
     public static final AtomicSound ISSS_A = new AtomicSound(new TamilWord(TamilCompoundCharacter.ISSS_A));
     public static final AtomicSound ISH_A = new AtomicSound(new TamilWord(TamilCompoundCharacter.ISH_A));
     public static final AtomicSound IH_A = new AtomicSound(new TamilWord(TamilCompoundCharacter.IH_A));
-
-
-
-
 
 
     public static final AtomicSound IK_AA = new AtomicSound(new TamilWord(TamilCompoundCharacter.IK_AA));
@@ -326,10 +288,6 @@ public final class AtomicSound implements  Comparable<AtomicSound>{
     public static final AtomicSound IH_AA = new AtomicSound(new TamilWord(TamilCompoundCharacter.IH_AA));
 
 
-
-
-
-
     public static final AtomicSound IK_I = new AtomicSound(new TamilWord(TamilCompoundCharacter.IK_I));
     public static final AtomicSound ING_I = new AtomicSound(new TamilWord(TamilCompoundCharacter.ING_I));
     public static final AtomicSound ICH_I = new AtomicSound(new TamilWord(TamilCompoundCharacter.ICH_I));
@@ -354,10 +312,6 @@ public final class AtomicSound implements  Comparable<AtomicSound>{
     public static final AtomicSound ISSS_I = new AtomicSound(new TamilWord(TamilCompoundCharacter.ISSS_I));
     public static final AtomicSound ISH_I = new AtomicSound(new TamilWord(TamilCompoundCharacter.ISH_I));
     public static final AtomicSound IH_I = new AtomicSound(new TamilWord(TamilCompoundCharacter.IH_I));
-
-
-
-
 
 
     public static final AtomicSound IK_O = new AtomicSound(new TamilWord(TamilCompoundCharacter.IK_O));
@@ -386,10 +340,6 @@ public final class AtomicSound implements  Comparable<AtomicSound>{
     public static final AtomicSound IH_O = new AtomicSound(new TamilWord(TamilCompoundCharacter.IH_O));
 
 
-
-
-
-
     public static final AtomicSound IK_OO = new AtomicSound(new TamilWord(TamilCompoundCharacter.IK_OO));
     public static final AtomicSound ING_OO = new AtomicSound(new TamilWord(TamilCompoundCharacter.ING_OO));
     public static final AtomicSound ICH_OO = new AtomicSound(new TamilWord(TamilCompoundCharacter.ICH_OO));
@@ -416,8 +366,6 @@ public final class AtomicSound implements  Comparable<AtomicSound>{
     public static final AtomicSound IH_OO = new AtomicSound(new TamilWord(TamilCompoundCharacter.IH_OO));
 
 
-
-
     public static final AtomicSound IK_OU = new AtomicSound(new TamilWord(TamilCompoundCharacter.IK_OU));
     public static final AtomicSound ING_OU = new AtomicSound(new TamilWord(TamilCompoundCharacter.ING_OU));
     public static final AtomicSound ICH_OU = new AtomicSound(new TamilWord(TamilCompoundCharacter.ICH_OU));
@@ -442,7 +390,6 @@ public final class AtomicSound implements  Comparable<AtomicSound>{
     public static final AtomicSound ISSS_OU = new AtomicSound(new TamilWord(TamilCompoundCharacter.ISSS_OU));
     public static final AtomicSound ISH_OU = new AtomicSound(new TamilWord(TamilCompoundCharacter.ISH_OU));
     public static final AtomicSound IH_OU = new AtomicSound(new TamilWord(TamilCompoundCharacter.IH_OU));
-
 
 
     public int compareTo(AtomicSound o) {

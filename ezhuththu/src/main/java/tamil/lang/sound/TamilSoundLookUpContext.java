@@ -4,6 +4,7 @@ import common.lang.impl.AbstractCharacter;
 import common.lang.impl.UnknownCharacter;
 import my.interest.lang.tamil.EzhuththuUtils;
 import tamil.lang.TamilCharacter;
+import tamil.lang.TamilCompoundCharacter;
 import tamil.lang.TamilSimpleCharacter;
 import tamil.lang.TamilWord;
 
@@ -146,36 +147,41 @@ public final class TamilSoundLookUpContext {
                     AbstractCharacter ch = w.getFirst();
                     if (ch.isTamilLetter()) {
                         TamilCharacter tm = (TamilCharacter)ch;
-                        if (tm.isVallinam() && tm.isUyirMeyyezhuththu()) {
-                            TamilWord inam = new TamilWord(tm.getInaMellinam(), tm);
-                            AtomicSound chainSound = new AtomicSound(inam, null);
-                            registerSequence(chainSound);
+                        if ( tm.isUyirMeyyezhuththu()) {
+                            if (tm.isVallinam()) {
+                                TamilWord inam = new TamilWord(TamilSimpleCharacter.E,tm.getInaMellinam(), tm);
+                                AtomicSound chainSound = new AtomicSound(inam);
+                                registerSequence(chainSound);
+                            }
+                           // if (tm.isVallinam()) {
+                                if (tm.getMeiPart() != TamilCompoundCharacter.IR) {
+                                    TamilWord douable = new TamilWord(TamilSimpleCharacter.E,tm.getMeiPart(), tm);
+                                    AtomicSound chaindouable = new AtomicSound(douable);
+                                    registerSequence(chaindouable);
+                                }
+                            //}
+
+                            if (tm.isVallinam()) {
+                                TamilWord afterAKthu = new TamilWord(TamilSimpleCharacter.AKTHU, tm);
+                                AtomicSound afterAKthuSound = new AtomicSound(afterAKthu);
+                                registerSequence(afterAKthuSound);
+                            }
 
 
-                            TamilWord douable = new TamilWord(tm.getMeiPart(), tm);
-                            AtomicSound chaindouable = new AtomicSound(douable, null);
-                            registerSequence(chaindouable);
+                            if (tm.isVallinam()) {
+
+//                            TamilWord afterMei = new TamilWord(tm);
+//                            afterMei.add(0,UnknownCharacter.getFor('.'));
+//                            context.nextToConsonantSound =   new AtomicSound(afterMei, null);
 
 
+                                TamilWord afterUyir = new TamilWord(tm);
+                                afterUyir.add(0, TamilSimpleCharacter.E);
 
-                            TamilWord afterAKthu = new TamilWord(TamilSimpleCharacter.AKTHU, tm);
-                            AtomicSound afterAKthuSound =  new AtomicSound(afterAKthu, null);
-                            registerSequence(afterAKthuSound);
+                                context.nextToUyirSound = new AtomicSound(afterUyir);
+                             //   registerSequence(context.nextToUyirSound);
 
-
-
-
-                            TamilWord afterMei = new TamilWord(tm);
-                            afterMei.add(UnknownCharacter.getFor('/'));
-                            context.nextToConsonantSound =   new AtomicSound(afterMei, null);
-
-
-                            TamilWord afterUyir = new TamilWord(tm);
-                            afterUyir.add(UnknownCharacter.getFor('\\')) ;
-
-                            context.nextToUyirSound = new AtomicSound(afterUyir, null);
-
-
+                            }
 
                         }
                     }

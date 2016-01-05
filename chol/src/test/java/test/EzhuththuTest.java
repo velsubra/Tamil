@@ -59,6 +59,16 @@ public class EzhuththuTest implements IPropertyFinder {
         System.out.println(set.size());
         System.out.println(set);
 
+        set = calc.find("எழுத்து");
+        List<TamilCharacter> list = new ArrayList<TamilCharacter>(set);
+        Collections.sort(list);
+        StringBuffer b = new StringBuffer();
+        for (TamilCharacter c : list) {
+           b.append("${[" + c.toString() +"]}\n");
+        }
+        System.out.println(b);
+
+
     }
 
     @Test

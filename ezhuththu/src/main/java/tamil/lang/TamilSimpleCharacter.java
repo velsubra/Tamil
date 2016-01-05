@@ -469,7 +469,7 @@ public final class TamilSimpleCharacter extends TamilCharacter implements Simple
         return value == RA.value;
     }
 
-    public static final TamilSimpleCharacter LA = new TamilSimpleCharacter('\u0BB2', "rra");
+    public static final TamilSimpleCharacter LA = new TamilSimpleCharacter('\u0BB2', "la");
 
     // 13 ல
     public static boolean isLa(int value) {

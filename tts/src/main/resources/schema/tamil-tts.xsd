@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified"
+           xmlns="http://my.interest.lang.tamil"
+           targetNamespace="http://my.interest.lang.tamil"
+           xmlns:jxb="http://java.sun.com/xml/ns/jaxb" jxb:version="2.1">
+
+
+
+    <xs:complexType name="SoundProfile">
+        <xs:sequence>
+            <xs:element name="name" maxOccurs="1" minOccurs="1" type="xs:string"/>
+            <xs:element name="parentProfileName" maxOccurs="1" minOccurs="1" type="xs:string"/>
+            <xs:element name="voicetype" maxOccurs="1" minOccurs="1" type="VOICETYPE"/>
+            <xs:element name="packets" maxOccurs="1" minOccurs="1" type="SoundPackets"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="SoundPackets">
+        <xs:sequence>
+            <xs:element name="packet" maxOccurs="unbounded" minOccurs="0" type="SoundPacket"/>
+        </xs:sequence>
+    </xs:complexType>
+
+
+    <xs:complexType name="SoundPacket">
+        <xs:sequence>
+            <xs:element name="tamilText" maxOccurs="1" minOccurs="1" type="xs:string"/>
+            <xs:element name="startMillis" maxOccurs="1" minOccurs="1" type="xs:integer"/>
+            <xs:element name="endMillis" maxOccurs="1" minOccurs="1" type="xs:integer"/>
+            <xs:element name="dataURI" maxOccurs="1" minOccurs="1" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+
+
+    <xs:simpleType name="VOICETYPE">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="MALE"/>
+            <xs:enumeration value="FEMALE"/>
+            <xs:enumeration value="BOY"/>
+            <xs:enumeration value="GIRL"/>
+            <xs:enumeration value="INFANT"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+</xs:schema>

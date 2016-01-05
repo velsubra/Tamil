@@ -77,6 +77,7 @@ public class AppAccessResource {
         return access(name, httpRequest);
     }
 
+
     @Path("/{name:.*}")
     @GET
     public Response access(@PathParam("name") String name, @Context HttpServletRequest httpRequest) throws Exception {
