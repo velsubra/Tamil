@@ -178,8 +178,8 @@ public final class TamilSoundLookUpContext {
                                 TamilWord afterUyir = new TamilWord(tm);
                                 afterUyir.add(0, TamilSimpleCharacter.E);
 
-                                context.nextToUyirSound = new AtomicSound(afterUyir);
-                             //   registerSequence(context.nextToUyirSound);
+                             //   context.nextToUyirSound = new AtomicSound(afterUyir);
+                               registerSequence( new AtomicSound(afterUyir));
 
                             }
 

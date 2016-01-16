@@ -5,9 +5,11 @@ import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.filter.ClientFilter;
 import com.sun.jersey.api.client.filter.LoggingFilter;
+import common.lang.impl.AbstractCharacter;
 import my.interest.lang.tamil.TamilUtils;
 import org.junit.Test;
 import tamil.lang.TamilFactory;
+import tamil.lang.TamilWord;
 import tamil.lang.sound.AtomicSound;
 import tamil.lang.sound.TamilSoundLookUpContext;
 
@@ -21,11 +23,11 @@ import java.util.List;
 public class DownloaderTest {
     static {
         TamilFactory.init();
-        System.setProperty("http.proxyHost", "www-proxy.us.oracle.com");
-        System.setProperty("http.proxyPort", "80");
+       // System.setProperty("http.proxyHost", "www-proxy.us.oracle.com");
+      //  System.setProperty("http.proxyPort", "80");
     }
 
-   // @Test
+    @Test
     public void testDownload_iitm() {
         Client cl = Client.create();
 //        cl.addFilter(new LoggingFilter());
@@ -38,17 +40,24 @@ public class DownloaderTest {
         File dir = new File("src/main/resources/sound/download_iltp");
         System.out.println("Total size:" + list.size());
         for (AtomicSound s : list) {
-            try {
-                String eng = s.getWord().translitToEnglish();
-                File file = new File(dir, eng + ".wav");
-                if (!file.exists()) {
-                    byte[] data = toByte_iitm(s.getWord().toString(), cl);
-                    System.out.println( count +": Writing :" + file.getAbsolutePath() + " for:" + s.getWord().toString());
-                    TamilUtils.writeToFile(file, data);
+            TamilWord word = new TamilWord();
+            for (AbstractCharacter c: s.getWord()) {
+                word.add(c);
+                try {
+                    String eng = word.translitToEnglish();
+                    File file = new File(dir, eng + ".wav");
                     count++;
+                    if (!file.exists()) {
+                        byte[] data = toByte_iitm(word.toString(), cl);
+                        System.out.println(count + ": Writing :" + file.getAbsolutePath() + " for:" + word.toString());
+                        TamilUtils.writeToFile(file, data);
+
+                    } else {
+                        System.out.println(count + "  Exists:" + word.toString());
+                    }
+                } catch (Exception e) {
+                    System.out.println(word.toString() + ":" + e.getMessage());
                 }
-            } catch (Exception e) {
-                System.out.println(s.getWord().toString() + ":" + e.getMessage());
             }
         }
 

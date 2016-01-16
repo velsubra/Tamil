@@ -893,7 +893,7 @@ public class EzhuththuUtils {
         return listener.get();
     }
 
-    private static AtomicSound findRelevantSound(TamilSoundLookUpContext context, boolean previousConsonant, boolean previousVowel) {
+    private static AtomicSound findRelevantSound(TamilWord word, TamilSoundLookUpContext context, boolean previousConsonant, boolean previousVowel) {
         if (previousVowel && context.nextToUyirSound != null) {
             return context.nextToUyirSound;
         }
@@ -902,7 +902,11 @@ public class EzhuththuUtils {
             return context.nextToConsonantSound;
         }
 
-        return context.directSound;
+        if (context.directSound != null){
+            return context.directSound;
+        } else {
+            return new AtomicSound(word);
+        }
 
     }
 
@@ -933,7 +937,7 @@ public class EzhuththuUtils {
         AbstractCharacter lastLooked = null;
         boolean previousConsonant = false;
         boolean previousVowel = false;
-
+        TamilWord readPointer = new TamilWord();
         for (int i = 0; i < word.size(); i++) {
             previousConsonant = false;
             previousVowel = false;
@@ -946,10 +950,11 @@ public class EzhuththuUtils {
             }
 
             read = word.get(i);
+            readPointer.add(read);
             if (context != null) {
                 TamilSoundLookUpContext followContext = context.next(read);
                 if (followContext == null) {
-                    AtomicSound current = findRelevantSound(context, previousConsonant, previousVowel);
+                    AtomicSound current = findRelevantSound(readPointer,context, previousConsonant, previousVowel);
 
                     if (current == null) {
                         //TODO: Need to handle incomplete characters later
@@ -960,6 +965,7 @@ public class EzhuththuUtils {
                             return;
                         }
                         context = null;
+                        readPointer = new TamilWord();
                     }
                 } else {
                     context = followContext;
@@ -991,7 +997,7 @@ public class EzhuththuUtils {
                     previousVowel = last.isUyirezhuththu() || last.isUyirMeyyezhuththu();
                 }
             }
-            AtomicSound current = findRelevantSound(context, previousConsonant, previousVowel);
+            AtomicSound current = findRelevantSound(readPointer,context, previousConsonant, previousVowel);
             if (current != null) {
                 listener.tamilSound(current);
                 //  consumed = read;

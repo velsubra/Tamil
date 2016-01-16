@@ -14,6 +14,7 @@ import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.DataLine;
+import java.io.SequenceInputStream;
 import java.util.*;
 
 /**
@@ -74,7 +75,7 @@ public class SoundTest {
         System.out.println("Sound Units:" + listener.get().size());
         Assert.assertEquals(word.size(), listener.get().size());
         System.out.println("ret:" + ret);
-        Assert.assertEquals("காஇகம்", ret.toString());
+        Assert.assertEquals("காகம்", ret.toString());
 
     }
 
@@ -176,6 +177,50 @@ public class SoundTest {
 
 
     }
+
+
+
+    @Test
+    public void testMix() throws Exception {
+        // TamilWord word = TamilWord.from("", true);
+        TamilWord word = TamilFactory.getTransliterator(null).transliterate("iththudan enathu kanhakkai mudikkirrean");
+        System.out.println("Text size:" + word.size());
+        System.out.println("word :" + word);
+
+        TamilSoundListener listener = new TamilSoundListener();
+        EzhuththuUtils.readSound(word, listener);
+        List<AtomicSound> list = listener.get();
+        System.out.println("Sound Units:" + list.size());
+        System.out.println("");
+        List<AudioInputStream> collections = new ArrayList();
+        long frameLength = 0;
+        for (AtomicSound s : list) {
+            AudioInputStream ai = AudioSystem.getAudioInputStream(s.getDataInputStream());
+            collections.add(ai);
+            frameLength += ai.getFrameLength();
+
+            System.out.println(s.getWord().toString());
+        }
+
+
+
+        if (collections.size() > 0) {
+            System.out.println("======>"+collections.size());
+            SequenceInputStream sequenceInputStream = new SequenceInputStream(Collections.enumeration(collections));
+            AudioInputStream appaa = new AudioInputStream(sequenceInputStream, collections.get(0).getFormat(), frameLength);
+            DataLine.Info info = new DataLine.Info(Clip.class, appaa.getFormat());
+            Clip clip = (Clip) AudioSystem.getLine(info);
+            clip.open(appaa);
+            clip.start();
+            Thread.currentThread().sleep(1000);
+            while (clip.isRunning()) {
+                Thread.currentThread().sleep(100);
+            }
+        }
+
+
+    }
+
 
 
 }
