@@ -11,6 +11,7 @@ import my.interest.lang.tamil.multi.WordGeneratorFromPeyar;
 import my.interest.lang.tamil.multi.WordGeneratorFromVinaiyadi;
 import my.interest.lang.tamil.punar.handler.verrrrumai.VAllHandler;
 import my.interest.lang.tamil.xml.AppCache;
+import tamil.lang.exception.service.ServiceException;
 import tamil.lang.known.non.derived.idai.*;
 
 import javax.xml.bind.JAXBContext;
@@ -293,6 +294,9 @@ public class FileBasedPersistence extends PersistenceInterface   {
                 addKnown(Aa.AA);
                 addKnown(Ea.EA);
                 addKnown(Oa.OA);
+                addKnown(new Kaaran());
+                addKnown(new Kaarar());
+                //addKnown(new Maaddu());
 
 //                addKnown(new Ottu("ந்"));
 //                addKnown(new Ottu("ஞ்"));
@@ -440,5 +444,24 @@ public class FileBasedPersistence extends PersistenceInterface   {
     @Override
     public GlobalTypes getNounGlobalTypes() {
         return getAllRootWords().getPeyar().getGlobalTypes();
+    }
+
+    public AppDescription findAppByName(String name) {
+        TamilRootWords file = getAllRootWords();
+
+        return findApp(name,file,false);
+    }
+
+    public AppDescription createAppByName(String name) throws ServiceException {
+         createApp(null,name);
+        return  findAppByName(name);
+    }
+
+    public void deleteApplicationByName(String name) {
+        deleteApp(null,name);
+    }
+
+    public void updateApplication(AppDescription app) {
+
     }
 }

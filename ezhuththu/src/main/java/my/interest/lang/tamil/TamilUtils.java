@@ -2,10 +2,17 @@ package my.interest.lang.tamil;
 
 import tamil.util.regex.SimpleMatcher;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBElement;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.util.JAXBSource;
+import javax.xml.namespace.QName;
+import javax.xml.transform.stream.StreamSource;
+import java.io.*;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.List;
 
 /**
@@ -32,6 +39,133 @@ public class TamilUtils extends EzhuththuUtils {
 
     private TamilUtils() {
 
+    }
+
+    public static boolean isEmpty(String value) {
+        return (value == null || value.trim().length() == 0);
+    }
+
+    public static <T> T deSerializeNonRootElement(String filePath, Class<T> clazz) throws Exception {
+        return deSerializeNonRootElement(new FileInputStream(filePath), clazz);
+    }
+
+    public static <T> T deSerializeNonRootElement(InputStream in, Class<T> clazz) {
+
+        ClassLoader loader = Thread.currentThread().getContextClassLoader();
+        try {
+            JAXBContext context = JAXBContext.newInstance(clazz);
+            Thread.currentThread().setContextClassLoader(clazz.getClassLoader());
+            return context.createUnmarshaller().unmarshal(new StreamSource(in), clazz).getValue();
+        } catch (Exception e1) {
+            throw new RuntimeException(e1);
+        } finally {
+            Thread.currentThread().setContextClassLoader(loader);
+        }
+    }
+
+    public static <T> T deSerializeNonRootElement(JAXBContext context, ClassLoader cl, InputStream in, Class<T> clazz) throws Exception {
+        ClassLoader loader = Thread.currentThread().getContextClassLoader();
+        try {
+            Thread.currentThread().setContextClassLoader(cl);
+            return context.createUnmarshaller().unmarshal(new StreamSource(in), clazz).getValue();
+        } finally {
+            Thread.currentThread().setContextClassLoader(loader);
+        }
+    }
+
+
+    public static String toXMLJAXB(Object object) {
+        if (object == null) return null;
+        try {
+            return new String(toXMLJAXBData(object), TamilUtils.ENCODING);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+    public static boolean isValidJAXBClass(Class aClass) {
+
+        return aClass.getAnnotation(XmlType.class) != null;
+
+
+    }
+
+
+    public static Object deSerialize(JAXBContext context, ClassLoader cl, InputStream in) throws Exception {
+        ClassLoader loader = Thread.currentThread().getContextClassLoader();
+        try {
+            Thread.currentThread().setContextClassLoader(cl);
+            return context.createUnmarshaller().unmarshal(in);
+        } finally {
+            Thread.currentThread().setContextClassLoader(loader);
+        }
+    }
+
+
+    public static <T> T deepCopyJAXB(T object, Class<T> clazz) {
+        if (object == null) return null;
+        try {
+            JAXBContext jaxbContext = JAXBContext.newInstance(clazz);
+            JAXBElement<T> contentObject = new JAXBElement<T>(new QName(clazz.getSimpleName()), clazz, object);
+            JAXBSource source = new JAXBSource(jaxbContext, contentObject);
+            return jaxbContext.createUnmarshaller().unmarshal(source, clazz).getValue();
+        } catch (JAXBException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+    public static byte[] toXMLJAXBData(Object object) {
+        if (object == null) return null;
+        try {
+            Class clazz = object.getClass();
+            JAXBContext jaxbContext = JAXBContext.newInstance(clazz);
+            JAXBElement contentObject = new JAXBElement(new QName(clazz.getSimpleName()), clazz, object);
+            Marshaller marshaller = jaxbContext.createMarshaller();
+            marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            marshaller.marshal(contentObject, out);
+            byte[] data = out.toByteArray();
+            return data;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+    public static boolean isHttpUrl(String urlString) throws Exception {
+        return isProtocolMatching(urlString, "http");
+    }
+
+    public static boolean isHttpsUrl(String urlString) {
+        try {
+            return isProtocolMatching(urlString, "https");
+        } catch (Exception var2) {
+
+            return false;
+        }
+    }
+
+    public static boolean isFtpUrl(String urlString) throws Exception {
+        return isProtocolMatching(urlString, "ftp");
+    }
+
+    public static boolean isProtocolMatching(String urlStr, String pcol) throws Exception {
+        if (urlStr == null) {
+            return false;
+        } else {
+            URL url = null;
+
+            try {
+                url = new URL(urlStr);
+            } catch (MalformedURLException var4) {
+                return urlStr.startsWith(pcol + ":");
+            }
+
+            String p = url.getProtocol();
+            return p == null ? false : p.equalsIgnoreCase(pcol);
+        }
     }
 
 

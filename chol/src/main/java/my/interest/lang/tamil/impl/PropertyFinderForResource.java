@@ -32,9 +32,6 @@ public class PropertyFinderForResource implements IPropertyFinder {
         this.app = app;
         this.resource = resource;
         this.map = map;
-
-
-
         this.relativeParent = getRelativeParent();
 
     }

@@ -28,7 +28,7 @@ public abstract class TokenRecognizer {
     public abstract TokenMatcherResult match(ParsingContext context);
 
 
-    protected static boolean isAllJustOfKind(Class<? extends IKnownWord> clz, IKnownWord... all) {
+    public static boolean isAllJustOfKind(Class<? extends IKnownWord> clz, IKnownWord... all) {
         if (all == null) return false;
         for (IKnownWord w : all) {
             if (!clz.isAssignableFrom(w.getClass())) {
@@ -39,7 +39,7 @@ public abstract class TokenRecognizer {
     }
 
 
-    protected static boolean isAllJustOfExactKind(Class<? extends IKnownWord> clz, IKnownWord... all) {
+    public static boolean isAllJustOfExactKind(Class<? extends IKnownWord> clz, IKnownWord... all) {
         if (all == null) return false;
         for (IKnownWord w : all) {
             if (clz != w.getClass()) {
@@ -49,7 +49,13 @@ public abstract class TokenRecognizer {
         return true;
     }
 
-    protected static boolean isAtleastKind(Class<? extends IKnownWord> clz, IKnownWord... all) {
+    /**
+     * Returns true if there is at least one known word of the given type
+     * @param clz
+     * @param all
+     * @return
+     */
+    public static boolean isAtleastKind(Class<? extends IKnownWord> clz, IKnownWord... all) {
         if (all == null) return false;
         for (IKnownWord w : all) {
             if (clz.isAssignableFrom(w.getClass())) {
@@ -60,9 +66,26 @@ public abstract class TokenRecognizer {
     }
 
     /**
+     * returns true if the word is one of the types
+     * @param known
+     * @param types
+     * @return
+     */
+    public static boolean isWordOfOneOfTypes(IKnownWord known, Class<? extends IKnownWord>... types) {
+        if (types == null) return false;
+
+        for (Class t : types) {
+            if (t.isAssignableFrom(known.getClass())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
      * @return the possible nilimozhis
      */
-    protected static List<TamilWordPartContainer> getNilaiMozhi(ParsingContext context) {
+    public static List<TamilWordPartContainer> getNilaiMozhi(ParsingContext context) {
         boolean nilaimozhiFine = true;
         //This contains the text that is resloved.
         TamilWordPartContainer tokenContainer = context.varumozhi;

@@ -2,6 +2,8 @@ package tamil.lang.api.job;
 
 import tamil.lang.api.persist.object.ObjectSerializer;
 
+import java.util.List;
+
 /**
  * <p>
  *     Represents a snapshot of job result object.
@@ -70,6 +72,20 @@ public interface JobResultSnapShot<T> {
      * @return the title string. It could be null.
      */
     public String getTitleId();
+
+    /**
+     * Gets the value of the property
+     * @param name the name of the property
+     * @return null if the property is not set
+     */
+    public String getProperty(String name);
+
+
+    /**
+     * Gets the list of property names
+     * @return empty list if there are no properties
+     */
+    public List<String> getPropertyNames();
 
 
 

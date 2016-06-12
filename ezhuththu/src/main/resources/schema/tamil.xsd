@@ -140,6 +140,7 @@
             <xs:element name="created" type="xs:dateTime"/>
             <xs:element name="updated" type="xs:dateTime"/>
             <xs:element name="finished" type="xs:dateTime"/>
+            <xs:element name="properties" type="Properties"/>
             <xs:element name="chunkType" type="xs:string"/>
             <xs:element name="chunks" type="JobResultChunk" minOccurs="0" maxOccurs="unbounded"/>
             <xs:element name="exception" type="JobException"/>

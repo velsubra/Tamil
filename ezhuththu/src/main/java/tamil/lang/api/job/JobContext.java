@@ -82,4 +82,18 @@ public interface JobContext<T> {
      */
     public void setAutoFlush(boolean flush);
 
+    /**
+     * Sets a property
+     * @param name name of the property
+     * @param value the value of the property
+     */
+    public void setProperty(String name, String value);
+
+
+    /**
+     * Gets the job category
+     * @return job category
+     */
+    public String getJobCategory();
+
 }

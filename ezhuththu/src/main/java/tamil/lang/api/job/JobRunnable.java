@@ -17,6 +17,6 @@ public interface JobRunnable<T> {
      * @param context the job context passed. User can update the job results through this.
      *                <b>Note:</b> {@link JobContext#flush()} must be called for the result to be available to the other thread that polls for the results.
      */
-    public abstract void run(JobContext<T> context);
+    public abstract void run(JobContext<T> context) throws  Exception;
 
 }

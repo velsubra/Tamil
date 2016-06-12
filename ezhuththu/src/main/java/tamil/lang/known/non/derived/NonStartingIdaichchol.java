@@ -10,6 +10,9 @@ import my.interest.lang.tamil.translit.EnglishToTamilCharacterLookUpContext;
  * @author velsubra
  */
 public class NonStartingIdaichchol extends AbstractKnownWord implements  INonStartingIdaichchol {
+    /**
+     * Tells if it can appear on its own
+     */
     private boolean atomic = false;
     public NonStartingIdaichchol(TamilWord word, boolean atomic) {
         super(word);

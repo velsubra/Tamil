@@ -192,6 +192,31 @@ public class EzhuththuUtils {
         }
     }
 
+    public static <T> T deSerializeNonRootElement(String filePath, Class<T> clazz) throws Exception {
+        return  deSerializeNonRootElement(new FileInputStream(filePath), clazz);
+    }
+
+    public static <T> T deSerializeNonRootElement(InputStream in, Class<T> clazz) throws Exception {
+        JAXBContext context = JAXBContext.newInstance(clazz);
+        ClassLoader loader = Thread.currentThread().getContextClassLoader();
+        try {
+            Thread.currentThread().setContextClassLoader(clazz.getClassLoader());
+            return context.createUnmarshaller().unmarshal(new StreamSource(in), clazz).getValue();
+        } finally {
+            Thread.currentThread().setContextClassLoader(loader);
+        }
+    }
+
+    public static <T> T deSerializeNonRootElement(JAXBContext context, ClassLoader cl, InputStream in, Class<T> clazz) throws Exception {
+        ClassLoader loader = Thread.currentThread().getContextClassLoader();
+        try {
+            Thread.currentThread().setContextClassLoader(cl);
+            return context.createUnmarshaller().unmarshal(new StreamSource(in), clazz).getValue();
+        } finally {
+            Thread.currentThread().setContextClassLoader(loader);
+        }
+    }
+
 
     public static Object deSerialize(JAXBContext context, ClassLoader cl, InputStream in) throws Exception {
         ClassLoader loader = Thread.currentThread().getContextClassLoader();
@@ -204,13 +229,13 @@ public class EzhuththuUtils {
     }
 
 
-    public static <T> T deserializeJAXB( InputStream in, Class<T> clazz) {
+    public static <T> T deserializeJAXB(InputStream in, Class<T> clazz) {
 
         try {
             JAXBContext jaxbContext = JAXBContext.newInstance(clazz);
             JAXBElement elm = jaxbContext.createUnmarshaller().unmarshal(new StreamSource(
                     in), clazz);
-            return (T)elm.getValue();
+            return (T) elm.getValue();
         } catch (JAXBException e) {
             throw new RuntimeException(e);
         }
@@ -319,7 +344,6 @@ public class EzhuththuUtils {
             }
 
         }
-
 
 
     }
@@ -615,7 +639,7 @@ public class EzhuththuUtils {
     public static Set<TamilCharacter> filterOarezhutthuMozhi() {
         return filterTamilCharacters(new TamilLetterFilter() {
             public boolean filter(TamilCharacter tamil) {
-                return tamil.isPureTamilLetter() && tamil.isWordToStartWith() &&  tamil.isWordToStartWith() &&  !tamil.isKurilezhuththu();
+                return tamil.isPureTamilLetter() && tamil.isWordToStartWith() && tamil.isWordToStartWith() && !tamil.isKurilezhuththu();
             }
         });
     }
@@ -640,11 +664,11 @@ public class EzhuththuUtils {
 
                 for (int[] codepoints : tamil.getCodePoints(new FeatureSet(RXIncludeCanonicalEquivalenceFeature.FEATURE))) {
                     if (codepoints.length == x) {
-                        return  true;
+                        return true;
                     }
                 }
 
-                return  false;
+                return false;
             }
         });
     }
@@ -658,7 +682,7 @@ public class EzhuththuUtils {
 
                 TamilSimpleCharacter uyir = null;
                 if (tamil.isUyirezhuththu()) {
-                    uyir = (TamilSimpleCharacter)tamil;
+                    uyir = (TamilSimpleCharacter) tamil;
                 } else if (tamil.isUyirMeyyezhuththu()) {
                     uyir = tamil.getUyirPart();
                 }
@@ -667,8 +691,8 @@ public class EzhuththuUtils {
                     return false;
                 }
 
-                return  uyir == TamilSimpleCharacter.U ||  uyir == TamilSimpleCharacter.UU ||
-                        uyir == TamilSimpleCharacter.O ||  uyir == TamilSimpleCharacter.OO ||
+                return uyir == TamilSimpleCharacter.U || uyir == TamilSimpleCharacter.UU ||
+                        uyir == TamilSimpleCharacter.O || uyir == TamilSimpleCharacter.OO ||
                         uyir == TamilSimpleCharacter.OU;
             }
         });
@@ -692,7 +716,7 @@ public class EzhuththuUtils {
 
                 TamilCompoundCharacter mei = null;
                 if (tamil.isMeyyezhuththu()) {
-                    mei = (TamilCompoundCharacter)tamil;
+                    mei = (TamilCompoundCharacter) tamil;
                 } else if (tamil.isUyirMeyyezhuththu()) {
                     mei = tamil.getMeiPart();
                 }
@@ -701,7 +725,7 @@ public class EzhuththuUtils {
                     return false;
                 }
 
-                return  mei == TamilCompoundCharacter.IP ||  mei == TamilCompoundCharacter.IM;
+                return mei == TamilCompoundCharacter.IP || mei == TamilCompoundCharacter.IM;
 
             }
         });
@@ -731,6 +755,7 @@ public class EzhuththuUtils {
             }
         });
     }
+
     public static Set<TamilCharacter> filterOut(final Set<TamilCharacter> set) {
         return filterTamilCharacters(new TamilLetterFilter() {
             public boolean filter(TamilCharacter tamil) {
@@ -902,7 +927,7 @@ public class EzhuththuUtils {
             return context.nextToConsonantSound;
         }
 
-        if (context.directSound != null){
+        if (context.directSound != null) {
             return context.directSound;
         } else {
             return new AtomicSound(word);
@@ -954,7 +979,7 @@ public class EzhuththuUtils {
             if (context != null) {
                 TamilSoundLookUpContext followContext = context.next(read);
                 if (followContext == null) {
-                    AtomicSound current = findRelevantSound(readPointer,context, previousConsonant, previousVowel);
+                    AtomicSound current = findRelevantSound(readPointer, context, previousConsonant, previousVowel);
 
                     if (current == null) {
                         //TODO: Need to handle incomplete characters later
@@ -997,7 +1022,7 @@ public class EzhuththuUtils {
                     previousVowel = last.isUyirezhuththu() || last.isUyirMeyyezhuththu();
                 }
             }
-            AtomicSound current = findRelevantSound(readPointer,context, previousConsonant, previousVowel);
+            AtomicSound current = findRelevantSound(readPointer, context, previousConsonant, previousVowel);
             if (current != null) {
                 listener.tamilSound(current);
                 //  consumed = read;
@@ -1295,7 +1320,6 @@ public class EzhuththuUtils {
     }
 
 
-
     public static int getKeyMaxLength(Map map) {
         if (map == null)
             return 0;
@@ -1359,6 +1383,7 @@ public class EzhuththuUtils {
             return ret;
         }
     }
+
     public static String[] findDirectoriesWithPatternAt(File dir, final String pattern) {
         if (dir == null)
             return null;
@@ -1429,7 +1454,6 @@ public class EzhuththuUtils {
 
         });
     }
-
 
 
     public static String getFileBaseName(String fileName) {

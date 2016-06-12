@@ -1,5 +1,6 @@
 package my.interest.lang.tamil.impl.job;
 
+import my.interest.lang.tamil.PropertiesContainer;
 import my.interest.lang.tamil.TamilUtils;
 import my.interest.lang.tamil.generated.types.JobException;
 import my.interest.lang.tamil.generated.types.JobResultBean;
@@ -170,5 +171,16 @@ public class JobContextImpl<T> implements JobContext<T> {
 
     public void setAutoFlush(boolean flush) {
         autoFlush = flush;
+    }
+
+    public void setProperty(String name, String value) {
+
+        PropertiesContainer container = new PropertiesContainer(bean.getProperties());
+        container.addProperty(name,value);
+        bean.setProperties(container.getInputProperties());
+    }
+
+    public String getJobCategory() {
+        return bean.getCategoryName();
     }
 }

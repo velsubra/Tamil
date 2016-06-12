@@ -58,6 +58,7 @@ public class AnyKnownWordMatcher extends TokenRecognizer {
             add(new VUrubuFilter());
             add(new VinaiyadiFilter());
             add(new IdaichcholFilter());
+            add(new VinaiyechchamFilter());
 
 
         }

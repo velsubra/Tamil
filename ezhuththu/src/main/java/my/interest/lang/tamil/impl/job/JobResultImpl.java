@@ -1,5 +1,6 @@
 package my.interest.lang.tamil.impl.job;
 
+import my.interest.lang.tamil.PropertiesContainer;
 import my.interest.lang.tamil.generated.types.JobResultBean;
 
 import tamil.lang.api.job.JobResultChunk;
@@ -120,5 +121,13 @@ public class JobResultImpl<T> implements JobResultSnapShot {
 
     public String getTitleId() {
         return bean.getTitleId();
+    }
+
+    public String getProperty(String name) {
+        return new PropertiesContainer(bean.getProperties()).getPropertyValue(name);
+    }
+
+    public List<String> getPropertyNames() {
+        return new PropertiesContainer(bean.getProperties()).getProperties();
     }
 }

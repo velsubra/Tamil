@@ -162,7 +162,8 @@ $(document).ready(function () {
 
     myCodeMirror = CodeMirror.fromTextArea(document.getElementById("edit"), {
             styleActiveLine: true,
-            extraKeys: {"Ctrl-Space": _autocomplete},
+            extraKeys: {"Ctrl-Space": _autocomplete,
+                "Ctrl-S": _autocomplete},
             lineNumbers: true,
             searchMode: 'inline',
             lineWrapping: true
@@ -419,6 +420,7 @@ function _onKeyHandled(cm, name, event) {
 
     //ctrl + space is handled.
     if (event.ctrlKey && event.which == 32) {
+
         return;
     }
 

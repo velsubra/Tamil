@@ -53,13 +53,14 @@ public final class TamilCharacterLookUpContext {
 
     /**
      * Returns set of all Tamil characters registered.
-     * @return  the map
+     *
+     * @return the map
      */
     public static Set<TamilCharacter> getAllTamilCharacters() {
         Set<TamilCharacter> list = new HashSet<TamilCharacter>();
-         for (TamilCharacterLookUpContext context : getMap().values())  {
-             list.addAll(context.getTamilCharacters());
-         }
+        for (TamilCharacterLookUpContext context : getMap().values()) {
+            list.addAll(context.getTamilCharacters());
+        }
         return list;
     }
 
@@ -122,7 +123,7 @@ public final class TamilCharacterLookUpContext {
     }
 
     private List<TamilCharacterLookUpContext> registerCompoundAt(TamilCompoundCharacter tamilCharacter) {
-        return  registerCompoundAt(tamilCharacter, tamilCharacter);
+        return registerCompoundAt(tamilCharacter, tamilCharacter);
     }
 
     private List<TamilCharacterLookUpContext> registerCompoundAt(TamilCompoundCharacter tamilCompoundCharacter, TamilCharacter toRegister) {
@@ -206,7 +207,7 @@ public final class TamilCharacterLookUpContext {
         registerSimple(TamilSimpleCharacter.AA);
         registerSimple(TamilSimpleCharacter.I);
         TamilCharacterLookUpContext o = registerSimple(TamilSimpleCharacter.O);
-       // o.registerNext(TamilSimpleCharacter.LLA.getValue(), TamilSimpleCharacter.OU);
+        // o.registerNext(TamilSimpleCharacter.LLA.getValue(), TamilSimpleCharacter.OU);
 
         //ftp://ftp.unicode.org/Public/UNIDATA/UnicodeData.txt
         //0B94;TAMIL LETTER AU;Lo;0;L;0B92 0BD7;;;;N;;;;;
@@ -558,27 +559,23 @@ public final class TamilCharacterLookUpContext {
         TamilCompoundCharacter.characters = null;
 
 
-
-
         for (TamilCharacterLookUpContext ik : iks) {
             TamilCharacterLookUpContext ksha = ik.registerNext(TamilSimpleCharacter.SHA_.getValue(), TamilSuperCompoundCharacter.IKSHA);
             ksha.registerCompoundAt(TamilCompoundCharacter.ISH_, TamilSuperCompoundCharacter.IKSH);
 
 
+            ksha.registerCompoundAt(TamilCompoundCharacter.ISH_aa, TamilSuperCompoundCharacter.IKSH_aa);
+            ksha.registerCompoundAt(TamilCompoundCharacter.ISH_E, TamilSuperCompoundCharacter.IKSH_E);
+            ksha.registerCompoundAt(TamilCompoundCharacter.ISS_EE, TamilSuperCompoundCharacter.IKSH_EE);
+            ksha.registerCompoundAt(TamilCompoundCharacter.ISH_U, TamilSuperCompoundCharacter.IKSH_U);
+            ksha.registerCompoundAt(TamilCompoundCharacter.ISH_UU, TamilSuperCompoundCharacter.IKSH_UU);
+            ksha.registerCompoundAt(TamilCompoundCharacter.ISH_A, TamilSuperCompoundCharacter.IKSH_A);
+            ksha.registerCompoundAt(TamilCompoundCharacter.ISH_AA, TamilSuperCompoundCharacter.IKSH_AA);
+            ksha.registerCompoundAt(TamilCompoundCharacter.ISH_I, TamilSuperCompoundCharacter.IKSH_I);
 
-             ksha.registerCompoundAt(TamilCompoundCharacter.ISH_aa, TamilSuperCompoundCharacter.IKSH_aa);
-             ksha.registerCompoundAt(TamilCompoundCharacter.ISH_E,TamilSuperCompoundCharacter.IKSH_E);
-             ksha.registerCompoundAt(TamilCompoundCharacter.ISS_EE,TamilSuperCompoundCharacter.IKSH_EE);
-             ksha.registerCompoundAt(TamilCompoundCharacter.ISH_U,TamilSuperCompoundCharacter.IKSH_U);
-             ksha.registerCompoundAt(TamilCompoundCharacter.ISH_UU,TamilSuperCompoundCharacter.IKSH_UU);
-             ksha.registerCompoundAt(TamilCompoundCharacter.ISH_A,TamilSuperCompoundCharacter.IKSH_A);
-             ksha.registerCompoundAt(TamilCompoundCharacter.ISH_AA,TamilSuperCompoundCharacter.IKSH_AA);
-             ksha.registerCompoundAt(TamilCompoundCharacter.ISH_I,TamilSuperCompoundCharacter.IKSH_I);
-
-             ksha.registerCompoundAt(TamilCompoundCharacter.ISH_O,TamilSuperCompoundCharacter.IKSH_O);
-             ksha.registerCompoundAt(TamilCompoundCharacter.ISH_OU,TamilSuperCompoundCharacter.IKSH_OU);
-             ksha.registerCompoundAt(TamilCompoundCharacter.ISH_OO,TamilSuperCompoundCharacter.IKSH_OO);
-
+            ksha.registerCompoundAt(TamilCompoundCharacter.ISH_O, TamilSuperCompoundCharacter.IKSH_O);
+            ksha.registerCompoundAt(TamilCompoundCharacter.ISH_OU, TamilSuperCompoundCharacter.IKSH_OU);
+            ksha.registerCompoundAt(TamilCompoundCharacter.ISH_OO, TamilSuperCompoundCharacter.IKSH_OO);
 
 
         }
@@ -627,6 +624,22 @@ public final class TamilCharacterLookUpContext {
             return null;
         }
         return continuations.get(value);
+    }
+
+    /**
+     * Finds if the given text has any Tamil Character
+     *
+     * @param text
+     * @return
+     */
+    public static boolean isPotentiallyTamilText(String text) {
+        for (int i = 0; i < text.length(); i++) {
+            int codepoint = text.codePointAt(i);
+            if (lookup(codepoint) != null) {
+                return true;
+            }
+        }
+        return false;
     }
 
 

@@ -85,6 +85,19 @@ public class JobResource extends BaseResource {
             if (result == null) {
                 throw new ResourceNotFoundException();
             }
+            List<String> properties = result.getPropertyNames();
+            JSONArray props = new JSONArray();
+            obj.put("properties", props);
+            for (String p : properties) {
+                JSONObject item = new JSONObject();
+
+                String val = result.getProperty(p);
+                if (val!= null) {
+                    props.put(item);
+                    item.put("name", p);
+                    item.put("value", val);
+                }
+            }
             tamil.lang.api.job.JobStatus status = result.getStatus();
             obj.put("id", number);
             if (result.getTitleMessage() != null) {
