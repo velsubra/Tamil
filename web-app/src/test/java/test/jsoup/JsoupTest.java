@@ -70,7 +70,8 @@ public class JsoupTest {
         try {
             ExecuteManager.start();
             JobManager manager = TamilFactory.getJobManager("jobs/browse/spellcheck/webpage");
-            long jobid = manager.submit(new WebPageSpellChecker("https://ta.wikipedia.org/wiki/%E0%AE%B5%E0%AE%BF%E0%AE%95%E0%AF%8D%E0%AE%95%E0%AE%BF%E0%AE%AA%E0%AF%8D%E0%AE%AA%E0%AF%80%E0%AE%9F%E0%AE%BF%E0%AE%AF%E0%AE%BE","browse-submit.gv","browse-view.gv","script.js"), JSONObject.class);
+            long jobid = manager.submit(new WebPageSpellChecker("https://ta.wikipedia.org/wiki/%E0%AE%B5%E0%AE%BF%E0%AE%95%E0%AF%8D%E0%AE%95%E0%AE%BF%E0%AE%AA%E0%AF%8D%E0%AE%AA%E0%AF%80%E0%AE%9F%E0%AE%BF%E0%AE%AF%E0%AE%BE",
+                    "browse-submit.gv","browse-view.gv","script.js", "style.css"), JSONObject.class);
             JobResultSnapShot<JSONObject> resultSnapShot = manager.findJobResultSnapShot(jobid, JSONObject.class);
 
             while (true) {

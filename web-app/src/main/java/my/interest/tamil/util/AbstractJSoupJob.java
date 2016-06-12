@@ -33,12 +33,14 @@ public abstract class AbstractJSoupJob implements JobRunnable<JSONObject> {
     private String submiturl = null;
     private String viewurl = null;
     private String scripturl = null;
+    private String cssurl = null;
 
-    public AbstractJSoupJob(String dataUrl, String submiturl, String viewurl, String scripturl) {
+    public AbstractJSoupJob(String dataUrl, String submiturl, String viewurl, String scripturl, String cssurl) {
         this.dataUrl = dataUrl;
         this.submiturl = submiturl;
         this.viewurl = viewurl;
         this.scripturl = scripturl;
+        this.cssurl = cssurl;
 
     }
 
@@ -56,8 +58,12 @@ public abstract class AbstractJSoupJob implements JobRunnable<JSONObject> {
 
     void processText(Element elem) throws Exception {
         List<Node> nodes = elem.childNodes();
+        Node title  = elem.ownerDocument().getElementsByTag("title").first();
 
         for (Node node : nodes) {
+            if (title == node)  {
+                continue;
+            };
             if (Element.class.isAssignableFrom(node.getClass())) {
                 processText((Element) node);
             } else if (TextNode.class.isAssignableFrom(node.getClass())) {
@@ -69,12 +75,12 @@ public abstract class AbstractJSoupJob implements JobRunnable<JSONObject> {
                     String id = String.valueOf(extracts.size());
                     object.put(PROP_TEXT_ID, id);
                     object.put(PROP_TEXT_PROCESSED, val);
-                   // object.put(PROP_TEXT_ORIGINAL, val);
+                    // object.put(PROP_TEXT_ORIGINAL, val);
 
 
                     Element p = elem.ownerDocument().createElement("span");
-                    p.attr("id", "tamil_"+ id);
-                    p.text("காத்திருங்கள் ... id= " + id);
+                    p.attr("id", "tamil_" + id);
+                    p.text(".. ... id= " + id);
                     text.replaceWith(p);
                     extracts.add(object);
                 }
@@ -104,8 +110,9 @@ public abstract class AbstractJSoupJob implements JobRunnable<JSONObject> {
             if (processed != null) {
                 Element sup = doc.createElement("sup");
                 Element a = doc.createElement("a");
+                a.attr("class", "latest");
                 a.attr("href", this.viewurl + "?jobid=" + processed.getName());
-                a.text("(Latest # "+ processed.getValue().toString()+")");
+                a.text("(Latest # " + processed.getValue().toString() + ")");
                 sup.appendChild(a);
                 link.after(sup);
             }
@@ -152,7 +159,7 @@ public abstract class AbstractJSoupJob implements JobRunnable<JSONObject> {
                 if (countStr != null) {
                     count = Integer.parseInt(countStr);
                 }
-                 NameValuePair<Long, Integer> already_loaded = url_To_JobId_To_Count.get(url);
+                NameValuePair<Long, Integer> already_loaded = url_To_JobId_To_Count.get(url);
                 if (already_loaded != null) {
                     if (already_loaded.getName() > id) {
                         continue;
@@ -165,7 +172,7 @@ public abstract class AbstractJSoupJob implements JobRunnable<JSONObject> {
 
     }
 
-    private void inssertScript(String src, Document doc) {
+    private void insertScript(String src, Document doc) {
 
         Element script = doc.createElement("script");
         script.attr("src", src);
@@ -179,9 +186,25 @@ public abstract class AbstractJSoupJob implements JobRunnable<JSONObject> {
         }
 
     }
+
+    private void insertCSS(String src, Document doc) {
+
+        Element script = doc.createElement("link");
+        script.attr("href", src);
+        script.attr("type", "text/css");
+        script.attr("rel", "stylesheet");
+        Element head = doc.head();
+        if (head == null) {
+            doc.appendChild(script);
+        } else {
+            head.appendChild(script);
+        }
+
+    }
+
     public void run(JobContext<JSONObject> context) throws Exception {
         loadLastProcessed(context);
-        context.setProperty(PROP_URL, java.net.URLDecoder.decode(dataUrl, TamilUtils.ENCODING) );
+        context.setProperty(PROP_URL, java.net.URLDecoder.decode(dataUrl, TamilUtils.ENCODING));
         context.setAutoFlush(true);
         Document doc = null;
         try {
@@ -200,18 +223,24 @@ public abstract class AbstractJSoupJob implements JobRunnable<JSONObject> {
             }
         } catch (Exception e) {
             context.setTitleMessage("Reading document failed.:" + e.getMessage());
-            context.setProperty(PROP_HTML, "<html><body> Failed:" + e.getMessage() + "\n<br/> Full message::" + e.toString() + " </body> </html>");
+            context.setProperty(PROP_HTML, "<html><body> Failed:" + this.dataUrl + "\n<br/> Full message::" + e.toString() + " </body> </html>");
             throw e;
         }
         setRefRefreshMessage(context, "Reading all text");
+        context.setTitleId(doc.title());
         processText(doc);
         setRefRefreshMessage(context, "All text read. Now, processing links");
         replaceLinks(doc);
         setRefRefreshMessage(context, "All links processed.");
         //Insert the script
-       // inssertScript("${R_JQUERY_JS_PATH}", doc);
-       // inssertScript("${R_PLATFORM_JS_PATH}", doc);
-        inssertScript(this.scripturl+"?jobid=" + context.getJobId(), doc);
+        // inssertScript("${R_JQUERY_JS_PATH}", doc);
+        // inssertScript("${R_PLATFORM_JS_PATH}", doc);
+        if (this.scripturl != null) {
+            insertScript(this.scripturl + "?jobid=" + context.getJobId(), doc);
+        }
+        if (this.cssurl != null) {
+            insertCSS(this.cssurl, doc);
+        }
 
         String content = doc.html();
 //        content = StringUtils.replaceFor$(new String(content), new PropertyFinderForResource(app, resource, bindingMap), false, true).getBytes();
@@ -223,16 +252,16 @@ public abstract class AbstractJSoupJob implements JobRunnable<JSONObject> {
 
         int count = 0;
         context.setAutoFlush(false);
-        int totalProcessedPoints = 0;
+
         for (JSONObject object : extracts) {
 
-           // NameValuePair<String, Integer> processed = process((String) object.get(PROP_TEXT_ORIGINAL));
+            // NameValuePair<String, Integer> processed = process((String) object.get(PROP_TEXT_ORIGINAL));
             NameValuePair<String, Integer> processed = process((String) object.get(PROP_TEXT_PROCESSED));
             if (processed == null || processed.getName() == null) {
                 processed = new NameValuePair<String, Integer>("", 0);
             }
-            totalProcessedPoints += processed.getValue();
-            context.setProperty(PROP_HOTSPOTS_COUNT, String.valueOf(totalProcessedPoints));
+           // totalProcessedPoints += processed.getValue();
+            context.setProperty(PROP_HOTSPOTS_COUNT, String.valueOf(processed.getValue()));
             object.put(PROP_TEXT_PROCESSED, processed.getName());
             context.addResult(object);
             count++;

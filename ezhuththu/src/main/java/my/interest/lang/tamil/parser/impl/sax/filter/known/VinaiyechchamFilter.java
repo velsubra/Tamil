@@ -2,12 +2,11 @@ package my.interest.lang.tamil.parser.impl.sax.filter.known;
 
 import my.interest.lang.tamil.parser.impl.sax.TokenRecognizer;
 import my.interest.lang.tamil.parser.impl.sax.context.ParsingContext;
+import tamil.lang.known.AbstractVinaiyadiPeyarechcham;
 import tamil.lang.known.IKnownWord;
+import tamil.lang.known.derived.PeyarchcholDerivative;
 import tamil.lang.known.derived.VinaiMuttu;
-import tamil.lang.known.non.derived.Chuttuppeyar;
-import tamil.lang.known.non.derived.IPeyarchchol;
-import tamil.lang.known.non.derived.IVinaiyechcham;
-import tamil.lang.known.non.derived.Vinaiyadi;
+import tamil.lang.known.non.derived.*;
 import tamil.lang.known.non.derived.idai.Ottu;
 
 import java.util.List;
@@ -28,7 +27,7 @@ public class VinaiyechchamFilter extends AbstractKnownWordFilter {
         }
 
         IKnownWord next = context.tail.get(0);
-        if (!TokenRecognizer.isWordOfOneOfTypes(next, IVinaiyechcham.class, VinaiMuttu.class, Vinaiyadi.class)) {
+        if (TokenRecognizer.isWordOfOneOfTypes(next, PeyarchcholDerivative.class, IPeyarchchol.class)) {
             return ignore();
         }
         return returnSingle(recognized);
