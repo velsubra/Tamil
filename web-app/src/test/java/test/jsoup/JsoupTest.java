@@ -4,7 +4,7 @@ import my.interest.lang.tamil.TamilUtils;
 
 import my.interest.lang.tamil.impl.job.ExecuteManager;
 import my.interest.tamil.util.WebPageSpellChecker;
-import netscape.javascript.JSObject;
+
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;

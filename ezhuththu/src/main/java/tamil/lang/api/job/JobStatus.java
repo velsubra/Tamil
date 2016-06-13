@@ -18,6 +18,12 @@ public interface JobStatus {
     }
 
     /**
+     * returns true if the job is running or submitted.
+     * @return
+     */
+    public boolean shouldWait();
+
+    /**
      * Returns the status object
      *
      * @return the status

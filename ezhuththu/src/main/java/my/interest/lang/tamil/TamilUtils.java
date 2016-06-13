@@ -11,7 +11,9 @@ import javax.xml.bind.util.JAXBSource;
 import javax.xml.namespace.QName;
 import javax.xml.transform.stream.StreamSource;
 import java.io.*;
+import java.net.InetSocketAddress;
 import java.net.MalformedURLException;
+import java.net.Proxy;
 import java.net.URL;
 import java.util.List;
 
@@ -39,6 +41,23 @@ public class TamilUtils extends EzhuththuUtils {
 
     private TamilUtils() {
 
+    }
+
+    public static  InputStream getInputStreamOverProxy(String u) throws Exception{
+
+        System.out.println("Reading url from Tamil Utils  :" + u);
+        java.net.URL url = new java.net.URL(u);
+        System.out.println("Reading url from Tamil Utils external form  :" +url.toExternalForm());
+        System.out.println("Reading url from Tamil Utils string form  :" +url.toString());
+        InputStream in = null;
+        String proxy = System.getProperty("http.proxyHost");
+        int port = 80;
+        if (proxy != null && u.toLowerCase().startsWith("http")) {
+            in = url.openConnection(new Proxy(Proxy.Type.HTTP, new InetSocketAddress(proxy, port))).getInputStream();
+        } else {
+            in = url.openConnection().getInputStream();
+        }
+        return  in;
     }
 
     public static boolean isEmpty(String value) {

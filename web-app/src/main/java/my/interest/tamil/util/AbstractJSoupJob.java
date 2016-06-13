@@ -1,5 +1,9 @@
 package my.interest.tamil.util;
 
+import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.ClientResponse;
+import com.sun.jersey.api.client.WebResource;
+import my.interest.lang.tamil.EncodingUtil;
 import my.interest.lang.tamil.StringUtils;
 import my.interest.lang.tamil.TamilUtils;
 import my.interest.lang.tamil.impl.PropertyFinderForResource;
@@ -19,6 +23,8 @@ import tamil.lang.api.job.JobManager;
 import tamil.lang.api.job.JobResultSnapShot;
 import tamil.lang.api.job.JobRunnable;
 
+import javax.ws.rs.core.MediaType;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -100,22 +106,43 @@ public abstract class AbstractJSoupJob implements JobRunnable<JSONObject> {
             String absSrc = src.attr("abs:src");
             src.attr("src", absSrc);
         }
-
+        String last = null;
         for (Element link : links) {
             String abs = link.attr("abs:href");
             String absDecoded = java.net.URLDecoder.decode(abs, TamilUtils.ENCODING);
 
-            NameValuePair<Long, Integer> processed = url_To_JobId_To_Count.get(absDecoded);
-            link.attr("href", this.submiturl + "?au=" + abs);
+            NameValuePair<Long, Integer> processed = null;
+            if (!absDecoded.equals(last)) {
+                processed = url_To_JobId_To_Count.get(absDecoded);
+            }
+
+            link.attr("href", this.submiturl + "?au=" + EncodingUtil.encode(abs));
+
+
+
             if (processed != null) {
                 Element sup = doc.createElement("sup");
                 Element a = doc.createElement("a");
                 a.attr("class", "latest");
+                a.attr("title", " ஏற்கனவே செயல்படுத்தப்பட்ட முடிவுகளுக்கு இங்கேசுட்டவும்  ");
                 a.attr("href", this.viewurl + "?jobid=" + processed.getName());
-                a.text("(Latest # " + processed.getValue().toString() + ")");
+                a.text("(?# " + processed.getValue().toString() + ")");
                 sup.appendChild(a);
                 link.after(sup);
+
             }
+//            Element sub = doc.createElement("sub");
+//            Element a = doc.createElement("a");
+//           // a.attr("class", "actual_link");
+//           // a.attr("target", "_blank");
+//           // a.attr("title", "மெய்யானசுட்டி");
+//            a.attr("href", abs);
+//            a.text("------------");
+//            sub.appendChild(a);
+//           link.before(sub);
+
+            last = absDecoded;
+
         }
 
         for (Element imp : imports) {
@@ -152,6 +179,9 @@ public abstract class AbstractJSoupJob implements JobRunnable<JSONObject> {
         List<Long> list = manager.listJobIds(100);
         for (long id : list) {
             JobResultSnapShot<JSONObject> object = manager.findJobResultSnapShot(id, JSONObject.class);
+            if (object == null) {
+                continue;
+            }
             String url = object.getProperty(PROP_URL);
             if (url != null) {
                 String countStr = object.getProperty(PROP_HOTSPOTS_COUNT);
@@ -201,26 +231,35 @@ public abstract class AbstractJSoupJob implements JobRunnable<JSONObject> {
         }
 
     }
-
+    public InputStream getInputStreamOverProxy(String url) {
+        Client client = Client.create();
+        WebResource resource = client.resource(url);
+        ClientResponse resp = resource.get(ClientResponse.class);
+        return  resp.getEntityInputStream();
+    }
     public void run(JobContext<JSONObject> context) throws Exception {
         loadLastProcessed(context);
-        context.setProperty(PROP_URL, java.net.URLDecoder.decode(dataUrl, TamilUtils.ENCODING));
+        String decodedURL = java.net.URLDecoder.decode(dataUrl, TamilUtils.ENCODING);
+        context.setProperty(PROP_URL,  decodedURL);
         context.setAutoFlush(true);
+        InputStream in = getInputStreamOverProxy(this.dataUrl);
+
         Document doc = null;
         try {
-            context.setTitleMessage("Processing the page: " + dataUrl);
+            context.setTitleMessage("Processing the page: " + decodedURL);
+            doc = Jsoup.parse(in, TamilUtils.ENCODING, dataUrl);
 
-            if (TamilUtils.isHttpUrl(this.dataUrl) || TamilUtils.isHttpsUrl(this.dataUrl)) {
-
-                doc = Jsoup.connect(this.dataUrl).header("Accept-Encoding", "gzip, deflate")
-
-                        .maxBodySize(pageSize_KB * 1024)
-                        .timeout(600000)
-                        .get();
-                ;
-            } else {
-                doc = new Document(this.dataUrl);
-            }
+//            if (TamilUtils.isHttpUrl(this.dataUrl) || TamilUtils.isHttpsUrl(this.dataUrl)) {
+//
+//                doc = Jsoup.connect(this.dataUrl).header("Accept-Encoding", "gzip, deflate")
+//
+//                        .maxBodySize(pageSize_KB * 1024)
+//                        .timeout(600000)
+//                        .get();
+//                ;
+//            } else {
+//                doc = new Document(this.dataUrl);
+//            }
         } catch (Exception e) {
             context.setTitleMessage("Reading document failed.:" + e.getMessage());
             context.setProperty(PROP_HTML, "<html><body> Failed:" + this.dataUrl + "\n<br/> Full message::" + e.toString() + " </body> </html>");

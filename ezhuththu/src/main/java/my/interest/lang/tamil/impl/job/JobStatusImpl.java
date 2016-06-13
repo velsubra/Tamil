@@ -12,7 +12,7 @@ import java.util.List;
  *
  * @author velsubra
  */
-public class JobStatusImpl implements JobStatus {
+public  class JobStatusImpl implements JobStatus {
     public void setStatus(JobStatus.STATUS status) {
         this.status = status;
     }
@@ -34,6 +34,9 @@ public class JobStatusImpl implements JobStatus {
     }
 
 
+    public boolean shouldWait() {
+        return  status == STATUS.RUNNING || status == STATUS.SUBMITTED;
+    }
 
     public STATUS getStatus() {
         return status;
