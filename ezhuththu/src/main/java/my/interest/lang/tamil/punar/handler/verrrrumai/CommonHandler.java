@@ -1,7 +1,7 @@
 package my.interest.lang.tamil.punar.handler.verrrrumai;
 
 import my.interest.lang.tamil.punar.TamilWordPartContainer;
-import my.interest.lang.tamil.punar.handler.AbstractPunarchiHandler;
+import my.interest.lang.tamil.punar.handler.AbstractPunharchiHandler;
 import my.interest.lang.tamil.punar.handler.VinaiMutruCreationHandler;
 import my.interest.lang.tamil.punar.handler.iyalbu.JustAddHandler;
 import my.interest.lang.tamil.punar.handler.udambadu.UadambaduMeiHandler;
@@ -29,7 +29,7 @@ abstract class CommonHandler extends AbstractVearrrrumaiHandler {
     public TamilWordPartContainer handleJoin(TamilWordPartContainer nilai, TamilWordPartContainer varum, boolean pronouwn) {
         TamilWord v = varum.getWord();
         TamilWord n = nilai.getWord();
-        AbstractPunarchiHandler handler = new VinaiMutruCreationHandler();
+        AbstractPunharchiHandler handler = new VinaiMutruCreationHandler();
         if (nilai.size() == 1) {
             v = getUrubu();
             handler = UadambaduMeiHandler.HANDLER;
@@ -40,7 +40,7 @@ abstract class CommonHandler extends AbstractVearrrrumaiHandler {
 
 
 
-                if ( nilai.size() <=2  ||isUyarThinhaipPeyar(nilai.getWord())) {//E.gகலாம் -உயர்திணை
+                if ( nilai.size() <=2  ||endsWithNedilAndIM(nilai)) {//E.gகலாம் -உயர்திணை
                     n = nilai.getWord();
                 } else {
                     n = nilai.getWord().subWord(0, nilai.getWord().size() - 1);

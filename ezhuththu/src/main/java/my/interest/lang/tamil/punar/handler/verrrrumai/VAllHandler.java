@@ -2,7 +2,7 @@ package my.interest.lang.tamil.punar.handler.verrrrumai;
 
 
 import my.interest.lang.tamil.punar.TamilWordPartContainer;
-import my.interest.lang.tamil.punar.handler.AbstractPunarchiHandler;
+import my.interest.lang.tamil.punar.handler.AbstractPunharchiHandler;
 import tamil.lang.TamilFactory;
 import tamil.lang.known.non.derived.IPeyarchchol;
 import tamil.lang.known.non.derived.idai.VUrubu;
@@ -19,7 +19,7 @@ import java.util.Map;
  *
  * @author velsubra
  */
-public class VAllHandler extends AbstractPunarchiHandler {
+public class VAllHandler extends AbstractPunharchiHandler {
     public static final Map<VUrubu,AbstractVearrrrumaiHandler> all = new HashMap<VUrubu, AbstractVearrrrumaiHandler>();
 
     public static final VAllHandler HANDLER = new VAllHandler();
@@ -53,9 +53,12 @@ public class VAllHandler extends AbstractPunarchiHandler {
         all.put(urubu, handler);
 
 
-        handler = new V4Handler();
+        handler = new V41Handler();
         urubu = new VUrubu(handler.getUrubu(), true, handler.getNumber());
+        all.put(urubu, handler);
 
+        handler = new V42Handler();
+        urubu = new VUrubu(handler.getUrubu(), true, handler.getNumber());
         all.put(urubu, handler);
 
 

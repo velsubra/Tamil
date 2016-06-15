@@ -1,25 +1,22 @@
 package my.interest.lang.tamil.punar.handler.verrrrumai;
 
-
 import my.interest.lang.tamil.punar.TamilWordPartContainer;
-import my.interest.lang.tamil.punar.handler.AbstractPunarchiHandler;
+import my.interest.lang.tamil.punar.handler.AbstractPunharchiHandler;
 import my.interest.lang.tamil.punar.handler.VinaiMutruCreationHandler;
 import my.interest.lang.tamil.punar.handler.iyalbu.IyalbuPunarchiHandler;
 import my.interest.lang.tamil.punar.handler.iyalbu.JustAddHandler;
 import my.interest.lang.tamil.punar.handler.udambadu.UadambaduMeiHandler;
+import my.interest.lang.tamil.punar.handler.uyirvarin.UyirvarinUkkuralMeiVittodumHandler;
 import tamil.lang.TamilCompoundCharacter;
 import tamil.lang.TamilSimpleCharacter;
 import tamil.lang.TamilWord;
 
 /**
- * <p>
- * </p>
- *
- * @author velsubra
+ * Created by velsubra on 6/14/16.
  */
-class V4Handler extends AbstractVearrrrumaiHandler {
+public abstract class V4HandlerBase extends AbstractVearrrrumaiHandler {
 
-    public static final V4Handler HANDLER = new V4Handler();
+
 
     @Override
     public String getName() {
@@ -30,13 +27,14 @@ class V4Handler extends AbstractVearrrrumaiHandler {
 
     public static final TamilWord IRRKU = TamilWord.from("இற்கு ");
     public static final TamilWord UKKU = TamilWord.from("உக்கு");
-    public static final TamilWord ITHIRRKU = TamilWord.from("த்திற்கு");
+   // public static final TamilWord ITHIRRKU = TamilWord.from("த்திற்கு");
     public static final TamilWord IKKU = TamilWord.from("க்கு");
 
 
     @Override
     public TamilWordPartContainer translateForProNoun(TamilWordPartContainer nilai) {
         //உங்கள்
+        //எனக்கு
         if (!nilai.getWord().endsWith(TamilCompoundCharacter.ILL)) {
             return IyalbuPunarchiHandler.HANDLER.join(nilai, new TamilWordPartContainer(new TamilWord(TamilSimpleCharacter.a)));
         } else {
@@ -44,10 +42,6 @@ class V4Handler extends AbstractVearrrrumaiHandler {
         }
     }
 
-    @Override
-    public TamilWord getUrubu() {
-        return KU;
-    }
 
     @Override
     public int getNumber() {
@@ -64,41 +58,45 @@ class V4Handler extends AbstractVearrrrumaiHandler {
     public TamilWordPartContainer handleJoin(TamilWordPartContainer nilai, TamilWordPartContainer varum, boolean pronoun) {
 
 
-        TamilWord v =  getUrubu();
+        TamilWord v = getUrubu().duplicate();
         TamilWord n = nilai.getWord();
-        AbstractPunarchiHandler handler = new VinaiMutruCreationHandler();
+        AbstractPunharchiHandler handler = new VinaiMutruCreationHandler();
         if (nilai.size() == 1) {
-            v = IRRKU;
+
             handler = UadambaduMeiHandler.HANDLER;
 
         } else {
             if (nilai.getWord().endsWith(TamilCompoundCharacter.IM)) {
 
-                if (nilai.size() <= 3 && isUyarThinhaipPeyar(nilai.getWord())) {//E.gகலாம் -உயர்திணை
+                if (endsWithNedilAndIM(nilai)) {//E.gகலாம் -உயர்திணை
                     n = nilai.getWord();
-                    v = IRRKU;
+
                     handler = IyalbuPunarchiHandler.HANDLER;
                 } else {
-                    n = nilai.getWord().subWord(0, nilai.getWord().size() - 1);
-                    v = ITHIRRKU;
-                    handler = JustAddHandler.HANDLER;
+                    TamilWord withoutM = nilai.getWord().subWord(0, nilai.getWord().size() - 1);
+                    n = n.duplicate();
+                    //add thth
+                    n.clear();
+                    n.add(TamilCompoundCharacter.ITH);
+                    n.add(TamilCompoundCharacter.ITH_U);
+                    withoutM.addAll(n);
+                    n = withoutM;
+                    handler = UyirvarinUkkuralMeiVittodumHandler.HANDLER;
                 }
 
             } else {
-                v = IRRKU;
+
                 if (nilai.isEndingWithUyirMei()) {
                     if (nilai.isEndingWithYagaraUdambadumeiYuir() || pronoun) {
                         v = IKKU;
                     }
-                } else if (nilai.isEndingWithMei()) {
-                    v = UKKU;
                 }
 
             }
 
         }
-        TamilWord  torepalce  = varum.getWord().duplicate();
-        torepalce.replace(getUrubu(),v,true);
+        TamilWord torepalce = varum.getWord().duplicate();
+        torepalce.replace(getUrubu(), v, true);
 
         return handler.join(new TamilWordPartContainer(n), new TamilWordPartContainer(torepalce));
     }

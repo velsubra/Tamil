@@ -17,7 +17,7 @@ import java.util.List;
  *
  * @author velsubra
  */
-public class NannolHandler227Filter implements UnknownWordFilter {
+public class NannoolHandler227FilterSecondPart implements UnknownWordFilter {
 
     public List<IKnownWord> filterUnknown(ParsingContext context) {
         TamilWordPartContainer varumozhiCandidate = context.varumozhi;

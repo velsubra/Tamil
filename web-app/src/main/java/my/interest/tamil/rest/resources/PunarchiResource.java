@@ -8,7 +8,7 @@ import my.interest.lang.tamil.TamilUtils;
 import my.interest.lang.tamil.internal.api.HandlerFactory;
 import my.interest.lang.tamil.bean.*;
 import my.interest.lang.tamil.punar.TamilWordPartContainer;
-import my.interest.lang.tamil.punar.handler.AbstractPunarchiHandler;
+import my.interest.lang.tamil.punar.handler.AbstractPunharchiHandler;
 import my.interest.lang.tamil.translit.EnglishToTamilCharacterLookUpContext;
 import tamil.lang.api.feature.FeatureConstants;
 import tamil.lang.api.trans.TranslitFeature;
@@ -34,7 +34,7 @@ public class PunarchiResource {
     @Produces("application/json; charset=UTF-8")
     public FullJoinResult join(@PathParam("nilai") String nilai, @PathParam("varum") String varum, String handler) throws Exception {
 
-        AbstractPunarchiHandler hand = null;
+        AbstractPunharchiHandler hand = null;
         if (handler != null) {
             hand = HandlerFactory.findHandlerByName(handler);
         }
@@ -56,7 +56,7 @@ public class PunarchiResource {
     public FullSplitResult split(@PathParam("joined") String joined, String handler) throws Exception {
 
 
-        AbstractPunarchiHandler hand = null;
+        AbstractPunharchiHandler hand = null;
         if (handler != null) {
             hand = HandlerFactory.findHandlerByName(handler);
         }

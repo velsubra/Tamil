@@ -45,6 +45,7 @@ public final class TamilFactory {
      */
     public static void init() {
         TamilCharacterLookUpContext.lookup(0);
+        getRegEXCompiler();
     }
 
 

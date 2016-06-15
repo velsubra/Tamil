@@ -2,14 +2,11 @@ package my.interest.lang.tamil.punar.handler.verrrrumai;
 
 
 import my.interest.lang.tamil.punar.TamilWordPartContainer;
-import my.interest.lang.tamil.punar.handler.AbstractPunarchiHandler;
+import my.interest.lang.tamil.punar.handler.AbstractPunharchiHandler;
 import my.interest.lang.tamil.punar.handler.VinaiMutruCreationHandler;
-import my.interest.lang.tamil.punar.handler.WordsJoinHandler;
 import my.interest.lang.tamil.punar.handler.iyalbu.IyalbuPunarchiHandler;
 import my.interest.lang.tamil.punar.handler.iyalbu.JustAddHandler;
-import my.interest.lang.tamil.punar.handler.udambadu.UadambaduMeiHandler;
 import tamil.lang.TamilCompoundCharacter;
-import tamil.lang.TamilSimpleCharacter;
 import tamil.lang.TamilWord;
 
 /**
@@ -20,17 +17,17 @@ import tamil.lang.TamilWord;
  */
  class V7Handler extends AbstractVearrrrumaiHandler {
 
-    public static final V4Handler HANDLER = new V4Handler();
+    public static final V7Handler HANDLER = new V7Handler();
 
     @Override
     public String getName() {
-        return "நான்காம்வேற்றுமை  . ";
+        return "ஏழாம்வேற்றுமை  . ";
     }
 
     public static final TamilWord KANH = TamilWord.from("கண்");
 
-    public static final TamilWord IKANH = TamilWord.from("க்கண்");
-    public static final TamilWord INKANH = TamilWord.from("ங்கண்");
+    public static final TamilWord IKKANH = TamilWord.from("க்கண்");
+    public static final TamilWord INGANH = TamilWord.from("ங்கண்");
 
 
     @Override
@@ -53,21 +50,21 @@ import tamil.lang.TamilWord;
 
         TamilWord v = getUrubu();
         TamilWord n = nilai.getWord();
-        AbstractPunarchiHandler handler = new VinaiMutruCreationHandler();
+        AbstractPunharchiHandler handler = new VinaiMutruCreationHandler();
         if (nilai.size() == 1) {
-            v = IKANH;
+            v = IKKANH;
             handler = JustAddHandler.HANDLER;
 
         } else {
             if (nilai.getWord().endsWith(TamilCompoundCharacter.IM)) {
 
-                if (nilai.size() <=3 && isUyarThinhaipPeyar(nilai.getWord())) {//E.gகலாம் -உயர்திணை
+                if (nilai.size() <=3 && endsWithNedilAndIM(nilai)) {//E.gகலாம் -உயர்திணை
                     n = nilai.getWord();
-                    v = IKANH;
+                    v = IKKANH;
                     handler = IyalbuPunarchiHandler.HANDLER;
                 } else {
                     n = nilai.getWord().subWord(0, nilai.getWord().size() - 1);
-                    v = INKANH;
+                    v = INGANH;
                     handler = JustAddHandler.HANDLER;
                 }
 
@@ -75,7 +72,7 @@ import tamil.lang.TamilWord;
                 v = KANH;
                 if (nilai.isEndingWithUyirMei()) {
                     if (nilai.isEndingWithYagaraUdambadumeiYuir()) {
-                        v = IKANH;
+                        v = IKKANH;
                     }
                 } else if (nilai.isEndingWithMei()) {
                     v = KANH;

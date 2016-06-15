@@ -1,5 +1,6 @@
 package tamil.lang.known.non.derived;
 
+import my.interest.lang.tamil.punar.handler.verrrrumai.VAllHandler;
 import tamil.lang.TamilWord;
 
 /**
@@ -10,7 +11,7 @@ import tamil.lang.TamilWord;
  *
  * @author velsubra
  */
-public final class Peyarchchol extends AbstractKnownWord implements  IPeyarchchol , IBasePeyar{
+public  class Peyarchchol extends AbstractKnownWord implements  IPeyarchchol , IBasePeyar{
     private int  overloadCount = 0;
     private boolean uyarThinhai;
 
@@ -41,6 +42,8 @@ public final class Peyarchchol extends AbstractKnownWord implements  IPeyarchcho
         this.overloadCount = overloadCount;
         this.uyarThinhai = uyarThinhai;
         this.pronoun = pronoun;
+
+
     }
 
     @Override

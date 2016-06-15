@@ -6,9 +6,7 @@ import my.interest.lang.tamil.impl.rx.AnyOneInTamilLetterSetRx;
 
 
 import my.interest.lang.tamil.parser.impl.sax.SaxParser;
-import tamil.lang.TamilCharacter;
-import tamil.lang.TamilSimpleCharacter;
-import tamil.lang.TamilWord;
+import tamil.lang.*;
 import tamil.lang.api.dictionary.TamilDictionary;
 import tamil.lang.api.ezhuththu.EzhuththuSetDescription;
 import tamil.lang.api.ezhuththu.TamilCharacterSetCalculator;
@@ -17,6 +15,7 @@ import tamil.lang.exception.TamilPlatformException;
 import tamil.lang.known.IKnownWord;
 
 import tamil.lang.known.non.derived.AbstractKnownWord;
+import tamil.lang.known.non.derived.LetterSetPeyarchchol;
 import tamil.lang.known.non.derived.Peyarchchol;
 import tamil.lang.known.non.derived.idai.Ottu;
 
@@ -155,8 +154,39 @@ public class TamilEzhuththuSetCalculatorImpl implements TamilCharacterSetCalcula
             karam.addAll(TamilWord.from("கரவரிசை"));
             Set<TamilCharacter> karams = EzhuththuUtils.filterUyirMeiWithMei(mei);
             karams.add(mei);
-            map.put(karam.toString(), new AnyOneInTamilLetterSetRx(karam.toString(), karams));
-            map.put("!" + karam.toString(), new AnyOneInTamilLetterSetRx("!" + karam.toString(), EzhuththuUtils.filterOut(karams)));
+            AnyOneInTamilLetterSetRx set = new AnyOneInTamilLetterSetRx(karam.toString(), karams);
+            AnyOneInTamilLetterSetRx non_set = new AnyOneInTamilLetterSetRx("!" + karam.toString(), EzhuththuUtils.filterOut(karams));
+            map.put(karam.toString(), set);
+            map.put("!" + karam.toString(), non_set);
+            TamilFactory.getSystemDictionary().add(new LetterSetPeyarchchol(karam.duplicate()));
+
+            //ககரம்
+            TamilWord noVarisai = karam.duplicate();
+            noVarisai.removeLast();
+            noVarisai.removeLast();
+            noVarisai.removeLast();
+            noVarisai.add(TamilCompoundCharacter.IM);
+            map.put(noVarisai.toString(), set);
+            map.put("!" + noVarisai.toString(), non_set);
+            TamilFactory.getSystemDictionary().add(new LetterSetPeyarchchol(noVarisai.duplicate()));
+
+
+
+            if (!first.isWordToStartWith()) {
+                karam.removeFirst();
+                //லகரவரிசை
+                map.put(karam.toString(), set);
+                map.put("!" + karam.toString(), non_set);
+                TamilFactory.getSystemDictionary().add(new LetterSetPeyarchchol(karam.duplicate()));
+
+                noVarisai.removeFirst();
+                //லகரம்
+                map.put(noVarisai.toString(), set);
+                map.put("!" + noVarisai.toString(), non_set);
+                TamilFactory.getSystemDictionary().add(new LetterSetPeyarchchol(noVarisai.duplicate()));
+
+
+            }
 
         }
 
@@ -172,9 +202,24 @@ public class TamilEzhuththuSetCalculatorImpl implements TamilCharacterSetCalcula
 
             Set<TamilCharacter> karams = EzhuththuUtils.filterUyirMeiWithUyir(u);
             karams.add(u);
-            map.put(karam.toString(), new AnyOneInTamilLetterSetRx(karam.toString(), karams));
-            map.put("!" + karam.toString(), new AnyOneInTamilLetterSetRx("!" + karam.toString(), EzhuththuUtils.filterOut(karams)));
 
+            AnyOneInTamilLetterSetRx set = new AnyOneInTamilLetterSetRx(karam.toString(), karams);
+            AnyOneInTamilLetterSetRx non_set = new AnyOneInTamilLetterSetRx("!" + karam.toString(), EzhuththuUtils.filterOut(karams));
+
+
+            map.put(karam.toString(), set);
+            map.put("!" + karam.toString(), non_set);
+            TamilFactory.getSystemDictionary().add(new LetterSetPeyarchchol(karam.duplicate()));
+
+            //அகரம்
+            TamilWord noVarisai = karam.duplicate();
+            noVarisai.removeLast();
+            noVarisai.removeLast();
+            noVarisai.removeLast();
+            noVarisai.add(TamilCompoundCharacter.IM);
+            map.put(noVarisai.toString(), set);
+            map.put("!" + noVarisai.toString(), non_set);
+            TamilFactory.getSystemDictionary().add(new LetterSetPeyarchchol(noVarisai.duplicate()));
         }
 
 

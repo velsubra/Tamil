@@ -6,7 +6,7 @@ import my.interest.lang.tamil.bean.HandlerJoinResult;
 import my.interest.lang.tamil.bean.HandlerSplitResult;
 import my.interest.lang.tamil.bean.SimpleSplitResult;
 import my.interest.lang.tamil.punar.TamilWordPartContainer;
-import my.interest.lang.tamil.punar.handler.AbstractPunarchiHandler;
+import my.interest.lang.tamil.punar.handler.AbstractPunharchiHandler;
 import my.interest.lang.tamil.punar.handler.palapala.NannoolHandler170_Pala;
 import org.junit.Assert;
 import org.junit.Test;
@@ -25,7 +25,7 @@ public class FactoryTest {
     @Test
     public void testJoin1() throws Exception {
 
-        AbstractPunarchiHandler hand = new NannoolHandler170_Pala();
+        AbstractPunharchiHandler hand = new NannoolHandler170_Pala();
 
 
         HandlerJoinResult jresult = HandlerFactory.join("பல", "பல", hand);

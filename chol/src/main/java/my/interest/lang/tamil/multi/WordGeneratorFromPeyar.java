@@ -126,7 +126,6 @@ public class WordGeneratorFromPeyar extends WordsGenerator {
                 }
             }
 
-
             VAllHandler.HANDLER.generateAndAdd(p);
 
 

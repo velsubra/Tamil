@@ -6,7 +6,7 @@ import my.interest.lang.tamil.bean.*;
 import my.interest.lang.tamil.punar.AllTamilWordSplitResult;
 import my.interest.lang.tamil.punar.TamilWordPartContainer;
 import my.interest.lang.tamil.punar.TamilWordSplitResult;
-import my.interest.lang.tamil.punar.handler.AbstractPunarchiHandler;
+import my.interest.lang.tamil.punar.handler.AbstractPunharchiHandler;
 import my.interest.lang.tamil.punar.handler.idai.KalhViguthiHandler;
 import my.interest.lang.tamil.punar.handler.idai.KurilNedilHandler;
 import my.interest.lang.tamil.punar.handler.iyalbu.IyalbuPunarchiHandler;
@@ -30,8 +30,8 @@ import java.util.*;
  */
 public final class HandlerFactory {
 
-    public static AbstractPunarchiHandler findHandlerByName(String name) {
-        for (AbstractPunarchiHandler h : getAllHandlers()) {
+    public static AbstractPunharchiHandler findHandlerByName(String name) {
+        for (AbstractPunharchiHandler h : getAllHandlers()) {
             if (name.equals(h.getName())) {
                 return h;
             }
@@ -39,8 +39,8 @@ public final class HandlerFactory {
         return null;
     }
 
-    public static List<? extends AbstractPunarchiHandler> getAllHandlers() {
-        List<AbstractPunarchiHandler> list = new ArrayList<AbstractPunarchiHandler>();
+    public static List<? extends AbstractPunharchiHandler> getAllHandlers() {
+        List<AbstractPunharchiHandler> list = new ArrayList<AbstractPunharchiHandler>();
         list.add(new IyalbuPunarchiHandler());
 
         list.add(new NannoolHandler164_2());
@@ -68,7 +68,7 @@ public final class HandlerFactory {
         return list;
     }
 
-    public static HandlerJoinResult join(String nilai, String varum, AbstractPunarchiHandler handler) {
+    public static HandlerJoinResult join(String nilai, String varum, AbstractPunharchiHandler handler) {
         TamilWordPartContainer container = handler.join(new TamilWordPartContainer(TamilWord.from(nilai)), new TamilWordPartContainer(TamilWord.from(varum)));
         if (container == null) return null;
         HandlerJoinResult result = new HandlerJoinResult();
@@ -81,7 +81,7 @@ public final class HandlerFactory {
 
     public static FullJoinResult join(String nilai, String varum) {
         FullJoinResult result = new FullJoinResult();
-        for (AbstractPunarchiHandler handler : getAllHandlers()) {
+        for (AbstractPunharchiHandler handler : getAllHandlers()) {
             HandlerJoinResult ret = join(nilai, varum, handler);
             if (ret != null) {
                 result.add(ret);
@@ -92,7 +92,7 @@ public final class HandlerFactory {
 
     }
 
-    public static HandlerSplitResult split(String joined, AbstractPunarchiHandler handler) {
+    public static HandlerSplitResult split(String joined, AbstractPunharchiHandler handler) {
         List<TamilWordSplitResult> list = handler.splitAll(new TamilWordPartContainer(TamilWord.from(joined)));
         if (list == null || list.isEmpty()) {
             return null;
@@ -115,7 +115,7 @@ public final class HandlerFactory {
 
     public static FullSplitResult split(String joined) {
         FullSplitResult result = new FullSplitResult();
-        for (AbstractPunarchiHandler handler : getAllHandlers()) {
+        for (AbstractPunharchiHandler handler : getAllHandlers()) {
             HandlerSplitResult sp = split(joined, handler);
             if (sp != null) {
                 result.add(sp);
@@ -140,7 +140,7 @@ public final class HandlerFactory {
 
     public static void splitInto(TamilWordPartContainer container, AllTamilWordSplitResult list) {
 
-        for (AbstractPunarchiHandler handler : getAllHandlers()) {
+        for (AbstractPunharchiHandler handler : getAllHandlers()) {
             handler.splitAllInto(container, list);
         }
 

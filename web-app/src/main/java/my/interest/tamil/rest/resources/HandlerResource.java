@@ -9,7 +9,7 @@ import javax.ws.rs.Produces;
 
 
 import my.interest.lang.tamil.internal.api.HandlerFactory;
-import my.interest.lang.tamil.punar.handler.AbstractPunarchiHandler;
+import my.interest.lang.tamil.punar.handler.AbstractPunharchiHandler;
 
 import org.json.JSONObject;
 
@@ -28,9 +28,9 @@ public class HandlerResource {
     @Produces("application/json; charset=UTF-8")
     public String getList() throws  Exception{
 
-        List<? extends AbstractPunarchiHandler> list =  HandlerFactory.getAllHandlers();
+        List<? extends AbstractPunharchiHandler> list =  HandlerFactory.getAllHandlers();
         List<String> ret = new ArrayList<String>();
-        for (AbstractPunarchiHandler h : list) {
+        for (AbstractPunharchiHandler h : list) {
             ret.add(h.getName());
         }
         JSONObject obj=new JSONObject();

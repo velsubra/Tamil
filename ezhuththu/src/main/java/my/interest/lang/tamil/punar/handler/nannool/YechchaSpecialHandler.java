@@ -4,7 +4,7 @@ import tamil.lang.TamilSimpleCharacter;
 import tamil.lang.TamilWord;
 import my.interest.lang.tamil.punar.TamilWordPartContainer;
 import my.interest.lang.tamil.punar.TamilWordSplitResult;
-import my.interest.lang.tamil.punar.handler.AbstractPunarchiHandler;
+import my.interest.lang.tamil.punar.handler.AbstractPunharchiHandler;
 import my.interest.lang.tamil.punar.handler.iyalbu.IyalbuPunarchiHandler;
 
 import java.util.List;
@@ -15,7 +15,7 @@ import java.util.List;
  *
  * @author velsubra
  */
-public class YechchaSpecialHandler extends AbstractPunarchiHandler {
+public class YechchaSpecialHandler extends AbstractPunharchiHandler {
     @Override
     public String getName() {
         return "Special விதி.";

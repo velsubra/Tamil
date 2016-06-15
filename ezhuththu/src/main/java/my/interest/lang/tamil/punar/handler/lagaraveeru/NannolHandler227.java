@@ -2,7 +2,7 @@ package my.interest.lang.tamil.punar.handler.lagaraveeru;
 
 import my.interest.lang.tamil.punar.TamilWordPartContainer;
 import my.interest.lang.tamil.punar.TamilWordSplitResult;
-import my.interest.lang.tamil.punar.handler.AbstractPunarchiHandler;
+import my.interest.lang.tamil.punar.handler.AbstractPunharchiHandler;
 import tamil.lang.TamilCompoundCharacter;
 import tamil.lang.TamilWord;
 
@@ -15,7 +15,7 @@ import java.util.List;
  *
  * @author velsubra
  */
-public class NannolHandler227 extends AbstractPunarchiHandler {
+public class NannolHandler227 extends AbstractPunharchiHandler {
     @Override
     public String getName() {
         return "நன்னூல்விதி-227(லகர, ளகரவிதி)";

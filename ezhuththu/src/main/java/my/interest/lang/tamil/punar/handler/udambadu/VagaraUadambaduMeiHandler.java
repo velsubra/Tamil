@@ -4,7 +4,7 @@ import tamil.lang.TamilCompoundCharacter;
 import tamil.lang.TamilWord;
 import my.interest.lang.tamil.punar.TamilWordPartContainer;
 import my.interest.lang.tamil.punar.TamilWordSplitResult;
-import my.interest.lang.tamil.punar.handler.AbstractPunarchiHandler;
+import my.interest.lang.tamil.punar.handler.AbstractPunharchiHandler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +15,7 @@ import java.util.List;
  *
  * @author velsubra
  */
-class VagaraUadambaduMeiHandler extends AbstractPunarchiHandler {
+class VagaraUadambaduMeiHandler extends AbstractPunharchiHandler {
     @Override
     public String getName() {
         return "வகர உடம்படுமெய்த்தோன்றல்";

@@ -21,6 +21,13 @@ public class Veattumaiththodar extends AbstractThodarMozhi {
 //        return null;
 //    }
 
+    public TamilWord getType() {
+
+       TamilWord  word = (TamilWord.from(getUrubu().getNumber()+"ஆம் "));
+        word.addAll(super.getType());
+        return  word;
+    }
+
     public VUrubu getUrubu() {
         return (VUrubu) getWords().get(getWords().size() - 1);
     }

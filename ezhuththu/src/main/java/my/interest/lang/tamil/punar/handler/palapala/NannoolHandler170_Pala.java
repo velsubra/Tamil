@@ -6,7 +6,7 @@ import tamil.lang.TamilSimpleCharacter;
 import tamil.lang.TamilWord;
 import my.interest.lang.tamil.punar.TamilWordPartContainer;
 import my.interest.lang.tamil.punar.TamilWordSplitResult;
-import my.interest.lang.tamil.punar.handler.AbstractPunarchiHandler;
+import my.interest.lang.tamil.punar.handler.AbstractPunharchiHandler;
 import my.interest.lang.tamil.punar.handler.nannool.NannoolHandler158_3_2;
 
 import java.util.ArrayList;
@@ -18,7 +18,7 @@ import java.util.List;
  *
  * @author velsubra
  */
-public class NannoolHandler170_Pala extends AbstractPunarchiHandler {
+public class NannoolHandler170_Pala extends AbstractPunharchiHandler {
     @Override
     public String getName() {
         return "நன்னூல்விதி-170_1(பல,பல)";

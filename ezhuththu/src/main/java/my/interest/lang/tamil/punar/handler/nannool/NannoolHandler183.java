@@ -2,7 +2,7 @@ package my.interest.lang.tamil.punar.handler.nannool;
 
 import my.interest.lang.tamil.punar.TamilWordPartContainer;
 import my.interest.lang.tamil.punar.TamilWordSplitResult;
-import my.interest.lang.tamil.punar.handler.AbstractPunarchiHandler;
+import my.interest.lang.tamil.punar.handler.AbstractPunharchiHandler;
 import tamil.lang.TamilCharacter;
 import tamil.lang.TamilCompoundCharacter;
 import tamil.lang.TamilFactory;
@@ -23,7 +23,7 @@ import java.util.List;
  *
  * @author velsubra
  */
-public class NannoolHandler183 extends AbstractPunarchiHandler {
+public class NannoolHandler183 extends AbstractPunharchiHandler {
 
     //should handle ntoorru and noorru
     static final TamilWord ntoorru = TamilWord.from("ஊறு");

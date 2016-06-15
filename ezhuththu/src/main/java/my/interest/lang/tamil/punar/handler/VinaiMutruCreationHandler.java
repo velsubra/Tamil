@@ -19,7 +19,7 @@ import java.util.List;
  *
  * @author velsubra
  */
-public class VinaiMutruCreationHandler extends AbstractPunarchiHandler  {
+public class VinaiMutruCreationHandler extends AbstractPunharchiHandler {
     @Override
     public String getName() {
         return "வினைமுற்றிற்கான விதி";  //To change body of implemented methods use File | Settings | File Templates.
@@ -44,27 +44,27 @@ public class VinaiMutruCreationHandler extends AbstractPunarchiHandler  {
 
     public void addInstanceHandler(String cls) {
         try {
-            instancehandlers.add((AbstractPunarchiHandler) Class.forName(cls).newInstance());
+            instancehandlers.add((AbstractPunharchiHandler) Class.forName(cls).newInstance());
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
-    public void addInstanceHandler(AbstractPunarchiHandler inst) {
+    public void addInstanceHandler(AbstractPunharchiHandler inst) {
         instancehandlers.add(inst);
 
     }
 
-    public void prependInstanceHandler(AbstractPunarchiHandler inst) {
+    public void prependInstanceHandler(AbstractPunharchiHandler inst) {
         instancehandlers.add(0,inst);
 
     }
 
 
 
-    static final List<AbstractPunarchiHandler> syshandlers = new ArrayList<AbstractPunarchiHandler>();
+    static final List<AbstractPunharchiHandler> syshandlers = new ArrayList<AbstractPunharchiHandler>();
 
-    private List<AbstractPunarchiHandler> instancehandlers = new ArrayList<AbstractPunarchiHandler>();
+    private List<AbstractPunharchiHandler> instancehandlers = new ArrayList<AbstractPunharchiHandler>();
 
     static {
 
@@ -113,7 +113,7 @@ public class VinaiMutruCreationHandler extends AbstractPunarchiHandler  {
                 equation += "+" + part.toString();
             }
             boolean applied = false;
-            for (AbstractPunarchiHandler handler : instancehandlers) {
+            for (AbstractPunharchiHandler handler : instancehandlers) {
                 TamilWordPartContainer result = handler.join(new TamilWordPartContainer(vinaiMutru), part);
                 if (result != null) {
                     vinaiMutru = result.getWord();

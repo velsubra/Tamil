@@ -5,7 +5,7 @@ import tamil.lang.TamilSimpleCharacter;
 import tamil.lang.TamilWord;
 import my.interest.lang.tamil.punar.TamilWordPartContainer;
 import my.interest.lang.tamil.punar.TamilWordSplitResult;
-import my.interest.lang.tamil.punar.handler.AbstractPunarchiHandler;
+import my.interest.lang.tamil.punar.handler.AbstractPunharchiHandler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +16,7 @@ import java.util.List;
  *
  * @author velsubra
  */
-public class KurilNedilHandler extends AbstractPunarchiHandler {
+public class KurilNedilHandler extends AbstractPunharchiHandler {
 
     public static final KurilNedilHandler HANDLER = new KurilNedilHandler();
 

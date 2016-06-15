@@ -6,7 +6,8 @@ import my.interest.lang.tamil.parser.impl.sax.filter.both.MagaramFilter;
 import my.interest.lang.tamil.parser.impl.sax.filter.both.ThanikkurrilOttuFilter;
 import my.interest.lang.tamil.parser.impl.sax.filter.both.UdambaduMeiFilter;
 import my.interest.lang.tamil.parser.impl.sax.filter.known.*;
-import my.interest.lang.tamil.parser.impl.sax.filter.unknown.NannolHandler227Filter;
+import my.interest.lang.tamil.parser.impl.sax.filter.unknown.NannoolHandler227FilterFirstPart;
+import my.interest.lang.tamil.parser.impl.sax.filter.unknown.NannoolHandler227FilterSecondPart;
 import my.interest.lang.tamil.parser.impl.sax.filter.unknown.NannoolHandler183Filter;
 import my.interest.lang.tamil.parser.impl.sax.filter.unknown.UnknownWordFilter;
 import my.interest.lang.tamil.punar.TamilWordPartContainer;
@@ -71,7 +72,8 @@ public class AnyKnownWordMatcher extends TokenRecognizer {
             add(new UdambaduMeiFilter());
             add(new ThanikkurrilOttuFilter());
             add(new NannoolHandler183Filter());
-            add(new NannolHandler227Filter());
+            add(new NannoolHandler227FilterSecondPart());
+            add(new NannoolHandler227FilterFirstPart());
 
 
         }

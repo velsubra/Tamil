@@ -4,7 +4,7 @@ import tamil.lang.TamilCompoundCharacter;
 import tamil.lang.TamilWord;
 import my.interest.lang.tamil.punar.TamilWordPartContainer;
 import my.interest.lang.tamil.punar.TamilWordSplitResult;
-import my.interest.lang.tamil.punar.handler.AbstractPunarchiHandler;
+import my.interest.lang.tamil.punar.handler.AbstractPunharchiHandler;
 
 import java.util.List;
 
@@ -14,7 +14,7 @@ import java.util.List;
  *
  * @author velsubra
  */
-public class IdaiNilaiHandler extends AbstractPunarchiHandler {
+public class IdaiNilaiHandler extends AbstractPunharchiHandler {
     @Override
     public String getName() {
         return "காலவிடைநிலையைப்பொறுத்து வினையடியை விகாரப்படுதும் விதி.   ";

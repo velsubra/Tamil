@@ -3,7 +3,7 @@ package my.interest.lang.tamil.punar.handler.udambadu;
 import tamil.lang.TamilCompoundCharacter;
 import my.interest.lang.tamil.punar.TamilWordPartContainer;
 import my.interest.lang.tamil.punar.TamilWordSplitResult;
-import my.interest.lang.tamil.punar.handler.AbstractPunarchiHandler;
+import my.interest.lang.tamil.punar.handler.AbstractPunharchiHandler;
 
 import java.util.List;
 
@@ -13,7 +13,7 @@ import java.util.List;
  *
  * @author velsubra
  */
-public class UadambaduMeiHandler extends AbstractPunarchiHandler {
+public class UadambaduMeiHandler extends AbstractPunharchiHandler {
 
     public static final UadambaduMeiHandler HANDLER = new UadambaduMeiHandler();
 
@@ -22,8 +22,8 @@ public class UadambaduMeiHandler extends AbstractPunarchiHandler {
         return "உடம்படுமெய்த்தோன்றல்";
     }
 
-    static final AbstractPunarchiHandler VAGARA = new VagaraUadambaduMeiHandler();
-    static final AbstractPunarchiHandler YAGARAM = new YagaraUadambaduMeiHandler();
+    static final AbstractPunharchiHandler VAGARA = new VagaraUadambaduMeiHandler();
+    static final AbstractPunharchiHandler YAGARAM = new YagaraUadambaduMeiHandler();
 
 
     @Override

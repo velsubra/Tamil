@@ -3,7 +3,7 @@ package my.interest.lang.tamil.punar.handler.iyalbu;
 import tamil.lang.TamilWord;
 import my.interest.lang.tamil.punar.TamilWordPartContainer;
 import my.interest.lang.tamil.punar.TamilWordSplitResult;
-import my.interest.lang.tamil.punar.handler.AbstractPunarchiHandler;
+import my.interest.lang.tamil.punar.handler.AbstractPunharchiHandler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +14,7 @@ import java.util.List;
  *
  * @author velsubra
  */
-public class JustAddHandler extends AbstractPunarchiHandler {
+public class JustAddHandler extends AbstractPunharchiHandler {
     @Override
     public String getName() {
         return "இயல்புபுணர்ச்சி -2";

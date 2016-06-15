@@ -1,7 +1,8 @@
 package my.interest.lang.tamil.punar.handler.verrrrumai;
 
 import my.interest.lang.tamil.punar.TamilWordPartContainer;
-import my.interest.lang.tamil.punar.handler.AbstractPunarchiHandler;
+import my.interest.lang.tamil.punar.handler.AbstractPunharchiHandler;
+import tamil.lang.TamilCompoundCharacter;
 import tamil.lang.TamilWord;
 import tamil.lang.known.derived.PeyarchCholThiribu;
 import tamil.lang.known.non.derived.IPeyarchchol;
@@ -16,9 +17,9 @@ import java.util.Set;
  *
  * @author velsubra
  */
-public abstract class AbstractVearrrrumaiHandler extends AbstractPunarchiHandler {
+public abstract class AbstractVearrrrumaiHandler extends AbstractPunharchiHandler {
 
-    public static final V4Handler HANDLER = new V4Handler();
+
 
     private static Map<TamilWord, PeyarchCholThiribu> pronoun_thiribu = new HashMap<TamilWord, PeyarchCholThiribu>();
 
@@ -103,5 +104,13 @@ public abstract class AbstractVearrrrumaiHandler extends AbstractPunarchiHandler
 
         return handleJoin(n, v, pronouwn);
 
+    }
+
+    protected boolean endsWithNedilAndIM(TamilWordPartContainer nilai) {
+        if (nilai.size() < 2) {
+            return false;
+
+        }
+        return  nilai.getWord().getLast() == TamilCompoundCharacter.IM && nilai.getWord().get(nilai.size()-2).asTamilCharacter().isNtedilezhuththu();
     }
 }

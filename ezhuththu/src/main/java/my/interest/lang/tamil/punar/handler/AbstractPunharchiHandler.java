@@ -13,7 +13,7 @@ import java.util.List;
  *
  * @author velsubra
  */
-public abstract class AbstractPunarchiHandler {
+public abstract class AbstractPunharchiHandler {
 
     public abstract String getName();
 
