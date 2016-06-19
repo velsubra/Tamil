@@ -25,6 +25,9 @@ import tamil.lang.api.job.JobRunnable;
 
 import javax.ws.rs.core.MediaType;
 import java.io.InputStream;
+import java.net.URI;
+import java.net.URL;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -40,6 +43,8 @@ public abstract class AbstractJSoupJob implements JobRunnable<JSONObject> {
     private String viewurl = null;
     private String scripturl = null;
     private String cssurl = null;
+
+    public static final String  tamil_result_id_prefix ="tamil_result_id";
 
     public AbstractJSoupJob(String dataUrl, String submiturl, String viewurl, String scripturl, String cssurl) {
         this.dataUrl = dataUrl;
@@ -86,7 +91,7 @@ public abstract class AbstractJSoupJob implements JobRunnable<JSONObject> {
 
                     Element p = elem.ownerDocument().createElement("span");
                     p.attr("id", "tamil_" + id);
-                    p.text(".. ... id= " + id);
+                    p.text("...");
                     text.replaceWith(p);
                     extracts.add(object);
                 }
@@ -115,8 +120,18 @@ public abstract class AbstractJSoupJob implements JobRunnable<JSONObject> {
             if (!absDecoded.equals(last)) {
                 processed = url_To_JobId_To_Count.get(absDecoded);
             }
-
-            link.attr("href", this.submiturl + "?au=" + EncodingUtil.encode(abs));
+            String url = this.submiturl;
+            if (!new URI(url).isAbsolute()) {
+                url = "http://"+ url;
+            }
+            URL submit = new URL(url);
+            String query = submit.getQuery();
+            if (query == null) {
+                query ="?au=" + URLEncoder.encode( EncodingUtil.encode(abs), TamilUtils.ENCODING);
+            } else {
+                query =   "&au=" +  URLEncoder.encode( EncodingUtil.encode(abs), TamilUtils.ENCODING);
+            }
+            link.attr("href",  this.submiturl + query);
 
 
 
@@ -124,11 +139,11 @@ public abstract class AbstractJSoupJob implements JobRunnable<JSONObject> {
                 Element sup = doc.createElement("sup");
                 Element a = doc.createElement("a");
                 a.attr("class", "latest");
-                a.attr("title", " ஏற்கனவே செயல்படுத்தப்பட்ட முடிவுகளுக்கு இங்கேசுட்டவும்  ");
+                a.attr("title", " ஏற்கனவே செயல்படுத்தப்பட்ட முடிவுகளுக்கு இங்கேசுட்டவும்:  "+ absDecoded);
                 a.attr("href", this.viewurl + "?jobid=" + processed.getName());
                 a.text("(?# " + processed.getValue().toString() + ")");
                 sup.appendChild(a);
-                link.after(sup);
+                link.before(sup);
 
             }
 //            Element sub = doc.createElement("sub");
@@ -166,7 +181,7 @@ public abstract class AbstractJSoupJob implements JobRunnable<JSONObject> {
 
 
     private void setRefRefreshMessage(JobContext<JSONObject> context, String message) {
-        context.setProperty(PROP_HTML, "<html><head>\n" +
+        context.setServerProperty(PROP_HTML, "<html><head>\n" +
                 "<meta http-equiv=\"refresh\" content=\"2\">\n" +
                 "</head><body>காத்திருங்கள் ..." + message + "  </body></html>");
         context.setStatusMessage(message);
@@ -174,7 +189,7 @@ public abstract class AbstractJSoupJob implements JobRunnable<JSONObject> {
 
     private Map<String, NameValuePair<Long, Integer>> url_To_JobId_To_Count = new HashMap<String, NameValuePair<Long, Integer>>();
 
-    private void loadLastProcessed(JobContext<JSONObject> context) {
+    private void loadLastProcessed(JobContext<JSONObject> context)throws Exception {
         JobManager manager = TamilFactory.getJobManager(context.getJobCategory());
         List<Long> list = manager.listJobIds(100);
         for (long id : list) {
@@ -182,20 +197,21 @@ public abstract class AbstractJSoupJob implements JobRunnable<JSONObject> {
             if (object == null) {
                 continue;
             }
-            String url = object.getProperty(PROP_URL);
+            String url = object.getClientProperty(PROP_URL);
             if (url != null) {
-                String countStr = object.getProperty(PROP_HOTSPOTS_COUNT);
+                String absDecoded = java.net.URLDecoder.decode(url, TamilUtils.ENCODING);
+                String countStr = object.getClientProperty(PROP_HOTSPOTS_COUNT);
                 int count = 0;
                 if (countStr != null) {
                     count = Integer.parseInt(countStr);
                 }
-                NameValuePair<Long, Integer> already_loaded = url_To_JobId_To_Count.get(url);
+                NameValuePair<Long, Integer> already_loaded = url_To_JobId_To_Count.get(absDecoded);
                 if (already_loaded != null) {
-                    if (already_loaded.getName() > id) {
+                    if (already_loaded.getName() >= id) {
                         continue;
                     }
                 }
-                url_To_JobId_To_Count.put(url, new NameValuePair<Long, Integer>(id, count));
+                url_To_JobId_To_Count.put(absDecoded, new NameValuePair<Long, Integer>(id, count));
             }
 
         }
@@ -231,8 +247,39 @@ public abstract class AbstractJSoupJob implements JobRunnable<JSONObject> {
         }
 
     }
-    public InputStream getInputStreamOverProxy(String url) {
+    public InputStream getInputStreamOverProxy(String url) throws Exception{
+        System.out.println("---------");
+        System.out.println(url);
+        System.out.println("---------");
+        StringBuffer buffer = new StringBuffer();
+
+        for (int i = 0 ; i < url.length() ;i ++) {
+            char c = url.charAt(i);
+            boolean code = c > 127;
+            if (c == '^') {
+                code = true;
+            }
+            if (c == ' ') {
+                buffer.append("+");
+               continue;
+            }
+
+            if (c == '\n') {
+                code = true;
+            }
+
+            if (code) {
+                String coded =java.net.URLEncoder.encode(""+c, TamilUtils.ENCODING);
+                buffer.append(coded);
+            } else {
+                buffer.append((char)c);
+            }
+        }
+        url = buffer.toString();
         Client client = Client.create();
+        System.out.println("---- -----");
+        System.out.println(url);
+        System.out.println("---- -----");
         WebResource resource = client.resource(url);
         ClientResponse resp = resource.get(ClientResponse.class);
         return  resp.getEntityInputStream();
@@ -240,9 +287,9 @@ public abstract class AbstractJSoupJob implements JobRunnable<JSONObject> {
     public void run(JobContext<JSONObject> context) throws Exception {
         loadLastProcessed(context);
         String decodedURL = java.net.URLDecoder.decode(dataUrl, TamilUtils.ENCODING);
-        context.setProperty(PROP_URL,  decodedURL);
+        context.setClientProperty(PROP_URL,  decodedURL);
         context.setAutoFlush(true);
-        InputStream in = getInputStreamOverProxy(this.dataUrl);
+        InputStream in = getInputStreamOverProxy(decodedURL);
 
         Document doc = null;
         try {
@@ -262,11 +309,11 @@ public abstract class AbstractJSoupJob implements JobRunnable<JSONObject> {
 //            }
         } catch (Exception e) {
             context.setTitleMessage("Reading document failed.:" + e.getMessage());
-            context.setProperty(PROP_HTML, "<html><body> Failed:" + this.dataUrl + "\n<br/> Full message::" + e.toString() + " </body> </html>");
+            context.setServerProperty(PROP_HTML, "<html><body> Failed:" + this.dataUrl + "\n<br/> Full message::" + e.toString() + " </body> </html>");
             throw e;
         }
         setRefRefreshMessage(context, "Reading all text");
-        context.setTitleId(doc.title());
+        context.setTitleId(decodedURL);
         processText(doc);
         setRefRefreshMessage(context, "All text read. Now, processing links");
         replaceLinks(doc);
@@ -284,7 +331,7 @@ public abstract class AbstractJSoupJob implements JobRunnable<JSONObject> {
         String content = doc.html();
 //        content = StringUtils.replaceFor$(new String(content), new PropertyFinderForResource(app, resource, bindingMap), false, true).getBytes();
 
-        context.setProperty(PROP_HTML, content);
+        context.setServerProperty(PROP_HTML, content);
 
 
         context.setStatusMessage("Processing  " + extracts.size() + " total text regions ...");
@@ -300,11 +347,11 @@ public abstract class AbstractJSoupJob implements JobRunnable<JSONObject> {
                 processed = new NameValuePair<String, Integer>("", 0);
             }
            // totalProcessedPoints += processed.getValue();
-            context.setProperty(PROP_HOTSPOTS_COUNT, String.valueOf(processed.getValue()));
+            context.setClientProperty(PROP_HOTSPOTS_COUNT, String.valueOf(processed.getValue()));
             object.put(PROP_TEXT_PROCESSED, processed.getName());
             context.addResult(object);
             count++;
-            context.setStatusMessage("Currently Processing  " + count + "/" + extracts.size() + " text regions ...");
+            context.setStatusMessage("#" + count + " of " + extracts.size() + " text regions .Total Search Results#:" + String.valueOf(processed.getValue()));
             context.setPercentOfCompletion((int) (100.0 * count / extracts.size()));
             context.flush();
         }

@@ -95,7 +95,7 @@ public class ServerTest {
     @Test
     public void testStartServer() throws Exception {
 
-        if (true) return;
+        //if (true) return;
 
         //System.setProperty("http.proxyHost", "www-proxy.us.oracle.com");
         //System.setProperty("http.proxyPort", "80");

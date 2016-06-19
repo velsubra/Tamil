@@ -5,6 +5,7 @@ import my.interest.lang.tamil.generated.types.GlobalTypes;
 import my.interest.lang.tamil.internal.api.PersistenceInterface;
 
 import my.interest.lang.tamil.generated.types.TamilRootWords;
+import tamil.lang.api.persist.manager.ApplicationResourceManager;
 import tamil.lang.exception.service.ServiceException;
 
 /**
@@ -50,8 +51,20 @@ public class InMemoryPersistence extends PersistenceInterface {
         return null;
     }
 
+    public AppDescription readApplicationByName(String name) {
+        return null;
+    }
+
     public void deleteApplicationByName(String name) {
 
+    }
+
+    public void writeApplication(AppDescription app, boolean overWrite) {
+
+    }
+
+    public ApplicationResourceManager getResourceManager(String appName) {
+        return null;
     }
 
     public void updateApplication(AppDescription app) {

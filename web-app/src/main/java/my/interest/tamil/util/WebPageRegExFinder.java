@@ -1,46 +1,75 @@
 package my.interest.tamil.util;
 
+import my.interest.lang.tamil.impl.FeatureSet;
 import my.interest.lang.util.NameValuePair;
+import org.json.JSONObject;
 import tamil.lang.TamilFactory;
 import tamil.lang.TamilWord;
+import tamil.lang.api.job.JobContext;
 import tamil.lang.api.parser.ParseFailureFindIndexFeature;
 import tamil.lang.api.parser.ParserResult;
 import tamil.lang.api.parser.ParserResultCollection;
 import tamil.lang.api.parser.VallinavottuEndingOk;
 import tamil.lang.api.regex.RXFeature;
 import tamil.util.IPropertyFinder;
+import tamil.util.regex.FeaturedPatternsList;
+import tamil.util.regex.SimpleMatcher;
 import tamil.util.regex.TamilPattern;
 
+import java.util.List;
 import java.util.regex.Matcher;
 
 /**
  * Created by velsubra on 6/11/16.
  */
 public class WebPageRegExFinder extends AbstractJSoupJob {
-    private String rx  = null;
-    TamilPattern pattern = null;
+
+    FeaturedPatternsList patternsList;
 
     int matchCount = 0;
-    public WebPageRegExFinder(String rx, String dataUrl, String submiturl, String viewurl, String scripturl, String cssurl, IPropertyFinder finder) {
+    String pattern = null;
+    IPropertyFinder aliasFinder = null;
+    String baseFeatures = null;
+    String alternativeFeature = null;
+
+
+    public WebPageRegExFinder(String dataUrl, String submiturl, String viewurl, String scripturl, String cssurl, String pattern, IPropertyFinder aliasFinder, String baseFeatures, String alternativeFeature) {
         super(dataUrl, submiturl, viewurl, scripturl, cssurl);
-        this.rx = rx;
-        pattern = TamilFactory.getRegEXCompiler().compile(rx,finder,null);
+        this.pattern = pattern;
+        this.aliasFinder = aliasFinder;
+        this.baseFeatures = baseFeatures;
+        this.alternativeFeature = alternativeFeature;
+
+
+    }
+
+    public void run(JobContext<JSONObject> context) throws Exception {
+        if (this.baseFeatures == null) {
+            this.baseFeatures = "";
+        }
+        if (this.alternativeFeature == null) {
+            this.alternativeFeature = "";
+        }
+        this.patternsList = TamilFactory.getRegEXCompiler().compileToPatternsList(this.pattern, this.aliasFinder, FeatureSet.findFeatures(RXFeature.class, baseFeatures), FeatureSet.findFeatures(RXFeature.class, this.alternativeFeature).toArray(new RXFeature[0]));
+        super.run(context);
     }
 
     @Override
     public NameValuePair<String, Integer> process(String text) throws Exception {
-        Matcher matcher = pattern.matcher(text);
+        SimpleMatcher matcher = this.patternsList.matchersList(text);
         StringBuffer buffer = new StringBuffer();
 
         int index = 0;
         while (matcher.find()) {
+            buffer.append(text.substring(index, matcher.start()));
+
             index = matcher.end();
             String tamil = text.substring(matcher.start(), index);
+            matchCount++;
 
-            buffer.append(text.substring(index, matcher.start()));
-            buffer.append("<span class='found'>" + tamil + "</span>");
+
+            buffer.append("<span id='" + tamil_result_id_prefix  + matchCount + "'  class='error'>" + tamil + "</span>");
             buffer.append("<sup>" + matchCount + "</sup>");
-            matchCount ++;
 
         }
         String last = text.substring(index);

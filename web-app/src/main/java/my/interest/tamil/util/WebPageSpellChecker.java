@@ -33,8 +33,9 @@ public class WebPageSpellChecker extends AbstractJSoupJob {
             String tamil = text.substring(matcher.start(), index);
             ParserResultCollection collection = parser.parse(TamilWord.from(tamil), 1, ParseFailureFindIndexFeature.FEATURE, VallinavottuEndingOk.FEATURE);
             if (collection.isEmpty()) {
-                buffer.append("<span class='error'>" + tamil + "</span>");
                 errorcount++;
+                buffer.append("<span id='" + tamil_result_id_prefix + errorcount + "'  class='error'>" + tamil + "</span>");
+
                 buffer.append("<sup>" + errorcount + "</sup>");
             } else {
                 ParserResult result = collection.getList().get(0);
@@ -45,10 +46,10 @@ public class WebPageSpellChecker extends AbstractJSoupJob {
                     errorcount++;
                     if (hint == null) {
 
-                        buffer.append("<span class='error'>" + tamil + "</span>");
+                        buffer.append("<span id='" + tamil_result_id_prefix + errorcount + "'  class='error'>" + tamil + "</span>");
                     } else {
                         buffer.append(tamil.substring(0, hint.getUnicodeStartIndex()));
-                        buffer.append("<span class='error'>" + tamil.substring(hint.getUnicodeStartIndex()) + "</span>");
+                        buffer.append("<span id='" + tamil_result_id_prefix + errorcount + "' class='error'>" + tamil.substring(hint.getUnicodeStartIndex()) + "</span>");
                         //buffer.append(tamil.substring(hint.getUnicodeEndIndex()));
                     }
                     buffer.append("<sup>" + errorcount + "</sup>");
@@ -59,7 +60,7 @@ public class WebPageSpellChecker extends AbstractJSoupJob {
         }
         String last = text.substring(index);
         buffer.append(last);
-       // System.out.println("Error count:" + errorcount);
+        // System.out.println("Error count:" + errorcount);
         return new NameValuePair<String, Integer>(buffer.toString(), errorcount);
     }
 }

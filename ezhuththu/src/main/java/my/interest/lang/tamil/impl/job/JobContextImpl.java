@@ -173,11 +173,18 @@ public class JobContextImpl<T> implements JobContext<T> {
         autoFlush = flush;
     }
 
-    public void setProperty(String name, String value) {
+    public void setServerProperty(String name, String value) {
 
-        PropertiesContainer container = new PropertiesContainer(bean.getProperties());
+        PropertiesContainer container = new PropertiesContainer(bean.getServerProperties());
         container.addProperty(name,value);
-        bean.setProperties(container.getInputProperties());
+        bean.setServerProperties(container.getInputProperties());
+    }
+
+    public void setClientProperty(String name, String value) {
+
+        PropertiesContainer container = new PropertiesContainer(bean.getClientProperties());
+        container.addProperty(name,value);
+        bean.setClientProperties(container.getInputProperties());
     }
 
     public String getJobCategory() {

@@ -7,7 +7,7 @@ import java.util.regex.Matcher;
 
 /**
  * <p>
- * A list of one or more compiled {@link java.util.regex.Matcher}. This matcher finds something when one of the internal matchers finds.
+ * A list of one or more compiled {@link java.util.regex.Matcher}. This matcher finds something when one of the internal matcher finds.
  * If multiple matches find, the one with lower start index is used to return the selection. Sub sequent finds can make use of other matchers.
  * </p>
  *

@@ -123,11 +123,19 @@ public class JobResultImpl<T> implements JobResultSnapShot {
         return bean.getTitleId();
     }
 
-    public String getProperty(String name) {
-        return new PropertiesContainer(bean.getProperties()).getPropertyValue(name);
+    public String getClientProperty(String name) {
+        return new PropertiesContainer(bean.getClientProperties()).getPropertyValue(name);
     }
 
-    public List<String> getPropertyNames() {
-        return new PropertiesContainer(bean.getProperties()).getProperties();
+    public List<String> getClientPropertyNames() {
+        return new PropertiesContainer(bean.getClientProperties()).getProperties();
+    }
+
+    public String getServerProperty(String name) {
+        return new PropertiesContainer(bean.getServerProperties()).getPropertyValue(name);
+    }
+
+    public List<String> getServerPropertyNames() {
+        return new PropertiesContainer(bean.getServerProperties()).getProperties();
     }
 }

@@ -3,6 +3,7 @@ package test.jsoup;
 import my.interest.lang.tamil.TamilUtils;
 
 import my.interest.lang.tamil.impl.job.ExecuteManager;
+import my.interest.tamil.util.WebPageRegExFinder;
 import my.interest.tamil.util.WebPageSpellChecker;
 
 import org.json.JSONObject;
@@ -85,7 +86,42 @@ public class JsoupTest {
                 resultSnapShot = manager.findJobResultSnapShot(jobid, JSONObject.class);
 
             }
-            String html = resultSnapShot.getProperty(WebPageSpellChecker.PROP_HTML);
+            String html = resultSnapShot.getServerProperty(WebPageSpellChecker.PROP_HTML);
+            System.out.println(html);
+            JobResultChunk<JSONObject> chunk = resultSnapShot.getNewResults(0);
+
+            for (JSONObject object : chunk.getChunk()) {
+                System.out.println(object.get(WebPageSpellChecker.PROP_TEXT_ID) +":"+ object.get(WebPageSpellChecker.PROP_TEXT_PROCESSED));
+            }
+
+        } finally {
+            ExecuteManager.stop();
+        }
+
+    }
+
+
+    @Test
+    public void testRXWebpage() throws Exception {
+        try {
+            ExecuteManager.start();
+            JobManager manager = TamilFactory.getJobManager("jobs/browse/rxsearch/webpage");
+            long jobid = manager.submit(new WebPageRegExFinder("https://ta.wikipedia.org/wiki/%E0%AE%B5%E0%AE%BF%E0%AE%95%E0%AF%8D%E0%AE%95%E0%AE%BF%E0%AE%AA%E0%AF%8D%E0%AE%AA%E0%AF%80%E0%AE%9F%E0%AE%BF%E0%AE%AF%E0%AE%BE",
+                    "browse-submit.gv","browse-view.gv","script.js", "style.css", "${mozhi}", null, null, null), JSONObject.class);
+            JobResultSnapShot<JSONObject> resultSnapShot = manager.findJobResultSnapShot(jobid, JSONObject.class);
+
+            while (true) {
+                if (resultSnapShot == null) {
+                    throw new Exception("Not found");
+                }
+                System.out.println(resultSnapShot.getStatus().getCompletionPercent() + " %");
+
+                if (resultSnapShot.isDone()) break;
+                Thread.currentThread().sleep(100);
+                resultSnapShot = manager.findJobResultSnapShot(jobid, JSONObject.class);
+
+            }
+            String html = resultSnapShot.getServerProperty(WebPageSpellChecker.PROP_HTML);
             System.out.println(html);
             JobResultChunk<JSONObject> chunk = resultSnapShot.getNewResults(0);
 

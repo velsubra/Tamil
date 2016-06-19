@@ -48,6 +48,27 @@ var TamilFactory = new function () {
     this.context = window.location.pathname.substring(0, window.location.pathname.indexOf("/apps/resources/") < 0 ? window.location.pathname.indexOf("/", 1) : window.location.pathname.indexOf("/apps/resources/"));
     //   console.log("context:" + this.context);
 
+    /**
+     * Base64 Encode and url then url encode
+     * @param str
+     * @returns {string}
+     */
+    this.base64EncodeAndURLEncode =  function (str) {
+        return encodeURIComponent( btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, function(match, p1) {
+            return String.fromCharCode('0x' + p1);
+        })));
+    }
+
+    /**
+     * Base64 decode and then url decode
+     * @param str
+     * @returns {string}
+     */
+    this.base64DecodeAndURLDecode =  function (str) {
+        return decodeURIComponent(Array.prototype.map.call(atob(str), function(c) {
+            return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+        }).join(''));
+    }
 
     /**
      * Creates a dictionary instance.
@@ -1075,6 +1096,24 @@ var TamilFactory = new function () {
                     return;
                 }
             }, 100);
+        }
+
+        /**
+         * Gets the client property
+         * @param job the job
+         * @param propName property name
+         */
+        this.getClientProperty = function(job, propName) {
+            if (job && job.clientProperties) {
+                for (var j = 0; j < job.clientProperties.length; j++) {
+                    if (job.clientProperties[j].name == propName) {
+                        return job.clientProperties[j].value;
+
+                    }
+                }
+            }
+            return null;
+
         }
 
         /**

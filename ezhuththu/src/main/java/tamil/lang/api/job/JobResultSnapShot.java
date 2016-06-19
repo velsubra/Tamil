@@ -78,15 +78,29 @@ public interface JobResultSnapShot<T> {
      * @param name the name of the property
      * @return null if the property is not set
      */
-    public String getProperty(String name);
+    public String getClientProperty(String name);
 
 
     /**
-     * Gets the list of property names
+     * Gets the list of property names that are sent to the browser
      * @return empty list if there are no properties
      */
-    public List<String> getPropertyNames();
+    public List<String> getClientPropertyNames();
 
+
+    /**
+     * Gets the value of the property
+     * @param name the name of the property
+     * @return null if the property is not set
+     */
+    public String getServerProperty(String name);
+
+
+    /**
+     * Gets the list of property names that are not transferred to client
+     * @return empty list if there are no properties
+     */
+    public List<String> getServerPropertyNames();
 
 
 

@@ -41,7 +41,7 @@ public class JobResource extends BaseResource {
             JSONArray array = new JSONArray();
             obj.put("jobs", array);
             for (long id : list) {
-                JSONObject job = describeJobWithCategory(id, 0, -1, categoryName, includeUnits,false);
+                JSONObject job = describeJobWithCategory(id, 0, -1, categoryName, includeUnits, false);
                 array.put(job);
             }
 
@@ -59,7 +59,7 @@ public class JobResource extends BaseResource {
                                  @DefaultValue("0") @QueryParam("last-continuation-id") int continuation_id,
                                  @DefaultValue("-1") @QueryParam("last-unit-work-count") int last_unit_work_count,
                                  @QueryParam("includeUnits") boolean includeUnits) throws Exception {
-        return readJobDefaultWithCateGory(number, continuation_id, last_unit_work_count, null, includeUnits,false);
+        return readJobDefaultWithCateGory(number, continuation_id, last_unit_work_count, null, includeUnits, false);
     }
 
     @GET
@@ -68,15 +68,15 @@ public class JobResource extends BaseResource {
     public String readJobDefaultWithCateGory(@PathParam("jobid") long number,
                                              @DefaultValue("0") @QueryParam("last-continuation-id") int continuation_id,
                                              @DefaultValue("-1") @QueryParam("last-unit-work-count") int last_unit_work_count,
-                                             @PathParam("categoryName") String categoryName, @QueryParam("includeUnits") boolean includeUnits,@QueryParam("includeProps") boolean includeProps) throws Exception {
+                                             @PathParam("categoryName") String categoryName, @QueryParam("includeUnits") boolean includeUnits, @QueryParam("includeProps") boolean includeProps) throws Exception {
 
-        return describeJobWithCategory(number, continuation_id, last_unit_work_count, categoryName, includeUnits,includeProps).toString();
+        return describeJobWithCategory(number, continuation_id, last_unit_work_count, categoryName, includeUnits, includeProps).toString();
     }
 
 
     private JSONObject describeJobWithCategory(long number,
-                                               int continuation_id,  int last_unit_work_count,
-                                               String categoryName, boolean includeUnits, boolean inccludeProps) throws Exception {
+                                               int continuation_id, int last_unit_work_count,
+                                               String categoryName, boolean includeUnits, boolean includeProps) throws Exception {
 
         JSONObject obj = new JSONObject();
         try {
@@ -85,22 +85,39 @@ public class JobResource extends BaseResource {
             if (result == null) {
                 throw new ResourceNotFoundException();
             }
-            List<String> properties = result.getPropertyNames();
-            if (inccludeProps) {
+            List<String> serverproperties = result.getServerPropertyNames();
+            if (includeProps) {
 
 
                 JSONArray props = new JSONArray();
-                obj.put("properties", props);
-                for (String p : properties) {
+                obj.put("serverProperties", props);
+                for (String p : serverproperties) {
                     JSONObject item = new JSONObject();
 
-                    String val = result.getProperty(p);
+                    String val = result.getServerProperty(p);
                     if (val != null) {
                         props.put(item);
                         item.put("name", p);
                         item.put("value", val);
                     }
                 }
+            }
+
+            List<String> properties = result.getClientPropertyNames();
+
+
+            JSONArray props = new JSONArray();
+            obj.put("clientProperties", props);
+            for (String p : properties) {
+                JSONObject item = new JSONObject();
+
+                String val = result.getClientProperty(p);
+                if (val != null) {
+                    props.put(item);
+                    item.put("name", p);
+                    item.put("value", val);
+                }
+
             }
             tamil.lang.api.job.JobStatus status = result.getStatus();
             obj.put("id", number);
@@ -123,7 +140,7 @@ public class JobResource extends BaseResource {
             JobResultChunk<String> chunks = null;
             if (last_unit_work_count > 0) {
                 chunks = result.getLastResults(last_unit_work_count);
-            }  else {
+            } else {
                 chunks = result.getNewResults(continuation_id);
             }
 

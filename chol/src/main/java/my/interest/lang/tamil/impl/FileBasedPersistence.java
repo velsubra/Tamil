@@ -11,6 +11,7 @@ import my.interest.lang.tamil.multi.WordGeneratorFromPeyar;
 import my.interest.lang.tamil.multi.WordGeneratorFromVinaiyadi;
 import my.interest.lang.tamil.punar.handler.verrrrumai.VAllHandler;
 import my.interest.lang.tamil.xml.AppCache;
+import tamil.lang.api.persist.manager.ApplicationResourceManager;
 import tamil.lang.exception.service.ServiceException;
 import tamil.lang.known.non.derived.idai.*;
 
@@ -457,8 +458,20 @@ public class FileBasedPersistence extends PersistenceInterface   {
         return  findAppByName(name);
     }
 
+    public AppDescription readApplicationByName(String name) {
+        return null;
+    }
+
     public void deleteApplicationByName(String name) {
         deleteApp(null,name);
+    }
+
+    public void writeApplication(AppDescription app, boolean overWrite) {
+
+    }
+
+    public ApplicationResourceManager getResourceManager(String appName) {
+        return null;
     }
 
     public void updateApplication(AppDescription app) {

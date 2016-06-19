@@ -9,6 +9,7 @@ import my.interest.lang.tamil.internal.api.DefinitionFactory;
 import my.interest.lang.tamil.internal.api.PersistenceInterface;
 import tamil.lang.TamilFactory;
 import tamil.lang.api.persist.manager.ApplicationManager;
+import tamil.lang.api.persist.manager.ApplicationResourceManager;
 import tamil.lang.api.persist.object.ObjectPersistenceInterface;
 import tamil.lang.exception.service.ServiceException;
 
@@ -21,6 +22,8 @@ import java.util.Date;
  * Created by velsubra on 3/28/16.
  */
 public class ApplicationManagerImpl implements ApplicationManager {
+
+
     private String lastUpdatedKey = null;
     ObjectPersistenceInterface lastUpdatedKeyPersistence = null;
     AppsDescription appsDescription = null;
@@ -41,8 +44,20 @@ public class ApplicationManagerImpl implements ApplicationManager {
         return null;
     }
 
+    public AppDescription readApplicationByName(String name) {
+        return null;
+    }
+
     public void deleteApplicationByName(String name) {
 
+    }
+
+    public void writeApplication(AppDescription app, boolean overWrite) {
+
+    }
+
+    public ApplicationResourceManager getResourceManager(String appName) {
+        return null;
     }
 
     public void updateApplication(AppDescription app) {

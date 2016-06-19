@@ -10,9 +10,9 @@ import tamil.lang.exception.service.ServiceException;
  * @author velsubra
  */
 public interface ApplicationManager {
-    public AppDescription findAppByName(String name);
-    public AppDescription createAppByName(String name) throws ServiceException;
+    public AppDescription readApplicationByName(String name);
     public void deleteApplicationByName(String name);
-    public void updateApplication(AppDescription app);
+    public void writeApplication(AppDescription app, boolean overWrite);
+    public ApplicationResourceManager getResourceManager(String appName);
 
 }
