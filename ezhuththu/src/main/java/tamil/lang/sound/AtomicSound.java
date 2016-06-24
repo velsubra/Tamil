@@ -1,7 +1,6 @@
 package tamil.lang.sound;
 
 import common.lang.impl.UnknownCharacter;
-import my.interest.lang.tamil.TamilUtils;
 import tamil.lang.TamilCompoundCharacter;
 import tamil.lang.TamilFactory;
 import tamil.lang.TamilSimpleCharacter;

@@ -154,7 +154,7 @@ public class SoundTest {
 //                Thread.sleep(200);
 //            }
             count ++;
-            AudioInputStream  stream = AudioSystem.getAudioInputStream(s.getDataInputStream());
+            AudioInputStream  stream = AudioSystem.getAudioInputStream(PlayTest.asByteArrayInputStream(s.getDataInputStream()));
 
 
             collections.add( stream);
@@ -195,7 +195,7 @@ public class SoundTest {
         List<AudioInputStream> collections = new ArrayList();
         long frameLength = 0;
         for (AtomicSound s : list) {
-            AudioInputStream ai = AudioSystem.getAudioInputStream(s.getDataInputStream());
+            AudioInputStream ai = AudioSystem.getAudioInputStream(PlayTest.asByteArrayInputStream(s.getDataInputStream()));
             collections.add(ai);
             frameLength += ai.getFrameLength();
 

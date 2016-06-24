@@ -16,6 +16,8 @@ import java.util.List;
  * @author velsubra
  */
 public abstract class AbstractCharacter implements common.lang.Character, Comparable {
+
+    public static char ZWNBSP = '\uFEFF'; // zero-width no-break space
 //    private int columnNumber;
 //
 //    @Override

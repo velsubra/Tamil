@@ -26,7 +26,7 @@ public interface TamilCharacterSetCalculator {
      * @return the letter set that is computed.
      * @throws TamilPlatformException  if there is any issue in finding the letter set.
      *
-     * @see tamil.lang.api.regex.TamilRXCompiler#getRegXDescriptions()
+     * @see tamil.lang.api.regex.TamilRXCompiler#getRegEXDescriptions()
      */
     public Set<TamilCharacter>  find (String query) throws TamilPlatformException;
 

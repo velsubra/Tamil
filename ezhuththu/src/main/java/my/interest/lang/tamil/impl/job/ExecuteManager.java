@@ -13,7 +13,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class ExecuteManager extends ThreadPoolExecutor {
 
-    private static final int TOTAL_JOBS_ALLOWED = 5;
+    private static final int TOTAL_JOBS_ALLOWED = 10;
     private static final int QCAPACITY = TOTAL_JOBS_ALLOWED * 1000;
 
     private static  ExecuteManager manager = new ExecuteManager(TOTAL_JOBS_ALLOWED /2 , TOTAL_JOBS_ALLOWED, 0, TimeUnit.MINUTES, new ArrayBlockingQueue<Runnable>(QCAPACITY));

@@ -10,7 +10,9 @@ import tamil.lang.api.ezhuththu.EzhuththuSetDescription;
  * @author velsubra
  */
 public interface PatternGenerator extends EzhuththuSetDescription {
-
+    //public static  int LAST_UNICODE_CODEPOINT = 1114111;
+    //BMP
+    public static  int LAST_UNICODE_CODEPOINT = 65535;
     public  String generate(FeatureSet set);
 
 

@@ -1,6 +1,7 @@
 package my.interest.lang.tamil.impl.rx;
 
 import my.interest.lang.tamil.impl.FeatureSet;
+import my.interest.lang.tamil.impl.rx.block.UnicodeBlockDescription;
 import tamil.lang.api.regex.RXFeature;
 import tamil.util.IPropertyFinder;
 import tamil.lang.api.regex.RxDescription;
@@ -34,8 +35,12 @@ public class RXCompilerImpl implements TamilRXCompiler {
     }
 
 
-    public Set<? extends RxDescription> getRegXDescriptions() throws ServiceException {
+    public Set<? extends RxDescription> getRegEXDescriptions() throws ServiceException {
         return Collections.unmodifiableSet(new LinkedHashSet<RxDescription>(RxRegistry.map.values()));
+    }
+
+    public Set<? extends RxDescription> getUnicodeBMPBlocksRegEXDescriptions() throws ServiceException {
+        return Collections.unmodifiableSet(new LinkedHashSet<RxDescription>(UnicodeBlockDescription.blocks.values()));
     }
 
 

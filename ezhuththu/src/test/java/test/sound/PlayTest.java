@@ -1,16 +1,15 @@
 package test.sound;
 
+import my.interest.lang.tamil.TamilUtils;
 import org.junit.Test;
 import tamil.lang.TamilFactory;
 import tamil.lang.sound.MixingAudioInputStream;
 
 import javax.sound.sampled.*;
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.SequenceInputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 
 /**
  * <p>
@@ -24,9 +23,13 @@ public class PlayTest {
         TamilFactory.init();
     }
 
+    public static InputStream asByteArrayInputStream(InputStream in) {
+        return new ByteArrayInputStream(TamilUtils.readAllFrom(in,false));
+    }
+
     @Test
     public void testPlay_a_10() throws Exception {
-        AudioInputStream stream = AudioSystem.getAudioInputStream(TamilFactory.class.getResourceAsStream("/sound/a_1.0.wav"));
+        AudioInputStream stream = AudioSystem.getAudioInputStream(asByteArrayInputStream(TamilFactory.class.getResourceAsStream("/sound/a_1.0.wav")));
         AudioFormat format = stream.getFormat();
         DataLine.Info info = new DataLine.Info(Clip.class, format);
         Clip clip = (Clip) AudioSystem.getLine(info);
@@ -37,7 +40,7 @@ public class PlayTest {
 
     @Test
     public void testPlay_ppaa_25() throws Exception {
-        AudioInputStream stream = AudioSystem.getAudioInputStream(TamilFactory.class.getResourceAsStream("/sound/ppaa_2.5.wav"));
+        AudioInputStream stream = AudioSystem.getAudioInputStream(asByteArrayInputStream(TamilFactory.class.getResourceAsStream("/sound/ppaa_2.5.wav")));
         AudioFormat format = stream.getFormat();
         DataLine.Info info = new DataLine.Info(Clip.class, format);
         Clip clip = (Clip) AudioSystem.getLine(info);
@@ -48,8 +51,8 @@ public class PlayTest {
 
     @Test
     public void testPlay_Together_mixer() throws Exception {
-        AudioInputStream a = AudioSystem.getAudioInputStream(TamilFactory.class.getResourceAsStream("/sound/a_1.0.wav"));
-        AudioInputStream ppaa = AudioSystem.getAudioInputStream(TamilFactory.class.getResourceAsStream("/sound/ppaa_2.5.wav"));
+        AudioInputStream a = AudioSystem.getAudioInputStream(asByteArrayInputStream(TamilFactory.class.getResourceAsStream("/sound/a_1.0.wav")));
+        AudioInputStream ppaa = AudioSystem.getAudioInputStream(asByteArrayInputStream(TamilFactory.class.getResourceAsStream("/sound/ppaa_2.5.wav")));
         Collection collections = new ArrayList();
         collections.add(a);
         collections.add(ppaa);
@@ -64,10 +67,12 @@ public class PlayTest {
     }
 
 
+
+
     @Test
     public void testPlay_Together_mixer_ammaa() throws Exception {
-        AudioInputStream a = AudioSystem.getAudioInputStream(TamilFactory.class.getResourceAsStream("/sound/a_1.0.wav"));
-        AudioInputStream ppaa = AudioSystem.getAudioInputStream(TamilFactory.class.getResourceAsStream("/sound/mmaa_2.5.wav"));
+        AudioInputStream a = AudioSystem.getAudioInputStream(asByteArrayInputStream(TamilFactory.class.getResourceAsStream("/sound/a_1.0.wav")));
+        AudioInputStream ppaa = AudioSystem.getAudioInputStream(asByteArrayInputStream(TamilFactory.class.getResourceAsStream("/sound/mmaa_2.5.wav")));
         Collection collections = new ArrayList();
         collections.add(a);
         collections.add(ppaa);
@@ -84,8 +89,8 @@ public class PlayTest {
 
     @Test
     public void testPlay_mixer_akkaa() throws Exception {
-        AudioInputStream a = AudioSystem.getAudioInputStream(TamilFactory.class.getResourceAsStream("/sound/a_1.0.wav"));
-        AudioInputStream ppaa = AudioSystem.getAudioInputStream(TamilFactory.class.getResourceAsStream("/sound/kkaa_2.5.wav"));
+        AudioInputStream a = AudioSystem.getAudioInputStream(asByteArrayInputStream(TamilFactory.class.getResourceAsStream("/sound/a_1.0.wav")));
+        AudioInputStream ppaa = AudioSystem.getAudioInputStream(asByteArrayInputStream(TamilFactory.class.getResourceAsStream("/sound/kkaa_2.5.wav")));
         Collection collections = new ArrayList();
         collections.add(a);
         collections.add(ppaa);
@@ -103,9 +108,9 @@ public class PlayTest {
 
     @Test
     public void testPlay_mixer_idam() throws Exception {
-        AudioInputStream e = AudioSystem.getAudioInputStream(TamilFactory.class.getResourceAsStream("/sound/e_1.0.wav"));
-        AudioInputStream da = AudioSystem.getAudioInputStream(TamilFactory.class.getResourceAsStream("/sound/da_1.0.wav"));
-        AudioInputStream im = AudioSystem.getAudioInputStream(TamilFactory.class.getResourceAsStream("/sound/im_0.5.wav"));
+        AudioInputStream e = AudioSystem.getAudioInputStream(asByteArrayInputStream(TamilFactory.class.getResourceAsStream("/sound/e_1.0.wav")));
+        AudioInputStream da = AudioSystem.getAudioInputStream(asByteArrayInputStream(TamilFactory.class.getResourceAsStream("/sound/da_1.0.wav")));
+        AudioInputStream im = AudioSystem.getAudioInputStream(asByteArrayInputStream(TamilFactory.class.getResourceAsStream("/sound/im_0.5.wav")));
         Collection<AudioInputStream> collections = new ArrayList();
         collections.add(e);
         collections.add(da);

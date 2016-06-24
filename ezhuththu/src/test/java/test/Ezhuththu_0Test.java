@@ -8,12 +8,10 @@ import my.interest.lang.tamil.impl.rx.cir.Asai;
 import my.interest.lang.tamil.impl.rx.cir.Eerasaichcheer;
 import my.interest.lang.tamil.impl.rx.cir.Moovasaichcheer;
 import my.interest.lang.tamil.impl.rx.cir.Ntaalasaichcheer;
-import my.interest.lang.tamil.impl.yaappu.AbstractCirCollectionRx;
 import org.junit.Assert;
 import org.junit.Test;
 import tamil.lang.*;
 import tamil.lang.api.ezhuththu.TamilCharacterSetCalculator;
-import tamil.lang.api.regex.RXFeature;
 import tamil.lang.api.regex.RXIncludeCanonicalEquivalenceFeature;
 import tamil.lang.api.regex.RXKuttuFeature;
 import tamil.lang.api.regex.RXOverrideSysDefnFeature;
@@ -37,10 +35,9 @@ public class Ezhuththu_0Test {
     }
 
 
-
     static void cirSelfTestUtility(List<String> collectionRx) {
         for (String cir : collectionRx) {
-            TamilPattern pattern = TamilPattern.compile("${"+ cir +"}");
+            TamilPattern pattern = TamilPattern.compile("${" + cir + "}");
 
             for (String cir1 : collectionRx) {
                 System.out.println("comparing:" + cir + " with " + cir1);
@@ -57,19 +54,76 @@ public class Ezhuththu_0Test {
 
     @Test
     public void kouvaiTest() {
-       TamilWord w = TamilWord.from("கெளவை");
+        TamilWord w = TamilWord.from("கெளவை");
         Assert.assertEquals(3, w.size());
     }
 
     @Test
     public void cirSelfTest() {
-        List<String>  cirs = new ArrayList<String>();
+        List<String> cirs = new ArrayList<String>();
         cirs.addAll(new Asai().getAllCirs());
         cirs.addAll(new Eerasaichcheer().getAllCirs());
         cirs.addAll(new Moovasaichcheer().getAllCirs());
         cirs.addAll(new Ntaalasaichcheer().getAllCirs());
 
         cirSelfTestUtility(cirs);
+    }
+
+
+    @Test
+    public void testUnicodeBlocSize() {
+       // Assert.assertEquals(209, TamilFactory.getRegEXCompiler().getUnicodeBMPBlocksRegEXDescriptions().size());
+
+        //BMP blocks
+        Assert.assertEquals(153, TamilFactory.getRegEXCompiler().getUnicodeBMPBlocksRegEXDescriptions().size());
+
+    }
+
+    @Test
+    public void testUnicodeMatches() {
+        TamilPattern pat = TamilFactory.getRegEXCompiler().compile("${!TAMIL}");
+        Matcher m = pat.matcher("2");
+        Assert.assertEquals(true, m.matches());
+        pat = TamilPattern.compile("${TAMIL}");
+        String s = "That is a simple test";
+        m = pat.matcher(s);
+        Assert.assertEquals(false, m.find());
+
+
+        pat = TamilPattern.compile("${ஒருங்குறித்தொகுதிக்கு உள்ளே[BASIC_LATIN,TAMIL]}+");
+        s = "That is  a simple test 23423 ஒருங்குறித்தொகுதிக்கு";
+        m = pat.matcher(s);
+        Assert.assertEquals(true, m.matches());
+
+        pat = TamilPattern.compile("${ஒருங்குறித்தொகுதிக்கு உள்ளே[TAMIL,BASIC_LATIN]}+");
+        s = "There is an arabic character in it ف  ";
+        m = pat.matcher(s);
+        Assert.assertEquals(false, m.matches());
+
+        pat = TamilPattern.compile("${TAMIL}");
+        s = "அ";
+        m = pat.matcher(s);
+        Assert.assertEquals(true, m.matches());
+
+        pat = TamilPattern.compile("${!TAMIL}");
+        s = "a";
+        m = pat.matcher(s);
+        Assert.assertEquals(true, m.matches());
+
+        pat = TamilPattern.compile("${ஒருங்குறித்தொகுதிக்கு வெளியே[TAMIL,BASIC_LATIN]}");
+        s = "ف";
+        m = pat.matcher(s);
+        Assert.assertEquals(true, m.matches());
+//       while(m.find()) {
+//           System.out.println(m.start() + ":" + m.end());
+//       }
+
+        pat = TamilPattern.compile("${ஒருங்குறித்தொகுதிக்கு வெளியே[TAMIL,BASIC_LATIN,GENERAL_PUNCTUATION,   ARROWS]}");
+        s = "→";
+        m = pat.matcher(s);
+        Assert.assertEquals(false, m.matches());
+
+
     }
 
 
@@ -126,7 +180,7 @@ public class Ezhuththu_0Test {
         System.out.print(rep);
         Assert.assertEquals("\\u0b95\\u0bcc,\\u0b95\\u0bc6\\u0bd7,", rep);
 
-         rep = toString(TamilSimpleCharacter.a.getCodePoints(new FeatureSet(RXIncludeCanonicalEquivalenceFeature.FEATURE)));
+        rep = toString(TamilSimpleCharacter.a.getCodePoints(new FeatureSet(RXIncludeCanonicalEquivalenceFeature.FEATURE)));
         System.out.print(rep);
         Assert.assertEquals("\\u0b85,", rep);
 
@@ -177,7 +231,6 @@ public class Ezhuththu_0Test {
     }
 
 
-
     @Test
     public void testPatterns1() {
         TamilPattern pattern = TamilPattern.compile("${வகை[ka]}");
@@ -220,8 +273,6 @@ public class Ezhuththu_0Test {
         Assert.assertFalse(matcher.find());
 
 
-
-
         pattern = TamilPattern.compile("${thodarthodakkachchoathanai[(pulhimaa) thodangaathathilirunthu (ntedil thodanguvathilirunthu   (ezhuththu]}");
         matcher = pattern.matcher("தேமா  தேமா");
         Assert.assertTrue(matcher.find());
@@ -236,65 +287,52 @@ public class Ezhuththu_0Test {
         Assert.assertEquals(2, matcher.end());
 
 
-
-        pattern = TamilPattern.compile("${(குறள்)}",null, RXIncludeCanonicalEquivalenceFeature.FEATURE);
+        pattern = TamilPattern.compile("${(குறள்)}", null, RXIncludeCanonicalEquivalenceFeature.FEATURE);
         String kurralh = "அணியன்றோ நாணுடைமை சான்றோர்க்கஃ தின்றேல்\n" +
                 "பிணிஅன்றோ பீடு நடை";
         matcher = pattern.matcher(kurralh);
         Assert.assertTrue(matcher.matches());
 
 
-        pattern = TamilPattern.compile("${thodarthodakkachchoathanai[(ezhuththu thodanguvathilirunthu theamaa thodangaathathilirunthu ntedil]}",null, RXIncludeCanonicalEquivalenceFeature.FEATURE);
+        pattern = TamilPattern.compile("${thodarthodakkachchoathanai[(ezhuththu thodanguvathilirunthu theamaa thodangaathathilirunthu ntedil]}", null, RXIncludeCanonicalEquivalenceFeature.FEATURE);
         matcher = pattern.matcher(kurralh);
         Assert.assertTrue(matcher.find());
-        System.out.println(matcher.start() + "-----------:" + matcher.end() +": "+  kurralh.substring(matcher.start(), matcher.end()));
+        System.out.println(matcher.start() + "-----------:" + matcher.end() + ": " + kurralh.substring(matcher.start(), matcher.end()));
 
         Assert.assertEquals(9, matcher.start());
         Assert.assertEquals(11, matcher.end());
 
 
-
-        pattern = TamilPattern.compile("${thodarthodakkachchoathanai[(moovasaichcheer) thodanguvathilirunthu pulhimaa  thodangaathathilirunthu ntedil]}",null, RXIncludeCanonicalEquivalenceFeature.FEATURE);
+        pattern = TamilPattern.compile("${thodarthodakkachchoathanai[(moovasaichcheer) thodanguvathilirunthu pulhimaa  thodangaathathilirunthu ntedil]}", null, RXIncludeCanonicalEquivalenceFeature.FEATURE);
         matcher = pattern.matcher(kurralh);
         Assert.assertTrue(matcher.find());
-        System.out.println(matcher.start() + "-----------:" + matcher.end() +": "+  kurralh.substring(matcher.start(), matcher.end()));
+        System.out.println(matcher.start() + "-----------:" + matcher.end() + ": " + kurralh.substring(matcher.start(), matcher.end()));
 
         Assert.assertEquals(9, matcher.start());
         Assert.assertEquals(11, matcher.end());
 
 
-
-
-
-
-        pattern = TamilPattern.compile("${thodarthodakkachchoathanai[(kurralh) thodanguvathilirunthu (pulhimaangaay)]}",null, RXIncludeCanonicalEquivalenceFeature.FEATURE);
+        pattern = TamilPattern.compile("${thodarthodakkachchoathanai[(kurralh) thodanguvathilirunthu (pulhimaangaay)]}", null, RXIncludeCanonicalEquivalenceFeature.FEATURE);
         matcher = pattern.matcher(kurralh);
         Assert.assertTrue(matcher.find());
         Assert.assertEquals(0, matcher.start());
         Assert.assertEquals(8, matcher.end());
 
 
-
-        pattern = TamilPattern.compile("${thodarthodakkachchoathanai[(theamaa) thodanguvathilirunthu ntedil]}",null, RXIncludeCanonicalEquivalenceFeature.FEATURE);
+        pattern = TamilPattern.compile("${thodarthodakkachchoathanai[(theamaa) thodanguvathilirunthu ntedil]}", null, RXIncludeCanonicalEquivalenceFeature.FEATURE);
         matcher = pattern.matcher(kurralh);
         Assert.assertTrue(matcher.find());
         Assert.assertEquals(50, matcher.start());
         Assert.assertEquals(52, matcher.end());
 
 
-
-        pattern = TamilPattern.compile("${thodarthodakkachchoathanai[(kaaychcheer) thodanguvathilirunthu (kurralh)]}",null, RXIncludeCanonicalEquivalenceFeature.FEATURE);
+        pattern = TamilPattern.compile("${thodarthodakkachchoathanai[(kaaychcheer) thodanguvathilirunthu (kurralh)]}", null, RXIncludeCanonicalEquivalenceFeature.FEATURE);
         matcher = pattern.matcher(kurralh);
         Assert.assertTrue(matcher.find());
 
 
         Assert.assertEquals(0, matcher.start());
         Assert.assertEquals(58, matcher.end());
-
-
-
-
-
 
 
         pattern = TamilPattern.compile("${தளை[irumaaththirai பின்  நேர்]}");
@@ -313,16 +351,12 @@ public class Ezhuththu_0Test {
 //        Assert.assertEquals(8, matcher.end());
 
 
-
-
-
         pattern = TamilPattern.compile("${தளை[[க] பின்  நேர்]}");
         matcher = pattern.matcher("தேமாக தேமா");
         Assert.assertTrue(matcher.find());
         System.out.println(matcher.start() + "--------:" + matcher.end());
         Assert.assertEquals(6, matcher.start());
         Assert.assertEquals(8, matcher.end());
-
 
 
         pattern = TamilPattern.compile("${அசை[தொற்]}");
@@ -354,13 +388,9 @@ public class Ezhuththu_0Test {
         Assert.assertEquals(0, matcher.start());
         Assert.assertEquals(10, matcher.end());
 
-        pattern =  TamilPattern.compile("${தளை[மாச்சீர் முன் நேர்]}");
+        pattern = TamilPattern.compile("${தளை[மாச்சீர் முன் நேர்]}");
         matcher = pattern.matcher("தேமா விளம்");
         Assert.assertFalse(matcher.find());
-
-
-
-
 
 
         pattern = TamilPattern.compile("${(வகை[f f])}");
@@ -374,8 +404,6 @@ public class Ezhuththu_0Test {
         pattern = TamilPattern.compile("${(வகை[f f])}");
         matcher = pattern.matcher(TamilFactory.getTransliterator(null).transliterate("f f").toString());
         Assert.assertTrue(matcher.matches());
-
-
 
 
         pattern = TamilPattern.compile("${மாத்திரை[தென்னை]}");
@@ -397,14 +425,13 @@ public class Ezhuththu_0Test {
     @Test
     public void testPatterns() {
 
-        TamilPattern pattern = TamilPattern.compile("${koovilham}",null, RXKuttuFeature.FEATURE);
+        TamilPattern pattern = TamilPattern.compile("${koovilham}", null, RXKuttuFeature.FEATURE);
         Matcher matcher = pattern.matcher("துயாழ்இனி");
         Assert.assertTrue(matcher.matches());
 
 
-
         pattern = TamilPattern.compile("${ezhuththuvadivam}*");
-         matcher = pattern.matcher("தமிழ்தமிழ்");
+        matcher = pattern.matcher("தமிழ்தமிழ்");
 
         Assert.assertTrue(matcher.matches());
 
@@ -416,7 +443,6 @@ public class Ezhuththu_0Test {
         pattern = TamilPattern.compile("${அசையெண்ணிக்கை[8]}");
         matcher = pattern.matcher("தேமாந்தண்பூதேமாந்தண்பூ");
         Assert.assertTrue(matcher.matches());
-
 
 
         pattern = TamilPattern.compile("${தேமாநறும்பூ}");
@@ -849,7 +875,7 @@ public class Ezhuththu_0Test {
 
         pattern = TamilPattern.compile("${mozhi}${இடைவெளி}${தளை[பிறப்பு முன்  நேர்]}${mozhi}", new IPropertyFinder() {
             public String findProperty(String p1) {
-                if("இடைவெளி".equals(p1)) {
+                if ("இடைவெளி".equals(p1)) {
                     return "_";
                 } else {
                     return null;

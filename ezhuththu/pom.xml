@@ -54,6 +54,12 @@
             <version>1.9</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>TamilPlatform</groupId>
+            <artifactId>tamil-tts</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
 
         <dependency>
             <groupId>junit</groupId>

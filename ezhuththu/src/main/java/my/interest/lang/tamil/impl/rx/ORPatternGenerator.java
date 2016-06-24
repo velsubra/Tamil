@@ -13,6 +13,11 @@ import java.util.List;
  */
 public abstract class ORPatternGenerator implements PatternGenerator {
 
+    /**
+     * List of already generated patterns
+     * @param set
+     * @return
+     */
     public abstract List<String> getList(FeatureSet set);
 
     public String generate(FeatureSet set) {

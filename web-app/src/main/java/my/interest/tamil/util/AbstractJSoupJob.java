@@ -4,9 +4,9 @@ import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 import my.interest.lang.tamil.EncodingUtil;
-import my.interest.lang.tamil.StringUtils;
+
 import my.interest.lang.tamil.TamilUtils;
-import my.interest.lang.tamil.impl.PropertyFinderForResource;
+
 import my.interest.lang.util.NameValuePair;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
@@ -44,7 +44,14 @@ public abstract class AbstractJSoupJob implements JobRunnable<JSONObject> {
     private String scripturl = null;
     private String cssurl = null;
 
+    public List<String> getProcessedDecodedUrl() {
+        return processedDecodedUrl;
+    }
+
+    protected List<String> processedDecodedUrl = new ArrayList<String>();
+
     public static final String  tamil_result_id_prefix ="tamil_result_id";
+    public static final String  tamil_link_class ="tamil_link_class";
 
     public AbstractJSoupJob(String dataUrl, String submiturl, String viewurl, String scripturl, String cssurl) {
         this.dataUrl = dataUrl;
@@ -102,7 +109,11 @@ public abstract class AbstractJSoupJob implements JobRunnable<JSONObject> {
 
     }
 
-    void replaceLinks(Document doc) throws Exception {
+    public boolean toProcessLink(JobContext<JSONObject> context, String absDecoded) {
+        return true;
+    }
+
+    void replaceLinks(JobContext<JSONObject> context, Document doc) throws Exception {
         Elements links = doc.select("a[href]");
         Elements media = doc.select("[src]");
         Elements imports = doc.select("link[href]");
@@ -115,6 +126,10 @@ public abstract class AbstractJSoupJob implements JobRunnable<JSONObject> {
         for (Element link : links) {
             String abs = link.attr("abs:href");
             String absDecoded = java.net.URLDecoder.decode(abs, TamilUtils.ENCODING);
+            if (!toProcessLink(context, absDecoded)) continue;
+            if (!processedDecodedUrl.contains(absDecoded)) {
+                processedDecodedUrl.add(absDecoded);
+            }
 
             NameValuePair<Long, Integer> processed = null;
             if (!absDecoded.equals(last)) {
@@ -132,6 +147,7 @@ public abstract class AbstractJSoupJob implements JobRunnable<JSONObject> {
                 query =   "&au=" +  URLEncoder.encode( EncodingUtil.encode(abs), TamilUtils.ENCODING);
             }
             link.attr("href",  this.submiturl + query);
+            link.addClass(tamil_link_class);
 
 
 
@@ -187,7 +203,7 @@ public abstract class AbstractJSoupJob implements JobRunnable<JSONObject> {
         context.setStatusMessage(message);
     }
 
-    private Map<String, NameValuePair<Long, Integer>> url_To_JobId_To_Count = new HashMap<String, NameValuePair<Long, Integer>>();
+    protected Map<String, NameValuePair<Long, Integer>> url_To_JobId_To_Count = new HashMap<String, NameValuePair<Long, Integer>>();
 
     private void loadLastProcessed(JobContext<JSONObject> context)throws Exception {
         JobManager manager = TamilFactory.getJobManager(context.getJobCategory());
@@ -248,9 +264,9 @@ public abstract class AbstractJSoupJob implements JobRunnable<JSONObject> {
 
     }
     public InputStream getInputStreamOverProxy(String url) throws Exception{
-        System.out.println("---------");
-        System.out.println(url);
-        System.out.println("---------");
+      //  System.out.println("---------");
+       // System.out.println(url);
+       // System.out.println("---------");
         StringBuffer buffer = new StringBuffer();
 
         for (int i = 0 ; i < url.length() ;i ++) {
@@ -277,9 +293,9 @@ public abstract class AbstractJSoupJob implements JobRunnable<JSONObject> {
         }
         url = buffer.toString();
         Client client = Client.create();
-        System.out.println("---- -----");
-        System.out.println(url);
-        System.out.println("---- -----");
+      //  System.out.println("---- -----");
+       // System.out.println(url);
+        //System.out.println("---- -----");
         WebResource resource = client.resource(url);
         ClientResponse resp = resource.get(ClientResponse.class);
         return  resp.getEntityInputStream();
@@ -316,7 +332,7 @@ public abstract class AbstractJSoupJob implements JobRunnable<JSONObject> {
         context.setTitleId(decodedURL);
         processText(doc);
         setRefRefreshMessage(context, "All text read. Now, processing links");
-        replaceLinks(doc);
+        replaceLinks(context,doc);
         setRefRefreshMessage(context, "All links processed.");
         //Insert the script
         // inssertScript("${R_JQUERY_JS_PATH}", doc);

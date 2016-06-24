@@ -27,7 +27,7 @@ public class DownloaderTest {
       //  System.setProperty("http.proxyPort", "80");
     }
 
-    @Test
+  //  @Test
     public void testDownload_iitm() {
         Client cl = Client.create();
 //        cl.addFilter(new LoggingFilter());

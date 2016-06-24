@@ -36,6 +36,11 @@ public class EzhuththuTest implements IPropertyFinder {
                 TamilFactory.init();
             }
 
+    public static void main(String[] s) {
+      Character.UnicodeBlock bloc = Character.UnicodeBlock.of('–');
+        System.out.println(bloc.toString());
+    }
+
 //    @Test
 //    public void test_Asai() {
 //        TamilWord w = TamilWord.from("சேர்ந்தார்");
@@ -81,9 +86,53 @@ public class EzhuththuTest implements IPropertyFinder {
         }
     }
 
+    private static Grid from (Set<? extends RxDescription> set) {
+        List<RxDescription> list = new ArrayList<RxDescription>();
+        list.addAll(set);
+
+        Collections.sort(list, new Comparator<RxDescription>() {
+            @Override
+            public int compare(RxDescription o1, RxDescription o2) {
+                return o1.getName().compareTo(o2.getName());
+            }
+        });
+        Grid grid = new Grid();
+        grid.addColumn("S.No");
+
+        grid.addColumn("Usage in Regular Expression");
+        grid.addColumn("Description of the expression");
+
+        int count = 0;
+        for (RxDescription rx : list) {
+            boolean nonchar = true;
+
+
+            if (EzhuththuSetDescription.class.isAssignableFrom(rx.getClass())) {
+                EzhuththuSetDescription e = (EzhuththuSetDescription) rx;
+                if (e.getCharacterSet() != null) {
+                    nonchar  = false;
+                };
+            }
+            if (nonchar) {
+                count++;
+                int cols = 0;
+                System.out.println(rx.getName());
+                Row r = grid.createNewRow();
+                r.setValueAt(String.valueOf(count), cols++);
+                r.setValueAt("${" + rx.getName() + "}", cols++);
+                r.setValueAt(rx.getDescription(), cols++);
+
+
+            }
+        }
+
+        grid.pack(400);
+        return grid;
+    }
+
     @Test
     public void testDescriptions() {
-        Set<? extends RxDescription> set = TamilFactory.getRegEXCompiler().getRegXDescriptions();
+        Set<? extends RxDescription> set = TamilFactory.getRegEXCompiler().getRegEXDescriptions();
         List<RxDescription> list = new ArrayList<RxDescription>();
         list.addAll(set);
 
@@ -139,39 +188,16 @@ public class EzhuththuTest implements IPropertyFinder {
 
 
 
-        Grid grid = new Grid();
-        grid.addColumn("S.No");
+        Grid grid = from(set);
 
-        grid.addColumn("Usage in Regular Expression");
-        grid.addColumn("Description of the expression");
-
-        int count = 0;
-        for (RxDescription rx : list) {
-             boolean nonchar = true;
-
-            if (EzhuththuSetDescription.class.isAssignableFrom(rx.getClass())) {
-                EzhuththuSetDescription e = (EzhuththuSetDescription) rx;
-                if (e.getCharacterSet() != null) {
-                    nonchar  = false;
-                };
-            }
-            if (nonchar) {
-                count++;
-                int cols = 0;
-                System.out.println(rx.getName());
-                Row r = grid.createNewRow();
-                r.setValueAt(String.valueOf(count), cols++);
-                r.setValueAt("${" + rx.getName() + "}", cols++);
-                r.setValueAt(rx.getDescription(), cols++);
-
-
-            }
-        }
-
-        grid.pack(400);
+        System.out.println("Copy this into the document of TamilRXCompiler : General");
         grid.printTo(new TextFileWriter(new PrintStream(System.out, true)));
+        System.out.println(grid.toHtml());
 
-        System.out.println("Copy this into the document of TamilRXCompiler");
+
+        grid = from(TamilFactory.getRegEXCompiler().getUnicodeBMPBlocksRegEXDescriptions());
+        grid.printTo(new TextFileWriter(new PrintStream(System.out, true)));
+        System.out.println("Copy this into the document of TamilRXCompiler: Unicode Blocks");
         System.out.println(grid.toHtml());
 
 

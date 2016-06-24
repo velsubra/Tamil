@@ -6,6 +6,7 @@ import tamil.lang.exception.TamilPlatformException;
 import tamil.lang.exception.service.ServiceException;
 
 import java.io.File;
+import java.security.AccessControlException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -243,7 +244,12 @@ public final class FileBasedPersistenceImpl implements ObjectPersistenceInterfac
 
 
     public static boolean isOnCloud() {
-        return new File("/customer/scratch").exists();
+        try {
+            return new File("/customer/scratch").exists();
+        } catch (AccessControlException ae) {
+            ae.printStackTrace();
+            return false;
+        }
     }
 
 
@@ -254,11 +260,15 @@ public final class FileBasedPersistenceImpl implements ObjectPersistenceInterfac
             if (isOnCloud()) {
                 WORK_DIR = new File("/customer/scratch/i18n");
             } else {
+               try {
+                   WORK_DIR = new File(System.getProperty("user.home"), "tamil-platform");
+                   if (!WORK_DIR.exists()) {
+                       WORK_DIR.mkdirs();
+                   }
+               } catch (AccessControlException ae) {
+                   WORK_DIR = new File("/tmp");
+               }
 
-                WORK_DIR = new File(System.getProperty("user.home"), "tamil-platform");
-                if (!WORK_DIR.exists()) {
-                    WORK_DIR.mkdirs();
-                }
                 System.out.println("Work Dir:" + WORK_DIR.getAbsolutePath());
 
             }

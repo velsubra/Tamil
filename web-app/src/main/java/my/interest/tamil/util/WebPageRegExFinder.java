@@ -1,5 +1,6 @@
 package my.interest.tamil.util;
 
+import common.lang.impl.AbstractCharacter;
 import my.interest.lang.tamil.impl.FeatureSet;
 import my.interest.lang.util.NameValuePair;
 import org.json.JSONObject;
@@ -26,7 +27,7 @@ public class WebPageRegExFinder extends AbstractJSoupJob {
 
     FeaturedPatternsList patternsList;
 
-    int matchCount = 0;
+    protected  int matchCount = 0;
     String pattern = null;
     IPropertyFinder aliasFinder = null;
     String baseFeatures = null;
@@ -61,15 +62,18 @@ public class WebPageRegExFinder extends AbstractJSoupJob {
 
         int index = 0;
         while (matcher.find()) {
+
             buffer.append(text.substring(index, matcher.start()));
 
             index = matcher.end();
             String tamil = text.substring(matcher.start(), index);
             matchCount++;
 
-
+            if (tamil.equals(String.valueOf(AbstractCharacter.ZWNBSP))) {
+                tamil ="zero-width-bom";
+            }
             buffer.append("<span id='" + tamil_result_id_prefix  + matchCount + "'  class='error'>" + tamil + "</span>");
-            buffer.append("<sup>" + matchCount + "</sup>");
+            buffer.append("<sup  class='error'>" + matchCount + "</sup>");
 
         }
         String last = text.substring(index);

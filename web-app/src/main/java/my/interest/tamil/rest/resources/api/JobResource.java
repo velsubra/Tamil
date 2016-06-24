@@ -26,7 +26,7 @@ public class JobResource extends BaseResource {
     @GET
     @Path("/list/")
     @Produces("application/json; charset=UTF-8")
-    public String listJobs(@QueryParam("includeUnits") boolean includeUnits, @DefaultValue("20") @QueryParam("limit") int limit) throws Exception {
+    public String listJobs(@QueryParam("includeUnits") boolean includeUnits, @DefaultValue("30") @QueryParam("limit") int limit) throws Exception {
         return listJobs(null, includeUnits, limit);
     }
 
@@ -34,7 +34,7 @@ public class JobResource extends BaseResource {
     @GET
     @Path("/list/category/{categoryName:.*}")
     @Produces("application/json; charset=UTF-8")
-    public String listJobs(@PathParam("categoryName") String categoryName, @QueryParam("includeUnits") boolean includeUnits, @DefaultValue("20") @QueryParam("limit") int limit) throws Exception {
+    public String listJobs(@PathParam("categoryName") String categoryName, @QueryParam("includeUnits") boolean includeUnits, @DefaultValue("30") @QueryParam("limit") int limit) throws Exception {
         List<Long> list = TamilFactory.getJobManager(categoryName).listJobIds(limit);
         JSONObject obj = new JSONObject();
         try {

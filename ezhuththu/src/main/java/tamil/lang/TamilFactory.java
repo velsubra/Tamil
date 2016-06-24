@@ -17,6 +17,7 @@ import tamil.lang.api.join.WordsJoiner;
 import tamil.lang.api.number.NumberReader;
 import tamil.lang.api.parser.CompoundWordParser;
 import tamil.lang.api.persist.manager.PersistenceManager;
+import tamil.lang.api.regex.RXFeature;
 import tamil.lang.api.regex.TamilRXCompiler;
 import tamil.lang.api.trans.Transliterator;
 import tamil.lang.exception.service.ServiceException;
@@ -24,6 +25,7 @@ import tamil.lang.known.IKnownWord;
 import tamil.lang.spi.CompoundWordParserProvider;
 import tamil.lang.spi.PersistenceManagerProvider;
 import tamil.lang.spi.TamilDictionaryProvider;
+import tamil.util.IPropertyFinder;
 import tamil.util.regex.SimpleMatcher;
 
 import java.util.Iterator;
@@ -179,6 +181,9 @@ public final class TamilFactory {
      * any set that is calculated by {@link TamilCharacterSetCalculator#find(String)} or
      * </li> <li>
      *  expressions defined by {@link tamil.lang.api.regex.TamilRXCompiler}
+     * </li>
+     * <li>
+     *  any custom expression that could be defined by the users using previously defined expression. Please see {@link TamilRXCompiler#compile(String, IPropertyFinder, RXFeature...)}
      * </li>
      * </ol>
      * The expression ${letter_set} means any single character from the character set "letter_set" that could be basic or calculated. For example ${குறில்}

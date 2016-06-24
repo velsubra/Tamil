@@ -37,7 +37,7 @@ public final class TamilPattern {
 
     private TamilPattern(String given, StringUtils.IndexContext context, int flags) {
         try {
-        //  System.out.println("Compiling :" + context.finalString);
+         // System.out.println("Compiling :" + context.finalString);
           innerPattern = Pattern.compile(context.finalString, flags | Pattern.UNICODE_CHARACTER_CLASS);
           this.tamilPattern = given;
 
@@ -84,7 +84,7 @@ public final class TamilPattern {
         if (context.finalString.length() > 10*1024) {
             System.out.println("----"+pattern+"-----> Compiled Pattern size in KB:" + context.finalString.length() /1000);
         } else {
-           // System.out.println("pattern:" + pattern + " =>Real RX:" + context.finalString);
+         //  System.out.println("pattern:" + pattern + " =>Real RX:" + context.finalString+":");
         }
         return new TamilPattern(pattern, context, flags);
 

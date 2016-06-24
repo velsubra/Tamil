@@ -2,6 +2,8 @@ package my.interest.lang.tamil.impl.rx;
 
 import common.lang.impl.AbstractCharacter;
 import my.interest.lang.tamil.EzhuththuUtils;
+import my.interest.lang.tamil.StringUtils;
+import my.interest.lang.tamil.TamilUtils;
 import my.interest.lang.tamil.impl.FeatureSet;
 import my.interest.lang.tamil.impl.rx.asai1.*;
 import my.interest.lang.tamil.impl.rx.asai2.Karuvilham;
@@ -10,6 +12,9 @@ import my.interest.lang.tamil.impl.rx.asai2.PulhimaRx;
 import my.interest.lang.tamil.impl.rx.asai2.TheamaRx;
 import my.interest.lang.tamil.impl.rx.asai3.*;
 import my.interest.lang.tamil.impl.rx.asai4.*;
+import my.interest.lang.tamil.impl.rx.block.UnicodeBlockDescription;
+import my.interest.lang.tamil.impl.rx.block.UnicodeBlockExcluder;
+import my.interest.lang.tamil.impl.rx.block.UnicodeBlockOrGenerator;
 import my.interest.lang.tamil.impl.rx.cir.*;
 import my.interest.lang.tamil.impl.rx.maaththirai.*;
 import my.interest.lang.tamil.impl.rx.paa.KurralRx;
@@ -36,10 +41,7 @@ import tamil.util.regex.TamilPattern;
 import tamil.util.regex.TamilPatternSyntaxException;
 import tamil.yaappu.asai.AbstractAsai;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * <p>
@@ -67,6 +69,8 @@ public class RxRegistry implements IPropertyFinder {
         map.put("!எழுத்துவடிவம்", new NonTamilSymbolRx("!எழுத்துவடிவம்"));
         map.put("எழுத்து", new AnyOneInTamilLetterSetRx("எழுத்து", "தமிழெழுத்தைக்குறிக்கிறது. எ.கா: ப ", EzhuththuUtils.filterAaytham(), EzhuththuUtils.filterUyir(), EzhuththuUtils.filterMei(), EzhuththuUtils.filterUyirMei()));
         map.put("!எழுத்து", new NonTamilSymbolRx("!எழுத்து"));
+        map.put("!அஆ", new NonTamilNonAsciiSymbolRx("!அஆ"));
+        map.put("அஆ", new TamilAndAsciiSymbolRx("அஆ"));
 
         Set<EzhuththuSetDescription> sets = TamilFactory.getTamilCharacterSetCalculator().getEzhuththuSetDescriptions();
         for (EzhuththuSetDescription set : sets) {
@@ -175,11 +179,13 @@ public class RxRegistry implements IPropertyFinder {
 
 
     }
+
     private String getWordBoundary(FeatureSet set) {
         return new WordBoundaryRx().generate(set);
     }
 
-    public String findProperty(String p1) {
+    public String findProperty(String actual) {
+        String p1 = actual;
         String translit = null;
         PatternGenerator gen = null;
         if (parent != null && featureSet.isFeatureEnabled(RXOverrideSysDefnFeature.class)) {
@@ -192,32 +198,49 @@ public class RxRegistry implements IPropertyFinder {
             if (alias != null) {
                 return alias;
             }
-
         }
 
-        gen = map.get(p1);
-
+        //Try for unicode block
+        gen = UnicodeBlockDescription.blocks.get(p1);
         if (gen == null) {
-            if (translit == null) {
-                translit = TamilFactory.getTransliterator(null).transliterate(p1).toString();
+            if (gen == null) {
+                if (p1.startsWith("!")) {
+                    gen = UnicodeBlockDescription.blocks.get(p1.substring(1));
+                    if (gen != null) {
+                        gen = new UnicodeBlockExcluder((UnicodeBlockDescription) gen);
+                    }
+                }
             }
-            p1 = translit;
-            gen = map.get(p1);
         }
+
+        // Try for Rx descriptions in this registry.
+        if (gen == null) {
+            gen = map.get(p1);
+
+            if (gen == null) {
+                if (translit == null) {
+                    translit = TamilFactory.getTransliterator(null).transliterate(p1).toString();
+                }
+                p1 = translit;
+                gen = map.get(p1);
+            }
+        }
+
+
         if (gen == null) {
 
             if (p1.startsWith("(")) {
                 String inner = p1.substring(1, p1.length());
                 if (inner.endsWith(")")) {
                     inner = inner.substring(0, inner.length() - 1);
-                    return  getWordBoundary(featureSet) + "${" + inner + "}" + getWordBoundary(featureSet);
+                    return getWordBoundary(featureSet) + "${" + inner + "}" + getWordBoundary(featureSet);
 
                 } else {
                     return getWordBoundary(featureSet) + "${" + inner + "}";
                 }
             } else if (p1.endsWith(")")) {
                 String inner = p1.substring(0, p1.length() - 1);
-                return "${" + inner + "}" + getWordBoundary(featureSet) ;
+                return "${" + inner + "}" + getWordBoundary(featureSet);
 
             }
             if (p1.startsWith("[") && p1.endsWith("]")) {
@@ -280,7 +303,7 @@ public class RxRegistry implements IPropertyFinder {
                     String javaex = TamilPattern.preProcess("(?<=(${" + first + "}${idaivelhi}))", this, fixedLength.getFeatures(RXFeature.class).toArray(new RXFeature[0]));
 
                     buffer.append(javaex);
-                   // buffer.append("(?:a)");
+                    // buffer.append("(?:a)");
 
                     buffer.append("(?:${" + second + "})");
                 }
@@ -361,6 +384,25 @@ public class RxRegistry implements IPropertyFinder {
 
             }
 
+            if (actual.startsWith("ஒருங்குறித்தொகுதிக்கு உள்ளே[") && actual.endsWith("]")) {
+                String inner = actual.substring(28, actual.length() - 1);
+                inner = TamilWord.from(inner, true).translitToEnglish().toUpperCase();
+                List<String> blocks = TamilUtils.parseString(inner.trim());
+                if (blocks.isEmpty()) {
+                    throw new TamilPatternSyntaxException("Empty block names", "ஒருங்குறித்தொகுதிக்கு உள்ளே[]", 0);
+                }
+                return new UnicodeBlockOrGenerator(blocks, false).generate(featureSet);
+            }
+            if (actual.startsWith("ஒருங்குறித்தொகுதிக்கு வெளியே[") && actual.endsWith("]")) {
+
+                String inner = actual.substring(29, actual.length() - 1);
+                List<String> blocks = TamilUtils.parseString(inner.trim());
+                if (blocks.isEmpty()) {
+                    throw new TamilPatternSyntaxException("Empty block names", "ஒருங்குறித்தொகுதிக்கு வெளியே[]", 0);
+                }
+                return new UnicodeBlockOrGenerator(blocks, true).generate(featureSet);
+            }
+
             if (p1.startsWith("தொடர்தொடக்கச்சோதனை[") && p1.endsWith("]")) {
                 String inner = p1.substring(19, p1.length() - 1);
                 int startIndex = inner.indexOf(" தொடங்குவதிலிருந்து ");
@@ -369,11 +411,11 @@ public class RxRegistry implements IPropertyFinder {
                 if (startIndex < 1) {
                     if (nonStartIndex < 1) {
                         return "${" + inner + "}";
-                    }  else {
+                    } else {
                         start = false;
                     }
-                }  else {
-                    if (nonStartIndex < 1)  {
+                } else {
+                    if (nonStartIndex < 1) {
                         start = true;
                     } else {
                         start = startIndex < nonStartIndex;
@@ -398,12 +440,10 @@ public class RxRegistry implements IPropertyFinder {
                     buffer.append("(?!(?:${" + first + "}))");
                     buffer.append("(${தொடர்தொடக்கச்சோதனை[" + second + "]})");
                 }
-              //  System.out.println(buffer.toString());
+                //  System.out.println(buffer.toString());
                 return buffer.toString();
 
             }
-
-
 
 
             if (p1.startsWith("மெய்வகை[") && p1.endsWith("]")) {
@@ -466,7 +506,7 @@ public class RxRegistry implements IPropertyFinder {
 
     }
 
-  //  private Map<String, PatternGenerator> generatedPatterns = new HashMap<String, PatternGenerator>();
+    //  private Map<String, PatternGenerator> generatedPatterns = new HashMap<String, PatternGenerator>();
 
 
 }

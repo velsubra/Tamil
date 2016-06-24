@@ -27,7 +27,7 @@ import java.util.List;
  */
 public class JobManagerImpl implements JobManager {
 
-    static ObjectPersistenceInterface persist = new FileBasedPersistenceImpl("xml");
+    static ObjectPersistenceInterface persist = null;
     static ObjectSerializerManager manager = new ObjectSerializerManagerImpl();
     private static final String JOB_PATH_DEF = "jobs/id";
     String categoryName = null;
@@ -35,6 +35,9 @@ public class JobManagerImpl implements JobManager {
     public JobManagerImpl(String category) {
         if (category == null) {
             category = JOB_PATH_DEF;
+        }
+        if (persist == null) {
+            persist = new FileBasedPersistenceImpl("xml");
         }
         this.categoryName = category;
     }
