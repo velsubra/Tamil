@@ -100,7 +100,7 @@ public class NumberTest {
         NumberReader reader = TamilFactory.getNumberReader();
         Exception failed = null;
         List<Long> faileds = new ArrayList<Long>();
-        for (int j = 0 ; j < 10; j++) {
+        for (int j = 0 ; j < 100; j++) {
             Random random = new Random();
             long randomValue =
                     (long)(random.nextDouble()*(Long.MAX_VALUE - 0));

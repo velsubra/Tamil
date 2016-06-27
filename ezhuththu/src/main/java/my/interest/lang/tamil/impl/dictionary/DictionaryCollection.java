@@ -188,6 +188,19 @@ public class DictionaryCollection implements TamilDictionary {
         return list;
     }
 
+    public List<IKnownWord> suggest(TamilWord word, int maxCount, Class<? extends IKnownWord>... includeTypes) {
+        List<IKnownWord> list = new ArrayList<IKnownWord>();
+        for (TamilDictionary d : this.list) {
+            if (d == this) continue;
+            List<IKnownWord> dlist = d.suggest(word, maxCount - list.size(), includeTypes);
+            if (dlist != null) {
+                list.addAll(dlist);
+            }
+
+        }
+        return list;
+    }
+
     /**
      * Adds a new word to the dictionary.
      *

@@ -124,7 +124,7 @@ public abstract class DefaultPlatformDictionaryBase implements TamilDictionary {
 
     protected final SortedSet<IKnownWord> set = Collections.synchronizedSortedSet(new TreeSet<IKnownWord>(DIRECT));
     protected final SortedSet<IKnownWord> reversedset = Collections.synchronizedSortedSet(new TreeSet<IKnownWord>(REVERSED));
-    protected static final Map<Integer, List<IKnownWord>> suggestions = new HashMap<Integer, List<IKnownWord>>();
+    protected  final Map<Integer, List<IKnownWord>> suggestions = new HashMap<Integer, List<IKnownWord>>();
     protected static final Map<String, List<IKnownWord>> english_mapping = Collections.synchronizedMap(new HashMap<String, List<IKnownWord>>());
 
     private static CompoundWordParser parser = null;
@@ -392,6 +392,15 @@ public abstract class DefaultPlatformDictionaryBase implements TamilDictionary {
         return onlySuggestMatchingDerivedWords(word, maxCount, includeTypes);
     }
 
+
+    public List<IKnownWord> suggest(TamilWord word, int maxCount, Class<? extends IKnownWord> ... includeTypes) {
+        if (includeTypes == null) {
+            return suggest(word,maxCount, (List)null);
+        } else {
+            return suggest(word,maxCount,  Arrays.asList(includeTypes));
+        }
+    }
+
     /**
      * Adds a new word to the dictionary.
      *
@@ -518,18 +527,30 @@ public abstract class DefaultPlatformDictionaryBase implements TamilDictionary {
     }
 
 
-    protected static List<IKnownWord> onlySuggestMatchingDerivedWords(TamilWord search, int max, List<Class<? extends IKnownWord>> includeTypes) {
+    private  List<IKnownWord> onlySuggestMatchingDerivedWords( TamilWord search, int max, List<Class<? extends IKnownWord>> includeTypes) {
 
         List<IKnownWord> list = suggestions.get(search.suggestionHashCode());
+
         if (list == null) {
             list = new ArrayList<IKnownWord>();
         }
-
-        while (list.size() > max) {
-            list.remove(list.size() - 1);
+        List<IKnownWord> ret = null;
+        if (includeTypes == null || includeTypes.isEmpty()) {
+            ret = list;
+        } else {
+            ret = new ArrayList<IKnownWord>();
+            for (IKnownWord w : list) {
+                if (includeTypes.contains(w.getClass())) {
+                    ret.add(w);
+                }
+            }
         }
 
-        return list;
+        while (ret.size() > max) {
+            ret.remove(ret.size() - 1);
+        }
+
+        return ret;
     }
 
 }

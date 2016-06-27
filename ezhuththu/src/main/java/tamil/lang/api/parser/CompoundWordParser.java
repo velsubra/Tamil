@@ -1,6 +1,7 @@
 package tamil.lang.api.parser;
 
 import tamil.lang.TamilWord;
+import tamil.lang.api.dictionary.TamilDictionary;
 
 import java.util.List;
 
@@ -32,6 +33,10 @@ public interface CompoundWordParser {
      * @return the returns set of results.
      */
     public ParserResultCollection parse(TamilWord singleWord, int maxReturn, ParseFeature ... features);
+
+
+
+
 
 
 

@@ -18,6 +18,7 @@ import tamil.lang.api.parser.ParserResultCollection;
 import tamil.lang.known.IKnownWord;
 import tamil.lang.known.non.derived.Theriyaachchol;
 
+import java.math.BigInteger;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -234,27 +235,34 @@ public final class DefaultNumberReader implements NumberReader {
 
     }
 
-    public long readAsNumberInternal(List<KnownNumberComponent> undercrore, int fromIndex) throws NotANumberException {
-        long ret = 0;
+    public BigInteger readAsNumberInternal(List<KnownNumberComponent> undercrore, int fromIndex) throws NotANumberException {
+        BigInteger ret = new BigInteger("0");
         KnownNumberComponent last = null;
         for (int i = fromIndex; i < undercrore.size(); i++) {
             KnownNumberComponent know = undercrore.get(i);
             if (last == null) {
-                ret += know.getPosition() * know.getUnit();
+                ret = ret.add( know.getPosition().multiply( new BigInteger(String.valueOf( know.getUnit()))));
             } else {
-                if (last.getPosition() == know.getPosition()) {
+                if (last.getPower() ==  know.getPower()){
                     throw new NotANumberException(last.getWord() + " and " + know.getWord() + " can not be together");
                 }
-                if (last.getPosition() < know.getPosition()) {
+                if (last.getPower()< know.getPower()) {
 
-                    ret = ret * know.getPosition();
-                    ret += readAsNumberInternal(undercrore, i + 1);
+                    ret = ret.multiply(new BigInteger(String.valueOf( know.getPosition())));
+                    BigInteger folded = readAsNumberInternal(undercrore, i + 1);
+                    if (ret.compareTo(folded) < 0) {
+                        //ஐயாயிரம்    இலட்சத்தொன்று    - 105001
+
+                        throw new NotANumberException("Not a right combination " + ret.toString() + " and " + folded.toString() );
+                    } else {
+                        ret = ret.add(folded);
+                    }
                     break;
                 } else {
                     if (know.getUnit() == 0) {
-                        ret = 0;
+                        ret = new BigInteger ("0");
                     } else {
-                        ret += know.getPosition() * know.getUnit();
+                        ret = ret.add( know.getPosition().multiply(new BigInteger(String.valueOf( know.getUnit()))));
                     }
                 }
             }
@@ -299,20 +307,22 @@ public final class DefaultNumberReader implements NumberReader {
                     TamilWord tamilWord = TamilWord.from(s, true);
                     ParserResultCollection singleresult = parser.parse(tamilWord, 1, FeatureConstants.PARSE_FOR_NUMBER_VAL_172);
                     if (singleresult.isEmpty()) {
-                        singleresult = parser.parse(tamilWord, 1, FeatureConstants.PARSE_FOR_NUMBER_VAL_172, FeatureConstants.PARSE_WITH_UNKNOWN_VAL_170);
+                        singleresult = parser.parse(tamilWord, 2, FeatureConstants.PARSE_FOR_NUMBER_VAL_172, FeatureConstants.PARSE_WITH_UNKNOWN_VAL_170);
+                        List<IKnownWord> suggestion =   FeatureConstants.PARSE_FOR_NUMBER_VAL_172.getDictionary().search(tamilWord,2,null,FeatureConstants.DICTIONARY_AUTO_SUGGEST_VAL_165);
                         if (singleresult.isEmpty()) {
-                            throw new NotANumberException("Could not parse part:" + s);
+
+                            throw new NotANumberException("Could not parse part:" + s + ". Suggestion:"+ suggestion);
                         } else {
                             ParserResult result = singleresult.getList().get(0);
                             if (result.isParsed()) {
                                 Theriyaachchol unknown = result.findUnknownPart();
                                 if (unknown != null) {
-                                    throw new NotANumberException("Could not parse unknown part:" + unknown.getWord().toString());
+                                    throw new NotANumberException("Could not parse unknown part:" + unknown.getWord().toString()+ ". Suggestion:"+ suggestion);
                                 } else {
-                                    throw new NotANumberException("Could not parse part:" + s);
+                                    throw new NotANumberException("Could not parse part:" + s+ ". Suggestion:"+ suggestion);
                                 }
                             } else {
-                                throw new NotANumberException("Could not parse part:" + s);
+                                throw new NotANumberException("Could not parse part:" + s+ ". Suggestion:"+ suggestion);
                             }
                         }
 
@@ -349,6 +359,7 @@ public final class DefaultNumberReader implements NumberReader {
             if (all.length == 0) {
                 return "0";
             } else {
+                KnownNumberComponent maxCompoent = null;
                 List<KnownNumberComponent> series = new ArrayList<KnownNumberComponent>();
                 CompoundWordParser parser = new SaxParser();// TamilFactory.getCompoundWordParser();
                 for (String s : all) {
@@ -357,6 +368,7 @@ public final class DefaultNumberReader implements NumberReader {
                     ParserResultCollection singleresult = parser.parse(tamilWord, 1, FeatureConstants.PARSE_FOR_NUMBER_VAL_172);
                     if (singleresult.isEmpty()) {
                         singleresult = parser.parse(tamilWord, 1, FeatureConstants.PARSE_FOR_NUMBER_VAL_172, FeatureConstants.PARSE_WITH_UNKNOWN_VAL_170);
+                        List<IKnownWord> suggestion =    FeatureConstants.PARSE_FOR_NUMBER_VAL_172.getDictionary().search(tamilWord,2,null,FeatureConstants.DICTIONARY_AUTO_SUGGEST_VAL_165);
                         if (singleresult.isEmpty()) {
                             throw new NotANumberException("Could not parse part:" + s);
                         } else {
@@ -364,12 +376,12 @@ public final class DefaultNumberReader implements NumberReader {
                             if (result.isParsed()) {
                                 Theriyaachchol unknown = result.findUnknownPart();
                                 if (unknown != null) {
-                                    throw new NotANumberException("Could not parse unknown part:" + unknown.getWord().toString());
+                                    throw new NotANumberException("Could not parse unknown part:" + unknown.getWord().toString() +". Suggestions:" + suggestion);
                                 } else {
-                                    throw new NotANumberException("Could not parse part:" + s);
+                                    throw new NotANumberException("Could not parse part:" + s+". Suggestions:" + suggestion);
                                 }
                             } else {
-                                throw new NotANumberException("Could not parse part:" + s);
+                                throw new NotANumberException("Could not parse part:" + s+". Suggestions:" + suggestion);
                             }
                         }
                     }
@@ -378,16 +390,25 @@ public final class DefaultNumberReader implements NumberReader {
                            continue;
                            // throw new NotANumberException("Could not recognize part:" + s + ". Resolved to a wrong type:" + d.getClass().getName() + ":" + d.getWord());
                         }
-                        series.add((KnownNumberComponent) d);
+                        KnownNumberComponent known = (KnownNumberComponent) d;
+                        if (maxCompoent == null){
+                            maxCompoent = known;
+                        } else {
+                            if (known.getPosition().compareTo(maxCompoent.getPosition()) > 0) {
+                                maxCompoent = known;
+                            }
+                        }
+                        series.add(known);
                     }
 
                 }
                 // Got a full series.
                 List<List<KnownNumberComponent>> coresseries = new ArrayList<List<KnownNumberComponent>>();
+
                 List<KnownNumberComponent> undercrore = new ArrayList<KnownNumberComponent>();
                 boolean firstcrore = true;
                 for (KnownNumberComponent d : series) {
-                    if (d.isCrore()) {
+                    if (d.getPower() == maxCompoent.getPower() && d.getUnit() == 1) {
                         if (undercrore.isEmpty() && firstcrore) {
                             undercrore.add(NumberDictionary.ORU);
 
@@ -401,19 +422,20 @@ public final class DefaultNumberReader implements NumberReader {
                 }
                 coresseries.add(undercrore);
 
-                // Folded under crores
+                // Folded under biggest value
                 boolean first = true;
                 StringBuffer buffer = new StringBuffer();
                 for (List<KnownNumberComponent> lessthancore : coresseries) {
-                    long val = readAsNumberInternal(lessthancore, 0);
+                    if (lessthancore.isEmpty() && maxCompoent.getPower() == 0) continue;
+                    BigInteger val = readAsNumberInternal(lessthancore, 0);
                     if (first) {
                         buffer.append(String.valueOf(val));
                     } else {
                         String _7digit = String.valueOf(val);
-                        if (_7digit.length() > 7) {
-                            throw new NotANumberException("Encountering over-flow!:" + _7digit + ". Please make sure you break at hundreds, thousands, lakhs and crores. The usage such as நூறாயிரம் should be avoided. Use இலட்சம்  instead.");
+                        if (_7digit.length() > maxCompoent.getPower()) {
+                            throw new NotANumberException("Encountering over-flow!:" + _7digit + ". Please make sure you break at hundreds, thousands, lakhs and crores. The usage such as நூறாயிரம் should be avoided. Use இலட்சம்  instead. Given:" + numbertext);
                         }
-                        while (_7digit.length() < 7) {
+                        while (_7digit.length() < maxCompoent.getPower()) {
                             _7digit = "0" + _7digit;
                         }
                         buffer.append(_7digit);
