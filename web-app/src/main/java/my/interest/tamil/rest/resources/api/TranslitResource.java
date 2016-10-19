@@ -4,7 +4,6 @@ import my.interest.lang.tamil.impl.FeatureSet;
 import org.json.JSONObject;
 import tamil.lang.TamilFactory;
 import tamil.lang.TamilWord;
-import tamil.lang.api.number.ReaderFeature;
 import tamil.lang.api.trans.TranslitFeature;
 import tamil.lang.api.trans.Transliterator;
 

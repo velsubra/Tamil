@@ -227,7 +227,7 @@ public final class TamilWord extends AbstractWord<AbstractCharacter> implements 
                 return false;
             }
         }
-        return true;
+        return size()> 0;
     }
 
     /**
@@ -799,7 +799,7 @@ public final class TamilWord extends AbstractWord<AbstractCharacter> implements 
             index ++;
         }
 
-        throw new TamilPlatformException("Illegal index:" + codepointIndex +". Max index is " + (count - 1));
+        throw new TamilPlatformException("Illegal index:" + codepointIndex +". Max index is " + (count - 1) +" Tamil text:" + toString());
     }
 
     /**

@@ -1,5 +1,6 @@
 package tamil.util.regex.impl;
 
+import my.interest.lang.tamil.TamilUtils;
 import org.json.JSONObject;
 import tamil.lang.api.job.JobContext;
 import tamil.util.regex.SimpleMatcher;
@@ -30,7 +31,7 @@ public class SingleCompiledPatternFinderJob extends AbstractSimpleMatcherBasedJo
 
     @Override
     public SimpleMatcher createMatcher() {
-        return new SimpleMatcher0(pattern.matcher(source),this.pattern.getTamilPattern(), this.source);
+        return new SimpleMatcher0(pattern.matcher(source),this.pattern, this.source);
     }
 
     protected void config(JobContext<JSONObject> context) {
@@ -40,10 +41,10 @@ public class SingleCompiledPatternFinderJob extends AbstractSimpleMatcherBasedJo
 
     private static class SimpleMatcher0 implements SimpleMatcher {
         private Matcher matcher = null;
-        private String pattern = null;
+        private TamilPattern pattern = null;
         private String source = null;
 
-        SimpleMatcher0(Matcher matcher,String pattern, String source) {
+        SimpleMatcher0(Matcher matcher,TamilPattern pattern, String source) {
             this.matcher = matcher;
             this.pattern = pattern;
             this.source = source;
@@ -62,7 +63,7 @@ public class SingleCompiledPatternFinderJob extends AbstractSimpleMatcherBasedJo
         }
 
         public String getPattern() {
-            return this.pattern;
+            return this.pattern.getTamilPattern();
         }
 
         public boolean isTransposed() {
@@ -72,6 +73,26 @@ public class SingleCompiledPatternFinderJob extends AbstractSimpleMatcherBasedJo
 
         public int getSourceLength() {
             return source.length();
+        }
+
+        public String group() {
+            return matcher.group();
+        }
+
+        public String group(String name) {
+            return matcher.group(name);
+        }
+
+        public int groupCount() {
+            return matcher.groupCount();
+        }
+
+        public String group(int group) {
+            return matcher.group(group);
+        }
+
+        public MatchingModel buildMatchingModel() {
+            return TamilUtils.buildMatchingModel(pattern,matcher);
         }
     }
 

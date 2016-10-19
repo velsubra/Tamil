@@ -6,7 +6,7 @@ import org.json.JSONObject;
 import tamil.lang.TamilFactory;
 import tamil.lang.TamilWord;
 import tamil.lang.api.number.NumberReader;
-import tamil.lang.api.number.ReaderFeature;
+import tamil.lang.api.number.NumberReaderFeature;
 import tamil.lang.api.trans.TranslitFeature;
 import tamil.lang.api.trans.Transliterator;
 
@@ -105,7 +105,7 @@ public class AppletTamilFactory extends JApplet {
 
         try {
 
-            TamilWord w = reader.readNumber(number, FeatureSet.findFeatures(ReaderFeature.class, features).toArray(new ReaderFeature[]{}));
+            TamilWord w = reader.readNumber(number, FeatureSet.findFeatures(NumberReaderFeature.class, features).toArray(new NumberReaderFeature[]{}));
             // System.out.println("Number:" + w.toString());
             // System.out.println("file.encoding:" +System.getProperty("file.encoding"));
             JSONObject obj = new JSONObject();
@@ -132,7 +132,7 @@ public class AppletTamilFactory extends JApplet {
 
         try {
 
-            String w = reader.readAsNumber(number, FeatureSet.findFeatures(ReaderFeature.class, features).toArray(new ReaderFeature[]{}));
+            String w = reader.readAsNumber(number, FeatureSet.findFeatures(NumberReaderFeature.class, features).toArray(new NumberReaderFeature[]{}));
             // System.out.println("Number:" + w.toString());
             // System.out.println("file.encoding:" +System.getProperty("file.encoding"));
             JSONObject obj = new JSONObject();

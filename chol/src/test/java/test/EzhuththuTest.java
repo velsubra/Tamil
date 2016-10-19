@@ -1,7 +1,10 @@
 package test;
 
+import my.interest.lang.tamil.TamilUtils;
 import my.interest.lang.tamil.impl.FeatureSet;
+import my.interest.lang.tamil.impl.rx.RxRegistry;
 import tamil.lang.TamilWord;
+import tamil.lang.api.feature.FeatureConstants;
 import tamil.lang.api.regex.RXIncludeCanonicalEquivalenceFeature;
 import tamil.lang.api.regex.RXKuttuAcrossCirFeature;
 import tamil.lang.api.regex.RXKuttuFeature;
@@ -17,6 +20,7 @@ import tamil.lang.api.ezhuththu.EzhuththuSetDescription;
 import tamil.lang.api.ezhuththu.TamilCharacterSetCalculator;
 import tamil.lang.api.regex.RxDescription;
 import tamil.lang.exception.TamilPlatformException;
+import tamil.util.regex.SimpleMatcher;
 import tamil.util.regex.TamilMatcher;
 import tamil.util.regex.TamilPattern;
 import tamil.yaappu.asai.AbstractAsai;
@@ -32,12 +36,12 @@ import java.util.regex.Matcher;
  * @author velsubra
  */
 public class EzhuththuTest implements IPropertyFinder {
-            static  {
-                TamilFactory.init();
-            }
+    static {
+        TamilFactory.init();
+    }
 
     public static void main(String[] s) {
-      Character.UnicodeBlock bloc = Character.UnicodeBlock.of('–');
+        Character.UnicodeBlock bloc = Character.UnicodeBlock.of('–');
         System.out.println(bloc.toString());
     }
 
@@ -51,16 +55,87 @@ public class EzhuththuTest implements IPropertyFinder {
 //        }
 //    }
 
+    @Test
+    public void testWithGroup() throws Exception {
+        String beforeEncoding = "kurralh";
+        String afterEncoding = TamilUtils.encodeToBeAGroupName(beforeEncoding);
+        Assert.assertEquals(beforeEncoding, afterEncoding);
+        Assert.assertEquals(beforeEncoding, TamilUtils.decodeToBeAGroupName(afterEncoding));
+
+        beforeEncoding = "குறள்";
+        afterEncoding = TamilUtils.encodeToBeAGroupName(beforeEncoding);
+        Assert.assertEquals("z0b95z0bc1z0bb1z0bb3z0bcd", afterEncoding);
+        Assert.assertEquals(beforeEncoding, TamilUtils.decodeToBeAGroupName(afterEncoding));
+
+        beforeEncoding = "this is a test";
+        afterEncoding = TamilUtils.encodeToBeAGroupName(beforeEncoding);
+        Assert.assertEquals("thisz0020isz0020az0020test", afterEncoding);
+        Assert.assertEquals(beforeEncoding, TamilUtils.decodeToBeAGroupName(afterEncoding));
+
+        beforeEncoding = "z";
+        afterEncoding = TamilUtils.encodeToBeAGroupName(beforeEncoding);
+        Assert.assertEquals("zz", afterEncoding);
+        Assert.assertEquals(beforeEncoding, TamilUtils.decodeToBeAGroupName(afterEncoding));
+
+
+        TamilPattern pattern = TamilFactory.getRegEXCompiler().compile("${(kurralh)}", null, FeatureConstants.RX_INCLUDE_GROUP_NAME_VAL_187);
+        String kurralh = "---இருள்சேர் இருவினையும் சேரா இறைவன் பொருள்சேர் புகழ்புரிந்தார் மாட்டு ";
+        System.out.println(pattern.getInnerPattern().pattern());
+
+
+
+        TamilMatcher matcher = pattern.tamilMatcher(kurralh);
+
+
+        if (matcher.find()) {
+            SimpleMatcher.MatchingModel model =  matcher.buildMatchingModel();
+            System.out.println(model.asGoJsJson().toString(3));
+            System.out.println("Model:"+ model.parts.size());
+        }
+
+
+    }
+
+    @Test
+    public void buildMatcherModelForKurralhVenhbaa() throws Exception {
+        TamilPattern pattern = TamilFactory.getRegEXCompiler().compile("${(kurralh)}", null, FeatureConstants.RX_INCLUDE_GROUP_NAME_VAL_187);
+       // String kurralh = "யாருரைத்தார் என்பதினும் என்னுரைத்தார் என்பதன்றோ யாருந்தே றல்வேண்டுங் காண்";
+        String kurralh = "எப்பொருள் யார்யார்வாய்க் கேட்பினும் அப்பொருள் மெய்ப்பொருள் காண்ப தறிவு";
+
+
+        TamilMatcher matcher = pattern.tamilMatcher(kurralh);
+
+
+        if (matcher.find()) {
+            SimpleMatcher.MatchingModel model =  matcher.buildMatchingModel();
+            System.out.println(model.asGoJsJson().toString(3));
+            System.out.println("Model:"+ model.parts.size());
+        }
+    }
+
+
+    @Test
+    public void testUnicodeCompile() {
+        Set<? extends RxDescription> set = TamilFactory.getRegEXCompiler().getUnicodeBMPBlocksRegEXDescriptions();
+        for (RxDescription rx : set) {
+            System.out.println("Compiling:" + rx.getName());
+            TamilFactory.getRegEXCompiler().compile("${" + rx.getName() + "}");
+            TamilFactory.getRegEXCompiler().compile("${!" + rx.getName() + "}");
+            TamilFactory.getRegEXCompiler().compile("${ஒருங்குறித்தொகுதிக்கு உள்ளே[TAMIL,BASIC_LATIN,GENERAL_PUNCTUATION,ARROWS," + rx.getName() + "]}");
+            TamilFactory.getRegEXCompiler().compile("${ஒருங்குறித்தொகுதிக்கு வெளியே[TAMIL,BASIC_LATIN,GENERAL_PUNCTUATION,ARROWS," + rx.getName() + "]}");
+
+        }
+    }
 
     @Test
     public void test_LetterSets() {
-        TamilCharacterSetCalculator calc =  TamilFactory.getTamilCharacterSetCalculator();
+        TamilCharacterSetCalculator calc = TamilFactory.getTamilCharacterSetCalculator();
         Set<TamilCharacter> set = calc.find("மொழிமுதல்மெலி");
         System.out.println(set.size());
         System.out.println(set);
 
 
-         set = calc.find("மொழிமுதலிடை");
+        set = calc.find("மொழிமுதலிடை");
         System.out.println(set.size());
         System.out.println(set);
 
@@ -69,7 +144,7 @@ public class EzhuththuTest implements IPropertyFinder {
         Collections.sort(list);
         StringBuffer b = new StringBuffer();
         for (TamilCharacter c : list) {
-           b.append("${[" + c.toString() +"]}\n");
+            b.append("${[" + c.toString() + "]}\n");
         }
         System.out.println(b);
 
@@ -80,13 +155,13 @@ public class EzhuththuTest implements IPropertyFinder {
     public void test_Asai() {
         TamilWord w = TamilWord.from("சேர்ந்தார்க்கு");
         Iterator<AbstractAsai> it = w.asaiIterator(FeatureSet.EMPTY);
-        while(it.hasNext()) {
-            AbstractAsai asai =  it.next();
-            System.out.println(asai +":" + asai.getValue());
+        while (it.hasNext()) {
+            AbstractAsai asai = it.next();
+            System.out.println(asai + ":" + asai.getValue());
         }
     }
 
-    private static Grid from (Set<? extends RxDescription> set) {
+    private static Grid from(Set<? extends RxDescription> set) {
         List<RxDescription> list = new ArrayList<RxDescription>();
         list.addAll(set);
 
@@ -110,8 +185,9 @@ public class EzhuththuTest implements IPropertyFinder {
             if (EzhuththuSetDescription.class.isAssignableFrom(rx.getClass())) {
                 EzhuththuSetDescription e = (EzhuththuSetDescription) rx;
                 if (e.getCharacterSet() != null) {
-                    nonchar  = false;
-                };
+                    nonchar = false;
+                }
+                ;
             }
             if (nonchar) {
                 count++;
@@ -185,7 +261,6 @@ public class EzhuththuTest implements IPropertyFinder {
         grid1.printTo(new TextFileWriter(new PrintStream(System.out, true)));
         System.out.println("Copy this into the document of EzhuththuSetDescription");
         System.out.println(grid1.toHtml());
-
 
 
         Grid grid = from(set);
@@ -270,11 +345,10 @@ public class EzhuththuTest implements IPropertyFinder {
         Assert.assertTrue(matcher.matches());
 
 
-        pattern = TamilPattern.compile("${குறள்}",null, RXKuttuAcrossCirFeature.FEATURE, RXIncludeCanonicalEquivalenceFeature.FEATURE);
+        pattern = TamilPattern.compile("${குறள்}", null, RXKuttuAcrossCirFeature.FEATURE, RXIncludeCanonicalEquivalenceFeature.FEATURE);
         matcher = pattern.matcher("ஓர்ந்துகண் ணோடாது இறைபுரிந்து யார்மாட்டும்\n" +
                 "தேர்ந்துசெய் வஃதே முறை");
         Assert.assertTrue(matcher.matches());
-
 
 
     }
@@ -399,7 +473,7 @@ public class EzhuththuTest implements IPropertyFinder {
         pattern = TamilFactory.getRegEXCompiler().compile("${அகரவரிசையுயிர்மெய்}", new EzhuththuTest());
         matcher = pattern.matcher("க் கா கி கீ  கெ கே கை கொ கோ கௌ    ");
         if (matcher.find()) {
-            throw new Exception("அகரவுயிர்மெய் is   found. at:"+ matcher.start());
+            throw new Exception("அகரவுயிர்மெய் is   found. at:" + matcher.start());
 
         }
     }

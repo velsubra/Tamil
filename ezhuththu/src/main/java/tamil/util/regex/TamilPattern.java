@@ -8,9 +8,11 @@ import tamil.lang.api.regex.RXFeature;
 import tamil.util.IPropertyFinder;
 import tamil.lang.TamilWord;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
@@ -22,6 +24,16 @@ import java.util.regex.PatternSyntaxException;
  * @author velsubra
  */
 public final class TamilPattern {
+
+    public Pattern getInnerPattern() {
+        return innerPattern;
+    }
+
+    public RxRegistry getInnerRegistry() {
+        return innerRegistry;
+    }
+
+    private RxRegistry innerRegistry = null;
 
     Pattern innerPattern = null;
 
@@ -35,11 +47,14 @@ public final class TamilPattern {
 
     private String tamilPattern = null;
 
-    private TamilPattern(String given, StringUtils.IndexContext context, int flags) {
+    private TamilPattern(String given, StringUtils.IndexContext context, int flags, RxRegistry registry) {
         try {
          // System.out.println("Compiling :" + context.finalString);
           innerPattern = Pattern.compile(context.finalString, flags | Pattern.UNICODE_CHARACTER_CLASS);
           this.tamilPattern = given;
+          this.innerRegistry = registry;
+
+
 
         } catch (PatternSyntaxException pe) {
             //throw pe;
@@ -49,6 +64,25 @@ public final class TamilPattern {
 
         }
 
+    }
+
+    /**
+     * Returns map of group name and group index
+     * @return the named group map.
+     */
+    public Map<String, Integer> getNamedGroups() {
+        try {
+            Field field = Pattern.class.getDeclaredField("namedGroups");
+            field.setAccessible(true);
+            Map<String, Integer> map =  (Map<String, Integer>) field.get(this.innerPattern);
+            if (map == null) {
+                return Collections.emptyMap();
+            } else {
+                return map;
+            }
+        } catch (Exception ns) {
+            throw new RuntimeException("Unable to get the named groups", ns);
+        }
     }
 
     /**
@@ -80,13 +114,20 @@ public final class TamilPattern {
      * @return  TamilPattern
      */
     public static TamilPattern compile(String pattern, int flags, IPropertyFinder aliasFinder, RXFeature ... features) {
-        StringUtils.IndexContext context = StringUtils.replaceWithContext("${", "}", pattern, new RxRegistry(aliasFinder, (features == null || features.length == 0) ? FeatureSet.EMPTY : new FeatureSet(features)), true, true, true);
+        if (pattern.startsWith("TX{")) {
+            pattern = "${"+pattern.substring(3);
+        }
+        RxRegistry  registry = new RxRegistry(aliasFinder, (features == null || features.length == 0) ? FeatureSet.EMPTY : new FeatureSet(features));
+        StringUtils.IndexContext context = StringUtils.replaceWithContext("${", "}", pattern, registry, true, true, true);
         if (context.finalString.length() > 10*1024) {
             System.out.println("----"+pattern+"-----> Compiled Pattern size in KB:" + context.finalString.length() /1000);
         } else {
-         //  System.out.println("pattern:" + pattern + " =>Real RX:" + context.finalString+":");
+         // System.out.println("pattern:" + pattern + " =>Real RX:" + context.finalString+":");
         }
-        return new TamilPattern(pattern, context, flags);
+        TamilPattern pat =  new TamilPattern(pattern, context, flags, registry);
+        context.release();
+        return  pat;
+
 
 
     }
@@ -101,7 +142,8 @@ public final class TamilPattern {
      * @return  standard java expression
      */
     public static String preProcess(String pattern, IPropertyFinder aliasFinder, RXFeature ... features) {
-        StringUtils.IndexContext context = StringUtils.replaceWithContext("${", "}", pattern, new RxRegistry(aliasFinder, (features == null || features.length == 0) ? FeatureSet.EMPTY : new FeatureSet(features)), true, true, true);
+        RxRegistry  registry = new RxRegistry(aliasFinder, (features == null || features.length == 0) ? FeatureSet.EMPTY : new FeatureSet(features));
+        StringUtils.IndexContext context = StringUtils.replaceWithContext("${", "}", pattern, registry, true, true, true);
         return context.finalString;
     }
 
@@ -118,11 +160,11 @@ public final class TamilPattern {
 
     public TamilMatcher tamilMatcher(String sequence) {
         TamilWord word = TamilWord.from(sequence, true);
-        return new TamilMatcher(tamilPattern,innerPattern.matcher(sequence), word);
+        return new TamilMatcher(this,innerPattern.matcher(sequence), word);
     }
 
     public TamilMatcher matcher(TamilWord word) {
-        return new TamilMatcher(tamilPattern,innerPattern.matcher(word.toString()), word);
+        return new TamilMatcher(this,innerPattern.matcher(word.toString()), word);
     }
 
 

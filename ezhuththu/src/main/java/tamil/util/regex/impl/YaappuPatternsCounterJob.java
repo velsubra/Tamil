@@ -1,6 +1,8 @@
 package tamil.util.regex.impl;
 
+import org.json.JSONObject;
 import tamil.lang.TamilFactory;
+import tamil.lang.api.job.JobContext;
 import tamil.lang.api.regex.*;
 import tamil.util.IPropertyFinder;
 import tamil.util.regex.SimpleMatcher;
@@ -42,11 +44,14 @@ public class YaappuPatternsCounterJob extends AbstractPatternsCounterJob {
     }
 
     @Override
-    public List<SimpleMatcher> getMatchers() {
+    public List<SimpleMatcher> getMatchers(JobContext<JSONObject> context) {
         List<RXFeature> alternatives = getAlternatives();
+
         List<SimpleMatcher> list = new ArrayList<SimpleMatcher>(this.patterns.size());
         for (String pattern : this.patterns) {
             list.add(TamilFactory.getRegEXCompiler().compileToPatternsList(pattern, getAliasFinder(), getBaseFeatures(), alternatives == null ? null : alternatives.toArray(new RXFeature[0])).matchersList(source));
+            context.setStatusMessage("Creating matchers #  " + list.size() +" of " + this.patterns.size());
+            context.flush();
         }
         return list;
 

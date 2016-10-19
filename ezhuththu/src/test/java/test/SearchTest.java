@@ -795,6 +795,7 @@ public class SearchTest {
         try {
             ExecuteManager.start();
             List<String> setNames = new ArrayList<String>();
+            setNames.add("${குறள்}");
             setNames.add("${எழுத்து}");
             setNames.add("${(மொழி)}");
             setNames.add("${(தேமா)}");
@@ -818,7 +819,7 @@ public class SearchTest {
 
             }
             System.out.println(resultSnapShot.getNewResults(0).getChunk());
-            Assert.assertEquals("[{\"labels\":[\"${எழுத்து}\",\"${(மொழி)}\",\"${(தேமா)}\",\"${இடைவெளி}${எழுத்து}\",\"${வலியுகரவரிசை}\",\"${அகரவரிசை}\"],\"counts\":[17,3,1,3,0,1]}]", resultSnapShot.getNewResults(0).getChunk().toString());
+            Assert.assertEquals("[{\"labels\":[\"${குறள்}\",\"${எழுத்து}\",\"${(மொழி)}\",\"${(தேமா)}\",\"${இடைவெளி}${எழுத்து}\",\"${வலியுகரவரிசை}\",\"${அகரவரிசை}\"],\"counts\":[0,17,3,1,3,0,1]}]", resultSnapShot.getNewResults(0).getChunk().toString());
             Assert.assertEquals(1, resultSnapShot.getNewResults(0).getChunk().size());
         } finally {
             ExecuteManager.stop();

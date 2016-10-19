@@ -8,7 +8,7 @@ package tamil.lang.api.number;
  *
  * @author velsubra
  */
-public final class IgnoreNonDigitFeature implements ReaderFeature {
+public final class IgnoreNonDigitFeature implements NumberReaderFeature {
 
     public boolean considerNonDigitAs0 = false;
 

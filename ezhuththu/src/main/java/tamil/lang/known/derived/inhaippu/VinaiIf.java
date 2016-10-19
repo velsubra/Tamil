@@ -35,7 +35,7 @@ public class VinaiIf extends VinaiyadiDerivative implements IInhaippu {
             if (ech.getTense() == SimpleTense.PAST) {
                 TamilWord twoletters =  ech.getWord().subWord(0,2);
                 if (!word.startsWith(twoletters)) {
-                    System.out.println("------------------->" + word + " :" + ech.toString());
+                    //System.out.println("------------------->" + word + " :" + ech.toString());
                 }
             }
         }

@@ -6,7 +6,7 @@ package tamil.lang.api.number;
  *
  * @author velsubra
  */
-public final class PunharchiFeature implements ReaderFeature {
+public final class PunharchiFeature implements NumberReaderFeature {
 
     private PunharchiFeature(boolean full) {
         this.full = full;

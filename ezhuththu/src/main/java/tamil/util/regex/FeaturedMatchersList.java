@@ -1,5 +1,7 @@
 package tamil.util.regex;
 
+import my.interest.lang.tamil.TamilUtils;
+import my.interest.lang.util.OrderedMap;
 import tamil.lang.exception.TamilPlatformException;
 
 import java.util.*;
@@ -20,10 +22,11 @@ public final class FeaturedMatchersList implements SimpleMatcher {
     private String basePattern;
     private Matcher shortDistantMatcher = null;
     private CharSequence source = null;
+    private  OrderedMap<Matcher, TamilPattern> mapMatcherToPatter = null;
 
-
-    FeaturedMatchersList(String basePattern, List<Matcher> list, CharSequence source) {
-        this.list = new ArrayList<Matcher>(list);
+    FeaturedMatchersList(String basePattern, OrderedMap<Matcher, TamilPattern> map, CharSequence source) {
+        this.mapMatcherToPatter = map;
+        this.list = new ArrayList<Matcher>(map.keySet());
         this.basePattern = basePattern;
         this.source = source;
 
@@ -54,6 +57,10 @@ public final class FeaturedMatchersList implements SimpleMatcher {
 
 
     private void searchAgainAndAdjust() {
+        System.out.println("Used Memory MB:"
+                + (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / 1000000);
+
+
         LinkedList<Matcher> temp = new LinkedList<Matcher>();
         int lastIndex = shortDistantMatcher.end();
         if (shortDistantMatcher.find()) {
@@ -157,6 +164,42 @@ public final class FeaturedMatchersList implements SimpleMatcher {
 
     public int getSourceLength() {
         return source.length();
+    }
+
+    public String group() {
+        if (shortDistantMatcher == null) {
+            throw new TamilPlatformException("No match was found");
+        }
+        return shortDistantMatcher.group();
+    }
+
+    public String group(String name) {
+        if (shortDistantMatcher == null) {
+            throw new TamilPlatformException("No match was found");
+        }
+        return shortDistantMatcher.group(name);
+    }
+
+    public int groupCount() {
+        if (shortDistantMatcher == null) {
+            throw new TamilPlatformException("No match was found");
+        }
+        return shortDistantMatcher.groupCount();
+    }
+
+    public String group(int group) {
+        return null;
+    }
+
+    public MatchingModel buildMatchingModel() {
+        return TamilUtils.buildMatchingModel(mapMatcherToPatter.get(shortDistantMatcher), shortDistantMatcher);
+    }
+
+    public String getGroupName() {
+        if (shortDistantMatcher == null) {
+            throw new TamilPlatformException("No match was found");
+        }
+        return shortDistantMatcher.group();
     }
 
 

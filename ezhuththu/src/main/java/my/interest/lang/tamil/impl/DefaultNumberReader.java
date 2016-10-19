@@ -11,7 +11,7 @@ import tamil.lang.api.feature.FeatureConstants;
 import tamil.lang.api.join.WordsJoiner;
 import tamil.lang.api.number.NotANumberException;
 import tamil.lang.api.number.NumberReader;
-import tamil.lang.api.number.ReaderFeature;
+import tamil.lang.api.number.NumberReaderFeature;
 import tamil.lang.api.parser.CompoundWordParser;
 import tamil.lang.api.parser.ParserResult;
 import tamil.lang.api.parser.ParserResultCollection;
@@ -133,7 +133,7 @@ public final class DefaultNumberReader implements NumberReader {
     }
 
 
-    public TamilWord readNumberWithFiltering(String number, ReaderFeature... features) {
+    public TamilWord readNumberWithFiltering(String number, NumberReaderFeature... features) {
         if (number == null) {
             return new TamilWord();
         }
@@ -160,7 +160,7 @@ public final class DefaultNumberReader implements NumberReader {
 
 
     @Override
-    public TamilWord readNumber(String number, ReaderFeature... features) throws NotANumberException {
+    public TamilWord readNumber(String number, NumberReaderFeature... features) throws NotANumberException {
         return readNumberWithFiltering(number, features);
     }
 
@@ -272,7 +272,7 @@ public final class DefaultNumberReader implements NumberReader {
     }
 
     @Override
-    public String readAsNumber(String numbertext, ReaderFeature... features) throws NotANumberException {
+    public String readAsNumber(String numbertext, NumberReaderFeature... features) throws NotANumberException {
         if (numbertext == null) {
             return "0";
         } else {
@@ -291,7 +291,7 @@ public final class DefaultNumberReader implements NumberReader {
         }
     }
 
-    private String readAsNumberFractionalPart(String numbertext, ReaderFeature... features) throws NotANumberException {
+    private String readAsNumberFractionalPart(String numbertext, NumberReaderFeature... features) throws NotANumberException {
         if (numbertext == null || numbertext.trim().equals("")) {
             return "0";
         } else {
@@ -317,6 +317,7 @@ public final class DefaultNumberReader implements NumberReader {
                             if (result.isParsed()) {
                                 Theriyaachchol unknown = result.findUnknownPart();
                                 if (unknown != null) {
+                                    suggestion =    FeatureConstants.PARSE_FOR_NUMBER_VAL_172.getDictionary().search(unknown.getWord(),2,null,FeatureConstants.DICTIONARY_AUTO_SUGGEST_VAL_165);
                                     throw new NotANumberException("Could not parse unknown part:" + unknown.getWord().toString()+ ". Suggestion:"+ suggestion);
                                 } else {
                                     throw new NotANumberException("Could not parse part:" + s+ ". Suggestion:"+ suggestion);
@@ -350,7 +351,7 @@ public final class DefaultNumberReader implements NumberReader {
     }
 
 
-    private String readAsNumberWholePart(String numbertext, ReaderFeature... features) throws NotANumberException {
+    private String readAsNumberWholePart(String numbertext, NumberReaderFeature... features) throws NotANumberException {
         if (numbertext == null || numbertext.trim().equals("")) {
             return "0";
         } else {
@@ -376,6 +377,7 @@ public final class DefaultNumberReader implements NumberReader {
                             if (result.isParsed()) {
                                 Theriyaachchol unknown = result.findUnknownPart();
                                 if (unknown != null) {
+                                    suggestion =    FeatureConstants.PARSE_FOR_NUMBER_VAL_172.getDictionary().search(unknown.getWord(),2,null,FeatureConstants.DICTIONARY_AUTO_SUGGEST_VAL_165);
                                     throw new NotANumberException("Could not parse unknown part:" + unknown.getWord().toString() +". Suggestions:" + suggestion);
                                 } else {
                                     throw new NotANumberException("Could not parse part:" + s+". Suggestions:" + suggestion);

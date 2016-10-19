@@ -2,6 +2,7 @@ package tamil.lang.api.feature;
 
 import tamil.lang.api.dictionary.*;
 import tamil.lang.api.number.IgnoreNonDigitFeature;
+import tamil.lang.api.number.NumberSystemFeature;
 import tamil.lang.api.number.PunharchiFeature;
 import tamil.lang.api.parser.*;
 import tamil.lang.api.regex.*;
@@ -39,6 +40,10 @@ public final class FeatureConstants {
      * @see tamil.lang.api.number.NumberReader
      */
     public static final PunharchiFeature READ_NUMBER_PUNHARCHCHI_FULL_VAL_130 = PunharchiFeature.INSTANCE_FULL;
+    public static final NumberSystemFeature READ_NUMBER_DEFAULT_VAL_131 = NumberSystemFeature.DEFAULT;
+    public static final NumberSystemFeature READ_NUMBER_ILANGO_PICHCHANDI_VAL_132 = NumberSystemFeature.ILANGO_PICHCHANDI;
+    public static final NumberSystemFeature READ_NUMBER_JEYAPANDIAN_K_VAL_133 = NumberSystemFeature.JEYAPANDIAN_K;
+    public static final NumberSystemFeature READ_NUMBER_WIKI_VAL_134 = NumberSystemFeature.WIKI;
 
     public static final PunharchiFeature READ_NUMBER_PUNHARCHCHI_KEEP_ONLY_POSITION_VAL_135 = PunharchiFeature.INSTANCE_KEEP_ONLY_POSITION;
 
@@ -64,6 +69,7 @@ public final class FeatureConstants {
 
 
     public static final RXKuttuFeature RX_TEAT_KUTTU_AS_ONE_LETTER_VAL_185 = RXKuttuFeature.FEATURE;
+    public static final RxIncludeGroupNameFeature RX_INCLUDE_GROUP_NAME_VAL_187 = RxIncludeGroupNameFeature.FEATURE;
     public static final RXKeLaAsKouFeature RX_TEAT_KeLaAsKou_VAL_181 = RXKeLaAsKouFeature.FEATURE;
     public static final RXDesolvedKuttialigaramFeature RX_CONSIDER_DESOLVED_KUTTIYALIGARAM__VAL_184 = RXDesolvedKuttialigaramFeature.FEATURE;
     public static final RXKuttuAcrossCirFeature RX_TEAT_SPLIT_KUTTU_AS_ONE_MEI_VAL_182 = RXKuttuAcrossCirFeature.FEATURE;

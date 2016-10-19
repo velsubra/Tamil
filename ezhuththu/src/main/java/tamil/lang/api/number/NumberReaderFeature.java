@@ -8,7 +8,7 @@ import tamil.lang.api.feature.Feature;
  *
  * @author velsubra
  */
-public interface ReaderFeature extends Feature {
+public interface NumberReaderFeature extends Feature {
 
 
 }

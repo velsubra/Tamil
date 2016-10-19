@@ -42,7 +42,7 @@ public abstract class AbstractPatternsCounterJob implements JobRunnable<JSONObje
     private List<SimpleMatcher> matchers = null;
 
 
-    public abstract List<SimpleMatcher> getMatchers();
+    public abstract List<SimpleMatcher> getMatchers(JobContext<JSONObject> context);
 
 
     /**
@@ -75,7 +75,9 @@ public abstract class AbstractPatternsCounterJob implements JobRunnable<JSONObje
             context.setTitleId(title);
             source = resolveSource(context, source);
             config(context);
-            matchers = getMatchers();
+            context.setStatusMessage("Creating matchers ... ");
+            context.flush();
+            matchers = getMatchers(context);
 
             JSONObject json = new JSONObject();
             JSONArray labels = new JSONArray();

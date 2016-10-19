@@ -2,7 +2,6 @@ package my.interest.lang.tamil.impl.rx;
 
 import common.lang.impl.AbstractCharacter;
 import my.interest.lang.tamil.EzhuththuUtils;
-import my.interest.lang.tamil.StringUtils;
 import my.interest.lang.tamil.TamilUtils;
 import my.interest.lang.tamil.impl.FeatureSet;
 import my.interest.lang.tamil.impl.rx.asai1.*;
@@ -31,10 +30,7 @@ import tamil.lang.TamilFactory;
 import tamil.lang.TamilWord;
 import tamil.lang.api.ezhuththu.EzhuththuSetDescription;
 import tamil.lang.api.feature.Feature;
-import tamil.lang.api.regex.RXFeature;
-import tamil.lang.api.regex.RXFixedLengthFeature;
-import tamil.lang.api.regex.RXIncludeCanonicalEquivalenceFeature;
-import tamil.lang.api.regex.RXOverrideSysDefnFeature;
+import tamil.lang.api.regex.*;
 import tamil.lang.exception.TamilPlatformException;
 import tamil.util.IPropertyFinder;
 import tamil.util.regex.TamilPattern;
@@ -55,7 +51,8 @@ public class RxRegistry implements IPropertyFinder {
 
     IPropertyFinder parent = null;
     FeatureSet featureSet = null;
-
+    //Serves as cache.
+    Map<String,String> compiled = new HashMap<String,String>();
     public RxRegistry(IPropertyFinder parent, FeatureSet featureSet) {
         this.parent = parent;
         this.featureSet = featureSet;
@@ -113,6 +110,7 @@ public class RxRegistry implements IPropertyFinder {
         map.put("கூவிளங்கனி", new KoovilhanganiRx());
         map.put("கருவிளங்கனி", new KaruvilhanganiRx());
 
+        map.put("வெண்பாவின் சீர்", new VenhbaaCirRx());
 
         map.put("தேமாந்தண்பூ", new TheamaanthanhBooRx());
         map.put("தேமாந்தண்ணிழல்", new TheamaanthanhnhizhalRx());
@@ -185,10 +183,84 @@ public class RxRegistry implements IPropertyFinder {
     }
 
     public String findProperty(String actual) {
+        String rx = compiled.get(actual);
+        if (rx == null) {
+            rx = findProperty0(actual);
+            if (rx == null) return  null;
+            compiled.put(actual,rx);
+        }
+
+
+        return wrapForGroup(rx, actual);
+    }
+
+    public HashMap<String, EncodedGroup> getGroupNamesFromExpressionName() {
+        return groupNamesFromExpressionName;
+    }
+
+    /**
+     * key is the expression name {@link EncodedGroup#expressionName}
+     */
+    private HashMap<String, EncodedGroup> groupNamesFromExpressionName =  new HashMap<String, EncodedGroup>();
+
+
+    public HashMap<String, EncodedGroup> getGroupNamesFromEncodedName() {
+        return groupNamesFromEncodedName;
+    }
+
+    private HashMap<String, EncodedGroup> groupNamesFromEncodedName =  new HashMap<String, EncodedGroup>();
+
+    public static class EncodedGroup {
+        EncodedGroup(String ex) {
+            this.expressionName = ex;
+            String english = TamilWord.from(this.expressionName, true).translitToEnglish();
+            if (english.equals(this.expressionName)) {
+                this.encodedBase = TamilUtils.encodeToBeAGroupName(english);
+            } else {
+              this.encodedBase =  TamilUtils.ENCODING_SPECIAL_CHAR + TamilUtils.encodeToBeAGroupName(english);
+            }
+            this.count = 1;
+        }
+        public void increment() {
+            count ++;
+        }
+        public String  expressionName;
+        public String encodedBase;
+        public int count;
+    }
+
+    private String wrapForGroup(String rx, String exName) {
+
+        if (featureSet.isFeatureEnabled(RxIncludeGroupNameFeature.class)) {
+
+            EncodedGroup existing = groupNamesFromExpressionName.get(exName);
+            if (existing == null) {
+                existing = new EncodedGroup(exName);
+                groupNamesFromExpressionName.put(exName,existing);
+            } else {
+                existing.increment();
+            }
+            String encoded = existing.encodedBase + existing.count;
+            groupNamesFromEncodedName.put(encoded, existing);
+            StringBuilder buffer = new StringBuilder();
+            buffer.append("(?<");
+            buffer.append(encoded);
+            buffer.append(">");
+            buffer.append(rx);
+            buffer.append(")");
+            return  buffer.toString();
+        } else {
+            return rx;
+        }
+    }
+
+    private String findProperty0(String actual) {
         String p1 = actual;
         String translit = null;
-        PatternGenerator gen = null;
+        boolean parentFirst = false;
+
         if (parent != null && featureSet.isFeatureEnabled(RXOverrideSysDefnFeature.class)) {
+            parentFirst = true;
             String alias = parent.findProperty(p1);
             if (alias != null) {
                 return alias;
@@ -199,18 +271,16 @@ public class RxRegistry implements IPropertyFinder {
                 return alias;
             }
         }
-
+        PatternGenerator gen = null;
         //Try for unicode block
         gen = UnicodeBlockDescription.blocks.get(p1);
         if (gen == null) {
-            if (gen == null) {
                 if (p1.startsWith("!")) {
                     gen = UnicodeBlockDescription.blocks.get(p1.substring(1));
                     if (gen != null) {
                         gen = new UnicodeBlockExcluder((UnicodeBlockDescription) gen);
                     }
                 }
-            }
         }
 
         // Try for Rx descriptions in this registry.
@@ -263,7 +333,7 @@ public class RxRegistry implements IPropertyFinder {
                     max = -1;
                 }
 
-                return new NAsaichCheer(min, max).generate(featureSet);
+                return  new NAsaichCheer(min, max).generate(featureSet);
             }
 
             if (p1.startsWith("தளை[") && p1.endsWith("]")) {
@@ -284,7 +354,7 @@ public class RxRegistry implements IPropertyFinder {
                     throw new TamilPatternSyntaxException("Invalid definition for தளை. It should be of the form ${தளை[(மாச்சீர்) முன் நேர்]} ", p1, 0);
                 }
 
-                StringBuffer buffer = new StringBuffer();
+                StringBuilder buffer = new StringBuilder();
                 if (mun) {
                     //positive look ahead
                     buffer.append("${" + first + "}${idaivelhi}");
@@ -315,7 +385,7 @@ public class RxRegistry implements IPropertyFinder {
             if (p1.startsWith("அசை[") && p1.endsWith("]")) {
                 String inner = p1.substring(4, p1.length() - 1);
                 Iterator<AbstractAsai> it = new AsaiIterator(TamilWord.from(inner, true), featureSet);
-                StringBuffer buffer = new StringBuffer();
+                StringBuilder buffer = new StringBuilder();
                 while (it.hasNext()) {
                     AbstractAsai s = it.next();
                     if (s.isNtear()) {
@@ -329,7 +399,7 @@ public class RxRegistry implements IPropertyFinder {
             }
             if (p1.startsWith("மாத்திரை[") && p1.endsWith("]")) {
                 String inner = p1.substring(9, p1.length() - 1);
-                StringBuffer buffer = new StringBuffer();
+                StringBuilder buffer = new StringBuilder();
                 TamilWord w = TamilWord.from(inner, true);
                 for (int i = 0; i < w.length(); i++) {
                     AbstractCharacter ch = w.charAt(i);
@@ -357,7 +427,7 @@ public class RxRegistry implements IPropertyFinder {
             }
             if (p1.startsWith("வகை[") && p1.endsWith("]")) {
                 String inner = p1.substring(4, p1.length() - 1);
-                StringBuffer buffer = new StringBuffer();
+                StringBuilder buffer = new StringBuilder();
                 TamilWord w = TamilWord.from(inner, true);
                 for (int i = 0; i < w.length(); i++) {
                     AbstractCharacter ch = w.charAt(i);
@@ -391,7 +461,7 @@ public class RxRegistry implements IPropertyFinder {
                 if (blocks.isEmpty()) {
                     throw new TamilPatternSyntaxException("Empty block names", "ஒருங்குறித்தொகுதிக்கு உள்ளே[]", 0);
                 }
-                return new UnicodeBlockOrGenerator(blocks, false).generate(featureSet);
+                return  new UnicodeBlockOrGenerator(blocks, false).generate(featureSet);
             }
             if (actual.startsWith("ஒருங்குறித்தொகுதிக்கு வெளியே[") && actual.endsWith("]")) {
 
@@ -430,7 +500,7 @@ public class RxRegistry implements IPropertyFinder {
                     throw new TamilPatternSyntaxException("Invalid definition for தொடர்சோதனை. It should be of the form ${தொடர்சோதனை[(மாச்சீர்) தொடங்குவதிலிருந்து (நேர்]}", p1, 0);
                 }
 
-                StringBuffer buffer = new StringBuffer();
+                StringBuilder buffer = new StringBuilder();
                 if (start) {
                     //positive look ahead
                     buffer.append("(?=(?:${" + first + "}))");
@@ -448,7 +518,7 @@ public class RxRegistry implements IPropertyFinder {
 
             if (p1.startsWith("மெய்வகை[") && p1.endsWith("]")) {
                 String inner = p1.substring(8, p1.length() - 1);
-                StringBuffer buffer = new StringBuffer();
+                StringBuilder buffer = new StringBuilder();
                 TamilWord w = TamilWord.from(inner, true);
                 for (int i = 0; i < w.length(); i++) {
                     AbstractCharacter ch = w.charAt(i);
@@ -479,7 +549,7 @@ public class RxRegistry implements IPropertyFinder {
 
             }
 
-            if (parent != null) {
+            if (parent != null && !parentFirst) {
                 String alias = parent.findProperty(p1);
                 if (alias != null) {
                     return alias;

@@ -14,7 +14,7 @@ import java.util.Set;
  */
 public class KurralhCirRx implements PatternGenerator {
     public String generate(FeatureSet featureSet) {
-        return "(?:(?:(?:${மாச்சீர்}|${விளச்சீர்}|${காய்ச்சீர்})${இடைவெளி}){6}${வெண்பாவின் இறுதிச்சீர்})";
+        return "(?:(?:${வெண்பாவின் சீர்}${இடைவெளி}){6}${வெண்பாவின் இறுதிச்சீர்})";
     }
 
 

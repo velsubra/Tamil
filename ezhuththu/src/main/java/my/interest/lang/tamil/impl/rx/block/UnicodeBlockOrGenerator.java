@@ -31,29 +31,38 @@ public class UnicodeBlockOrGenerator extends ORPatternGenerator {
             if (description == null) {
                 throw new TamilPlatformException("Unknown unicode BMP block name:" + block);
             }
-            blocks.add(description);
+            if(!blocks.contains(description)) {
+                blocks.add(description);
+            }
         }
         Collections.sort(blocks);
 
         List<String> patterns = new ArrayList<String>();
-        UnicodeBlockDescription last = null; //center
-        UnicodeBlockDescription lastlast = null;
+
+        int lastIndex = -1;
+        int count = 0;
         for (UnicodeBlockDescription description : blocks) {
+            count ++;
             if (exclude) {
-                if (last != null) {
-                    patterns.add(new UnicodeBlockRelativeExcluder(last, lastlast == null? -1 : lastlast.getEndingCodePoint(), description.getStartingCodePoint()).generate(set));
-                }
-                lastlast = last;
-                last = description;
+               if (lastIndex + 1== description.getStartingCodePoint()) {
+                   lastIndex = description.getEndingCodePoint() ;
+                   continue;
+               } else {
+                   patterns.add("["+ UnicodeBlockDescription.getUniCodeString (lastIndex+1) + "-" +  UnicodeBlockDescription.getUniCodeString (description.getStartingCodePoint()-1) + "]");
+                   lastIndex = description.getEndingCodePoint() ;
+                   //last!
+                   if ( count  == blocks.size() && lastIndex < LAST_UNICODE_CODEPOINT ) {
+                       patterns.add("["+ UnicodeBlockDescription.getUniCodeString (lastIndex+1) + "-" +  UnicodeBlockDescription.getUniCodeString (LAST_UNICODE_CODEPOINT) + "]");
+                   }
+               }
             } else {
                 patterns.add(description.generate(set));
             }
 
 
+
         }
-        if (exclude && last != null) {
-            patterns.add(new UnicodeBlockRelativeExcluder(last, lastlast == null? -1 : lastlast.getEndingCodePoint(), LAST_UNICODE_CODEPOINT + 1).generate(set));
-        }
+
         return patterns;
     }
 

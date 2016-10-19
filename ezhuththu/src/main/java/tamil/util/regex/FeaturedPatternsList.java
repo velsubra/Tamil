@@ -1,7 +1,11 @@
 package tamil.util.regex;
 
+import my.interest.lang.util.OrderedMap;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 
 /**
@@ -21,11 +25,11 @@ public final class FeaturedPatternsList {
     }
     public FeaturedMatchersList matchersList(CharSequence source)  {
 
-        List<Matcher> list = new ArrayList<Matcher>();
+        OrderedMap<Matcher,TamilPattern> list = new OrderedMap<Matcher, TamilPattern>();
         for (TamilPattern p : patternlist) {
-            list.add(p.matcher(source));
+            list.put(p.matcher(source),p);
         }
-        return new FeaturedMatchersList(basePattern,list, source);
+        return new FeaturedMatchersList(basePattern, list, source);
 
     }
 

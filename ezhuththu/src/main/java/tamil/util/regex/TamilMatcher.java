@@ -1,7 +1,10 @@
 package tamil.util.regex;
 
+import my.interest.lang.tamil.TamilUtils;
+import my.interest.lang.tamil.impl.rx.RxRegistry;
 import tamil.lang.TamilWord;
 
+import java.util.HashMap;
 import java.util.regex.MatchResult;
 import java.util.regex.Matcher;
 
@@ -17,9 +20,9 @@ import java.util.regex.Matcher;
 public final class TamilMatcher implements MatchResult, SimpleMatcher {
     Matcher javaMatcher = null;
     TamilWord tamilWord = null;
-    String tamilPattern = null;
+    TamilPattern tamilPattern = null;
 
-    public TamilMatcher( String tamilPattern, Matcher javaMatcher, TamilWord tamilWord) {
+    public TamilMatcher( TamilPattern tamilPattern, Matcher javaMatcher, TamilWord tamilWord) {
         this.javaMatcher = javaMatcher;
         this.tamilWord = tamilWord;
         this.tamilPattern = tamilPattern;
@@ -43,7 +46,7 @@ public final class TamilMatcher implements MatchResult, SimpleMatcher {
     }
 
     public String getPattern() {
-        return tamilPattern;
+        return tamilPattern.getTamilPattern();
     }
 
     public boolean isTransposed() {
@@ -54,6 +57,8 @@ public final class TamilMatcher implements MatchResult, SimpleMatcher {
     public int getSourceLength() {
         return tamilWord.size();
     }
+
+
 
     public boolean matches() {
         return javaMatcher.matches();
@@ -79,13 +84,24 @@ public final class TamilMatcher implements MatchResult, SimpleMatcher {
         return javaMatcher.group();
     }
 
+    public String group(String name) {
+        return javaMatcher.group(name);
+    }
+
 
     public String group(int group) {
         return javaMatcher.group(group);
+    }
+
+    public MatchingModel buildMatchingModel() {
+        return TamilUtils.buildMatchingModel(tamilPattern,javaMatcher);
     }
 
 
     public int groupCount() {
         return javaMatcher.groupCount();
     }
+
+
+
 }

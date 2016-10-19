@@ -5,7 +5,7 @@ import org.json.JSONObject;
 import tamil.lang.TamilFactory;
 import tamil.lang.TamilWord;
 import tamil.lang.api.number.NumberReader;
-import tamil.lang.api.number.ReaderFeature;
+import tamil.lang.api.number.NumberReaderFeature;
 
 import javax.ws.rs.*;
 
@@ -26,7 +26,7 @@ public class NumberReaderResource extends BaseResource {
         JSONObject obj = new JSONObject();
         try {
             NumberReader reader = TamilFactory.getNumberReader();
-            TamilWord w = reader.readNumber(number, FeatureSet.findFeatures(ReaderFeature.class, features).toArray(new ReaderFeature[] {}));
+            TamilWord w = reader.readNumber(number, FeatureSet.findFeatures(NumberReaderFeature.class, features).toArray(new NumberReaderFeature[] {}));
             obj.put("tamil", w.toString());
         } catch (Exception e) {
             handle(obj, e);
@@ -42,7 +42,7 @@ public class NumberReaderResource extends BaseResource {
         JSONObject obj = new JSONObject();
         try {
             NumberReader reader = TamilFactory.getNumberReader();
-            String w = reader.readAsNumber(number, FeatureSet.findFeatures(ReaderFeature.class, features).toArray(new ReaderFeature[]{}));
+            String w = reader.readAsNumber(number, FeatureSet.findFeatures(NumberReaderFeature.class, features).toArray(new NumberReaderFeature[]{}));
             obj.put("number", w);
         } catch (Exception e) {
             handle(obj, e);

@@ -24,6 +24,10 @@ public class InnerJobRunnable implements Runnable {
     public void run() {
 
         try {
+            Thread.currentThread().setPriority(Thread.MIN_PRIORITY);
+            System.out.println("Used Memory MB:"
+                    + (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / 1000000);
+
             contextImpl.setRunning();
             runnable.run(contextImpl);
             contextImpl.setPercentOfCompletion(100);

@@ -67,7 +67,7 @@ import tamil.lang.TamilWord;
  * <p/>
  * <p/>
  *  <hr/>
- * For larger numbers one can use {@link #readAsNumber(String, ReaderFeature...)}
+ * For larger numbers one can use {@link #readAsNumber(String, NumberReaderFeature...)}
  * <p/>
  * </p>
  *
@@ -84,7 +84,7 @@ public interface NumberReader {
      * @return the Tamil text form of that number.
      * @throws tamil.lang.api.number.NotANumberException if the input is not a perfect number.
      */
-    public TamilWord readNumber(String number, ReaderFeature... features) throws NotANumberException;
+    public TamilWord readNumber(String number, NumberReaderFeature... features) throws NotANumberException;
 
 
     /**
@@ -122,7 +122,7 @@ public interface NumberReader {
      * @return number in decimal form .(Eg. 100000000000000)
      * @throws NotANumberException
      */
-    public String readAsNumber(String numbertext, ReaderFeature... features) throws NotANumberException;
+    public String readAsNumber(String numbertext, NumberReaderFeature... features) throws NotANumberException;
 
 //
 //    /**

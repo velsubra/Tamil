@@ -3,6 +3,7 @@ package my.interest.lang.tamil.impl;
 import my.interest.lang.tamil.impl.dictionary.DefaultPlatformDictionaryBase;
 import my.interest.lang.tamil.impl.number.known.KnownNumberComponent;
 import tamil.lang.TamilWord;
+import tamil.lang.api.number.NumberSystemFeature;
 import tamil.lang.known.IKnownWord;
 
 import java.math.BigInteger;
@@ -112,84 +113,84 @@ public final class NumberDictionary extends DefaultPlatformDictionaryBase {
         addKnownPrivate(new KnownNumberComponent(9, 1, TamilWord.from("பில்லியனே")));
 
         //Ilango Pichchandi
-        addKnownPrivate(new KnownNumberComponent(6, 1, TamilWord.from("எண்ணம்")));
-        addKnownPrivate(new KnownNumberComponent(9, 1, TamilWord.from("இரட்டம்")));
-        addKnownPrivate(new KnownNumberComponent(12, 1, TamilWord.from("மூவகம்")));
-        addKnownPrivate(new KnownNumberComponent(15, 1, TamilWord.from("நாவகம்")));
-        addKnownPrivate(new KnownNumberComponent(18, 1, TamilWord.from("ஐவகம்")));
-        addKnownPrivate(new KnownNumberComponent(21, 1, TamilWord.from("அறுவகம்")));
-        addKnownPrivate(new KnownNumberComponent(24, 1, TamilWord.from("எழுவகம்")));
-        addKnownPrivate(new KnownNumberComponent(27, 1, TamilWord.from("எண்மகம்")));
-        addKnownPrivate(new KnownNumberComponent(30, 1, TamilWord.from("தொட்டகம்")));
+        addKnownPrivate(new KnownNumberComponent(NumberSystemFeature.NumberSystem.ILANGO_PICHCHANDI, 6, 1, TamilWord.from("எண்ணம்")));
+        addKnownPrivate(new KnownNumberComponent(NumberSystemFeature.NumberSystem.ILANGO_PICHCHANDI,9, 1, TamilWord.from("இரட்டம்")));
+        addKnownPrivate(new KnownNumberComponent(NumberSystemFeature.NumberSystem.ILANGO_PICHCHANDI,12, 1, TamilWord.from("மூவகம்")));
+        addKnownPrivate(new KnownNumberComponent(NumberSystemFeature.NumberSystem.ILANGO_PICHCHANDI,15, 1, TamilWord.from("நாவகம்")));
+        addKnownPrivate(new KnownNumberComponent(NumberSystemFeature.NumberSystem.ILANGO_PICHCHANDI,18, 1, TamilWord.from("ஐவகம்")));
+        addKnownPrivate(new KnownNumberComponent(NumberSystemFeature.NumberSystem.ILANGO_PICHCHANDI,21, 1, TamilWord.from("அறுவகம்")));
+        addKnownPrivate(new KnownNumberComponent(NumberSystemFeature.NumberSystem.ILANGO_PICHCHANDI,24, 1, TamilWord.from("எழுவகம்")));
+        addKnownPrivate(new KnownNumberComponent(NumberSystemFeature.NumberSystem.ILANGO_PICHCHANDI,27, 1, TamilWord.from("எண்மகம்")));
+        addKnownPrivate(new KnownNumberComponent(NumberSystemFeature.NumberSystem.ILANGO_PICHCHANDI,30, 1, TamilWord.from("தொட்டகம்")));
 
 
 
-        addKnownPrivate(new KnownNumberComponent(6, 1, TamilWord.from("எண்ணத்து")));
-        addKnownPrivate(new KnownNumberComponent(9, 1, TamilWord.from("இரட்டத்து")));
-        addKnownPrivate(new KnownNumberComponent(12, 1, TamilWord.from("மூவகத்து")));
-        addKnownPrivate(new KnownNumberComponent(15, 1, TamilWord.from("நாவகத்து")));
-        addKnownPrivate(new KnownNumberComponent(18, 1, TamilWord.from("ஐவகத்து")));
-        addKnownPrivate(new KnownNumberComponent(21, 1, TamilWord.from("அறுவகத்து")));
-        addKnownPrivate(new KnownNumberComponent(24, 1, TamilWord.from("எழுவகத்து")));
-        addKnownPrivate(new KnownNumberComponent(27, 1, TamilWord.from("எண்மகத்து")));
-        addKnownPrivate(new KnownNumberComponent(30, 1, TamilWord.from("தொட்டகத்து")));
+        addKnownPrivate(new KnownNumberComponent(NumberSystemFeature.NumberSystem.ILANGO_PICHCHANDI,6, 1, TamilWord.from("எண்ணத்து")));
+        addKnownPrivate(new KnownNumberComponent(NumberSystemFeature.NumberSystem.ILANGO_PICHCHANDI,9, 1, TamilWord.from("இரட்டத்து")));
+        addKnownPrivate(new KnownNumberComponent(NumberSystemFeature.NumberSystem.ILANGO_PICHCHANDI,12, 1, TamilWord.from("மூவகத்து")));
+        addKnownPrivate(new KnownNumberComponent(NumberSystemFeature.NumberSystem.ILANGO_PICHCHANDI,15, 1, TamilWord.from("நாவகத்து")));
+        addKnownPrivate(new KnownNumberComponent(NumberSystemFeature.NumberSystem.ILANGO_PICHCHANDI,18, 1, TamilWord.from("ஐவகத்து")));
+        addKnownPrivate(new KnownNumberComponent(NumberSystemFeature.NumberSystem.ILANGO_PICHCHANDI,21, 1, TamilWord.from("அறுவகத்து")));
+        addKnownPrivate(new KnownNumberComponent(NumberSystemFeature.NumberSystem.ILANGO_PICHCHANDI,24, 1, TamilWord.from("எழுவகத்து")));
+        addKnownPrivate(new KnownNumberComponent(NumberSystemFeature.NumberSystem.ILANGO_PICHCHANDI,27, 1, TamilWord.from("எண்மகத்து")));
+        addKnownPrivate(new KnownNumberComponent(NumberSystemFeature.NumberSystem.ILANGO_PICHCHANDI,30, 1, TamilWord.from("தொட்டகத்து")));
 
         //Jeyapandian
 
-        addKnownPrivate(new KnownNumberComponent(6, 1, TamilWord.from("இருமடியாயிரம்")));
-        addKnownPrivate(new KnownNumberComponent(6, 1, TamilWord.from("இரண்டுமடியாயிரம்")));
-        addKnownPrivate(new KnownNumberComponent(9, 1, TamilWord.from("மும்மடியாயிரம்")));
-        addKnownPrivate(new KnownNumberComponent(9, 1, TamilWord.from("மூன்றுமடியாயிரம்")));
-        addKnownPrivate(new KnownNumberComponent(12, 1, TamilWord.from("நான்மடியாயிரம்")));
-        addKnownPrivate(new KnownNumberComponent(12, 1, TamilWord.from("நான்குமடியாயிரம்")));
-        addKnownPrivate(new KnownNumberComponent(15, 1, TamilWord.from("ஐமடியாயிரம்")));
-        addKnownPrivate(new KnownNumberComponent(15, 1, TamilWord.from("ஐந்துமடியாயிரம்")));
-        addKnownPrivate(new KnownNumberComponent(18, 1, TamilWord.from("அறுமடியாயிரம்")));
-        addKnownPrivate(new KnownNumberComponent(18, 1, TamilWord.from("ஆறுமடியாயிரம்")));
-        addKnownPrivate(new KnownNumberComponent(21, 1, TamilWord.from("எழுமடியாயிரம்")));
-        addKnownPrivate(new KnownNumberComponent(21, 1, TamilWord.from("ஏழுமடியாயிரம்")));
-        addKnownPrivate(new KnownNumberComponent(24, 1, TamilWord.from("எண்மடியாயிரம்")));
-        addKnownPrivate(new KnownNumberComponent(24, 1, TamilWord.from("எட்டுமடியாயிரம்")));
-        addKnownPrivate(new KnownNumberComponent(27, 1, TamilWord.from("ஒன்பதுமடியாயிரம்")));
-        addKnownPrivate(new KnownNumberComponent(30, 1, TamilWord.from("பன்மடியாயிரம்")));
-        addKnownPrivate(new KnownNumberComponent(30, 1, TamilWord.from("பத்துமடியாயிரம்")));
+        addKnownPrivate(new KnownNumberComponent(NumberSystemFeature.NumberSystem.JEYAPANDIAN_K,6, 1, TamilWord.from("இருமடியாயிரம்")));
+        addKnownPrivate(new KnownNumberComponent(NumberSystemFeature.NumberSystem.JEYAPANDIAN_K,6, 1, TamilWord.from("இரண்டுமடியாயிரம்")));
+        addKnownPrivate(new KnownNumberComponent(NumberSystemFeature.NumberSystem.JEYAPANDIAN_K,9, 1, TamilWord.from("மும்மடியாயிரம்")));
+        addKnownPrivate(new KnownNumberComponent(NumberSystemFeature.NumberSystem.JEYAPANDIAN_K,9, 1, TamilWord.from("மூன்றுமடியாயிரம்")));
+        addKnownPrivate(new KnownNumberComponent(NumberSystemFeature.NumberSystem.JEYAPANDIAN_K,12, 1, TamilWord.from("நான்மடியாயிரம்")));
+        addKnownPrivate(new KnownNumberComponent(NumberSystemFeature.NumberSystem.JEYAPANDIAN_K,12, 1, TamilWord.from("நான்குமடியாயிரம்")));
+        addKnownPrivate(new KnownNumberComponent(NumberSystemFeature.NumberSystem.JEYAPANDIAN_K,15, 1, TamilWord.from("ஐமடியாயிரம்")));
+        addKnownPrivate(new KnownNumberComponent(NumberSystemFeature.NumberSystem.JEYAPANDIAN_K,15, 1, TamilWord.from("ஐந்துமடியாயிரம்")));
+        addKnownPrivate(new KnownNumberComponent(NumberSystemFeature.NumberSystem.JEYAPANDIAN_K,18, 1, TamilWord.from("அறுமடியாயிரம்")));
+        addKnownPrivate(new KnownNumberComponent(NumberSystemFeature.NumberSystem.JEYAPANDIAN_K,18, 1, TamilWord.from("ஆறுமடியாயிரம்")));
+        addKnownPrivate(new KnownNumberComponent(NumberSystemFeature.NumberSystem.JEYAPANDIAN_K,21, 1, TamilWord.from("எழுமடியாயிரம்")));
+        addKnownPrivate(new KnownNumberComponent(NumberSystemFeature.NumberSystem.JEYAPANDIAN_K,21, 1, TamilWord.from("ஏழுமடியாயிரம்")));
+        addKnownPrivate(new KnownNumberComponent(NumberSystemFeature.NumberSystem.JEYAPANDIAN_K,24, 1, TamilWord.from("எண்மடியாயிரம்")));
+        addKnownPrivate(new KnownNumberComponent(NumberSystemFeature.NumberSystem.JEYAPANDIAN_K,24, 1, TamilWord.from("எட்டுமடியாயிரம்")));
+        addKnownPrivate(new KnownNumberComponent(NumberSystemFeature.NumberSystem.JEYAPANDIAN_K,27, 1, TamilWord.from("ஒன்பதுமடியாயிரம்")));
+        addKnownPrivate(new KnownNumberComponent(NumberSystemFeature.NumberSystem.JEYAPANDIAN_K,30, 1, TamilWord.from("பன்மடியாயிரம்")));
+        addKnownPrivate(new KnownNumberComponent(NumberSystemFeature.NumberSystem.JEYAPANDIAN_K,30, 1, TamilWord.from("பத்துமடியாயிரம்")));
 
-        addKnownPrivate(new KnownNumberComponent(6, 1, TamilWord.from("இருமடியாயிரத்து")));
-        addKnownPrivate(new KnownNumberComponent(6, 1, TamilWord.from("இரண்டுமடியாயிரத்து")));
-        addKnownPrivate(new KnownNumberComponent(9, 1, TamilWord.from("மும்மடியாயிரத்து")));
-        addKnownPrivate(new KnownNumberComponent(9, 1, TamilWord.from("மூன்றுமடியாயிரத்து")));
-        addKnownPrivate(new KnownNumberComponent(12, 1, TamilWord.from("நான்மடியாயிரத்து")));
-        addKnownPrivate(new KnownNumberComponent(12, 1, TamilWord.from("நான்குமடியாயிரத்து")));
-        addKnownPrivate(new KnownNumberComponent(15, 1, TamilWord.from("ஐமடியாயிரத்து")));
-        addKnownPrivate(new KnownNumberComponent(15, 1, TamilWord.from("ஐந்துமடியாயிரத்து")));
-        addKnownPrivate(new KnownNumberComponent(18, 1, TamilWord.from("அறுமடியாயிரத்து ")));
-        addKnownPrivate(new KnownNumberComponent(18, 1, TamilWord.from("ஆறுமடியாயிரத்து ")));
-        addKnownPrivate(new KnownNumberComponent(21, 1, TamilWord.from("எழுமடியாயிரத்து")));
-        addKnownPrivate(new KnownNumberComponent(21, 1, TamilWord.from("ஏழுமடியாயிரத்து")));
-        addKnownPrivate(new KnownNumberComponent(24, 1, TamilWord.from("எண்மடியாயிரத்து")));
-        addKnownPrivate(new KnownNumberComponent(24, 1, TamilWord.from("எட்டுமடியாயிரத்து")));
-        addKnownPrivate(new KnownNumberComponent(27, 1, TamilWord.from("ஒன்பதுமடியாயிரத்து")));
-        addKnownPrivate(new KnownNumberComponent(30, 1, TamilWord.from("பன்மடியாயிரத்து")));
-        addKnownPrivate(new KnownNumberComponent(30, 1, TamilWord.from("பத்துமடியாயிரத்து")));
+        addKnownPrivate(new KnownNumberComponent(NumberSystemFeature.NumberSystem.JEYAPANDIAN_K,6, 1, TamilWord.from("இருமடியாயிரத்து")));
+        addKnownPrivate(new KnownNumberComponent(NumberSystemFeature.NumberSystem.JEYAPANDIAN_K,6, 1, TamilWord.from("இரண்டுமடியாயிரத்து")));
+        addKnownPrivate(new KnownNumberComponent(NumberSystemFeature.NumberSystem.JEYAPANDIAN_K,9, 1, TamilWord.from("மும்மடியாயிரத்து")));
+        addKnownPrivate(new KnownNumberComponent(NumberSystemFeature.NumberSystem.JEYAPANDIAN_K,9, 1, TamilWord.from("மூன்றுமடியாயிரத்து")));
+        addKnownPrivate(new KnownNumberComponent(NumberSystemFeature.NumberSystem.JEYAPANDIAN_K,12, 1, TamilWord.from("நான்மடியாயிரத்து")));
+        addKnownPrivate(new KnownNumberComponent(NumberSystemFeature.NumberSystem.JEYAPANDIAN_K,12, 1, TamilWord.from("நான்குமடியாயிரத்து")));
+        addKnownPrivate(new KnownNumberComponent(NumberSystemFeature.NumberSystem.JEYAPANDIAN_K,15, 1, TamilWord.from("ஐமடியாயிரத்து")));
+        addKnownPrivate(new KnownNumberComponent(NumberSystemFeature.NumberSystem.JEYAPANDIAN_K,15, 1, TamilWord.from("ஐந்துமடியாயிரத்து")));
+        addKnownPrivate(new KnownNumberComponent(NumberSystemFeature.NumberSystem.JEYAPANDIAN_K,18, 1, TamilWord.from("அறுமடியாயிரத்து ")));
+        addKnownPrivate(new KnownNumberComponent(NumberSystemFeature.NumberSystem.JEYAPANDIAN_K,18, 1, TamilWord.from("ஆறுமடியாயிரத்து ")));
+        addKnownPrivate(new KnownNumberComponent(NumberSystemFeature.NumberSystem.JEYAPANDIAN_K,21, 1, TamilWord.from("எழுமடியாயிரத்து")));
+        addKnownPrivate(new KnownNumberComponent(NumberSystemFeature.NumberSystem.JEYAPANDIAN_K,21, 1, TamilWord.from("ஏழுமடியாயிரத்து")));
+        addKnownPrivate(new KnownNumberComponent(NumberSystemFeature.NumberSystem.JEYAPANDIAN_K,24, 1, TamilWord.from("எண்மடியாயிரத்து")));
+        addKnownPrivate(new KnownNumberComponent(NumberSystemFeature.NumberSystem.JEYAPANDIAN_K,24, 1, TamilWord.from("எட்டுமடியாயிரத்து")));
+        addKnownPrivate(new KnownNumberComponent(NumberSystemFeature.NumberSystem.JEYAPANDIAN_K,27, 1, TamilWord.from("ஒன்பதுமடியாயிரத்து")));
+        addKnownPrivate(new KnownNumberComponent(NumberSystemFeature.NumberSystem.JEYAPANDIAN_K,30, 1, TamilWord.from("பன்மடியாயிரத்து")));
+        addKnownPrivate(new KnownNumberComponent(NumberSystemFeature.NumberSystem.JEYAPANDIAN_K,30, 1, TamilWord.from("பத்துமடியாயிரத்து")));
 
         //wiki https://en.wikipedia.org/wiki/Tamil_numerals#Multiples_of_ten_.28.E0.AE.AA.E0.AE.A4.E0.AE.BF.E0.AE.A9.E0.AF.8D.E0.AE.AA.E0.AF.86.E0.AE.B0.E0.AF.81.E0.AE.95.E0.AF.8D.E0.AE.95.E0.AE.AE.E0.AF.8D.29
-        addKnownPrivate(new KnownNumberComponent(5, 1, TamilWord.from("நூறாயிரம்")));
-        addKnownPrivate(new KnownNumberComponent(5, 1, TamilWord.from("நூறாயிரத்து")));
+        addKnownPrivate(new KnownNumberComponent(NumberSystemFeature.NumberSystem.WIKI,5, 1, TamilWord.from("நூறாயிரம்")));
+        addKnownPrivate(new KnownNumberComponent(NumberSystemFeature.NumberSystem.WIKI,5, 1, TamilWord.from("நூறாயிரத்து")));
 
-        addKnownPrivate(new KnownNumberComponent(6, 1, TamilWord.from("மெய்யிரம்")));
-        addKnownPrivate(new KnownNumberComponent(6, 1, TamilWord.from("மெய்யிரத்து")));
-        addKnownPrivate(new KnownNumberComponent(9, 1, TamilWord.from("தொள்ளுண்")));
-        addKnownPrivate(new KnownNumberComponent(9, 1, TamilWord.from("தொள்ளுண்ணே")));
-        addKnownPrivate(new KnownNumberComponent(12, 1, TamilWord.from("ஈகியம்")));
-        addKnownPrivate(new KnownNumberComponent(12, 1, TamilWord.from("ஈகியத்து")));
-        addKnownPrivate(new KnownNumberComponent(15, 1, TamilWord.from("நெளை")));
-        addKnownPrivate(new KnownNumberComponent(15, 1, TamilWord.from("நெளையே")));
-        addKnownPrivate(new KnownNumberComponent(18, 1, TamilWord.from("இளஞ்சி")));
-        addKnownPrivate(new KnownNumberComponent(18, 1, TamilWord.from("இளஞ்சியே")));
-        addKnownPrivate(new KnownNumberComponent(20, 1, TamilWord.from("வெள்ளம்")));
-        addKnownPrivate(new KnownNumberComponent(20, 1, TamilWord.from("வெள்ளத்து")));
-        addKnownPrivate(new KnownNumberComponent(21, 1, TamilWord.from("ஆம்பல்")));
-        addKnownPrivate(new KnownNumberComponent(21, 1, TamilWord.from("ஆம்பலே")));
+        addKnownPrivate(new KnownNumberComponent(NumberSystemFeature.NumberSystem.WIKI,6, 1, TamilWord.from("மெய்யிரம்")));
+        addKnownPrivate(new KnownNumberComponent(NumberSystemFeature.NumberSystem.WIKI,6, 1, TamilWord.from("மெய்யிரத்து")));
+        addKnownPrivate(new KnownNumberComponent(NumberSystemFeature.NumberSystem.WIKI,9, 1, TamilWord.from("தொள்ளுண்")));
+        addKnownPrivate(new KnownNumberComponent(NumberSystemFeature.NumberSystem.WIKI,9, 1, TamilWord.from("தொள்ளுண்ணே")));
+        addKnownPrivate(new KnownNumberComponent(NumberSystemFeature.NumberSystem.WIKI,12, 1, TamilWord.from("ஈகியம்")));
+        addKnownPrivate(new KnownNumberComponent(NumberSystemFeature.NumberSystem.WIKI,12, 1, TamilWord.from("ஈகியத்து")));
+        addKnownPrivate(new KnownNumberComponent(NumberSystemFeature.NumberSystem.WIKI,15, 1, TamilWord.from("நெளை")));
+        addKnownPrivate(new KnownNumberComponent(NumberSystemFeature.NumberSystem.WIKI,15, 1, TamilWord.from("நெளையே")));
+        addKnownPrivate(new KnownNumberComponent(NumberSystemFeature.NumberSystem.WIKI,18, 1, TamilWord.from("இளஞ்சி")));
+        addKnownPrivate(new KnownNumberComponent(NumberSystemFeature.NumberSystem.WIKI,18, 1, TamilWord.from("இளஞ்சியே")));
+        addKnownPrivate(new KnownNumberComponent(NumberSystemFeature.NumberSystem.WIKI,20, 1, TamilWord.from("வெள்ளம்")));
+        addKnownPrivate(new KnownNumberComponent(NumberSystemFeature.NumberSystem.WIKI,20, 1, TamilWord.from("வெள்ளத்து")));
+        addKnownPrivate(new KnownNumberComponent(NumberSystemFeature.NumberSystem.WIKI,21, 1, TamilWord.from("ஆம்பல்")));
+        addKnownPrivate(new KnownNumberComponent(NumberSystemFeature.NumberSystem.WIKI,21, 1, TamilWord.from("ஆம்பலே")));
 
 
 

@@ -53,7 +53,7 @@ public class WordGeneratorFromVinaiyadi extends WordsGenerator {
 
             //thodar
 
-
+//
 //            table = DefinitionFactory.generateVinaimuttu("thodar-muttu-vinaimuttu", root.getRoot(), true);
 //            PersistenceInterface.addDerivativeWithTenseAndPaal(container, true, table, true, true, VinaiMuttu.class);
 //

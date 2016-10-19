@@ -27,7 +27,7 @@ public class WebPageRegExFinder extends AbstractJSoupJob {
 
     FeaturedPatternsList patternsList;
 
-    protected  int matchCount = 0;
+    protected int matchCount = 0;
     String pattern = null;
     IPropertyFinder aliasFinder = null;
     String baseFeatures = null;
@@ -62,17 +62,29 @@ public class WebPageRegExFinder extends AbstractJSoupJob {
 
         int index = 0;
         while (matcher.find()) {
+            SimpleMatcher.MatchingModel model = matcher.buildMatchingModel();
+            System.out.println("\n\n===> Model:" + model.asJson().toString(3));
+
+            System.out.println("\n\n===> Model:" + model.asGoJsJson().toString(3));
 
             buffer.append(text.substring(index, matcher.start()));
 
             index = matcher.end();
+
             String tamil = text.substring(matcher.start(), index);
             matchCount++;
 
-            if (tamil.equals(String.valueOf(AbstractCharacter.ZWNBSP))) {
-                tamil ="zero-width-bom";
+            String pattern = TamilWord.from(tamil, true).toUnicodeStringRepresentation(FeatureSet.EMPTY);
+
+            if (tamil.length() > 0) {
+                pattern +=  ":" + Character.UnicodeBlock.of(tamil.charAt(0)).toString();
             }
-            buffer.append("<span id='" + tamil_result_id_prefix  + matchCount + "'  class='error'>" + tamil + "</span>");
+
+            if (tamil.equals(String.valueOf(AbstractCharacter.ZWNBSP))) {
+                tamil = "zero-width-bom";
+            }
+
+            buffer.append("<span title='" + pattern + "'  id='" + tamil_result_id_prefix + matchCount + "'  class='error'>" + tamil + "</span>");
             buffer.append("<sup  class='error'>" + matchCount + "</sup>");
 
         }

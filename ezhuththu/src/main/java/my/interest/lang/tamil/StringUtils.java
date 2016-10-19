@@ -33,7 +33,7 @@ public class StringUtils {
 
 
         boolean escaping = false;
-        StringBuffer buffer = new StringBuffer();
+        StringBuilder buffer = new StringBuilder();
         for (int i = 0; i < where.length(); i++) {
 
             char c = where.charAt(i);
@@ -229,6 +229,7 @@ public class StringUtils {
 
         public  IndexContext resolveInner(String openmarker, String closeMarker,boolean exceptionWhenNotAllResolved, boolean esecapeUnresolved, boolean keepUnresolved, int level) {
             if (moreToResolve && level <15) {
+//                System.out.println("level:" + level);
                 IndexContext innerContext =  replaceWithContext(this, openmarker, closeMarker, finalString, this.keys, exceptionWhenNotAllResolved, esecapeUnresolved, keepUnresolved, level);
 
                 return innerContext;
@@ -245,6 +246,16 @@ public class StringUtils {
         public IndexContext parent = null;
         private IPropertyFinder keys = null;
 
+        public void release () {
+            this.finalString = null;
+            this.ranges.clear();
+            this.ranges = null;
+           if (parent != null) {
+               parent.release();
+               parent = null;
+           }
+        }
+
     }
 
     public static String replace(String openmarker, String closeMarker, String origString, IPropertyFinder keys, boolean exceptionWhenNotAllResolved, boolean esecapeUnresolved, boolean keepUnresolved) {
@@ -255,7 +266,11 @@ public class StringUtils {
         return replaceWithContext(null, openmarker, closeMarker, origString, keys,exceptionWhenNotAllResolved, esecapeUnresolved, keepUnresolved, 0);
     }
     public static IndexContext replaceWithContext(IndexContext parent, String openmarker, String closeMarker, String origString, IPropertyFinder keys, boolean exceptionWhenNotAllResolved, boolean esecapeUnresolved, boolean keepUnresolved, int depth) {
-     //  System.out.println("Resolving:" + origString);
+//        System.out.println("Used Memory MB:"
+//                + (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / 1000000);
+//        System.out.println("Free Memory MB:"
+//                + Runtime.getRuntime().freeMemory() / 1000000);
+       //System.out.println("Resolving:" + origString);
         if (closeMarker == null) {
             openmarker = null;
         }
@@ -268,7 +283,7 @@ public class StringUtils {
         context.keys = keys;
         context.finalString = origString;
         if (keys == null || origString == null) return context;
-        StringBuffer finalString = new StringBuffer();
+        StringBuilder finalString = new StringBuilder();
         int index = 0;
         int i = 0;
         String key = null;
