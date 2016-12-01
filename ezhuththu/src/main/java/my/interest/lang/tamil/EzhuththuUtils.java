@@ -537,6 +537,20 @@ public class EzhuththuUtils {
 
     }
 
+
+    public static Set<TamilCharacter> filterSubtraction(Set<TamilCharacter> one, Set<TamilCharacter> two) {
+        Set<TamilCharacter> inter = new LinkedHashSet<TamilCharacter>();
+        Iterator<TamilCharacter> it = one.iterator();
+        while (it.hasNext()) {
+            TamilCharacter ch = it.next();
+            if (!two.contains(ch)) {
+                inter.add(ch);
+            }
+        }
+        return inter;
+
+    }
+
     public static Set<TamilCharacter> filterKuRil() {
         return filterTamilCharacters(new TamilLetterFilter() {
             public boolean filter(TamilCharacter tamil) {
@@ -755,6 +769,7 @@ public class EzhuththuUtils {
             }
         });
     }
+
 
     public static Set<TamilCharacter> filterOut(final Set<TamilCharacter> set) {
         return filterTamilCharacters(new TamilLetterFilter() {

@@ -31,8 +31,17 @@ public interface TamilCharacterSetCalculator {
     public Set<TamilCharacter>  find (String query) throws TamilPlatformException;
 
     /**
+     * Evaluates set expression involving Tamil letter sets
+     * @param expression the expression
+     * @return the result of the evaluated expression
+     * @throws TamilPlatformException
+     */
+    public Set<TamilCharacter>  evaluate (String expression) throws TamilPlatformException;
+
+    /**
      * Returns all the known letter sets
      * @return  the set of letter set descriptions.
      */
     public Set<EzhuththuSetDescription> getEzhuththuSetDescriptions();
 }
+
