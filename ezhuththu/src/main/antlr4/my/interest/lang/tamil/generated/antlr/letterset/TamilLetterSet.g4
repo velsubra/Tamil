@@ -2,24 +2,40 @@ grammar TamilLetterSet;
 
 
 expression
-   : term ((UNION | INTERSECTION | SUBTRACTION | MULTIPLICATION) term)*
+   : term ((UNION | INTERSECTION | SUBTRACTION | MULTIPLICATION ) term)*
    ;
 
 
 
 term
-   : direct_variable = VARIABLE
+   : direct_part = SIMPLE_PART
    | simple_expression = closed_expression
    | negated_expression = NEGATION closed_expression
-   | negated_variable = NEGATION VARIABLE
+   | negated_part = NEGATION SIMPLE_PART
    ;
 
 closed_expression
    : LPAREN expression RPAREN
    ;
 
-VARIABLE
-   :  (CONSTANT_SET | LETTER_SYMBOL+)
+
+
+UNION
+  : UNION_SYMBOL | ALLATHU
+  ;
+
+
+ALLATHU
+  : 'allathu' | 'அல்லது'
+  ;
+
+
+SIMPLE_PART
+   :  (CONSTANT_SET | VARIABLE_SET)
+   ;
+
+VARIABLE_SET
+   : LETTER_SYMBOL+
    ;
 
 
@@ -37,7 +53,8 @@ RPAREN
    ;
 
 
-UNION
+
+UNION_SYMBOL
    : '∪' | '+' | '|'
    ;
 

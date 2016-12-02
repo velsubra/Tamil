@@ -82,6 +82,14 @@ public class LetterSetTest {
     }
 
     @Test
+    public void test6ConstantNegation() {
+
+        Set<TamilCharacter> set1 = TamilFactory.getTamilCharacterSetCalculator().evaluate("![a]");
+        System.out.println(set1);
+        Assert.assertEquals(246,set1.size());
+    }
+
+    @Test
     public void test7Constant() {
 
         Set<TamilCharacter> set1 = TamilFactory.getTamilCharacterSetCalculator().evaluate("[a,mmaa]+mey");
@@ -121,6 +129,22 @@ public class LetterSetTest {
         Set<TamilCharacter> set1 = TamilFactory.getTamilCharacterSetCalculator().evaluate("[k,d]*[A]");
         System.out.println(set1);
         Assert.assertEquals(2,set1.size());
+    }
+
+    @Test
+    public void test9allathu() {
+
+        Set<TamilCharacter> set1 = TamilFactory.getTamilCharacterSetCalculator().evaluate("உயிர் allathu மெய்");
+        System.out.println(set1);
+        Assert.assertEquals(30,set1.size());
+    }
+
+    @Test
+    public void test9allathu1() {
+
+        Set<TamilCharacter> set1 = TamilFactory.getTamilCharacterSetCalculator().evaluate("உயிர் அல்லது மெய்");
+        System.out.println(set1);
+        Assert.assertEquals(30,set1.size());
     }
 
 }

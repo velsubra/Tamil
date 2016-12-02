@@ -207,7 +207,7 @@ public class TamilEzhuththuSetEvaluator extends Evaluator<EzhuththuSetDescriptio
 
         List<PostFixExpressionItem> ret = new LinkedList<PostFixExpressionItem>();
 
-        if (term.direct_variable != null) {
+        if (term.direct_part != null) {
             TerminalNode terminalNode = (TerminalNode) term.children.get(0);
 
             String firstSymbolicName = parser.getVocabulary().getSymbolicName(terminalNode.getSymbol().getType());
@@ -222,7 +222,7 @@ public class TamilEzhuththuSetEvaluator extends Evaluator<EzhuththuSetDescriptio
 
             ret.addAll(toPostFix(parser, ((TamilLetterSetParser.Closed_expressionContext) term.children.get(1)).expression()));
             ret.add(toUnaryOperatorItem(parser, terminalNode));
-        } else if (term.negated_variable != null) {
+        } else if (term.negated_part != null) {
             TerminalNode terminalNode = (TerminalNode) term.children.get(0);
 
             TerminalNode secondNode = (TerminalNode) term.children.get(1);
