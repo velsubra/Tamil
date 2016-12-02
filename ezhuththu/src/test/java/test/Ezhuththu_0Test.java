@@ -75,7 +75,7 @@ public class Ezhuththu_0Test {
        // Assert.assertEquals(209, TamilFactory.getRegEXCompiler().getUnicodeBMPBlocksRegEXDescriptions().size());
 
         //BMP blocks
-        Assert.assertEquals(153, TamilFactory.getRegEXCompiler().getUnicodeBMPBlocksRegEXDescriptions().size());
+        Assert.assertEquals(156, TamilFactory.getRegEXCompiler().getUnicodeBMPBlocksRegEXDescriptions().size());
 
     }
 

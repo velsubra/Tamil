@@ -1,5 +1,6 @@
 package my.interest.lang.tamil.impl;
 
+import common.lang.impl.AbstractCharacter;
 import my.interest.lang.tamil.EzhuththuUtils;
 import my.interest.lang.tamil.generated.antlr.letterset.TamilLetterSetLexer;
 import my.interest.lang.tamil.generated.antlr.letterset.TamilLetterSetParser;
@@ -10,11 +11,9 @@ import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import tamil.lang.TamilCharacter;
 import tamil.lang.TamilFactory;
+import tamil.lang.TamilWord;
 import tamil.lang.api.expression.*;
-import tamil.lang.api.expression.model.BinaryOperatorItem;
-import tamil.lang.api.expression.model.PostFixExpressionItem;
-import tamil.lang.api.expression.model.UnaryOperatorItem;
-import tamil.lang.api.expression.model.VariableItem;
+import tamil.lang.api.expression.model.*;
 import tamil.lang.api.ezhuththu.EzhuththuSetDescription;
 import tamil.lang.exception.service.ServiceException;
 
@@ -46,8 +45,30 @@ public class TamilEzhuththuSetEvaluator extends Evaluator<EzhuththuSetDescriptio
         DEFAULT.registerOperator(new UnionOperatorImpl());
         DEFAULT.registerOperator(new IntersectionOperatorImpl());
         DEFAULT.registerOperator(new SubtractionOperatorImpl());
+        DEFAULT.registerOperator(new MultiplicationOperatorImpl());
+
+        DEFAULT.setVariableResolver(new VariableResolverImpl());
     }
 
+    static class VariableResolverImpl implements VariableResolver<EzhuththuSetDescription> {
+
+        public Operand<EzhuththuSetDescription> resolve(String variable) throws ServiceException {
+
+            Set<TamilCharacter> set = null;
+            if (variable.startsWith("[") && variable.endsWith("]")) {
+                TamilWord word = TamilFactory.getTransliterator(null).transliterate(variable.substring(1, variable.length() -1));
+                set = new HashSet<TamilCharacter>();
+                 for( AbstractCharacter ac : word) {
+                     if (ac.isPureTamilLetter()) {
+                         set.add((TamilCharacter)ac);
+                     }
+                 }
+            } else {
+                set = TamilFactory.getTamilCharacterSetCalculator().find(variable);
+            }
+            return new OperandImpl(new EzhuththuSetDescriptionImpl(variable, set));
+        }
+    }
 
     static class OperandImpl implements Operand<EzhuththuSetDescription> {
         EzhuththuSetDescription setDescription = null;
@@ -83,6 +104,26 @@ public class TamilEzhuththuSetEvaluator extends Evaluator<EzhuththuSetDescriptio
         }
     }
 
+
+    static class MultiplicationOperatorImpl implements BinaryOperator<EzhuththuSetDescription> {
+
+        public OperatorDefinition getOperator() {
+            OperatorDefinition definition = new OperatorDefinition();
+            definition.setName("MULTIPLICATION");
+            return definition;
+        }
+
+        public Operand<EzhuththuSetDescription> perform(Operand<EzhuththuSetDescription> left, Operand<EzhuththuSetDescription> right) throws ServiceException {
+
+            Set<TamilCharacter> ret = new HashSet<TamilCharacter>();
+            for (TamilCharacter l : left.getValue().getCharacterSet()) {
+                for (TamilCharacter r : right.getValue().getCharacterSet()) {
+                    ret.add(l.multiply(r));
+                }
+            }
+            return new OperandImpl(new EzhuththuSetDescriptionImpl(left.getValue().getName() + "*" + right.getValue().getName(), ret));
+        }
+    }
 
     static class SubtractionOperatorImpl implements BinaryOperator<EzhuththuSetDescription> {
 
@@ -246,7 +287,7 @@ public class TamilEzhuththuSetEvaluator extends Evaluator<EzhuththuSetDescriptio
         if (operation) {
             return new BinaryOperatorItem(symbolicName, node.getText(), terminalNode.getSymbol().getTokenIndex());
         } else {
-            throw new ServiceException(node.getText() + " is not registered to be binary operator.");
+            throw new ServiceException(node.getText() + " is not registered to be a binary operator.");
         }
     }
 

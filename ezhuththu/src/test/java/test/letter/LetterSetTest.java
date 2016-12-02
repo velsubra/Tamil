@@ -81,6 +81,48 @@ public class LetterSetTest {
         Assert.assertEquals(235,set1.size());
     }
 
+    @Test
+    public void test7Constant() {
+
+        Set<TamilCharacter> set1 = TamilFactory.getTamilCharacterSetCalculator().evaluate("[a,mmaa]+mey");
+        System.out.println(set1);
+        Assert.assertEquals(20,set1.size());
+    }
+
+
+    @Test
+    public void test7Constant1() {
+
+        Set<TamilCharacter> set1 = TamilFactory.getTamilCharacterSetCalculator().evaluate("[]+mey");
+        System.out.println(set1);
+        Assert.assertEquals(18,set1.size());
+    }
+
+
+    @Test
+    public void test7Simplemulti() {
+
+        Set<TamilCharacter> set1 = TamilFactory.getTamilCharacterSetCalculator().evaluate("mey*uyir");
+        System.out.println(set1);
+        Assert.assertEquals(216,set1.size());
+    }
+
+    @Test
+    public void test8Simplemulti() {
+
+        Set<TamilCharacter> set1 = TamilFactory.getTamilCharacterSetCalculator().evaluate("[kd]*uyir");
+        System.out.println(set1);
+        Assert.assertEquals(24,set1.size());
+    }
+
+    @Test
+    public void test9Simplemulti() {
+
+        Set<TamilCharacter> set1 = TamilFactory.getTamilCharacterSetCalculator().evaluate("[k,d]*[A]");
+        System.out.println(set1);
+        Assert.assertEquals(2,set1.size());
+    }
+
 }
 
 

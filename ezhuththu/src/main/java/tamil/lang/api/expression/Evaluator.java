@@ -1,10 +1,7 @@
 package tamil.lang.api.expression;
 
 import tamil.lang.TamilFactory;
-import tamil.lang.api.expression.model.BinaryOperatorItem;
-import tamil.lang.api.expression.model.PostFixExpressionItem;
-import tamil.lang.api.expression.model.UnaryOperatorItem;
-import tamil.lang.api.expression.model.VariableItem;
+import tamil.lang.api.expression.model.*;
 import tamil.lang.exception.service.ServiceException;
 
 import java.util.HashMap;
@@ -21,10 +18,14 @@ public abstract class Evaluator<T> {
 
     private Map<String, UnaryOperator<T>> unaryOperators = new HashMap();
     private Map<String, BinaryOperator<T>> binaryOperators = new HashMap();
-
+    VariableResolver<T> resolver = null;
     protected Map<String, OperatorDefinition> operatorDefinitionMap = new HashMap<String, OperatorDefinition>();
 
     protected Map<String, Operand<T>> knownOperands = new HashMap();
+
+    public void setVariableResolver(VariableResolver<T> resolver) {
+        this.resolver = resolver;
+    }
 
 
     public void registerOperator(UnaryOperator<T> operator) {
@@ -54,6 +55,9 @@ public abstract class Evaluator<T> {
                 Operand<T> value = knownOperands.get(item.getText());
                 if (value == null) {
                     value = knownOperands.get(TamilFactory.getTransliterator(null).transliterate(item.getText()).toString());
+                }
+                if (value == null && resolver != null) {
+                    value = resolver.resolve(item.getText());
                 }
 
                 if (value == null) {

@@ -19,9 +19,13 @@ closed_expression
    ;
 
 VARIABLE
-   :  LETTER_SYMBOL+
+   :  (CONSTANT_SET | LETTER_SYMBOL+)
    ;
 
+
+CONSTANT_SET
+   : ('[' (LETTER_SYMBOL ','?)* ']')
+   ;
 
 LPAREN
    : '('
@@ -55,10 +59,12 @@ NEGATION
    ;
 
 
-
+TAMIL_LETTER_SYMBOL
+   : ('\u0B80' .. '\u0BFF')
+   ;
 
 LETTER_SYMBOL
-   : ('a' .. 'z') | ('A' .. 'Z') | ('\u0B80' .. '\u0BFF')
+   : ('a' .. 'z') | ('A' .. 'Z') | TAMIL_LETTER_SYMBOL
    ;
 
 

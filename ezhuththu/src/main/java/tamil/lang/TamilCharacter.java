@@ -662,5 +662,38 @@ public abstract class TamilCharacter extends AbstractCharacter {
      */
     public abstract boolean isUnicodeSequenceUnique();
 
+    /**
+     * multiplies two tamil characters!
+     *
+     * @param t the letter to multiply
+     * @return
+     */
+    public TamilCharacter multiply(TamilCharacter t) {
+        if (isAaythavezhuththu() || t.isAaythavezhuththu()) {
+            return t;
+        }
+        if (isUyirezhuththu()) {
+            if (t.isUyirezhuththu()) {
+                if (this == TamilSimpleCharacter.I || this == TamilSimpleCharacter.AA || this == TamilSimpleCharacter.E | this == TamilSimpleCharacter.EE) {
+                    return TamilCompoundCharacter.IY.addUyir((TamilSimpleCharacter) t);
+                } else {
+                    return TamilCompoundCharacter.IV.addUyir((TamilSimpleCharacter) t);
+                }
+//            }
+//            else if (t.isMeyyezhuththu()) {
+//                return t.addUyir((TamilSimpleCharacter) this);
+            } else {
+                return TamilSimpleCharacter.AKTHU;
+            }
+        } else if (isMeyyezhuththu()) {
+            if (t.isUyirezhuththu()) {
+                return addUyir((TamilSimpleCharacter) t);
+            } else {
+                return TamilSimpleCharacter.AKTHU;
+            }
+        } else {
+            return TamilSimpleCharacter.AKTHU;
+        }
+    }
 
 }

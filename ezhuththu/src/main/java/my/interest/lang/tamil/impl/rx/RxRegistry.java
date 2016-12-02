@@ -556,7 +556,7 @@ public class RxRegistry implements IPropertyFinder {
                 }
             }
             //Do split and figure out
-            Set<TamilCharacter> chars = TamilFactory.getTamilCharacterSetCalculator().find(p1);
+            Set<TamilCharacter> chars = TamilFactory.getTamilCharacterSetCalculator().evaluate(p1);
             if (chars == null) {
 
                 return null;
