@@ -717,7 +717,7 @@ var TamilFactory = new function () {
             }
             if (!done) { // say if there is an issue with applet.
 
-                if (word.length > 20) {
+                if (word.length > 1) {
                     method = "PUT";
                     url = this.puturl + (features && features != "0" ? "?features=" + features : "");
                     content = word;

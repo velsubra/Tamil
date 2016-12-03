@@ -30,7 +30,9 @@ public abstract class PostFixExpressionItem {
         return sourceIndex;
     }
 
-
+    public String toString() {
+        return getText();
+    }
 
     private int sourceIndex;
 }

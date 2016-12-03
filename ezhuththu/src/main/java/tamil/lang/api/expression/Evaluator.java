@@ -12,38 +12,70 @@ import java.util.Stack;
 /**
  * Created by velsubra on 11/28/16.
  * <p>
- * Generic evaluator of a post fix generic expression!
+ * Generic evaluator for an post-fix generic expression!
  */
 public abstract class Evaluator<T> {
 
     private Map<String, UnaryOperator<T>> unaryOperators = new HashMap();
     private Map<String, BinaryOperator<T>> binaryOperators = new HashMap();
-    VariableResolver<T> resolver = null;
     protected Map<String, OperatorDefinition> operatorDefinitionMap = new HashMap<String, OperatorDefinition>();
-
     protected Map<String, Operand<T>> knownOperands = new HashMap();
+    VariableResolver<T> resolver = null;
 
+
+    /**
+     * Sets an variable resolver
+     * @param resolver the resolver
+     */
     public void setVariableResolver(VariableResolver<T> resolver) {
         this.resolver = resolver;
     }
 
-
+    /**
+     * Registers an Unary operator
+     * @param operator the operator
+     */
     public void registerOperator(UnaryOperator<T> operator) {
         operatorDefinitionMap.put(operator.getOperator().getName(), operator.getOperator());
         unaryOperators.put(operator.getOperator().getName(), operator);
     }
 
+    /**
+     * Registers a binary operator
+     * @param operator the operator
+     */
     public void registerOperator(BinaryOperator<T> operator) {
         operatorDefinitionMap.put(operator.getOperator().getName(), operator.getOperator());
         binaryOperators.put(operator.getOperator().getName(), operator);
     }
 
+    /**
+     * Registers known constant values for a name
+     * @param name the name of the constance
+     * @param value the value of the constant
+     *
+     * @see #setVariableResolver(VariableResolver)  for all dynamic resolution.
+     */
     public void registerKnownOperand(String name, Operand<T> value) {
         knownOperands.put(name, value);
     }
 
+
+    /**
+     * Method to override for sub classes that are responsible for converting the expression to the post-fix form.
+     * @param infix the expression typically in the in-fix form
+     * @return the post-fix expression as a list of items
+     * @throws ServiceException
+     */
     public abstract List<? extends PostFixExpressionItem> generatePostFix(String infix) throws ServiceException;
 
+
+    /**
+     * The evaluator
+     * @param ex  the expression
+     * @return the evaluated value.
+     * @throws ServiceException
+     */
     public Operand<T> evaluate(String ex) throws ServiceException {
         List<? extends PostFixExpressionItem> items = generatePostFix(ex);
         if (items.isEmpty()) {

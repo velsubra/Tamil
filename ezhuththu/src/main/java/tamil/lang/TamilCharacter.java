@@ -663,8 +663,15 @@ public abstract class TamilCharacter extends AbstractCharacter {
     public abstract boolean isUnicodeSequenceUnique();
 
     /**
-     * multiplies two tamil characters!
+     * multiplies two tamil characters! Multiplication is defined as follows.
+     * <ol>
+     * <li> மெய் * உயிர்  = உயிர்மெய்யெழுத்து</li>
+     * <li> உயிர்1 * உயிர்2  = உயிர்1க்கான உடம்படுமெய் * உயிர்2</li>
+     * <li> ஆய்தம் * எழுத்து = எழுத்து</li>
+     * <li> எழுத்து * ஆய்தம் = எழுத்து</li>
      *
+     * <li> மற்றவைகளின் பெருக்குத்தொகை ஆய்தத்தைக்கொடுக்கும்</li>
+     *</ol>
      * @param t the letter to multiply
      * @return
      */

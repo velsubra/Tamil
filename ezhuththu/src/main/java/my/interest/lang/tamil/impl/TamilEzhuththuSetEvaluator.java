@@ -4,8 +4,7 @@ import common.lang.impl.AbstractCharacter;
 import my.interest.lang.tamil.EzhuththuUtils;
 import my.interest.lang.tamil.generated.antlr.letterset.TamilLetterSetLexer;
 import my.interest.lang.tamil.generated.antlr.letterset.TamilLetterSetParser;
-import org.antlr.v4.runtime.ANTLRInputStream;
-import org.antlr.v4.runtime.CommonTokenStream;
+import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.tree.ErrorNode;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
@@ -17,10 +16,13 @@ import tamil.lang.api.expression.model.*;
 import tamil.lang.api.ezhuththu.EzhuththuSetDescription;
 import tamil.lang.exception.service.ServiceException;
 
-import java.util.HashSet;
-import java.util.LinkedList;
+import javax.swing.*;
+import javax.xml.transform.ErrorListener;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.OutputStream;
+import java.util.*;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Created by velsubra on 11/30/16.
@@ -56,13 +58,13 @@ public class TamilEzhuththuSetEvaluator extends Evaluator<EzhuththuSetDescriptio
 
             Set<TamilCharacter> set = null;
             if (variable.startsWith("[") && variable.endsWith("]")) {
-                TamilWord word = TamilFactory.getTransliterator(null).transliterate(variable.substring(1, variable.length() -1));
+                TamilWord word = TamilFactory.getTransliterator(null).transliterate(variable.substring(1, variable.length() - 1));
                 set = new HashSet<TamilCharacter>();
-                 for( AbstractCharacter ac : word) {
-                     if (ac.isPureTamilLetter()) {
-                         set.add((TamilCharacter)ac);
-                     }
-                 }
+                for (AbstractCharacter ac : word) {
+                    if (ac.isPureTamilLetter()) {
+                        set.add((TamilCharacter) ac);
+                    }
+                }
             } else {
                 set = TamilFactory.getTamilCharacterSetCalculator().find(variable);
             }
@@ -136,7 +138,7 @@ public class TamilEzhuththuSetEvaluator extends Evaluator<EzhuththuSetDescriptio
         public Operand<EzhuththuSetDescription> perform(Operand<EzhuththuSetDescription> left, Operand<EzhuththuSetDescription> right) throws ServiceException {
 
             Set<TamilCharacter> ret = EzhuththuUtils.filterSubtraction(left.getValue().getCharacterSet(), right.getValue().getCharacterSet());
-            return new OperandImpl(new EzhuththuSetDescriptionImpl(left.getValue().getName() + "|" + right.getValue().getName(), ret));
+            return new OperandImpl(new EzhuththuSetDescriptionImpl(left.getValue().getName() + "-" + right.getValue().getName(), ret));
         }
     }
 
@@ -152,7 +154,7 @@ public class TamilEzhuththuSetEvaluator extends Evaluator<EzhuththuSetDescriptio
         public Operand<EzhuththuSetDescription> perform(Operand<EzhuththuSetDescription> left, Operand<EzhuththuSetDescription> right) throws ServiceException {
 
             Set<TamilCharacter> ret = EzhuththuUtils.filterIntersection(left.getValue().getCharacterSet(), right.getValue().getCharacterSet());
-            return new OperandImpl(new EzhuththuSetDescriptionImpl(left.getValue().getName() + "|" + right.getValue().getName(), ret));
+            return new OperandImpl(new EzhuththuSetDescriptionImpl(left.getValue().getName() + "&" + right.getValue().getName(), ret));
         }
     }
 
@@ -189,13 +191,61 @@ public class TamilEzhuththuSetEvaluator extends Evaluator<EzhuththuSetDescriptio
         }
     }
 
+    public static class ErrorListener extends BaseErrorListener {
+
+        public StringBuffer errors = new StringBuffer();
+        public boolean errorOccurred = false;
+
+        @Override
+        public void syntaxError(Recognizer<?, ?> recognizer,
+                                Object offendingSymbol,
+                                int line,
+                                int charPositionInLine,
+                                String msg,
+                                RecognitionException e) {
+            if (errorOccurred) {
+                errors.append("\n");
+            }
+            errors.append("line " + line + ":" + charPositionInLine + " " + msg);
+            errorOccurred = true;
+        }
+
+
+    }
+
+
+
     public List<? extends PostFixExpressionItem> generatePostFix(String infix) throws ServiceException {
+        return generatePostFix(infix, true);
+    }
+
+    public TamilLetterSetParser createParser(String infix) {
         TamilLetterSetLexer lexer = new TamilLetterSetLexer(new ANTLRInputStream(infix));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         TamilLetterSetParser parser = new TamilLetterSetParser(tokens);
-        TamilLetterSetParser.ExpressionContext ex = parser.expression();
+        return parser;
+    }
 
-        return toPostFix(parser, ex);
+    public TamilLetterSetParser.ExpressionContext createParserExpression(TamilLetterSetParser parser, ErrorListener listener) {
+
+        parser.getErrorListeners().clear();
+        parser.addErrorListener(listener);
+        TamilLetterSetParser.ExpressionContext ex = parser.expression();
+        return ex;
+    }
+
+    public List<? extends PostFixExpressionItem> generatePostFix(String infix, boolean throwExceptionOnSytaxErrors) throws ServiceException {
+        TamilLetterSetParser parser = createParser(infix);
+        ErrorListener listener = new ErrorListener();
+        TamilLetterSetParser.ExpressionContext ex = createParserExpression(parser, listener);
+
+        if (throwExceptionOnSytaxErrors && listener.errorOccurred) {
+            throw new ServiceException("Compilation Error(s)\n" + listener.errors);
+        }
+
+        List<PostFixExpressionItem> list = toPostFix(parser, ex);
+
+        return list;
 
     }
 
@@ -298,48 +348,51 @@ public class TamilEzhuththuSetEvaluator extends Evaluator<EzhuththuSetDescriptio
         }
     }
 
+
     private List<PostFixExpressionItem> toPostFix(TamilLetterSetParser parser, TamilLetterSetParser.ExpressionContext expressionContext) throws ServiceException {
         List<PostFixExpressionItem> ret = new LinkedList<PostFixExpressionItem>();
 
         for (int i = 0; i < expressionContext.children.size(); i++) {
             ParseTree node = expressionContext.children.get(i);
             checkErrorNode(node);
+
             if (TamilLetterSetParser.TermContext.class.isAssignableFrom(node.getClass())) {
                 TamilLetterSetParser.TermContext lerftTerm = (TamilLetterSetParser.TermContext) node;
                 ret.addAll(toPostFixTerm(parser, lerftTerm));
                 if (i < expressionContext.children.size() - 1) {
+
                     i++;
-                    ParseTree operation = expressionContext.children.get(i);
-                    checkErrorNode(operation);
-                    BinaryOperatorItem operationItem = toBinaryOperatorItem(parser, operation);
-                    if (i < expressionContext.children.size() - 1) {
-                        i++;
-                        ParseTree rightNode = expressionContext.children.get(i);
-                        checkErrorNode(rightNode);
-                        if (!TamilLetterSetParser.TermContext.class.isAssignableFrom(rightNode.getClass())) {
-                            throw new ServiceException("Operation " + operation.getText() + " is not followed by a valid term. The symbol is of type:" + rightNode.getClass().getName());
-                        }
+                    node = expressionContext.children.get(i);
+                    checkErrorNode(node);
 
-                        TamilLetterSetParser.TermContext rightTerm = (TamilLetterSetParser.TermContext) expressionContext.children.get(i);
-                        ret.addAll(toPostFixTerm(parser, rightTerm));
-                    } else {
-                        throw new ServiceException("Missing right operand after " + operation.getText());
-                    }
+                } else {
+                    continue;
+                }
+            }
 
 
-                    ret.add(operationItem);
-
-
+            BinaryOperatorItem operationItem = toBinaryOperatorItem(parser, node);
+            if (i < expressionContext.children.size() - 1) {
+                i++;
+                ParseTree rightNode = expressionContext.children.get(i);
+                checkErrorNode(rightNode);
+                if (!TamilLetterSetParser.TermContext.class.isAssignableFrom(rightNode.getClass())) {
+                    throw new ServiceException("Operation " + node.getText() + " is not followed by a valid term. The symbol is of type:" + rightNode.getClass().getName());
                 }
 
+                TamilLetterSetParser.TermContext rightTerm = (TamilLetterSetParser.TermContext) expressionContext.children.get(i);
+                ret.addAll(toPostFixTerm(parser, rightTerm));
             } else {
-                throw new ServiceException("Unexpected symbol " + node.getText() + " of type " + node.getClass().getName());
+                throw new ServiceException("Missing right operand after " + node.getText());
             }
+
+
+            ret.add(operationItem);
 
 
         }
         return ret;
-    }
 
+    }
 
 }
