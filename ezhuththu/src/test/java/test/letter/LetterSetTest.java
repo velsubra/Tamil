@@ -3,6 +3,7 @@ package test.letter;
 import junit.framework.Assert;
 import my.interest.lang.tamil.generated.antlr.letterset.TamilLetterSetParser;
 import my.interest.lang.tamil.impl.TamilEzhuththuSetEvaluator;
+import my.interest.lang.tamil.impl.TamilEzhuththuSetExpressionInterpreter;
 import org.antlr.v4.gui.TreeTextProvider;
 import org.antlr.v4.gui.TreeViewer;
 import org.antlr.v4.runtime.tree.Tree;
@@ -14,7 +15,7 @@ import tamil.lang.TamilFactory;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.image.BufferedImage;
+    import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
@@ -130,6 +131,31 @@ public class LetterSetTest {
     }
 
     @Test
+    public void test7SimplemultiPresedence() {
+
+        Set<TamilCharacter> set1 = TamilFactory.getTamilCharacterSetCalculator().evaluate("uyirmey-mey*uyir");
+        System.out.println(set1);
+        Assert.assertEquals(0, set1.size());
+    }
+
+    @Test
+    public void test8SimplemultiPresedence() {
+
+        Set<TamilCharacter> set1 = TamilFactory.getTamilCharacterSetCalculator().evaluate("(uyirmey-mey)*uyir");
+        System.out.println(set1);
+        Assert.assertEquals(1, set1.size());
+    }
+
+    @Test
+    public void test8SimplemultiPresedenceNoStart() {
+
+        Set<TamilCharacter> set1 = TamilFactory.getTamilCharacterSetCalculator().evaluate("(uyirmey-mey)uyir");
+        System.out.println(set1);
+        Assert.assertEquals(1, set1.size());
+    }
+
+
+    @Test
     public void test8Simplemulti() {
 
         Set<TamilCharacter> set1 = TamilFactory.getTamilCharacterSetCalculator().evaluate("[kd]*uyir");
@@ -161,13 +187,13 @@ public class LetterSetTest {
         Assert.assertEquals(30, set1.size());
     }
 
-    @Test
+   // @Test
     public void testWithGUI() throws Exception {
         List<String> list = Arrays.asList(TamilLetterSetParser.ruleNames);
 
-        TamilLetterSetParser parser = TamilEzhuththuSetEvaluator.DEFAULT.createParser("uyir+mey*-uyirmey allathu mey");//(உயிர்-(மெய்-(உயிர்+உயிர்)))*உயிர்-(மெய்-(உயிர்+உயிர்))-[அவாயீ,ஊஉஈஅ]+உயிர்-(மெய்-(உயிர்+உயிர்))-[அவாயீ,ஊஉஈஅ]");
+        TamilLetterSetParser parser = TamilEzhuththuSetExpressionInterpreter.createTamilLetterSetParser("uyir+mey-uyirmey allathu mey");//(உயிர்-(மெய்-(உயிர்+உயிர்)))*உயிர்-(மெய்-(உயிர்+உயிர்))-[அவாயீ,ஊஉஈஅ]+உயிர்-(மெய்-(உயிர்+உயிர்))-[அவாயீ,ஊஉஈஅ]");
 
-        TreeViewer viewer = new TreeViewer(list, parser.expression());
+        TreeViewer viewer = new TreeViewer(list, parser.expr());
         viewer.setTextColor(Color.LIGHT_GRAY);
         viewer.setBoxColor(Color.WHITE);
         JDialog dialog = new JDialog();
@@ -202,7 +228,7 @@ public class LetterSetTest {
 
 
         viewer.printAll(g1);
-      //  ImageIO.write(image1, "PNG", new FileOutputStream("/Users/velsubra/Downloads/expression.png"));
+        ImageIO.write(image1, "PNG", new FileOutputStream("/Users/velsubra/Downloads/expression.png"));
 
 
     }

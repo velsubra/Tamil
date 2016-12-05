@@ -26,11 +26,11 @@
             <scope>provided</scope>
         </dependency>
 
-        <dependency>
-            <groupId>org.antlr</groupId>
-            <artifactId>antlr4-runtime</artifactId>
-            <version>${antlr4.version}</version>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>org.antlr</groupId>-->
+            <!--<artifactId>antlr4-runtime</artifactId>-->
+            <!--<version>${antlr4.version}</version>-->
+        <!--</dependency>-->
 
         <dependency>
             <groupId>org.apache.maven</groupId>
@@ -79,7 +79,7 @@
             <groupId>org.antlr</groupId>
             <artifactId>antlr4</artifactId>
             <version>${antlr4.version}</version>
-            <scope>test</scope>
+
         </dependency>
 
 
@@ -125,6 +125,9 @@
                         <goals>
                             <goal>antlr4</goal>
                         </goals>
+                        <configuration>
+                            <visitor>true</visitor>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
@@ -152,7 +155,8 @@
                                 <include>org.json:json</include>
                                 <include>org.apache.maven:maven-model</include>
                                 <include>org.codehaus.plexus:plexus-utils</include>
-                                <include>org.antlr:antlr4-runtime</include>
+                                <include>org.antlr:antlr4</include>
+                                <!--<include>org.antlr:antlr4-runtime</include>-->
 
                                 <!--<include>com.sun.jersey:jersey-client</include>-->
                                 <!--<include>com.sun.jersey:jersey-core</include>-->

@@ -270,9 +270,14 @@ public class TamilEzhuththuSetCalculatorImpl implements TamilCharacterSetCalcula
 
     }
 
-    public Set<TamilCharacter> evaluate(String expression) throws TamilPlatformException {
-        return TamilEzhuththuSetEvaluator.DEFAULT.evaluate(expression).getValue().getCharacterSet();
+//    public Set<TamilCharacter> evaluate(String expression) throws TamilPlatformException {
+//        return TamilEzhuththuSetEvaluator.DEFAULT.evaluate(expression).getValue().getCharacterSet();
+//
+//    }
 
+
+    public Set<TamilCharacter> evaluate(String expression) throws TamilPlatformException {
+        return TamilEzhuththuSetExpressionInterpreter.evaluate(expression);
     }
 
 
@@ -284,6 +289,9 @@ public class TamilEzhuththuSetCalculatorImpl implements TamilCharacterSetCalcula
     private Set<TamilCharacter> resolve(String compound) {
 
         EzhuththuSetDescription desc = map.get(compound);
+        if (desc == null) {
+            desc = map.get(TamilFactory.getTransliterator(null).transliterate(compound).toString());
+        }
         if (desc == null) {
             return resolve(resolveSimpleToParsedList(compound));
         } else {

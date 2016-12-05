@@ -83,7 +83,7 @@ import java.util.Set;
  * </p>
  * <li><b>Nested Expression</b> </li>
  * <p>
- *     The bracket ( and ) can be used to enclose and expression. Nested expression take precedence. Otherwise all binary operators are processed left to right.
+ *     The bracket ( and ) can be used to enclose an expression. Nested expression take the most precedence. Multiplication takes next precedence. All other binary operators are processed left to right with same precedence.
  * </p>
  *
  * </ol>
