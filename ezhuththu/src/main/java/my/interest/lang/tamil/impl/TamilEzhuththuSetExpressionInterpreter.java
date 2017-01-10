@@ -6,6 +6,7 @@ import my.interest.lang.tamil.generated.antlr.letterset.TamilLetterSetBaseVisito
 import my.interest.lang.tamil.generated.antlr.letterset.TamilLetterSetLexer;
 import my.interest.lang.tamil.generated.antlr.letterset.TamilLetterSetParser;
 import my.interest.lang.tamil.generated.antlr.letterset.TamilLetterSetVisitor;
+import my.interest.lang.tamil.impl.antlr4.ErrorListener;
 import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import tamil.lang.TamilCharacter;
@@ -28,30 +29,6 @@ public class TamilEzhuththuSetExpressionInterpreter extends TamilLetterSetBaseVi
     TamilLetterSetParser parser = null;
 
 
-    public static class ErrorListener extends BaseErrorListener {
-
-        public StringBuffer errors = new StringBuffer();
-        public boolean errorOccurred = false;
-
-        @Override
-        public void syntaxError(Recognizer<?, ?> recognizer,
-                                Object offendingSymbol,
-                                int line,
-                                int charPositionInLine,
-                                String msg,
-                                RecognitionException e) {
-            if (errorOccurred) {
-                errors.append("\n");
-            }
-            errors.append("line " + line + ":" + charPositionInLine + " " + msg);
-            errorOccurred = true;
-        }
-
-        public void reset() {
-            errorOccurred = false;
-            errors = new StringBuffer();
-        }
-    }
 
 
     public static TamilLetterSetParser createTamilLetterSetParser(String infix) {

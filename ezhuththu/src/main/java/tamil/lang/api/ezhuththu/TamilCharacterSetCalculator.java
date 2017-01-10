@@ -31,10 +31,12 @@ public interface TamilCharacterSetCalculator {
     public Set<TamilCharacter>  find (String query) throws TamilPlatformException;
 
     /**
-     * Evaluates set expression involving Tamil letter sets
+     * Evaluates set expression involving Tamil letter sets . Please see the set operation details at {@link EzhuththuSetDescription}
      * @param expression the expression
      * @return the result of the evaluated expression
      * @throws TamilPlatformException
+     *
+     *
      */
     public Set<TamilCharacter>  evaluate (String expression) throws TamilPlatformException;
 

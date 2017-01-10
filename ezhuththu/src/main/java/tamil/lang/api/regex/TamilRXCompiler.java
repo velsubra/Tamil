@@ -37,7 +37,7 @@ import java.util.Set;
  * <tr><td>5</td><td>${<b>மாத்திரை</b>[சொல்]}</td> <td> Pattern to match the same list of மாத்திரை for each character  as in  the given சொல். ${மாத்திரை[தென்னை]} matches with கண்ணா</td> </tr>
  * <tr><td>6</td><td>${<b>வகை</b>[சொல்]}</td> <td> Pattern to match the same list of வகை (உயிர், உயிர்மெய் மெய், ஆய்தம்) of each character  as in the given சொல். ${வகை[தமிழ்]} matches with பாகம்</td> </tr>
  * <tr><td>7</td><td>${<b>மெய்வகை</b>[சொல்]}</td> <td> Pattern to match the same list of மெய்வகை (வலி,மெலி,இடை) of each character  as in the given சொல். ${மெய்வகை[அங்கு] matches with அந்தி</td> </tr>
- * <tr><td>8</td><td>${[தமிழ்]}</td> <td> Pattern to match the literal text தமிழ்</td> </tr>
+ * <tr><td>8</td><td>${[[தமிழ்]]}</td> <td> Pattern to match the literal text தமிழ்</td> </tr>
  * <tr><td>9</td><td>${<b>தளை</b>[ex1 <b>முன்</b> ex2]}</td> <td> Pattern to match தளை. ${தளை[(மாச்சீர்) </b>முன்</b> நிரை]}  என்பது இயற்சீர்வெண்டளையை குறிக்கும்.
  * குறிப்பு: இரண்டாஞ்சீரின் தன்மையை ஆராய்ந்துதான் தளை காணப்பட்டாலும், தளைக்கான பாங்கு முதற்சீரையும்(அதாவது  ex1) அதற்குப்பின்வரும் இடைவெளியையும்மட்டுமே   குறிக்கும், இரண்டாஞ்சீரை பாங்குடன் இணைக்காது.
  * This expression will only match ex1 and the whitespaces following it.

@@ -75,8 +75,31 @@ public class Ezhuththu_0Test {
        // Assert.assertEquals(209, TamilFactory.getRegEXCompiler().getUnicodeBMPBlocksRegEXDescriptions().size());
 
         //BMP blocks
-        Assert.assertEquals(156, TamilFactory.getRegEXCompiler().getUnicodeBMPBlocksRegEXDescriptions().size());
+        Assert.assertTrue( TamilFactory.getRegEXCompiler().getUnicodeBMPBlocksRegEXDescriptions().size()>150);
 
+    }
+
+    @Test
+    public void testConstants() {
+        TamilPattern pat = TamilFactory.getRegEXCompiler().compile("${[[அம்மா]]}");
+        Matcher m = pat.matcher("அம்மா");
+        Assert.assertEquals(true, m.matches());
+
+         pat = TamilFactory.getRegEXCompiler().compile("${[அம்மா]}");
+         m = pat.matcher("அ");
+        Assert.assertEquals(true, m.matches());
+
+        pat = TamilFactory.getRegEXCompiler().compile("${[அம்மா]}");
+        m = pat.matcher("ம்");
+        Assert.assertEquals(true, m.matches());
+
+        pat = TamilFactory.getRegEXCompiler().compile("${[அம்மா]}");
+        m = pat.matcher("மா");
+        Assert.assertEquals(true, m.matches());
+
+        pat = TamilFactory.getRegEXCompiler().compile("${[அம்மா]}");
+        m = pat.matcher("ம");
+        Assert.assertEquals(false, m.matches());
     }
 
     @Test

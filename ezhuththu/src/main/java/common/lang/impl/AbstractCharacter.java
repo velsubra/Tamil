@@ -179,5 +179,10 @@ public abstract class AbstractCharacter implements common.lang.Character, Compar
      */
     public abstract String translitToEnglish();
 
+    public boolean isWhiteSpace() {
+        if (isTamilLetter()) return false;
+        return  java.lang.Character.isWhitespace(toString().charAt(0));
+    }
+
 
 }

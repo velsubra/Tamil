@@ -313,8 +313,8 @@ public class RxRegistry implements IPropertyFinder {
                 return "${" + inner + "}" + getWordBoundary(featureSet);
 
             }
-            if (p1.startsWith("[") && p1.endsWith("]")) {
-                String inner = p1.substring(1, p1.length() - 1);
+            if (p1.startsWith("[[") && p1.endsWith("]]")) {
+                String inner = p1.substring(2, p1.length() - 2);
                 TamilWord literal = TamilWord.from(inner, true);
                 return literal.toUnicodeStringRepresentation(featureSet);
             }

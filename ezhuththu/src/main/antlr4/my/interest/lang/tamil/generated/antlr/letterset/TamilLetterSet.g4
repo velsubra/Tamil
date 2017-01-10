@@ -1,22 +1,5 @@
 grammar TamilLetterSet;
-
-//
-//expression
-//   : term (operation=(UNION | INTERSECTION | SUBTRACTION | MULTIPLICATION ) term)*
-//   ;
-//
-//
-//
-//term
-//   : direct_part = SIMPLE_PART
-//   | simple_expression = closed_expression
-//   | negated_expression = NEGATION closed_expression
-//   | negated_part = NEGATION SIMPLE_PART
-//   ;
-//
-//closed_expression
-//   : LPAREN expression RPAREN
-//   ;
+import TamilLexer;
 
 
 expr: expr MULTIPLICATION expr                             #Multiplication
@@ -59,14 +42,6 @@ CONSTANT_SET
    : ('[' (LETTER_SYMBOL ','?)* ']')
    ;
 
-LPAREN
-   : '('
-   ;
-
-
-RPAREN
-   : ')'
-   ;
 
 
 
@@ -92,16 +67,3 @@ NEGATION
    ;
 
 
-TAMIL_LETTER_SYMBOL
-   : ('\u0B80' .. '\u0BFF')
-   ;
-
-LETTER_SYMBOL
-   : ('a' .. 'z') | ('A' .. 'Z') | TAMIL_LETTER_SYMBOL
-   ;
-
-
-
-WS
-   : [ \r\n\t]+ -> channel (HIDDEN)
-   ;
