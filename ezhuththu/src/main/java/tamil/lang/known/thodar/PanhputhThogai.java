@@ -2,6 +2,7 @@ package tamil.lang.known.thodar;
 
 import tamil.lang.TamilWord;
 import tamil.lang.known.IKnownWord;
+import tamil.lang.known.IThogai;
 import tamil.lang.known.non.derived.IPeyarchchol;
 
 import java.util.List;
@@ -13,7 +14,7 @@ import java.util.List;
  *
  * @author velsubra
  */
-public class PanhputhThogai extends AbstractThodarMozhi implements IPeyarchchol {
+public class PanhputhThogai extends AbstractThodarMozhi implements IPeyarchchol, IThogai {
     public PanhputhThogai(TamilWord word,List<? extends IKnownWord> list) {
         super(word,list);
     }
