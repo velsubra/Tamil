@@ -23,8 +23,7 @@ import java.util.List;
 public class DownloaderTest {
     static {
         TamilFactory.init();
-       // System.setProperty("http.proxyHost", "www-proxy.us.oracle.com");
-      //  System.setProperty("http.proxyPort", "80");
+
     }
 
   //  @Test

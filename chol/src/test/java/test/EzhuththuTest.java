@@ -332,15 +332,15 @@ public class EzhuththuTest implements IPropertyFinder {
         matcher = pattern.matcher("அரிதுஅரோ");
         Assert.assertTrue(matcher.matches());
 
-        pattern = TamilPattern.compile("${([தமிழ்])}");
+        pattern = TamilPattern.compile("${([[தமிழ்]])}");
         matcher = pattern.matcher("தமிழ்");
         Assert.assertTrue(matcher.matches());
 
-        pattern = TamilPattern.compile("${[(தமிழ்)]}");
+        pattern = TamilPattern.compile("${[[(தமிழ்)]]}");
         matcher = pattern.matcher("தமிழ்");
         Assert.assertFalse(matcher.matches());
 
-        pattern = TamilPattern.compile("${[(தமிழ்)]}");
+        pattern = TamilPattern.compile("${[[(தமிழ்)]]}");
         matcher = pattern.matcher("(தமிழ்)");
         Assert.assertTrue(matcher.matches());
 

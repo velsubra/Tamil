@@ -96,11 +96,11 @@ public class ServerTest {
     public void testStartServer() throws Exception {
       //  if (true) return;
 
-        System.setProperty("http.proxyHost", "www-proxy.us.oracle.com");
-        System.setProperty("https.proxyHost", "www-proxy.us.oracle.com");
-        System.setProperty("http.proxyPort", "80");
-        System.setProperty("https.proxyPort", "80");
-        final String baseUri = "http://localhost:8080/xyz";
+       // System.setProperty("http.proxyHost", "proxyhost");
+      //  System.setProperty("https.proxyHost", "proxyhost");
+      //  System.setProperty("http.proxyPort", "80");
+       // System.setProperty("https.proxyPort", "80");
+        final String baseUri = "http://192.168.0.50:50001/tamil";
         final Map<String, String> initParams =
                 new HashMap<String, String>();
 
