@@ -103,7 +103,7 @@
                     <links>
                         <link>http://java.sun.com/j2se/1.7.0/docs/api/</link>
                     </links>
-                    <source>1.7</source>
+                    <source>1.8</source>
                     <sourcepath>${basedir}/src/main/java/:${basedir}/../ezhuththu/src/main/java/</sourcepath>
 
                     <excludePackageNames>my.*</excludePackageNames>

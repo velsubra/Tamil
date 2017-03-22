@@ -15,6 +15,7 @@ import tamil.lang.TamilSimpleCharacter;
 import tamil.lang.TamilWord;
 
 import java.io.File;
+import java.net.InetAddress;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -100,7 +101,7 @@ public class ServerTest {
       //  System.setProperty("https.proxyHost", "proxyhost");
       //  System.setProperty("http.proxyPort", "80");
        // System.setProperty("https.proxyPort", "80");
-        final String baseUri = "http://192.168.0.50:50001/tamil";
+        final String baseUri = "http://"+InetAddress.getLocalHost().getHostAddress()+":50001/tamil";
         final Map<String, String> initParams =
                 new HashMap<String, String>();
 
