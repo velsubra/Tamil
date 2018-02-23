@@ -56,6 +56,17 @@ public class EzhuththuTest implements IPropertyFinder {
 //    }
 
     @Test
+    public void testWithSimpleCharacterType() throws Exception {
+        String eng = "அம்மா";
+        System.out.println(eng.length());
+       TamilWord word = TamilWord.from("அக்கா");
+        TamilWord word1 = TamilWord.from("அக்க");
+        System.out.println(word.suggestionHashCode());
+        System.out.println(word1.suggestionHashCode());
+
+    }
+
+    @Test
     public void testWithGroup() throws Exception {
         String beforeEncoding = "kurralh";
         String afterEncoding = TamilUtils.encodeToBeAGroupName(beforeEncoding);

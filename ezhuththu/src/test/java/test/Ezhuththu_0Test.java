@@ -59,6 +59,14 @@ public class Ezhuththu_0Test {
     }
 
     @Test
+    public void kouvaiTest1() {
+        TamilWord w = TamilWord.from("கெளவை ஔவை", true);
+        Assert.assertEquals(6, w.size());
+
+      //  Assert.assertEquals(6, TamilSimpleCharacter.simplecharacters.size());
+    }
+
+    @Test
     public void cirSelfTest() {
         List<String> cirs = new ArrayList<String>();
         cirs.addAll(new Asai().getAllCirs());

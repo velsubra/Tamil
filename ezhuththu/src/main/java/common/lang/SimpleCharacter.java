@@ -9,5 +9,9 @@ package common.lang;
  * @author velsubra
  */
 public interface SimpleCharacter extends common.lang.Character {
+    /**
+     * Returns the code point
+     * @return the code point value
+     */
     public int getValue();
 }

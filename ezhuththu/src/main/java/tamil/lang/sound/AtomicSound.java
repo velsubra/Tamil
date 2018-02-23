@@ -35,7 +35,7 @@ public final class AtomicSound implements Comparable<AtomicSound> {
             eng = " ";
         }
         System.out.println("Reading '" + eng+"'");
-        return TamilFactory.class.getResourceAsStream("/sound/download_iltp/" + eng+ ".wav");
+        return TamilFactory.class.getResourceAsStream("/sound/download/" + eng+ ".wav");
     }
 
 

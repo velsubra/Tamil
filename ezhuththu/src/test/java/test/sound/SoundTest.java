@@ -131,7 +131,7 @@ public class SoundTest {
     @Test
     public void testRead() throws Exception {
         // TamilWord word = TamilWord.from("", true);
-        TamilWord word = TamilFactory.getTransliterator(null).transliterate("padambaarththu katahisol");
+        TamilWord word = TamilFactory.getTransliterator(null).transliterate("akkaa ammaa appaa");
         System.out.println("Text size:" + word.size());
 
         TamilSoundListener listener = new TamilSoundListener();
@@ -143,7 +143,7 @@ public class SoundTest {
         int count = 0;
         for (AtomicSound s : list) {
             System.out.println(s.getWord());
-            Thread.sleep(100);
+            Thread.sleep(150);
 //            if (count ==0) {
 //                Thread.sleep(10);
 //            }
@@ -167,6 +167,7 @@ public class SoundTest {
 
 
         }
+        Thread.currentThread().sleep(1000);
 //        if (collections.size() > 0) {
 //            MixingAudioInputStream appaa = new MixingAudioInputStream(collections.get(0).getFormat(), collections);
 //            DataLine.Info info = new DataLine.Info(Clip.class, appaa.getFormat());
@@ -183,7 +184,7 @@ public class SoundTest {
     @Test
     public void testMix() throws Exception {
         // TamilWord word = TamilWord.from("", true);
-        TamilWord word = TamilFactory.getTransliterator(null).transliterate("iththudan enathu kanhakkai mudikkirrean");
+        TamilWord word = TamilFactory.getTransliterator(null).transliterate("ithu ntammudaiya soathanai");
         System.out.println("Text size:" + word.size());
         System.out.println("word :" + word);
 

@@ -6,10 +6,7 @@ import tamil.lang.TamilFactory;
 import tamil.lang.TamilWord;
 import tamil.lang.api.feature.Feature;
 import tamil.lang.api.feature.FeatureConstants;
-import tamil.lang.api.number.IgnoreNonDigitFeature;
-import tamil.lang.api.number.NotANumberException;
-import tamil.lang.api.number.NumberReader;
-import tamil.lang.api.number.PunharchiFeature;
+import tamil.lang.api.number.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +21,13 @@ import java.util.Random;
 public class NumberTest {
     static {
         TamilFactory.init();
+    }
+
+    @Test
+    public void testLarge() throws Exception {
+       NumberReader reader = TamilFactory.getNumberReader();
+       TamilWord word =  reader.readNumber("10000000000000000100000000000000000000000001",  NumberSystemFeature.ILANGO_PICHCHANDI,PunharchiFeature.INSTANCE_KEEP_ONLY_POSITION);
+       System.out.println(word.toString());
     }
 
     @Test

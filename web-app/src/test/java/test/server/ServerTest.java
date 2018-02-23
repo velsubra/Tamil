@@ -101,7 +101,8 @@ public class ServerTest {
       //  System.setProperty("https.proxyHost", "proxyhost");
       //  System.setProperty("http.proxyPort", "80");
        // System.setProperty("https.proxyPort", "80");
-        final String baseUri = "http://"+InetAddress.getLocalHost().getHostAddress()+":50001/tamil";
+       // final String baseUri = "http://0.0.0.0:50001/tamil";
+        final String baseUri = "http://localhost:50001/tamil";
         final Map<String, String> initParams =
                 new HashMap<String, String>();
 
