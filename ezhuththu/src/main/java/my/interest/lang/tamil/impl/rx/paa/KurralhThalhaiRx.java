@@ -12,16 +12,15 @@ import java.util.Set;
  *
  * @author velsubra
  */
-public class KurralhThalaiRx implements PatternGenerator {
-    public String generate(FeatureSet featureSet) {
-        return "(?:${வெண்டளை}{6})";
-    }
+public class KurralhThalhaiRx extends AbstractVenhbaThalhaiRx {
 
+    public KurralhThalhaiRx() {
+        super(2);
+    }
 
     public Set<TamilCharacter> getCharacterSet() {
         return null;
     }
-
 
     public String getName() {
         return "குறளின் தளையமைப்பு";

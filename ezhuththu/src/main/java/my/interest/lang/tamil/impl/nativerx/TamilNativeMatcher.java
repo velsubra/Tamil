@@ -259,6 +259,7 @@ public class TamilNativeMatcher extends TamilRXBaseVisitor<Boolean> implements T
         String token = ctx.TAMIL_RX().getText();
         String setName = token.substring(2, token.length() - 1);
         boolean escaping = false;
+        // Supports control characters inside [[[ ]]]
         if (setName.startsWith("[[[") && setName.endsWith("]]]")) {
             String control = setName.substring(3, setName.length() - 3);
             for (int i = 0; i < control.length(); i++) {
@@ -311,6 +312,7 @@ public class TamilNativeMatcher extends TamilRXBaseVisitor<Boolean> implements T
             return true;
 
         } else if (setName.startsWith("[[") && setName.endsWith("]]")) {
+            // Supports constants inside [[ ]]
             TamilWord literal = TamilWord.from(setName.substring(2, setName.length() - 2), true);
             if (currentPointer + literal.length() > text.length()) {
                 return false;

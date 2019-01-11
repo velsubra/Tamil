@@ -2,7 +2,6 @@ package test.letter;
 
 import junit.framework.Assert;
 import my.interest.lang.tamil.generated.antlr.letterset.TamilLetterSetParser;
-import my.interest.lang.tamil.impl.TamilEzhuththuSetEvaluator;
 import my.interest.lang.tamil.impl.TamilEzhuththuSetExpressionInterpreter;
 import org.antlr.v4.gui.TreeTextProvider;
 import org.antlr.v4.gui.TreeViewer;
@@ -15,7 +14,7 @@ import tamil.lang.TamilFactory;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-    import java.awt.image.BufferedImage;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
@@ -187,7 +186,7 @@ public class LetterSetTest {
         Assert.assertEquals(30, set1.size());
     }
 
-   // @Test
+    // @Test
     public void testWithGUI() throws Exception {
         List<String> list = Arrays.asList(TamilLetterSetParser.ruleNames);
 
@@ -206,7 +205,7 @@ public class LetterSetTest {
 
         Rectangle rect1 = viewer.getBounds();
         BufferedImage image1 = new BufferedImage(rect1.width, rect1.height, 1);
-        Graphics2D g1 = (Graphics2D)image1.getGraphics();
+        Graphics2D g1 = (Graphics2D) image1.getGraphics();
         g1.setColor(Color.WHITE);
         g1.fill(rect1);
         viewer.paint(g1);

@@ -4,14 +4,14 @@ grammar TamilRX;
 rx_list : rx+                                                                    #Expression
         ;
 
-rx :   simple_rx ONE_OR_MORE                                                             #OneOrMore
-     | simple_rx ZERO_OR_MORE                                                             #ZeroOrMore
+rx :   simple_rx ONE_OR_MORE                                                     #OneOrMore
+     | simple_rx ZERO_OR_MORE                                                    #ZeroOrMore
      | simple_rx '{' POSITIVE_INTEGER '}'                                        #FixedCount
      | or_rx                                                                     #ORExpression
      | and_rx                                                                    #ANDExpression
-     | LPAREN  QUESTION_MARK  EXCLAMATION_MARK lahead=rx_list RPAREN    #NegativeLookAhead
-     | LPAREN  QUESTION_MARK  EQUAL_MARK lahead=rx_list RPAREN          #PositiveLookAhead
-     | grouped_rx                                                       #GroupedExpression
+     | LPAREN  QUESTION_MARK  EXCLAMATION_MARK lahead=rx_list RPAREN             #NegativeLookAhead
+     | LPAREN  QUESTION_MARK  EQUAL_MARK lahead=rx_list RPAREN                   #PositiveLookAhead
+     | grouped_rx                                                                #GroupedExpression
      | simple_rx                                                                 #SimpleExpression
 
 
@@ -127,7 +127,6 @@ TAMIL_RX_START
 
 TAMIL_RX
    : (TAMIL_RX_START ex=EXPRESSION '}');
-
 
 
 EXPRESSION

@@ -12,16 +12,15 @@ import java.util.Set;
  *
  * @author velsubra
  */
-public class KurralhCirRx implements PatternGenerator {
-    public String generate(FeatureSet featureSet) {
-        return "(?:(?:${வெண்பாவின் சீர்}${இடைவெளி}){6}${வெண்பாவின் இறுதிச்சீர்})";
-    }
+public class KurralhCirRx extends AbstractVenhbaCirRx {
 
+    public KurralhCirRx() {
+        super(2);
+    }
 
     public Set<TamilCharacter> getCharacterSet() {
         return null;
     }
-
 
     public String getName() {
         return "குறளின் சீரமைப்பு";

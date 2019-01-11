@@ -25,14 +25,10 @@ import java.util.Set;
 public class TamilEzhuththuSetExpressionInterpreter extends TamilLetterSetBaseVisitor<EzhuththuSetDescription>  implements TamilLetterSetVisitor<EzhuththuSetDescription> {
     private static TamilCharacterSetCalculator calculator = TamilFactory.getTamilCharacterSetCalculator();
 
-
-    TamilLetterSetParser parser = null;
-
-
-
+    private TamilLetterSetParser parser = null;
+    private ErrorListener listener = null;
 
     public static TamilLetterSetParser createTamilLetterSetParser(String infix) {
-
         TamilLetterSetLexer lexer = new TamilLetterSetLexer(new ANTLRInputStream(infix));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         TamilLetterSetParser parser = new TamilLetterSetParser(tokens);
@@ -46,7 +42,6 @@ public class TamilEzhuththuSetExpressionInterpreter extends TamilLetterSetBaseVi
 
     }
 
-    ErrorListener listener = null;
 
     public TamilEzhuththuSetExpressionInterpreter(TamilLetterSetParser parser) {
         this.parser = parser;

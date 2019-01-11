@@ -492,7 +492,7 @@ public final class DefaultNumberReader implements NumberReader {
 
             if (rem == 0) {
                 if (denomi != null && denomi.size() != 0) {
-                    kodi = TamilWord.from("கோடியே");
+                    kodi = TamilWord.from("டிகோடியே");
                     if (!set.isNumberPurchchiFeatureFull()) {
                         kodi.add(UnknownCharacter.SPACE);
                     }

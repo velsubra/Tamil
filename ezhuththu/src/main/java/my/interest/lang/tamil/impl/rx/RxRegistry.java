@@ -16,9 +16,10 @@ import my.interest.lang.tamil.impl.rx.block.UnicodeBlockExcluder;
 import my.interest.lang.tamil.impl.rx.block.UnicodeBlockOrGenerator;
 import my.interest.lang.tamil.impl.rx.cir.*;
 import my.interest.lang.tamil.impl.rx.maaththirai.*;
+import my.interest.lang.tamil.impl.rx.paa.FourLineVenhbaRx;
 import my.interest.lang.tamil.impl.rx.paa.KurralRx;
 import my.interest.lang.tamil.impl.rx.paa.KurralhCirRx;
-import my.interest.lang.tamil.impl.rx.paa.KurralhThalaiRx;
+import my.interest.lang.tamil.impl.rx.paa.KurralhThalhaiRx;
 import my.interest.lang.tamil.impl.rx.thalhai.*;
 import my.interest.lang.tamil.impl.rx.util.IdaivelhiRx;
 import my.interest.lang.tamil.impl.rx.util.IlakkamRx;
@@ -52,7 +53,8 @@ public class RxRegistry implements IPropertyFinder {
     IPropertyFinder parent = null;
     FeatureSet featureSet = null;
     //Serves as cache.
-    Map<String,String> compiled = new HashMap<String,String>();
+    Map<String, String> compiled = new HashMap<String, String>();
+
     public RxRegistry(IPropertyFinder parent, FeatureSet featureSet) {
         this.parent = parent;
         this.featureSet = featureSet;
@@ -154,8 +156,9 @@ public class RxRegistry implements IPropertyFinder {
         map.put("இடைவெளி", new IdaivelhiRx());
         map.put("வெண்பாவின் இறுதிச்சீர்", new VenhbaLastCirRx());
         map.put("குறளின் சீரமைப்பு", new KurralhCirRx());
-        map.put("குறளின் தளையமைப்பு", new KurralhThalaiRx());
+        map.put("குறளின் தளையமைப்பு", new KurralhThalhaiRx());
         map.put("குறள்", new KurralRx());
+        map.put("4அடிவெண்பா", new FourLineVenhbaRx());
 
         map.put("அரைமாத்திரை", new HalfRx());
         map.put("ஒருமாத்திரை", new OneRx());
@@ -186,8 +189,8 @@ public class RxRegistry implements IPropertyFinder {
         String rx = compiled.get(actual);
         if (rx == null) {
             rx = findProperty0(actual);
-            if (rx == null) return  null;
-            compiled.put(actual,rx);
+            if (rx == null) return null;
+            compiled.put(actual, rx);
         }
 
 
@@ -201,14 +204,14 @@ public class RxRegistry implements IPropertyFinder {
     /**
      * key is the expression name {@link EncodedGroup#expressionName}
      */
-    private HashMap<String, EncodedGroup> groupNamesFromExpressionName =  new HashMap<String, EncodedGroup>();
+    private HashMap<String, EncodedGroup> groupNamesFromExpressionName = new HashMap<String, EncodedGroup>();
 
 
     public HashMap<String, EncodedGroup> getGroupNamesFromEncodedName() {
         return groupNamesFromEncodedName;
     }
 
-    private HashMap<String, EncodedGroup> groupNamesFromEncodedName =  new HashMap<String, EncodedGroup>();
+    private HashMap<String, EncodedGroup> groupNamesFromEncodedName = new HashMap<String, EncodedGroup>();
 
     public static class EncodedGroup {
         EncodedGroup(String ex) {
@@ -217,14 +220,16 @@ public class RxRegistry implements IPropertyFinder {
             if (english.equals(this.expressionName)) {
                 this.encodedBase = TamilUtils.encodeToBeAGroupName(english);
             } else {
-              this.encodedBase =  TamilUtils.ENCODING_SPECIAL_CHAR + TamilUtils.encodeToBeAGroupName(english);
+                this.encodedBase = TamilUtils.ENCODING_SPECIAL_CHAR + TamilUtils.encodeToBeAGroupName(english);
             }
             this.count = 1;
         }
+
         public void increment() {
-            count ++;
+            count++;
         }
-        public String  expressionName;
+
+        public String expressionName;
         public String encodedBase;
         public int count;
     }
@@ -236,7 +241,7 @@ public class RxRegistry implements IPropertyFinder {
             EncodedGroup existing = groupNamesFromExpressionName.get(exName);
             if (existing == null) {
                 existing = new EncodedGroup(exName);
-                groupNamesFromExpressionName.put(exName,existing);
+                groupNamesFromExpressionName.put(exName, existing);
             } else {
                 existing.increment();
             }
@@ -248,7 +253,7 @@ public class RxRegistry implements IPropertyFinder {
             buffer.append(">");
             buffer.append(rx);
             buffer.append(")");
-            return  buffer.toString();
+            return buffer.toString();
         } else {
             return rx;
         }
@@ -275,12 +280,12 @@ public class RxRegistry implements IPropertyFinder {
         //Try for unicode block
         gen = UnicodeBlockDescription.blocks.get(p1);
         if (gen == null) {
-                if (p1.startsWith("!")) {
-                    gen = UnicodeBlockDescription.blocks.get(p1.substring(1));
-                    if (gen != null) {
-                        gen = new UnicodeBlockExcluder((UnicodeBlockDescription) gen);
-                    }
+            if (p1.startsWith("!")) {
+                gen = UnicodeBlockDescription.blocks.get(p1.substring(1));
+                if (gen != null) {
+                    gen = new UnicodeBlockExcluder((UnicodeBlockDescription) gen);
                 }
+            }
         }
 
         // Try for Rx descriptions in this registry.
@@ -333,7 +338,7 @@ public class RxRegistry implements IPropertyFinder {
                     max = -1;
                 }
 
-                return  new NAsaichCheer(min, max).generate(featureSet);
+                return new NAsaichCheer(min, max).generate(featureSet);
             }
 
             if (p1.startsWith("தளை[") && p1.endsWith("]")) {
@@ -461,7 +466,7 @@ public class RxRegistry implements IPropertyFinder {
                 if (blocks.isEmpty()) {
                     throw new TamilPatternSyntaxException("Empty block names", "ஒருங்குறித்தொகுதிக்கு உள்ளே[]", 0);
                 }
-                return  new UnicodeBlockOrGenerator(blocks, false).generate(featureSet);
+                return new UnicodeBlockOrGenerator(blocks, false).generate(featureSet);
             }
             if (actual.startsWith("ஒருங்குறித்தொகுதிக்கு வெளியே[") && actual.endsWith("]")) {
 
